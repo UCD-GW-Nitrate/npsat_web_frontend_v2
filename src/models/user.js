@@ -79,6 +79,13 @@ const UserModel = {
   },
   reducers: {
     saveCurrentUser(state, action) {
+      if (action.payload.is_superuser) {
+        setAuthority('admin');
+      } else if (action.payload.is_staff) {
+        setAuthority('staff');
+      } else {
+        setAuthority('user');
+      }
       return { ...state, currentUser: action.payload || {} };
     },
     changeLoginStatus(state, { payload }) {
