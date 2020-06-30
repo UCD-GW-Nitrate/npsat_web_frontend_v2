@@ -11,7 +11,7 @@ export default defineConfig({
     hmr: true,
   },
   locale: {
-    default: 'us-EN',
+    default: 'en-US',
     antd: true,
     baseNavigator: false,
   },
@@ -36,6 +36,8 @@ export default defineConfig({
     {
       path: '/',
       component: '../layouts/SecurityLayout',
+      Routes: ['src/pages/Authorized'],
+      authority: ['admin', 'user', 'staff'],
       routes: [
         {
           path: '/',

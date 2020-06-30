@@ -3,6 +3,7 @@ import { setAuthority } from '@/utils/authority';
 import { userLogin } from '@/services/login';
 import { getPageQuery } from '@/utils/utils';
 import { history } from 'umi';
+import { notification } from 'antd';
 import { stringify } from "querystring";
 
 const UserModel = {
@@ -20,14 +21,6 @@ const UserModel = {
       });
     },
 
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
-      yield put({
-        type: 'saveCurrentUser',
-        payload: response,
-      });
-    },
-
     *login({ payload }, { call, put }) {
       const response = yield call(userLogin, payload);
       yield put({
@@ -35,7 +28,7 @@ const UserModel = {
         payload: response,
       });
 
-      if (response.status === 'ok') {
+      if (response.token) {
         yield put({
           type: 'saveCurrentUser',
           payload: response
@@ -61,11 +54,19 @@ const UserModel = {
         }
 
         history.replace(redirect || '/');
+      } else {
+        const { data } = response;
+        notification.error({
+          description: 'Login failed, please try again',
+          message: data.non_field_errors[0]
+        })
       }
     },
 
     logout() {
       const { redirect } = getPageQuery();
+
+      // further development warning: potential security leak if auth changes to cookies!
 
       if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
