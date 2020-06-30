@@ -3,6 +3,7 @@ import { setAuthority } from '@/utils/authority';
 import { userLogin } from '@/services/login';
 import { getPageQuery } from '@/utils/utils';
 import { history } from 'umi';
+import { notification } from 'antd';
 import { stringify } from "querystring";
 
 const UserModel = {
@@ -54,7 +55,10 @@ const UserModel = {
 
         history.replace(redirect || '/');
       } else {
-        console.log(response)
+        notification.error({
+          description: 'Login failed, please try again',
+          message: 'Unable to log in with provided credentials.'
+        })
       }
     },
 
