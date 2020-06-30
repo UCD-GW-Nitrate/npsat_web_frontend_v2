@@ -66,6 +66,8 @@ const UserModel = {
     logout() {
       const { redirect } = getPageQuery();
 
+      // further development warning: potential security leak if auth changes to cookies!
+
       if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
           pathname: '/user/login',
