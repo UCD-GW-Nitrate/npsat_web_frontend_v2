@@ -55,9 +55,10 @@ const UserModel = {
 
         history.replace(redirect || '/');
       } else {
+        const { data } = response;
         notification.error({
           description: 'Login failed, please try again',
-          message: 'Unable to log in with provided credentials.'
+          message: data.non_field_errors[0]
         })
       }
     },

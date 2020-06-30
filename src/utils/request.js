@@ -41,7 +41,7 @@ const errorHandler = error => {
     });
   }
 
-  return response;
+  return error;
 };
 
 const request = extend({

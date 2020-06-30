@@ -11,7 +11,7 @@ export default defineConfig({
     hmr: true,
   },
   locale: {
-    default: 'us-EN',
+    default: 'en-US',
     antd: true,
     baseNavigator: false,
   },
