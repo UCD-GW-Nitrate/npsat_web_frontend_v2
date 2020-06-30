@@ -1,10 +1,10 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, Dropdown, Menu, message } from 'antd';
 import React, { useState, useRef } from 'react';
-import { history } from 'umi';
+import { history, connect } from 'umi';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
-import { queryRule, removeRule } from './service';
+import ProTable, {IntlProvider, enUSIntl,} from '@ant-design/pro-table';
+import { queryModelList, queryRule, removeRule } from './service';
 
 /**
  * delete model
@@ -39,7 +39,8 @@ const handleCreate = () => {
   history.push('/model/create');
 }
 
-const OverviewList = () => {
+const OverviewList = props => {
+  const { userToken } = props;
   const [sorter, setSorter] = useState('');
   const actionRef = useRef();
   const columns = [
@@ -97,75 +98,90 @@ const OverviewList = () => {
             Results
           </Button>
           <Divider type="vertical" />
-          <Button>
+          <Button type="link" danger>
             Delete
           </Button>
         </>
       ),
     },
   ];
+  const queryList = params => {
+    const res = queryRule(params)
+    const res2 = queryModelList(params, userToken)
+    console.log(res, res2)
+    return res
+  }
   return (
     <PageHeaderWrapper>
-      <ProTable
-        headerTitle="Model Overview"
-        actionRef={actionRef}
-        rowKey="key"
-        onChange={(_, _filter, _sorter) => {
-          const sorterResult = _sorter;
+      <IntlProvider value={enUSIntl}>
+        <ProTable
+          headerTitle="Model Overview"
+          actionRef={actionRef}
+          rowKey="key"
+          onChange={(_, _filter, _sorter) => {
+            const sorterResult = _sorter;
 
-          if (sorterResult.field) {
-            setSorter(`${sorterResult.field}_${sorterResult.order}`);
-          }
-        }}
-        params={{
-          sorter,
-        }}
-        toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={handleCreate}>
-            <PlusOutlined /> New Model
-          </Button>,
-          selectedRows && selectedRows.length > 0 && (
-            <Dropdown
-              overlay={
-                <Menu
-                  onClick={async e => {
-                    if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
-                      action.reload();
-                    }
-                  }}
-                  selectedKeys={[]}
-                >
-                  <Menu.Item key="remove">Delete models</Menu.Item>
-                  <Menu.Item key="approval">View results</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button>
-                Batch Operation <DownOutlined />
-              </Button>
-            </Dropdown>
-          ),
-        ]}
-        tableAlertRender={({ selectedRowKeys, selectedRows }) => (
-          <div>
-            Selected{' '}
-            <a
-              style={{
-                fontWeight: 600,
-              }}
-            >
-              {selectedRowKeys.length}
-            </a>{' '}
-            Model(s)&nbsp;&nbsp;
-          </div>
-        )}
-        request={params => queryRule(params)}
-        columns={columns}
-        rowSelection={{}}
-      />
+            if (sorterResult.field) {
+              setSorter(`${sorterResult.field}_${sorterResult.order}`);
+            }
+          }}
+          params={{
+            sorter,
+          }}
+          toolBarRender={(action, { selectedRows }) => [
+            <Button type="primary" onClick={handleCreate}>
+              <PlusOutlined /> New Model
+            </Button>,
+            selectedRows && selectedRows.length > 0 && (
+              <Dropdown
+                overlay={
+                  <Menu
+                    onClick={async e => {
+                      if (e.key === 'remove') {
+                        await handleRemove(selectedRows);
+                        action.reload();
+                      }
+                    }}
+                    selectedKeys={[]}
+                  >
+                    <Menu.Item key="remove">Delete models</Menu.Item>
+                    <Menu.Item key="approval">View results</Menu.Item>
+                  </Menu>
+                }
+              >
+                <Button>
+                  Batch Operation <DownOutlined />
+                </Button>
+              </Dropdown>
+            ),
+          ]}
+          tableAlertRender={({ selectedRowKeys, selectedRows }) => (
+            <div>
+              Selected{' '}
+              <a
+                style={{
+                  fontWeight: 600,
+                }}
+              >
+                {selectedRowKeys.length}
+              </a>{' '}
+              Model(s)&nbsp;&nbsp;
+            </div>
+          )}
+          request={queryList}
+          columns={columns}
+          rowSelection={{}}
+          search={false}
+          pagination={{
+            showSizeChanger: false,
+            pageSize: 20
+          }}
+        />
+      </IntlProvider>
     </PageHeaderWrapper>
   );
 };
 
-export default OverviewList;
+export default connect(({ user }) => ({
+  userToken: user.currentUser.token
+}))(OverviewList);
