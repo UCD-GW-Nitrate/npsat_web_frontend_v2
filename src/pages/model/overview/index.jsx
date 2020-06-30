@@ -78,6 +78,12 @@ const OverviewList = () => {
       valueType: 'dateTime',
     },
     {
+      title: 'Date Completed',
+      dataIndex: 'updatedAt',
+      sorter: true,
+      valueType: 'dateTime'
+    },
+    {
       title: 'Action',
       dataIndex: 'option',
       valueType: 'option',

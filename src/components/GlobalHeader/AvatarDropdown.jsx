@@ -31,11 +31,12 @@ class AvatarDropdown extends React.Component {
         </Menu.Item>
       </Menu>
     );
-    return currentUser && currentUser.first_name && currentUser.last_name ? (
+    return currentUser && currentUser.token ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
           <UserOutlined className={styles.avatar} />
-          <span className={styles.name}>{`${currentUser.first_name} ${currentUser.last_name}`}</span>
+          <span className={styles.name}>{currentUser.first_name && currentUser.last_name ?
+          `${currentUser.first_name} ${currentUser.last_name}` : `${currentUser.username}`}</span>
         </span>
       </HeaderDropdown>
     ) : (

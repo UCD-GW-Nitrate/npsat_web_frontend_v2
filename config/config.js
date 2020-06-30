@@ -36,6 +36,8 @@ export default defineConfig({
     {
       path: '/',
       component: '../layouts/SecurityLayout',
+      Routes: ['src/pages/Authorized'],
+      authority: ['admin', 'user', 'staff'],
       routes: [
         {
           path: '/',

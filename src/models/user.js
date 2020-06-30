@@ -20,14 +20,6 @@ const UserModel = {
       });
     },
 
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
-      yield put({
-        type: 'saveCurrentUser',
-        payload: response,
-      });
-    },
-
     *login({ payload }, { call, put }) {
       const response = yield call(userLogin, payload);
       yield put({
@@ -35,7 +27,7 @@ const UserModel = {
         payload: response,
       });
 
-      if (response.status === 'ok') {
+      if (response.token) {
         yield put({
           type: 'saveCurrentUser',
           payload: response
@@ -61,6 +53,8 @@ const UserModel = {
         }
 
         history.replace(redirect || '/');
+      } else {
+        console.log(response)
       }
     },
 
