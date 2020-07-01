@@ -1,35 +1,35 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import { Button, Divider, Dropdown, Menu, message, Tooltip, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
-import { history } from 'umi';
+import { history, connect } from 'umi';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
-import { queryRule, removeRule } from './service';
+import ProTable, {IntlProvider, enUSIntl,} from '@ant-design/pro-table';
+import { deleteModel, queryModelList } from './service';
 
 /**
  * delete model
  * @param selectedRows
  */
 
-const handleRemove = async selectedRows => {
-  const hide = message.loading('Deleting...');
-  if (!selectedRows) return true;
-
-  console.log(selectedRows);
-
-  try {
-    await removeRule({
-      key: selectedRows.map(row => row.key),
-    });
-    hide();
-    message.success('Model deleted. Refreshing...');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Model deletion failed, please try again');
-    return false;
-  }
-};
+// const handleRemove = async (selectedRows, token) => {
+//   const hide = message.loading('Deleting...');
+//   if (!selectedRows) return true;
+//
+//   console.log(selectedRows);
+//
+//   try {
+//     for (let i = 0; i < selectedRows.length; i++) {
+//       deleteModel({ id: selectedRows[i].id }, token);
+//     }
+//     hide();
+//     message.success('Model deleted. Refreshing...');
+//     return true;
+//   } catch (error) {
+//     hide();
+//     message.error('Model deletion failed, please try again');
+//     return false;
+//   }
+// };
 
 /**
  * handle crate new model button
@@ -39,7 +39,72 @@ const handleCreate = () => {
   history.push('/model/create');
 }
 
-const OverviewList = () => {
+const ListResponseProcessing = (response) => {
+  const data = response.results;
+  data.forEach(model => {
+    if (model.complete) {
+      model.status = 3;
+    } else if (model.running) {
+      model.status = 2;
+    } else if (model.ready) {
+      model.status = 1;
+    } else {
+      model.status = 0;
+    }
+    model.key = model.id
+  });
+  return {
+    data,
+    total: response.count
+  }
+}
+
+/**
+ * handle click: check results of a model
+ * @param id
+ */
+const onClickResults = (id) => {
+  history.push({
+    pathname: '/charts',
+    query: {
+      id
+    }
+  })
+};
+
+/**
+ * handle click: check details of a model
+ * @param id
+ */
+const onClickDetails = (id) => {
+  history.push({
+    pathname: '/model/view',
+    query: {
+      id
+    }
+  })
+}
+
+/**
+ * handle click: delete model
+ * @param id
+ * @param token
+ */
+const onClickDelete = async (id, token, action) => {
+  const hide = message.loading('Deleting...');
+  try {
+    await deleteModel({ id }, token);
+    hide();
+    message.success('Model deleted. Refreshing...');
+    action.current.reload();
+  } catch (error) {
+    hide();
+    message.error('Model deletion failed, please try again');
+  }
+}
+
+const OverviewList = props => {
+  const { userToken } = props;
   const [sorter, setSorter] = useState('');
   const actionRef = useRef();
   const columns = [
@@ -50,7 +115,7 @@ const OverviewList = () => {
     },
     {
       title: 'Description',
-      dataIndex: 'desc',
+      dataIndex: 'description',
       valueType: 'textarea',
     },
     {
@@ -59,13 +124,17 @@ const OverviewList = () => {
       valueEnum: {
         0: {
           text: 'Unknown',
-          status: 'Default',
+          status: 'Error'
         },
         1: {
+          text: 'Ready',
+          status: 'Default',
+        },
+        2: {
           text: 'Pending',
           status: 'Processing',
         },
-        2: {
+        3: {
           text: 'Complete',
           status: 'Success',
         },
@@ -73,13 +142,13 @@ const OverviewList = () => {
     },
     {
       title: 'Date Created',
-      dataIndex: 'createdAt',
+      dataIndex: 'date_submitted',
       sorter: true,
       valueType: 'dateTime',
     },
     {
       title: 'Date Completed',
-      dataIndex: 'updatedAt',
+      dataIndex: 'date_completed',
       sorter: true,
       valueType: 'dateTime'
     },
@@ -89,83 +158,114 @@ const OverviewList = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Button>
-            Details
-          </Button>
+          <Tooltip title="view details and modify model">
+            <Button
+              type="link"
+              onClick={() => onClickDetails(record.id)}
+            >
+              Details
+            </Button>
+          </Tooltip>
           <Divider type="vertical" />
-          <Button>
-            Results
-          </Button>
+          <Tooltip title="view plots">
+            <Button
+              type="link"
+              disabled={record.status !== 3}
+              onClick={() => onClickResults(record.id)}
+            >
+              Results
+            </Button>
+          </Tooltip>
           <Divider type="vertical" />
-          <Button>
-            Delete
-          </Button>
+          <Popconfirm
+            title="Are you sure deleting this model?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => onClickDelete(record.id, userToken, actionRef)}
+          >
+            <Tooltip title="delete model">
+              <Button type="link" danger>
+                Delete
+              </Button>
+            </Tooltip>
+          </Popconfirm>
         </>
       ),
     },
   ];
   return (
     <PageHeaderWrapper>
-      <ProTable
-        headerTitle="Model Overview"
-        actionRef={actionRef}
-        rowKey="key"
-        onChange={(_, _filter, _sorter) => {
-          const sorterResult = _sorter;
+      <IntlProvider value={enUSIntl}>
+        <ProTable
+          headerTitle="Model Overview"
+          actionRef={actionRef}
+          rowKey="key"
+          onChange={(_, _filter, _sorter) => {
+            const sorterResult = _sorter;
 
-          if (sorterResult.field) {
-            setSorter(`${sorterResult.field}_${sorterResult.order}`);
-          }
-        }}
-        params={{
-          sorter,
-        }}
-        toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={handleCreate}>
-            <PlusOutlined /> New Model
-          </Button>,
-          selectedRows && selectedRows.length > 0 && (
-            <Dropdown
-              overlay={
-                <Menu
-                  onClick={async e => {
-                    if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
-                      action.reload();
-                    }
-                  }}
-                  selectedKeys={[]}
-                >
-                  <Menu.Item key="remove">Delete models</Menu.Item>
-                  <Menu.Item key="approval">View results</Menu.Item>
-                </Menu>
-              }
-            >
-              <Button>
-                Batch Operation <DownOutlined />
-              </Button>
-            </Dropdown>
-          ),
-        ]}
-        tableAlertRender={({ selectedRowKeys, selectedRows }) => (
-          <div>
-            Selected{' '}
-            <a
-              style={{
-                fontWeight: 600,
-              }}
-            >
-              {selectedRowKeys.length}
-            </a>{' '}
-            Model(s)&nbsp;&nbsp;
-          </div>
-        )}
-        request={params => queryRule(params)}
-        columns={columns}
-        rowSelection={{}}
-      />
+            if (sorterResult.field) {
+              setSorter(`${sorterResult.field}_${sorterResult.order}`);
+            }
+          }}
+          params={{
+            sorter,
+          }}
+          // toolBarRender={(action, { selectedRows }) => [
+          //   <Button type="primary" onClick={handleCreate}>
+          //     <PlusOutlined /> New Model
+          //   </Button>,
+          //   selectedRows && selectedRows.length > 0 && (
+          //     <Dropdown
+          //       overlay={
+          //         <Menu
+          //           onClick={async e => {
+          //             if (e.key === 'remove') {
+          //               await handleRemove(selectedRows);
+          //               action.reload();
+          //             } else {
+          //
+          //             }
+          //           }}
+          //           selectedKeys={[]}
+          //         >
+          //           <Menu.Item key="remove">Delete models</Menu.Item>
+          //           <Menu.Item key="plot">View results</Menu.Item>
+          //         </Menu>
+          //       }
+          //     >
+          //       <Button>
+          //         Batch Operation <DownOutlined />
+          //       </Button>
+          //     </Dropdown>
+          //   ),
+          // ]}
+          tableAlertRender={({ selectedRowKeys, selectedRows }) => (
+            <div>
+              Selected{' '}
+              <a
+                style={{
+                  fontWeight: 600,
+                }}
+              >
+                {selectedRowKeys.length}
+              </a>{' '}
+              Model(s)&nbsp;&nbsp;
+            </div>
+          )}
+          request={params => (queryModelList(params, userToken).then(ListResponseProcessing))}
+          columns={columns}
+          rowSelection={{}}
+          search={false}
+          pagination={{
+            showSizeChanger: false,
+            pageSize: 20
+          }}
+        />
+      </IntlProvider>
     </PageHeaderWrapper>
   );
 };
 
-export default OverviewList;
+export default connect(({ user }) => ({
+  userToken: user.currentUser.token
+}))(OverviewList);

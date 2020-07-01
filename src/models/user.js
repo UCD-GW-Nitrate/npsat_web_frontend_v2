@@ -1,4 +1,3 @@
-import { queryCurrent, query as queryUsers } from '@/services/user';
 import { setAuthority } from '@/utils/authority';
 import { userLogin } from '@/services/login';
 import { getPageQuery } from '@/utils/utils';
@@ -13,14 +12,6 @@ const UserModel = {
     status: undefined,
   },
   effects: {
-    *fetch(_, { call, put }) {
-      const response = yield call(queryUsers);
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-    },
-
     *login({ payload }, { call, put }) {
       const response = yield call(userLogin, payload);
       yield put({
