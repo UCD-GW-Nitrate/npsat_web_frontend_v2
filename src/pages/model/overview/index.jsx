@@ -1,10 +1,10 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import { Button, Divider, Dropdown, Menu, message, Tooltip, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { history, connect } from 'umi';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, {IntlProvider, enUSIntl,} from '@ant-design/pro-table';
-import { queryModelList, queryRule, removeRule } from './service';
+import { deleteModel, queryModelList, removeRule } from './service';
 
 /**
  * delete model
@@ -43,19 +43,63 @@ const ListResponseProcessing = (response) => {
   const data = response.results;
   data.forEach(model => {
     if (model.complete) {
-      model.status = 2;
-    } else if (model.running) {
-      model.status = 1;
-    } else if (model.ready) {
-      model.status = 0;
-    } else {
       model.status = 3;
+    } else if (model.running) {
+      model.status = 2;
+    } else if (model.ready) {
+      model.status = 1;
+    } else {
+      model.status = 0;
     }
     model.key = model.id
   });
   return {
     data,
     total: response.count
+  }
+}
+
+/**
+ * handle click: check results of a model
+ * @param id
+ */
+const onClickResults = (id) => {
+  history.push({
+    pathname: '/charts',
+    query: {
+      id
+    }
+  })
+};
+
+/**
+ * handle click: check details of a model
+ * @param id
+ */
+const onClickDetails = (id) => {
+  history.push({
+    pathname: '/model/view',
+    query: {
+      id
+    }
+  })
+}
+
+/**
+ * handle click: delete model
+ * @param id
+ * @param token
+ */
+const onClickDelete = async (id, token, action) => {
+  const hide = message.loading('Deleting...');
+  try {
+    await deleteModel({ id }, token);
+    hide();
+    message.success('Model deleted. Refreshing...');
+    action.current.reload();
+  } catch (error) {
+    hide();
+    message.error('Model deletion failed, please try again');
   }
 }
 
@@ -79,21 +123,21 @@ const OverviewList = props => {
       dataIndex: 'status',
       valueEnum: {
         0: {
+          text: 'Unknown',
+          status: 'Error'
+        },
+        1: {
           text: 'Ready',
           status: 'Default',
         },
-        1: {
+        2: {
           text: 'Pending',
           status: 'Processing',
         },
-        2: {
+        3: {
           text: 'Complete',
           status: 'Success',
         },
-        3: {
-          text: 'Unknown',
-          status: 'Error'
-        }
       },
     },
     {
@@ -114,17 +158,37 @@ const OverviewList = props => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Button>
-            Details
-          </Button>
+          <Tooltip title="view details and modify model">
+            <Button
+              type="link"
+              onClick={() => onClickDetails(record.id)}
+            >
+              Details
+            </Button>
+          </Tooltip>
           <Divider type="vertical" />
-          <Button>
-            Results
-          </Button>
+          <Tooltip title="view plots">
+            <Button
+              type="link"
+              disabled={record.status !== 3}
+              onClick={() => onClickResults(record.id)}
+            >
+              Results
+            </Button>
+          </Tooltip>
           <Divider type="vertical" />
-          <Button type="link" danger>
-            Delete
-          </Button>
+          <Popconfirm
+            title="Are you sure deleting this model?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => onClickDelete(record.id, userToken, actionRef)}
+          >
+            <Tooltip title="delete model">
+              <Button type="link" danger>
+                Delete
+              </Button>
+            </Tooltip>
+          </Popconfirm>
         </>
       ),
     },

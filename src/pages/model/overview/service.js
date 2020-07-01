@@ -17,7 +17,6 @@ export async function queryModelList(params, token) {
 export async function deleteModel(params, token) {
   return request(`/api/model_run/${params.id}`, {
     method: 'DELETE',
-    headers: { 'Authorization': `Token ${token}` },
-    params: { id: params.id }
+    headers: { 'Authorization': `Token ${token}` }
   })
 }

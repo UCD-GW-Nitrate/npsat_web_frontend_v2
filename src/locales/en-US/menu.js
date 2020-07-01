@@ -49,7 +49,7 @@ export default {
   'menu.models': 'Model',
   'menu.models.overview': 'Overview',
   'menu.models.createModel': 'Create Model',
-  'menu.models.editModel': 'Modify Model',
+  'menu.models.viewModel': 'Model Details',
   'menu.results': 'Results',
   'menu.team': 'Team',
 };

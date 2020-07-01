@@ -70,9 +70,9 @@ export default defineConfig({
                   component: './model/create-model'
                 },
                 {
-                  name: 'editModel',
+                  name: 'viewModel',
                   icon: 'edit',
-                  path: '/model/edit'
+                  path: '/model/view'
                 }
               ]
             },
