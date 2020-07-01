@@ -51,6 +51,7 @@ const ListResponseProcessing = (response) => {
     } else {
       model.status = 3;
     }
+    model.key = model.id
   });
   return {
     data,
