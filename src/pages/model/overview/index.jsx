@@ -10,26 +10,38 @@ import { deleteModel, queryModelList } from './service';
  * delete model
  * @param selectedRows
  */
+const handleRemoveBatch = async (selectedRows, token) => {
+  if (!selectedRows) return true;
 
-// const handleRemove = async (selectedRows, token) => {
-//   const hide = message.loading('Deleting...');
-//   if (!selectedRows) return true;
-//
-//   console.log(selectedRows);
-//
-//   try {
-//     for (let i = 0; i < selectedRows.length; i++) {
-//       deleteModel({ id: selectedRows[i].id }, token);
-//     }
-//     hide();
-//     message.success('Model deleted. Refreshing...');
-//     return true;
-//   } catch (error) {
-//     hide();
-//     message.error('Model deletion failed, please try again');
-//     return false;
-//   }
-// };
+  for (let i = 0; i < selectedRows.length; i++) {
+    const hide = message.loading(`Deleting ${selectedRows[i].name}...`);
+    deleteModel({ id: selectedRows[i].id }, token)
+      .catch(() => {
+        hide();
+        message.error(`Model ${selectedRows[i].name} deletion failed`)
+      })
+      .then(
+      () => {
+        message.success(`Model ${selectedRows[i].name} deleted`);
+        hide();
+      }
+    );
+  }
+  return true;
+};
+
+const handleViewBatch = (selectedRows) => {
+  let modelGroup = '';
+  selectedRows.forEach(item => {
+    modelGroup += `${item.id} `;
+  })
+  history.push({
+    pathname: '/charts',
+    query: {
+      id: encodeURI(modelGroup)
+    }
+  })
+}
 
 /**
  * handle crate new model button
@@ -210,35 +222,35 @@ const OverviewList = props => {
           params={{
             sorter,
           }}
-          // toolBarRender={(action, { selectedRows }) => [
-          //   <Button type="primary" onClick={handleCreate}>
-          //     <PlusOutlined /> New Model
-          //   </Button>,
-          //   selectedRows && selectedRows.length > 0 && (
-          //     <Dropdown
-          //       overlay={
-          //         <Menu
-          //           onClick={async e => {
-          //             if (e.key === 'remove') {
-          //               await handleRemove(selectedRows);
-          //               action.reload();
-          //             } else {
-          //
-          //             }
-          //           }}
-          //           selectedKeys={[]}
-          //         >
-          //           <Menu.Item key="remove">Delete models</Menu.Item>
-          //           <Menu.Item key="plot">View results</Menu.Item>
-          //         </Menu>
-          //       }
-          //     >
-          //       <Button>
-          //         Batch Operation <DownOutlined />
-          //       </Button>
-          //     </Dropdown>
-          //   ),
-          // ]}
+          toolBarRender={(action, { selectedRows }) => [
+            <Button type="primary" onClick={handleCreate}>
+              <PlusOutlined /> New Model
+            </Button>,
+            selectedRows && selectedRows.length > 0 && (
+              <Dropdown
+                overlay={
+                  <Menu
+                    onClick={async e => {
+                      if (e.key === 'remove') {
+                        await handleRemoveBatch(selectedRows, userToken);
+                        action.reload();
+                      } else {
+                        handleViewBatch(selectedRows);
+                      }
+                    }}
+                    selectedKeys={[]}
+                  >
+                    <Menu.Item key="remove">Delete models</Menu.Item>
+                    <Menu.Item key="plot">View results</Menu.Item>
+                  </Menu>
+                }
+              >
+                <Button>
+                  Batch Operation <DownOutlined />
+                </Button>
+              </Dropdown>
+            ),
+          ]}
           tableAlertRender={({ selectedRowKeys, selectedRows }) => (
             <div>
               Selected{' '}
