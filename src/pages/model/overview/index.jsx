@@ -4,32 +4,32 @@ import React, { useState, useRef } from 'react';
 import { history, connect } from 'umi';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, {IntlProvider, enUSIntl,} from '@ant-design/pro-table';
-import { deleteModel, queryModelList, removeRule } from './service';
+import { deleteModel, queryModelList } from './service';
 
 /**
  * delete model
  * @param selectedRows
  */
 
-const handleRemove = async selectedRows => {
-  const hide = message.loading('Deleting...');
-  if (!selectedRows) return true;
-
-  console.log(selectedRows);
-
-  try {
-    await removeRule({
-      key: selectedRows.map(row => row.key),
-    });
-    hide();
-    message.success('Model deleted. Refreshing...');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Model deletion failed, please try again');
-    return false;
-  }
-};
+// const handleRemove = async (selectedRows, token) => {
+//   const hide = message.loading('Deleting...');
+//   if (!selectedRows) return true;
+//
+//   console.log(selectedRows);
+//
+//   try {
+//     for (let i = 0; i < selectedRows.length; i++) {
+//       deleteModel({ id: selectedRows[i].id }, token);
+//     }
+//     hide();
+//     message.success('Model deleted. Refreshing...');
+//     return true;
+//   } catch (error) {
+//     hide();
+//     message.error('Model deletion failed, please try again');
+//     return false;
+//   }
+// };
 
 /**
  * handle crate new model button
@@ -210,33 +210,35 @@ const OverviewList = props => {
           params={{
             sorter,
           }}
-          toolBarRender={(action, { selectedRows }) => [
-            <Button type="primary" onClick={handleCreate}>
-              <PlusOutlined /> New Model
-            </Button>,
-            selectedRows && selectedRows.length > 0 && (
-              <Dropdown
-                overlay={
-                  <Menu
-                    onClick={async e => {
-                      if (e.key === 'remove') {
-                        await handleRemove(selectedRows);
-                        action.reload();
-                      }
-                    }}
-                    selectedKeys={[]}
-                  >
-                    <Menu.Item key="remove">Delete models</Menu.Item>
-                    <Menu.Item key="approval">View results</Menu.Item>
-                  </Menu>
-                }
-              >
-                <Button>
-                  Batch Operation <DownOutlined />
-                </Button>
-              </Dropdown>
-            ),
-          ]}
+          // toolBarRender={(action, { selectedRows }) => [
+          //   <Button type="primary" onClick={handleCreate}>
+          //     <PlusOutlined /> New Model
+          //   </Button>,
+          //   selectedRows && selectedRows.length > 0 && (
+          //     <Dropdown
+          //       overlay={
+          //         <Menu
+          //           onClick={async e => {
+          //             if (e.key === 'remove') {
+          //               await handleRemove(selectedRows);
+          //               action.reload();
+          //             } else {
+          //
+          //             }
+          //           }}
+          //           selectedKeys={[]}
+          //         >
+          //           <Menu.Item key="remove">Delete models</Menu.Item>
+          //           <Menu.Item key="plot">View results</Menu.Item>
+          //         </Menu>
+          //       }
+          //     >
+          //       <Button>
+          //         Batch Operation <DownOutlined />
+          //       </Button>
+          //     </Dropdown>
+          //   ),
+          // ]}
           tableAlertRender={({ selectedRowKeys, selectedRows }) => (
             <div>
               Selected{' '}
