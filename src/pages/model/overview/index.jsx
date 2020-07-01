@@ -39,6 +39,25 @@ const handleCreate = () => {
   history.push('/model/create');
 }
 
+const ListResponseProcessing = (response) => {
+  const data = response.results;
+  data.forEach(model => {
+    if (model.complete) {
+      model.status = 2;
+    } else if (model.running) {
+      model.status = 1;
+    } else if (model.ready) {
+      model.status = 0;
+    } else {
+      model.status = 3;
+    }
+  });
+  return {
+    data,
+    total: response.count
+  }
+}
+
 const OverviewList = props => {
   const { userToken } = props;
   const [sorter, setSorter] = useState('');
@@ -51,7 +70,7 @@ const OverviewList = props => {
     },
     {
       title: 'Description',
-      dataIndex: 'desc',
+      dataIndex: 'description',
       valueType: 'textarea',
     },
     {
@@ -59,7 +78,7 @@ const OverviewList = props => {
       dataIndex: 'status',
       valueEnum: {
         0: {
-          text: 'Unknown',
+          text: 'Ready',
           status: 'Default',
         },
         1: {
@@ -70,17 +89,21 @@ const OverviewList = props => {
           text: 'Complete',
           status: 'Success',
         },
+        3: {
+          text: 'Unknown',
+          status: 'Error'
+        }
       },
     },
     {
       title: 'Date Created',
-      dataIndex: 'createdAt',
+      dataIndex: 'date_submitted',
       sorter: true,
       valueType: 'dateTime',
     },
     {
       title: 'Date Completed',
-      dataIndex: 'updatedAt',
+      dataIndex: 'date_completed',
       sorter: true,
       valueType: 'dateTime'
     },
@@ -105,12 +128,6 @@ const OverviewList = props => {
       ),
     },
   ];
-  const queryList = params => {
-    const res = queryRule(params)
-    const res2 = queryModelList(params, userToken)
-    console.log(res, res2)
-    return res
-  }
   return (
     <PageHeaderWrapper>
       <IntlProvider value={enUSIntl}>
@@ -168,7 +185,7 @@ const OverviewList = props => {
               Model(s)&nbsp;&nbsp;
             </div>
           )}
-          request={queryList}
+          request={params => (queryModelList(params, userToken).then(ListResponseProcessing))}
           columns={columns}
           rowSelection={{}}
           search={false}
