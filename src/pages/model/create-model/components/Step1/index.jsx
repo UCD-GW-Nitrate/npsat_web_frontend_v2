@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tabs, Divider } from 'antd';
 import { connect } from 'umi';
 import styles from './index.less';
@@ -58,6 +58,17 @@ const Step1 = props => {
           margin: '40px 0 24px',
         }}
       />
+      <div className={styles.desc}>
+        <h3>Instructions</h3>
+        <h4>Select a county</h4>
+        <p>
+          Select a county for the model.
+        </p>
+        <h4>Other selections</h4>
+        <p>
+          Developing...
+        </p>
+      </div>
     </>
   );
 };
