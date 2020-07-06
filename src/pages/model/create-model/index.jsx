@@ -14,7 +14,7 @@ const getCurrentStepAndComponent = current => {
     case 'Select Crops':
       return {
         step: 1,
-        // component: <Step2 />,
+        component: <Step2 />,
       };
 
     case 'result':
