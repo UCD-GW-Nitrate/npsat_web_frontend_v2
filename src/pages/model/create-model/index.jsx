@@ -11,10 +11,10 @@ const { Step } = Steps;
 
 const getCurrentStepAndComponent = current => {
   switch (current) {
-    case 'confirm':
+    case 'Select Crops':
       return {
         step: 1,
-        // component: <Step2 />,
+        component: <Step2 />,
       };
 
     case 'result':
@@ -23,11 +23,11 @@ const getCurrentStepAndComponent = current => {
         // component: <Step3 />,
       };
 
-    case 'info':
+    case 'Select Regions':
     default:
       return {
         step: 0,
-        // component: <Step1 />,
+        component: <Step1 />,
       };
   }
 };
@@ -41,13 +41,14 @@ const StepForm = ({ current }) => {
     setStepComponent(component);
   }, [current]);
   return (
-    <PageHeaderWrapper content="Create a Model">
+    <PageHeaderWrapper content="Follow the instructions to create a form. A model will be create
+    when all steps are completed">
       <Card bordered={false}>
         <>
           <Steps current={currentStep} className={styles.steps}>
-            <Step title="Geo Select" />
-            <Step title="Crop Select" />
-            <Step title="Model meta" />
+            <Step title="Select Regions" />
+            <Step title="Select Crops" />
+            <Step title="Enter Model Meta" />
           </Steps>
           {stepComponent}
         </>
@@ -56,6 +57,6 @@ const StepForm = ({ current }) => {
   );
 };
 
-export default connect(({ formAndstepForm }) => ({
-  current: formAndstepForm.current,
+export default connect(({ createModelForm }) => ({
+  current: createModelForm.current
 }))(StepForm);

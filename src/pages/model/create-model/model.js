@@ -1,15 +1,10 @@
 import { fakeSubmitForm } from './service';
 
 const Model = {
-  namespace: 'formAndstepForm',
+  namespace: 'createModelForm',
   state: {
     current: 'info',
-    step: {
-      payAccount: 'ant-design@alipay.com',
-      receiverAccount: 'test@example.com',
-      receiverName: 'Alex',
-      amount: '500',
-    },
+    step: {},
   },
   effects: {
     *submitStepForm({ payload }, { call, put }) {
