@@ -8,9 +8,10 @@ export async function removeRule(params) {
 }
 
 export async function queryModelList(params, token) {
+  const pageSize = 20;
   return request('/api/model_run', {
     headers: { 'Authorization': `Token ${token}` },
-    params: { page: params.current }
+    params: { limit: params.pageSize, offset: pageSize * (params.current - 1) }
   })
 }
 
