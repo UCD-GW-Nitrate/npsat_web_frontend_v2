@@ -10,12 +10,17 @@ const CropCard = (props) => {
     id,
     onChange,
     values,
-    displayMode = false
+    displayMode = false,
+    initialValues = {
+      load: 0,
+      area: 0,
+      enable: true
+    }
   } = props;
 
-  const [ load, setLoad ] = useState(0);
-  const [ area, setArea] = useState(0);
-  const [ enable, setEnable ] = useState(true);
+  const [ load, setLoad ] = useState(initialValues.load);
+  const [ area, setArea] = useState(initialValues.area);
+  const [ enable, setEnable ] = useState(initialValues.enable);
 
   const triggerChange = (changedValue) => {
     if (onChange) {
@@ -75,11 +80,11 @@ const CropCard = (props) => {
         />
       }
     >
-      <Row>
-        <Col span={3}>
+      <Row gutter={16}>
+        <Col span={6}>
           Loading
         </Col>
-        <Col span={6}>
+        <Col span={8}>
           <Slider
             max={200}
             min={0}
@@ -105,11 +110,11 @@ const CropCard = (props) => {
           />
         </Col>
       </Row>
-      <Row>
-        <Col span={3}>
+      <Row gutter={16}>
+        <Col span={6}>
           Percent of area to apply change
         </Col>
-        <Col span={6}>
+        <Col span={8}>
           <Slider
             max={100}
             min={0}

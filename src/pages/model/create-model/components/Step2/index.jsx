@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Button, Divider } from 'antd';
 import { connect } from 'umi';
+import CropCardForm from './components/CropCardForm';
 import styles from './index.less';
-import CropCard from '@/pages/model/components/CropCard';
 
 const formItemLayout = {
   labelCol: {
@@ -18,6 +18,18 @@ const Step2 = props => {
   const { dispatch, token } = props;
 
   const { getFieldsValue } = form;
+
+  const onNext = () => {
+    const values = getFieldsValue();
+    dispatch({
+      type: 'createModelForm/saveStepFormData',
+      payload: { ...values },
+    });
+    dispatch({
+      type: 'createModelForm/saveCurrentStep',
+      payload: 'Model Info',
+    });
+  }
 
   const onPrev = () => {
     if (dispatch) {
@@ -35,13 +47,23 @@ const Step2 = props => {
 
   return (
     <>
-      <CropCard id={10} name="C" />
       <Form
         {...formItemLayout}
         form={form}
         layout="horizontal"
-        className={styles.stepForm}
       >
+        <Form.Item
+          name="crop-choice"
+          label="Crop(s)"
+          rules={[
+            {
+              required: true,
+              message: "Please choose at least one crop",
+            }
+          ]}
+        >
+          <CropCardForm />
+        </Form.Item>
         <Form.Item
           style={{
             marginBottom: 8,
@@ -57,7 +79,7 @@ const Step2 = props => {
             },
           }}
         >
-          <Button type="primary">
+          <Button type="primary" onClick={onNext}>
             Next
           </Button>
           <Button
