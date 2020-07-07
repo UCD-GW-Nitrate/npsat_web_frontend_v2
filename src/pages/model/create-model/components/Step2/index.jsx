@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Button, Divider } from 'antd';
 import { connect } from 'umi';
 import styles from './index.less';
+import CropCard from '@/pages/model/components/CropCard';
 
 const formItemLayout = {
   labelCol: {
@@ -34,6 +35,7 @@ const Step2 = props => {
 
   return (
     <>
+      <CropCard id={10} name="C" />
       <Form
         {...formItemLayout}
         form={form}
