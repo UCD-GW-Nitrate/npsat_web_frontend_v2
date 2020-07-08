@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Button } from 'antd';
+import { connect } from 'umi';
 import { getCountyList } from '@/services/county'
 import styles from '../../index.less';
 
@@ -13,7 +14,7 @@ const CountyForm = (props) => {
       setList(counties);
     })();
   }, []);
-  const { onSubmit, style } = props;
+  const { onSubmit, style, data } = props;
   return (
     <Form
       {...style}
@@ -30,6 +31,9 @@ const CountyForm = (props) => {
             message: "Please choose a county"
           }
         ]}
+        initialValue={
+          data.hasOwnProperty("county-choice") ? data["county-choice"] : undefined
+        }
       >
         <Select
           showSearch
@@ -64,4 +68,6 @@ const CountyForm = (props) => {
   );
 }
 
-export default CountyForm;
+export default connect(({ createModelForm }) => ({
+  data: createModelForm.step
+}))(CountyForm);
