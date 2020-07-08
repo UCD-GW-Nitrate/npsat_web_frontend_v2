@@ -9,10 +9,14 @@ const { Option } = Select;
 const CountyForm = (props) => {
   const [ countyList, setList ] = useState([]);
   useEffect(() => {
-    (async () => {
-      const { results: counties } = await getCountyList();
-      setList(counties);
-    })();
+    let mount = true;
+    if (mount) {
+      (async () => {
+        const { results: counties } = await getCountyList();
+        setList(counties);
+      })();
+    }
+    return () => mount = false;
   }, []);
   const { onSubmit, style, data } = props;
   return (

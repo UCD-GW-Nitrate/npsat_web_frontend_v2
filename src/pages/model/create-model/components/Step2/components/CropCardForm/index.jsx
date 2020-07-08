@@ -6,7 +6,8 @@ import styles from './index.less';
 
 const { Option } = Select;
 
-const CropCardForm = ({ values = {}, onChange }) => {
+const CropCardForm = (props) => {
+  const { value = {}, onChange } = props;
   const [ cropList, setList ] = useState([]);
   const [ selectedCrops, setSelected ] = useState([]);
   useEffect(() => {
@@ -21,9 +22,10 @@ const CropCardForm = ({ values = {}, onChange }) => {
         mode="multiple"
         placeholder="Please select a crop to start"
         onChange={setSelected}
+        className={styles.select}
       >
         {cropList.map(crop => (
-          <Option value={`${crop.name},${crop.id}`} key={crop.id}>{crop.name}</Option>
+          <Option value={crop.id} key={crop.id}>{crop.name}</Option>
         ))}
       </Select>
       <div className={styles.cardList}>
@@ -38,11 +40,11 @@ const CropCardForm = ({ values = {}, onChange }) => {
         }}
         dataSource={selectedCrops}
         renderItem={item => {
-          const [ name, id ] = item.split(',');
+          const { name, id } = cropList[item];
           return (
             <List.Item key={id}>
               <CropCard
-                values={values}
+                values={value}
                 onChange={onChange}
                 name={name}
                 id={id}

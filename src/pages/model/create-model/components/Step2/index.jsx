@@ -15,8 +15,7 @@ const formItemLayout = {
 
 const Step2 = props => {
   const [form] = Form.useForm();
-  const { dispatch, token } = props;
-
+  const { dispatch, token, data } = props;
   const { getFieldsValue } = form;
 
   const onNext = (values) => {
@@ -51,6 +50,7 @@ const Step2 = props => {
         form={form}
         layout="horizontal"
         onFinish={onNext}
+        className={styles.stepForm}
       >
         <Form.Item
           name="crop-choice"
@@ -75,6 +75,7 @@ const Step2 = props => {
               }
             }
           ]}
+          initialValue={data.hasOwnProperty("crop-choice")? data["crop-choice"] : undefined}
         >
           <CropCardForm />
         </Form.Item>
@@ -122,6 +123,7 @@ const Step2 = props => {
   );
 };
 
-export default connect(({ user }) => ({
+export default connect(({ user, createModelForm }) => ({
   token: user.currentUser.token,
+  data: createModelForm.step
 }))(Step2);

@@ -3,7 +3,7 @@ import { fakeSubmitForm } from './service';
 const Model = {
   namespace: 'createModelForm',
   state: {
-    current: 'info',
+    current: 'Select Regions',
     step: {},
   },
   effects: {

@@ -20,7 +20,7 @@ const getCurrentStepAndComponent = current => {
     case 'Model Info':
       return {
         step: 2,
-        // component: <Step3 />,
+        component: <Step3 />,
       };
 
     case 'Select Regions':

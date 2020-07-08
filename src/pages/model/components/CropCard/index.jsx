@@ -14,7 +14,7 @@ const CropCard = (props) => {
     initialValues = {
       load: 0,
       area: 0,
-      enable: true
+      enable: false
     }
   } = props;
 
