@@ -6,7 +6,7 @@ import styles from './index.less';
 const Step3 = props => {
   const [form] = Form.useForm();
   const { getFieldsValue } = form;
-  const { dispatch, token, data } = props;
+  const { dispatch, user, data } = props;
   const { TextArea } = Input;
   const formItemLayout = {
     labelCol: {
@@ -117,6 +117,6 @@ const Step3 = props => {
 };
 
 export default connect(({ user, createModelForm }) => ({
-  token: user.currentUser.token,
+  user: user.currentUser,
   data: createModelForm.step
 }))(Step3);
