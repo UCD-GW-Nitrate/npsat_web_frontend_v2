@@ -7,9 +7,8 @@ import styles from './index.less';
 const { Option } = Select;
 
 const CropCardForm = (props) => {
-  const { value = {}, onChange } = props;
+  const { value = {}, onChange, selectedCrops, setSelected } = props;
   const [ cropList, setList ] = useState([]);
-  const [ selectedCrops, setSelected ] = useState([]);
   useEffect(() => {
     (async () => {
       const { results: crops } = await getCropList();
@@ -19,13 +18,14 @@ const CropCardForm = (props) => {
   return (
     <>
       <Select
+        value={selectedCrops}
         mode="multiple"
         placeholder="Please select a crop to start"
         onChange={setSelected}
         className={styles.select}
       >
         {cropList.map(crop => (
-          <Option value={crop.id} key={crop.id}>{crop.name}</Option>
+          <Option value={`${crop.id},${crop.name}`} key={crop.id}>{crop.name}</Option>
         ))}
       </Select>
       <div className={styles.cardList}>
@@ -40,7 +40,12 @@ const CropCardForm = (props) => {
         }}
         dataSource={selectedCrops}
         renderItem={item => {
-          const { name, id } = cropList[item];
+          const [ id, name ] = item.split(",");
+          const prevValues = value.hasOwnProperty(id) ? value[id] : {
+            load: 0,
+            area: 0,
+            enable: false
+          };
           return (
             <List.Item key={id}>
               <CropCard
@@ -48,6 +53,7 @@ const CropCardForm = (props) => {
                 onChange={onChange}
                 name={name}
                 id={id}
+                initialValues={prevValues}
               />
             </List.Item>
           );

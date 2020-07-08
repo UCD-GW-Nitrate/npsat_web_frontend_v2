@@ -1,4 +1,4 @@
-import { fakeSubmitForm } from './service';
+import { createModel } from './service';
 
 const Model = {
   namespace: 'createModelForm',
@@ -7,17 +7,17 @@ const Model = {
     step: {},
   },
   effects: {
-    *submitStepForm({ payload }, { call, put }) {
-      yield call(fakeSubmitForm, payload);
-      yield put({
-        type: 'saveStepFormData',
-        payload,
-      });
-      yield put({
-        type: 'saveCurrentStep',
-        payload: 'result',
-      });
-    },
+    // *submitStepForm({ payload }, { call, put }) {
+    //   yield call(c, payload);
+    //   yield put({
+    //     type: 'saveStepFormData',
+    //     payload,
+    //   });
+    //   yield put({
+    //     type: 'saveCurrentStep',
+    //     payload: 'result',
+    //   });
+    // },
   },
   reducers: {
     saveCurrentStep(state, { payload }) {

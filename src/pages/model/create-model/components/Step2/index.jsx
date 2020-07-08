@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Divider } from 'antd';
 import { connect } from 'umi';
 import CropCardForm from './components/CropCardForm';
@@ -17,11 +17,14 @@ const Step2 = props => {
   const [form] = Form.useForm();
   const { dispatch, token, data } = props;
   const { getFieldsValue } = form;
+  const [ selectedCrops, setSelected ] = useState(
+    data.hasOwnProperty("selectedCrops") ? data.selectedCrops : []
+  );
 
   const onNext = (values) => {
     dispatch({
       type: 'createModelForm/saveStepFormData',
-      payload: { ...values },
+      payload: { ...values, selectedCrops },
     });
     dispatch({
       type: 'createModelForm/saveCurrentStep',
@@ -77,7 +80,7 @@ const Step2 = props => {
           ]}
           initialValue={data.hasOwnProperty("crop-choice")? data["crop-choice"] : undefined}
         >
-          <CropCardForm />
+          <CropCardForm selectedCrops={selectedCrops} setSelected={setSelected}/>
         </Form.Item>
         <Form.Item
           style={{

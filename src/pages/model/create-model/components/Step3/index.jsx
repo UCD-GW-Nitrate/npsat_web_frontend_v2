@@ -6,7 +6,7 @@ import styles from './index.less';
 const Step3 = props => {
   const [form] = Form.useForm();
   const { getFieldsValue } = form;
-  const { dispatch, token } = props;
+  const { dispatch, token, data } = props;
   const { TextArea } = Input;
   const formItemLayout = {
     labelCol: {
@@ -53,12 +53,14 @@ const Step3 = props => {
               message: 'Please enter the model name'
             }
           ]}
+          initialValue={data.hasOwnProperty('model-name') ? data['model-name'] : undefined}
         >
           <Input placeholder="model name"/>
         </Form.Item>
         <Form.Item
           name="model-desc"
           label="Description"
+          initialValue={data.hasOwnProperty('model-desc') ? data['model-desc'] : undefined}
         >
           <TextArea rows={4}/>
         </Form.Item>
@@ -114,6 +116,7 @@ const Step3 = props => {
   );
 };
 
-export default connect(({ user }) => ({
+export default connect(({ user, createModelForm }) => ({
   token: user.currentUser.token,
+  data: createModelForm.step
 }))(Step3);
