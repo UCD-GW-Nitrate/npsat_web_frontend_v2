@@ -56,13 +56,11 @@ const CropCard = (props) => {
 
   const toggleEnable = value => {
     setEnable(value);
-    if (value) {
-      triggerChange({
-        area,
-        load,
-        enable: value
-      })
-    }
+    triggerChange({
+      area,
+      load,
+      enable: value
+    })
   }
 
   return (

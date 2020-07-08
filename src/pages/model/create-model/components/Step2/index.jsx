@@ -19,8 +19,7 @@ const Step2 = props => {
 
   const { getFieldsValue } = form;
 
-  const onNext = () => {
-    const values = getFieldsValue();
+  const onNext = (values) => {
     dispatch({
       type: 'createModelForm/saveStepFormData',
       payload: { ...values },
@@ -51,6 +50,7 @@ const Step2 = props => {
         {...formItemLayout}
         form={form}
         layout="horizontal"
+        onFinish={onNext}
       >
         <Form.Item
           name="crop-choice"
@@ -59,6 +59,20 @@ const Step2 = props => {
             {
               required: true,
               message: "Please choose at least one crop",
+            },
+            {
+              validator: () => {
+                const values = getFieldsValue(["crop-choice"])["crop-choice"];
+                if (!values) {
+                  return Promise.reject("choose at least one crop or enable selected crop(s)");
+                }
+                for (const config in values) {
+                  if (values[config].enable) {
+                    return Promise.resolve();
+                  }
+                }
+                return Promise.reject("choose at least one crop or enable selected crop(s)");
+              }
             }
           ]}
         >
@@ -79,7 +93,7 @@ const Step2 = props => {
             },
           }}
         >
-          <Button type="primary" onClick={onNext}>
+          <Button type="primary" htmlType="submit">
             Next
           </Button>
           <Button
