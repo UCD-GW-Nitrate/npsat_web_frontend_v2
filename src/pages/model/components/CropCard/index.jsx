@@ -12,8 +12,8 @@ const CropCard = (
     values,
     displayMode = false,
     initialValues = {
-      load: 0,
-      area: 0,
+      load: 100,
+      area: 100,
       enable: false
     }
   }) =>

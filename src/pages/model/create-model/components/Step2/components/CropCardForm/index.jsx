@@ -42,8 +42,8 @@ const CropCardForm = (props) => {
         renderItem={item => {
           const [ id, name ] = item.split(",");
           const prevValues = value.hasOwnProperty(id) ? value[id] : {
-            load: 0,
-            area: 0,
+            load: 100,
+            area: 100,
             enable: false
           };
           return (

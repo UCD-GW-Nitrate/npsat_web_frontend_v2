@@ -18,7 +18,18 @@ const Step3 = props => {
   };
 
   const onSubmit = (values) => {
-
+    dispatch({
+      type: 'createModelForm/saveStepFormData',
+      payload: { ...values },
+    });
+    dispatch({
+      type: 'createModelForm/saveCurrentStep',
+      payload: 'Results',
+    });
+    dispatch({
+      type: 'createModelForm/createModel',
+      payload: { ...data, ...user, ...values }
+    })
   }
 
   const onPrev = () => {
