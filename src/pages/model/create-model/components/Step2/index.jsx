@@ -1,6 +1,7 @@
-import React from 'react';
-import { Form, Alert, Button, Descriptions, Divider, Statistic, Input } from 'antd';
+import React, { useState } from 'react';
+import { Form, Button, Divider } from 'antd';
 import { connect } from 'umi';
+import CropCardForm from './components/CropCardForm';
 import styles from './index.less';
 
 const formItemLayout = {
@@ -14,9 +15,22 @@ const formItemLayout = {
 
 const Step2 = props => {
   const [form] = Form.useForm();
-  const { dispatch, token } = props;
-
+  const { dispatch, token, data } = props;
   const { getFieldsValue } = form;
+  const [ selectedCrops, setSelected ] = useState(
+    data.hasOwnProperty("selectedCrops") ? data.selectedCrops : []
+  );
+
+  const onNext = (values) => {
+    dispatch({
+      type: 'createModelForm/saveStepFormData',
+      payload: { ...values, selectedCrops },
+    });
+    dispatch({
+      type: 'createModelForm/saveCurrentStep',
+      payload: 'Model Info',
+    });
+  }
 
   const onPrev = () => {
     if (dispatch) {
@@ -38,8 +52,36 @@ const Step2 = props => {
         {...formItemLayout}
         form={form}
         layout="horizontal"
+        onFinish={onNext}
         className={styles.stepForm}
       >
+        <Form.Item
+          name="crop-choice"
+          label="Crop(s)"
+          rules={[
+            {
+              required: true,
+              message: "Please choose at least one crop",
+            },
+            {
+              validator: () => {
+                const values = getFieldsValue(["crop-choice"])["crop-choice"];
+                if (!values) {
+                  return Promise.reject("choose at least one crop or enable selected crop(s)");
+                }
+                for (const config in values) {
+                  if (values[config].enable) {
+                    return Promise.resolve();
+                  }
+                }
+                return Promise.reject("choose at least one crop or enable selected crop(s)");
+              }
+            }
+          ]}
+          initialValue={data.hasOwnProperty("crop-choice")? data["crop-choice"] : undefined}
+        >
+          <CropCardForm selectedCrops={selectedCrops} setSelected={setSelected}/>
+        </Form.Item>
         <Form.Item
           style={{
             marginBottom: 8,
@@ -55,7 +97,7 @@ const Step2 = props => {
             },
           }}
         >
-          <Button type="primary">
+          <Button type="primary" htmlType="submit">
             Next
           </Button>
           <Button
@@ -84,6 +126,7 @@ const Step2 = props => {
   );
 };
 
-export default connect(({ user }) => ({
+export default connect(({ user, createModelForm }) => ({
   token: user.currentUser.token,
+  data: createModelForm.step
 }))(Step2);

@@ -5,6 +5,7 @@ import { connect } from 'umi';
 import Step1 from './components/Step1';
 import Step2 from './components/Step2';
 import Step3 from './components/Step3';
+import Step4 from './components/Step4';
 import styles from './style.less';
 
 const { Step } = Steps;
@@ -17,11 +18,17 @@ const getCurrentStepAndComponent = current => {
         component: <Step2 />,
       };
 
-    case 'result':
+    case 'Model Info':
       return {
         step: 2,
-        // component: <Step3 />,
+        component: <Step3 />,
       };
+
+    case 'Results':
+      return {
+        step: 3,
+        component: <Step4 />
+      }
 
     case 'Select Regions':
     default:
@@ -49,6 +56,7 @@ const StepForm = ({ current }) => {
             <Step title="Select Regions" />
             <Step title="Select Crops" />
             <Step title="Enter Model Meta" />
+            <Step title="Results" />
           </Steps>
           {stepComponent}
         </>
