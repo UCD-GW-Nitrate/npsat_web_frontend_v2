@@ -51,13 +51,13 @@ const Step4 = (props) => {
     <Result
         status={countTotal === countSuccess ? 'success' : 'warning'}
         title="Model created"
-        subTitle={countTotal === countSuccess ? "Model will be running for a few seconds to view results" :
+        subTitle={countTotal === countSuccess ? "Model will be running for a few seconds to generate results" :
         "Some crops are not attached to model"}
         className={styles.result}
         extra={extra}
     >
       <span>
-        Attached crops to the model:&nbsp;
+        Number of attached crops to the model:&nbsp;
       </span>
       <Progress
         percent={countSuccess / countTotal * 100}

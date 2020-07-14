@@ -3,10 +3,12 @@ import { Form, Select, Button } from 'antd';
 import { connect } from 'umi';
 import { getCountyList } from '@/services/county'
 import styles from '../../index.less';
+import CountyMap from './components/CountyMap';
 
 const { Option } = Select;
 
 const CountyForm = (props) => {
+  const { onSubmit, style, data } = props;
   const [ countyList, setList ] = useState([]);
   useEffect(() => {
     (async () => {
@@ -14,7 +16,6 @@ const CountyForm = (props) => {
       setList(counties);
     })();
   }, []);
-  const { onSubmit, style, data } = props;
   return (
     <Form
       {...style}
@@ -35,18 +36,7 @@ const CountyForm = (props) => {
           data.hasOwnProperty("county-choice") ? data["county-choice"] : undefined
         }
       >
-        <Select
-          showSearch
-          placeholder="Select a county"
-          optionFilterProp="children"
-          filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-        >
-          {countyList.map(county => (
-            <Option value={county.id} key={county.id}>{county.name}</Option>
-          ))}
-        </Select>
+        <SelectAndMap countyList={countyList}/>
       </Form.Item>
       <Form.Item
         wrapperCol={{
@@ -67,6 +57,41 @@ const CountyForm = (props) => {
     </Form>
   );
 }
+
+const SelectAndMap = ({ value = "", onChange, countyList }) => {
+  const [ item, setItem ] = useState(value);
+  useEffect(() => {
+    setItem(value);
+  }, [value]);
+
+  const onListChange = v => {
+    setItem(v);
+    if (onChange) {
+      onChange(v);
+    }
+  }
+
+  return (
+    <>
+      <Select
+        showSearch
+        placeholder="Select a county"
+        optionFilterProp="children"
+        value={item}
+        onChange={onListChange}
+        filterOption={(input, option) =>
+          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      >
+        {countyList.map(county => (
+          <Option value={county.id} key={county.id}>{county.name}</Option>
+        ))}
+      </Select>
+      <CountyMap />
+    </>
+  )
+}
+
 
 export default connect(({ createModelForm }) => ({
   data: createModelForm.step

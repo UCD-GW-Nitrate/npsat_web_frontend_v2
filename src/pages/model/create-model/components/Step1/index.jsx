@@ -17,6 +17,7 @@ const formItemLayout = {
 const Step1 = props => {
   const { dispatch, token } = props;
   const onSubmit = (type, values) => {
+    console.log(values)
     if (dispatch) {
       switch (type) {
         // extensible
