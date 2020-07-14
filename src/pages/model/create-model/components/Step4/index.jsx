@@ -65,6 +65,9 @@ const Step4 = (props) => {
         status={countTotal === countSuccess ? "success" : "exception"}
         strokeColor={countTotal === countSuccess ? "#52c41a" : "red"}
       />
+      <span>
+        &nbsp; ({countSuccess}/{countTotal})
+      </span>
     </Result>
   )
 }
