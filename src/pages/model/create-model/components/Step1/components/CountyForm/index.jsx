@@ -9,13 +9,6 @@ const { Option } = Select;
 
 const CountyForm = (props) => {
   const { onSubmit, style, data } = props;
-  const [ countyList, setList ] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const { results: counties } = await getCountyList();
-      setList(counties);
-    })();
-  }, []);
   return (
     <Form
       {...style}
@@ -36,7 +29,7 @@ const CountyForm = (props) => {
           data.hasOwnProperty("county-choice") ? data["county-choice"] : undefined
         }
       >
-        <SelectAndMap countyList={countyList}/>
+        <SelectAndMap />
       </Form.Item>
       <Form.Item
         wrapperCol={{
@@ -58,14 +51,15 @@ const CountyForm = (props) => {
   );
 }
 
-const SelectAndMap = ({ value = "", onChange, countyList }) => {
-  const [ item, setItem ] = useState(value);
+const SelectAndMap = ({ value, onChange }) => {
+  const [ countyList, setList ] = useState([]);
   useEffect(() => {
-    setItem(value);
-  }, [value]);
-
+    (async () => {
+      const { results: counties } = await getCountyList();
+      setList(counties);
+    })();
+  }, []);
   const onListChange = v => {
-    setItem(v);
     if (onChange) {
       onChange(v);
     }
@@ -77,7 +71,7 @@ const SelectAndMap = ({ value = "", onChange, countyList }) => {
         showSearch
         placeholder="Select a county"
         optionFilterProp="children"
-        value={item}
+        value={value}
         onChange={onListChange}
         filterOption={(input, option) =>
           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
