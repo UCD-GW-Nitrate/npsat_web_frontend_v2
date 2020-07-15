@@ -11,9 +11,27 @@ export default class CountyMap extends React.Component {
   }
 
   render() {
+    const { data, onChange, value } = this.props;
     const position = [this.state.lat, this.state.lng]
     return (
       <Map center={position} zoom={this.state.zoom}>
+        <GeoJSON
+          key={data.length}
+          data={data}
+          onEachFeature={(feature, layer) => {
+            layer.on({
+              click: () => (onChange(feature.properties.id))
+            });
+            layer.bindTooltip(feature.properties.name);
+          }}
+          style={feature => (
+            value === feature.properties.id ? {
+              color: "red"
+            } : {
+              color: "blue"
+            }
+          )}
+        />
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />

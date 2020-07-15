@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Select, Button } from 'antd';
+import { Form, Select, Button, Spin } from 'antd';
 import { connect } from 'umi';
 import { getCountyList } from '@/services/county'
 import styles from '../../index.less';
@@ -53,10 +53,16 @@ const CountyForm = (props) => {
 
 const SelectAndMap = ({ value, onChange }) => {
   const [ countyList, setList ] = useState([]);
+  const [ mapData, setMapData ] = useState([]);
   useEffect(() => {
     (async () => {
       const { results: counties } = await getCountyList();
       setList(counties);
+      setMapData(await counties.map(county => {
+        const data = JSON.parse(county.geometry);
+        data.properties.id = county.id
+        return data;
+      }));
     })();
   }, []);
   const onListChange = v => {
@@ -65,7 +71,7 @@ const SelectAndMap = ({ value, onChange }) => {
     }
   }
 
-  return (
+  return countyList.length > 0 && mapData.length > 0 ? (
     <>
       <Select
         showSearch
@@ -81,9 +87,9 @@ const SelectAndMap = ({ value, onChange }) => {
           <Option value={county.id} key={county.id}>{county.name}</Option>
         ))}
       </Select>
-      <CountyMap />
+      <CountyMap data={mapData} onChange={onChange} value={value}/>
     </>
-  )
+  ) : <Spin size="large" tip="loading county data and map..."/>
 }
 
 

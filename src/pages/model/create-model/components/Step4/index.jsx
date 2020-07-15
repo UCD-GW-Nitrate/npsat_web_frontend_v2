@@ -6,7 +6,7 @@ import styles from './index.less';
 const Step4 = (props) => {
   const { dispatch, data } = props;
   const { id, modification = {} } = data;
-  const { countTotal = 1, countSuccess = 1 } = modification;
+  const { countTotal = 1, countSuccess = 0 } = modification;
   const onView = () => {
     history.push({
       pathname: '/charts',
@@ -47,7 +47,19 @@ const Step4 = (props) => {
       </Button>
     </>
   );
-  return (
+  return id === -1 ?
+    (
+      <Result
+        status="error"
+        title="Model creation failed"
+        subTitle="Please contact the site manager"
+        extra={
+          <Button onClick={onCreate} type="primary">
+            Create another model
+          </Button>
+        }
+      />
+    ) : (
     <Result
         status={countTotal === countSuccess ? 'success' : 'warning'}
         title="Model created"
