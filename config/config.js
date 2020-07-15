@@ -72,7 +72,8 @@ export default defineConfig({
                 {
                   name: 'viewModel',
                   icon: 'edit',
-                  path: '/model/view'
+                  path: '/model/view',
+                  component: './model/view'
                 }
               ]
             },

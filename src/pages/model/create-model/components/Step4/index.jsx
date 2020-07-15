@@ -6,7 +6,7 @@ import styles from './index.less';
 const Step4 = (props) => {
   const { dispatch, data } = props;
   const { id, modification = {} } = data;
-  const { countTotal = 1, countSuccess = 1 } = modification;
+  const { countTotal = 1, countSuccess = 0 } = modification;
   const onView = () => {
     history.push({
       pathname: '/charts',
@@ -47,17 +47,29 @@ const Step4 = (props) => {
       </Button>
     </>
   );
-  return (
+  return id === -1 ?
+    (
+      <Result
+        status="error"
+        title="Model creation failed"
+        subTitle="Please contact the site manager"
+        extra={
+          <Button onClick={onCreate} type="primary">
+            Create another model
+          </Button>
+        }
+      />
+    ) : (
     <Result
         status={countTotal === countSuccess ? 'success' : 'warning'}
         title="Model created"
-        subTitle={countTotal === countSuccess ? "Model will be running for a few seconds to view results" :
+        subTitle={countTotal === countSuccess ? "Model will be running for a few seconds to generate results" :
         "Some crops are not attached to model"}
         className={styles.result}
         extra={extra}
     >
       <span>
-        Attached crops to the model:&nbsp;
+        Number of attached crops to the model:&nbsp;
       </span>
       <Progress
         percent={countSuccess / countTotal * 100}
@@ -65,6 +77,9 @@ const Step4 = (props) => {
         status={countTotal === countSuccess ? "success" : "exception"}
         strokeColor={countTotal === countSuccess ? "#52c41a" : "red"}
       />
+      <span>
+        &nbsp; ({countSuccess}/{countTotal})
+      </span>
     </Result>
   )
 }
