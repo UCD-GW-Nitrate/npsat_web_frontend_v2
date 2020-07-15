@@ -59,7 +59,7 @@ const SelectAndMap = ({ value, onChange }) => {
       const { results: counties } = await getCountyList();
       setList(counties);
       setMapData(await counties.map(county => {
-        const data = JSON.parse(county.geometry);
+        const data = county.geometry;
         data.properties.id = county.id
         return data;
       }));
