@@ -1,12 +1,5 @@
 import request from '@/utils/request';
 
-export async function removeRule(params) {
-  return request('/api/rule', {
-    method: 'POST',
-    data: { ...params, method: 'delete' },
-  });
-}
-
 export async function queryModelList(params, token) {
   const pageSize = 20;
   return request('/api/model_run', {
