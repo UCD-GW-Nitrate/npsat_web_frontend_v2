@@ -107,7 +107,7 @@ const ModelDetail = (props) => {
           }}
           bordered={false}
         >
-          <CountyMap data={county}/>
+          { county ? <CountyMap data={county}/> : null }
         </Card>
 
         <Card

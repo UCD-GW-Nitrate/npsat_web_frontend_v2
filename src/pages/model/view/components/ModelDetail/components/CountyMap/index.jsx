@@ -5,10 +5,10 @@ import "./index.less";
 
 const CountyMap = props  => {
   const { data } = props;
-  return data === {} ? null : (
-    <Map center={[38.5816, -121.4944]} zoom={7}>
+  return (
+    <Map center={[38.5816, -121.4944]} zoom={5}>
       <GeoJSON
-        key={data.length}
+        key={data.id}
         data={data.geometry}
         onEachFeature={(feature, layer) => {
           layer.bindTooltip(feature.properties.name);
