@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
-import { Card, Descriptions, Steps, Table } from 'antd';
+import { Card, Descriptions, Steps } from 'antd';
 import classNames from 'classnames';
-import { getCountyDetail, getCropDetails, getModelDetail, getModificationsDetails } from '../../service';
+import CountyMap from './components/CountyMap';
+import TableWrapper from './components/TableWrapper';
+import { getCountyDetail, getCropDetails, getModelDetail } from '../../service';
 import styles from './index.less';
 
 const { Step } = Steps;
@@ -12,7 +14,8 @@ const ModelDetail = (props) => {
   const [ info, setInfo ] = useState({});
   const [ county, setCounty ] = useState({});
   const [ status, setStatus ] = useState(0);
-  const [ crops, setCrops ] = useState([]);
+  const [ crop, setCrop ] = useState([]);
+  const [ loading, setLoading ] = useState(true);
   useEffect(() => {
     (async () => {
       const model = await getModelDetail( { id }, token);
@@ -33,22 +36,21 @@ const ModelDetail = (props) => {
         setCounty(result);
       })();
     }
-  }, [info.county]);
-  useEffect(() => {
-    const data = [];
     if (info.modifications) {
-      info.modifications.forEach(modificationId => {
-        (async () => {
-          const res = await getModificationsDetails({ id: modificationId }, token);
-          const crop = await getCropDetails({ id: res.crop });
-          res.name = crop.name;
-          data.push(res)
-        })();
-      });
-      setCrops(data);
-      console.log(data);
+      Promise.all(info.modifications.map(item => (getCropDetails({ id: item.crop }))))
+        .then(results => {
+          const data = [];
+          results.forEach((item, index) => {
+            const { name } = item;
+            data.push({
+              ...info.modifications[index], name
+            })
+          })
+          setCrop(data);
+          setLoading(false);
+        });
     }
-  }, [info.modifications]);
+  }, [info]);
   const desc1 = (
     <div className={classNames(styles.textSecondary, styles.stepDescription)}>
       {info.date_submitted ?
@@ -72,6 +74,7 @@ const ModelDetail = (props) => {
           }}
         >
           <Descriptions
+            column={3}
             bordered
           >
             <Descriptions.Item label="Model name">
@@ -95,6 +98,16 @@ const ModelDetail = (props) => {
               {info.description || "no description"}
             </Descriptions.Item>
           </Descriptions>
+        </Card>
+
+        <Card
+          title="Region Map"
+          style={{
+            marginBottom: 32,
+          }}
+          bordered={false}
+        >
+          { county ? <CountyMap data={county}/> : null }
         </Card>
 
         <Card
@@ -123,32 +136,7 @@ const ModelDetail = (props) => {
           title="Crop details"
           bordered={false}
         >
-          <Table
-            columns={[
-              {
-                title: 'Crops',
-                dataIndex: 'name',
-                key: 'name'
-              },
-              {
-                title: "Loading",
-                dataIndex: 'proportion',
-                key: 'proportion',
-                render: num => (
-                  `${num.toInteger() * 100}%`
-                )
-              },
-              {
-                title: "Land area percentage",
-                dataIndex: 'land_area_proportion',
-                key: 'land_area_proportion',
-                render: num => (
-                  `${num.toInteger() * 100}%`
-                )
-              },
-            ]}
-            dataSource={crops}
-          />
+          <TableWrapper data={crop} loading={loading} />
         </Card>
       </div>
     </PageHeaderWrapper>

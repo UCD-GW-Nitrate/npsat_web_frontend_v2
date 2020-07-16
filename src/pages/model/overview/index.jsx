@@ -155,13 +155,13 @@ const OverviewList = props => {
     {
       title: 'Date Created',
       dataIndex: 'date_submitted',
-      sorter: true,
+      sorter: (a, b) => new Date(a.date_submitted) > new Date(b.date_submitted),
       valueType: 'dateTime',
     },
     {
       title: 'Date Completed',
       dataIndex: 'date_completed',
-      sorter: true,
+      sorter: (a, b) => new Date(a.date_completed) > new Date(b.date_completed),
       valueType: 'dateTime'
     },
     {
