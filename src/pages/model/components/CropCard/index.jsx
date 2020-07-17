@@ -52,6 +52,7 @@ const CropCard = (
 
   const changeLoad = displayMode ? setLoad : value => {
     const newLoad = value;
+    setLoad(newLoad);
     if (enable) {
       triggerChange({ load: newLoad })
     }

@@ -16,8 +16,10 @@ const CropCardForm = (props) => {
       setList(crops);
       crops.forEach(item => {
         if (item.caml_code === 0) {
-          setSelected([...selectedCrops, `${item.id},${item.name}`])
-          setSpecial(`${item.id},${item.name}`)
+          if (!selectedCrops.includes(`${item.id},${item.name}`)) {
+            setSelected([...selectedCrops, `${item.id},${item.name}`]);
+          }
+          setSpecial(`${item.id},${item.name}`);
         }
       })
     })();
