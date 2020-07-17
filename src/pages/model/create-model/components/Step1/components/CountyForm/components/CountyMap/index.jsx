@@ -5,9 +5,9 @@ import "./index.less";
 
 export default class CountyMap extends React.Component {
   state = {
-    lat: 38.5816,
-    lng: -121.4944,
-    zoom: 5,
+    lat: 37.58,
+    lng: -119.4179,
+    zoom: 6,
   }
 
   render() {

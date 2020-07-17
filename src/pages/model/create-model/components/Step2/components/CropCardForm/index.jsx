@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getCropList } from '@/services/crop';
-import { Select, List } from 'antd';
+import { Select, List, notification } from 'antd';
 import CropCard from '@/pages/model/components/CropCard';
 import styles from './index.less';
 
@@ -9,19 +9,37 @@ const { Option } = Select;
 const CropCardForm = (props) => {
   const { value = {}, onChange, selectedCrops, setSelected } = props;
   const [ cropList, setList ] = useState([]);
+  const [ special, setSpecial ] = useState('');
   useEffect(() => {
     (async () => {
       const { results: crops } = await getCropList();
       setList(crops);
+      crops.forEach(item => {
+        if (item.caml_code === 0) {
+          setSelected([...selectedCrops, `${item.id},${item.name}`])
+          setSpecial(`${item.id},${item.name}`)
+        }
+      })
     })();
   }, []);
+  const onSelect = v => {
+    if (!v.includes(special)) {
+      notification.warning({
+        message: `Cannot deselect "${special.split(",")[1]}"`,
+        description: `You can set "${special.split(",")[1]}" to default`
+      })
+      setSelected([special, ...v]);
+    } else {
+      setSelected(v);
+    }
+  }
   return (
     <>
       <Select
         value={selectedCrops}
         mode="multiple"
         placeholder="Please select a crop to start"
-        onChange={setSelected}
+        onChange={onSelect}
         className={styles.select}
       >
         {cropList.map(crop => (
@@ -52,6 +70,7 @@ const CropCardForm = (props) => {
                 values={value}
                 onChange={onChange}
                 name={name}
+                required={id === special.split(",")[0]}
                 id={id}
                 initialValues={prevValues}
               />

@@ -6,7 +6,7 @@ import "./index.less";
 const CountyMap = props  => {
   const { data } = props;
   return (
-    <Map center={[38.5816, -121.4944]} zoom={5}>
+    <Map center={[38.5816, -121.4944]} zoom={6}>
       <GeoJSON
         key={data.id}
         data={data.geometry}

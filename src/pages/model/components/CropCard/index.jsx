@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Card, Slider, InputNumber, Switch, Row, Col } from 'antd';
 
-const formatter = (value) => (`${value}%`)
+const formatter = (value) => (`${value}%`);
 
 const CropCard = (
   {
@@ -10,6 +10,7 @@ const CropCard = (
     id,
     onChange,
     values,
+    required = false,
     displayMode = false,
     initialValues = {
       load: 100,
@@ -21,7 +22,7 @@ const CropCard = (
 
   const [ load, setLoad ] = useState(initialValues.load);
   const [ area, setArea] = useState(initialValues.area);
-  const [ enable, setEnable ] = useState(initialValues.enable);
+  const [ enable, setEnable ] = useState(initialValues.enable || required);
 
   useEffect(() => {
     setLoad(initialValues.load);
@@ -30,8 +31,8 @@ const CropCard = (
     setArea(initialValues.area);
   }, [initialValues.area]);
   useEffect(() => {
-    setEnable(initialValues.enable);
-  }, [initialValues.enable]);
+    setEnable(initialValues.enable || required);
+  }, [initialValues.enable, required]);
 
   const triggerChange = (changedValue) => {
     if (onChange) {
@@ -51,7 +52,6 @@ const CropCard = (
 
   const changeLoad = displayMode ? setLoad : value => {
     const newLoad = value;
-    setLoad(newLoad);
     if (enable) {
       triggerChange({ load: newLoad })
     }
@@ -79,7 +79,7 @@ const CropCard = (
       hoverable
       size="small"
       title={name}
-      extra={displayMode ? null :
+      extra={displayMode || required ? null :
         <Switch
           onChange={toggleEnable}
           checked={enable}

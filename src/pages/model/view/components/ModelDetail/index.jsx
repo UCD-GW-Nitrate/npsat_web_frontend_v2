@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
-import { Card, Descriptions, Steps } from 'antd';
+import { Card, Descriptions, Steps, Button } from 'antd';
 import classNames from 'classnames';
+import { history } from 'umi';
 import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import { getCountyDetail, getCropDetails, getModelDetail } from '../../service';
@@ -116,6 +117,22 @@ const ModelDetail = (props) => {
             marginBottom: 32,
           }}
           bordered={false}
+          extra={
+            <Button
+              type="link"
+              disabled={!info.complete}
+              onClick={() => {
+                history.push({
+                  pathname: '/charts',
+                  query: {
+                    id: info.id
+                  }
+                })
+              }}
+            >
+              View results
+            </Button>
+          }
         >
           <RouteContext.Consumer>
             {({ isMobile }) => (

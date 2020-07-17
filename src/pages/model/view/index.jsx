@@ -1,14 +1,25 @@
 import React from 'react';
-import { useLocation, connect } from "umi";
+import { useLocation, connect, history } from "umi";
+import { notification } from 'antd';
+import NoFoundPage from '@/pages/404';
 import ModelDetail from './components/ModelDetail';
 
 const View = (props) => {
   const location = useLocation();
   const { token } = props;
   const { id = null } = location.query;
+  if (id == null) {
+    notification.warn({
+      message: "Please choose a model to view details",
+      description: "No model specified"
+    });
+    history.push({
+      pathname: '/model/overview'
+    })
+  }
 
   return (
-    id ? <ModelDetail id={id} token={token} /> : null
+    id ? <ModelDetail id={id} token={token} /> : <NoFoundPage />
   );
 }
 
