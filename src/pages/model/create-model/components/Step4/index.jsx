@@ -36,10 +36,10 @@ const Step4 = (props) => {
   }
   const extra = (
     <>
-      <Button type="primary" onClick={onView}>
+      <Button type="primary" onClick={onView} style={{ marginBottom: 10 }}>
         View results
       </Button>
-      <Button onClick={onCheck}>
+      <Button onClick={onCheck} style={{ marginBottom: 10 }}>
         Check model details
       </Button>
       <Button onClick={onCreate}>
