@@ -9,14 +9,14 @@ const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {},
-    status: undefined,
+    status: {}
   },
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(userLogin, payload);
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: { status: 'success', message: 'Login success' },
       });
 
       if (response.token) {
@@ -47,10 +47,11 @@ const UserModel = {
         history.replace(redirect || '/');
       } else {
         const { data } = response;
-        notification.error({
-          description: 'Login failed, please try again',
-          message: data.non_field_errors[0]
-        })
+
+        yield put({
+          type: 'changeLoginStatus',
+          payload: { status: "error", message: data.non_field_errors[0] },
+        });
       }
     },
 
@@ -81,7 +82,7 @@ const UserModel = {
       return { ...state, currentUser: action.payload || {} };
     },
     changeLoginStatus(state, { payload }) {
-      return { ...state, status: payload.status };
+      return { ...state, status: payload };
     },
   },
 };

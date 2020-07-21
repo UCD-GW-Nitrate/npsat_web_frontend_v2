@@ -32,8 +32,8 @@ const Login = props => {
   return (
     <div className={styles.main}>
       <LoginForm onSubmit={handleSubmit}>
-        {status === 'error' && !submitting && (
-          <LoginMessage content="No match in database" />
+        {status.status === 'error' && !submitting && (
+          <LoginMessage content={status.message} />
         )}
 
         <UserName
@@ -62,7 +62,7 @@ const Login = props => {
   );
 };
 
-export default connect(({ login, loading }) => ({
-  userLogin: login,
+export default connect(({ user, loading }) => ({
+  userLogin: user,
   submitting: loading.effects['user/login'],
 }))(Login);

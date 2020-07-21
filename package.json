@@ -62,7 +62,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.8.6",
     "react-helmet-async": "^1.0.4",
-    "umi": "^3.2.3",
+    "umi": "^3.2.10",
     "umi-request": "^1.0.8",
     "use-merge-value": "^1.0.1",
     "react-leaflet": "^2.7.0",
