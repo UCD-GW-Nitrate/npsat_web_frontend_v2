@@ -66,7 +66,8 @@
     "umi-request": "^1.0.8",
     "use-merge-value": "^1.0.1",
     "react-leaflet": "^2.7.0",
-    "leaflet": "^1.6.0"
+    "leaflet": "^1.6.0",
+    "viser-react": "^2.4.8"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.18",
