@@ -2,14 +2,13 @@ import { setAuthority } from '@/utils/authority';
 import { userLogin } from '@/services/login';
 import { getPageQuery } from '@/utils/utils';
 import { history } from 'umi';
-import { notification } from 'antd';
-import { stringify } from "querystring";
+import { stringify } from 'querystring';
 
 const UserModel = {
   namespace: 'user',
   state: {
     currentUser: {},
-    status: {}
+    status: {},
   },
   effects: {
     *login({ payload }, { call, put }) {
@@ -22,8 +21,8 @@ const UserModel = {
       if (response.token) {
         yield put({
           type: 'saveCurrentUser',
-          payload: response
-        })
+          payload: response,
+        });
 
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -50,7 +49,7 @@ const UserModel = {
 
         yield put({
           type: 'changeLoginStatus',
-          payload: { status: "error", message: data.non_field_errors[0] },
+          payload: { status: 'error', message: data.non_field_errors[0] },
         });
       }
     },
