@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Card, Slider, InputNumber, Switch, Row, Col } from 'antd';
 
-const formatter = (value) => (`${value}%`);
+export const formatter = (value) => (`${value}%`);
 
 const CropCard = (
   {
