@@ -1,7 +1,8 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Divider, Dropdown, Menu, message, Tooltip, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
-import { history, connect } from 'umi';
+import { history } from 'umi';
+import { connect } from 'react-redux';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, {IntlProvider, enUSIntl,} from '@ant-design/pro-table';
 import { deleteModel, queryModelList } from './service';
@@ -13,6 +14,7 @@ import { deleteModel, queryModelList } from './service';
 const handleRemoveBatch = async (selectedRows, token) => {
   if (!selectedRows) return true;
 
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < selectedRows.length; i++) {
     const hide = message.loading(`Deleting ${selectedRows[i].name}...`);
     deleteModel({ id: selectedRows[i].id }, token)

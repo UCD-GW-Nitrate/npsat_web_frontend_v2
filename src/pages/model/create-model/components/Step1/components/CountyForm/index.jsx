@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Button, Spin } from 'antd';
-import { connect } from 'umi';
+import { connect } from 'react-redux';
 import { getCountyList } from '@/services/county'
 import styles from '../../index.less';
 import CountyMap from './components/CountyMap';
 
 const { Option } = Select;
+const style = {
+  labelCol: {
+    span: 5,
+  },
+  wrapperCol: {
+    span: 19,
+  },
+};
 
 const CountyForm = (props) => {
-  const { onSubmit, style, data } = props;
+  const { onSubmit, data = {} } = props;
   return (
     <Form
       {...style}

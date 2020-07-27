@@ -1,12 +1,12 @@
 import { Button, Form, Divider, Input } from 'antd';
 import React from 'react';
-import { connect } from 'umi';
+import { connect } from 'react-redux';
 import styles from './index.less';
 
 const Step3 = props => {
   const [form] = Form.useForm();
   const { getFieldsValue } = form;
-  const { dispatch, user, data } = props;
+  const { dispatch, user, data = {} } = props;
   const { TextArea } = Input;
   const formItemLayout = {
     labelCol: {

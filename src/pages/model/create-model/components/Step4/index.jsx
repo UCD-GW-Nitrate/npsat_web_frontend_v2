@@ -1,10 +1,11 @@
 import React from 'react';
 import { Result, Button, Progress } from 'antd';
-import { connect, history } from 'umi';
+import { history } from 'umi';
+import { connect } from 'react-redux';
 import styles from './index.less';
 
 const Step4 = (props) => {
-  const { dispatch, data } = props;
+  const { dispatch, data = {} } = props;
   const { id, modification = {} } = data;
   const { countTotal = 1, countSuccess = 0 } = modification;
   const onView = () => {

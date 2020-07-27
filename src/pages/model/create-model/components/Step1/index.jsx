@@ -1,18 +1,10 @@
 import React from 'react';
 import { Tabs, Divider } from 'antd';
-import { connect } from 'umi';
+import { connect } from 'react-redux';
 import styles from './index.less';
 import CountyForm from './components/CountyForm';
 
 const { TabPane } = Tabs;
-const formItemLayout = {
-  labelCol: {
-    span: 5,
-  },
-  wrapperCol: {
-    span: 19,
-  },
-};
 
 const Step1 = props => {
   const { dispatch, token } = props;
@@ -41,7 +33,7 @@ const Step1 = props => {
     <>
       <Tabs defaultActiveKey="1" tabPosition="top" centered>
         <TabPane tab="County" key="1">
-          <CountyForm onSubmit={onSubmit} style={formItemLayout}/>
+          <CountyForm onSubmit={onSubmit} />
         </TabPane>
         <TabPane tab="B118 Basin" key="2" disabled>
           Content of Tab Pane 2

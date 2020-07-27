@@ -1,6 +1,6 @@
 import { Alert } from 'antd';
 import React from 'react';
-import { connect } from 'umi';
+import { connect } from 'react-redux';
 import LoginForm from './components/Login';
 import styles from './style.less';
 
@@ -19,7 +19,7 @@ const LoginMessage = ({ content }) => (
 
 const Login = props => {
   const { userLogin = {}, submitting } = props;
-  const { status } = userLogin;
+  const { status = { status: "unknown" } } = userLogin;
 
   const handleSubmit = values => {
     const { dispatch } = props;
