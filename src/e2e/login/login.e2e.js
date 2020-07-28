@@ -42,4 +42,31 @@ describe('Login page smoke test suits with backend support', () => {
     await page.close();
     expect(url).toBe(`${BASE_URL}/`);
   });
+
+  it('Login info incomplete #1', async () => {
+    // eslint-disable-next-line no-undef
+    const page = await browser.newPage();
+    await page.goto(`${BASE_URL}/user/login`);
+    await page.type('#userName', 'faker');
+    await page.click('button[type="submit"]');
+    await page.waitForSelector('.ant-form-item-explain');
+    const infoIncomplete = await page.evaluate(
+      () => document.getElementsByClassName('ant-form-item-explain').length === 1,
+    );
+    await page.close();
+    expect(infoIncomplete).toBeTruthy();
+  });
+
+  it('Login info incomplete #2', async () => {
+    // eslint-disable-next-line no-undef
+    const page = await browser.newPage();
+    await page.goto(`${BASE_URL}/user/login`);
+    await page.click('button[type="submit"]');
+    await page.waitForSelector('.ant-form-item-explain');
+    const infoIncomplete = await page.evaluate(
+      () => document.getElementsByClassName('ant-form-item-explain').length === 2,
+    );
+    await page.close();
+    expect(infoIncomplete).toBeTruthy();
+  });
 });
