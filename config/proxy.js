@@ -11,19 +11,13 @@ export default {
   dev: {
     '/api': {
       target: 'http://localhost:8010',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/api/dev/': '',
-      },
+      changeOrigin: false,
     },
   },
   test: {
     '/api/': {
       target: 'https://preview.pro.ant.design',
       changeOrigin: true,
-      pathRewrite: {
-        '^': '',
-      },
     },
   },
   pre: {

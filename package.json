@@ -32,8 +32,7 @@
     "tsc": "tsc"
   },
   "husky": {
-    "hooks": {
-    }
+    "hooks": {}
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
@@ -55,10 +54,8 @@
     "classnames": "^2.2.6",
     "leaflet": "^1.6.0",
     "lodash": "^4.17.11",
-    "moment": "^2.25.3",
     "omit.js": "^1.0.2",
     "path-to-regexp": "2.4.0",
-    "qs": "^6.9.0",
     "react": "^16.13.1",
     "react-dom": "^16.8.6",
     "react-helmet-async": "^1.0.4",
