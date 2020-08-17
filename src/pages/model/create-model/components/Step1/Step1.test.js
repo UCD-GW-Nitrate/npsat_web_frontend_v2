@@ -15,7 +15,7 @@ describe('Create Model Step1 unit shallow test suits', () => {
     expect(wrapper.find('Tabs').length).toBe(1);
   })
   it("#2 Step1 SubTabs rendering", () => {
-    expect(wrapper.find('TabPane').length).toBe(4);
+    expect(wrapper.find('TabPane').length).toBe(5);
   })
   it("#2 Step1 Divider rendering", () => {
     expect(wrapper.find('Divider').length).toBe(1);
