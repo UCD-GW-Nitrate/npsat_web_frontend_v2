@@ -3,7 +3,7 @@ import { Map, TileLayer, GeoJSON } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import "./index.less";
 
-export default class CountyMap extends React.Component {
+export default class FormMap extends React.Component {
   state = {
     lat: 37.58,
     lng: -119.4179,

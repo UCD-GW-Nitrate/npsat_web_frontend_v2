@@ -12,6 +12,9 @@ const Model = {
       let response;
       try {
         switch (payload.step1Type) {
+          case "CV":
+            // TODO: after backend sync
+            break;
           default:
           case "county":
             response = yield call(createModel,

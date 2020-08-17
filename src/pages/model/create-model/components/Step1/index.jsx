@@ -3,6 +3,7 @@ import { Tabs, Divider } from 'antd';
 import { connect } from 'react-redux';
 import styles from './index.less';
 import CountyForm from './components/CountyForm';
+import CentralValleyForm from './components/CentralValleyForm';
 
 const { TabPane } = Tabs;
 
@@ -12,6 +13,15 @@ const Step1 = props => {
     if (dispatch) {
       switch (type) {
         // extensible
+        case "CV":
+          dispatch({
+            type: 'createModelForm/saveStepFormData',
+            payload: {
+              step1Type: type,
+              ...values
+            }
+          });
+          break;
         default:
         case "county":
           dispatch({
@@ -20,7 +30,7 @@ const Step1 = props => {
               step1Type: type,
               ...values
             }
-          })
+          });
       }
 
       dispatch({
@@ -31,7 +41,10 @@ const Step1 = props => {
   }
   return (
     <>
-      <Tabs defaultActiveKey="1" tabPosition="top" centered>
+      <Tabs defaultActiveKey="0" tabPosition="top" centered>
+        <TabPane tab="Central Valley" key="0">
+          <CentralValleyForm onSubmit={onSubmit} />
+        </TabPane>
         <TabPane tab="County" key="1">
           <CountyForm onSubmit={onSubmit} />
         </TabPane>
@@ -52,13 +65,15 @@ const Step1 = props => {
       />
       <div className={styles.desc}>
         <h3>Instructions</h3>
-        <h4>Select a county</h4>
+        <h4>Select a region or regions</h4>
         <p>
-          Select a county for the model.
+          Choose the type of regions.
         </p>
-        <h4>Other selections</h4>
         <p>
-          Developing...
+          Choose region(s) on the map or in the dropdown list.
+        </p>
+        <p>
+          Click Next to continue selecting other model parameters.
         </p>
       </div>
     </>

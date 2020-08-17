@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Button, Spin } from 'antd';
 import { connect } from 'react-redux';
-import { getCountyList } from '@/services/county'
+import { getCounties } from '@/services/region'
 import styles from '../../index.less';
-import CountyMap from './components/CountyMap';
+import CountyMap from '../FormMap';
 
 const { Option } = Select;
 const style = {
@@ -64,7 +64,7 @@ const SelectAndMap = ({ value, onChange }) => {
   const [ mapData, setMapData ] = useState([]);
   useEffect(() => {
     (async () => {
-      const { results: counties } = await getCountyList();
+      const { results: counties } = await getCounties();
       setList(counties);
       setMapData(await counties.map(county => {
         const data = county.geometry;
