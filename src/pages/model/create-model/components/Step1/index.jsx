@@ -4,16 +4,26 @@ import { connect } from 'react-redux';
 import styles from './index.less';
 import CountyForm from './components/CountyForm';
 import CentralValleyForm from './components/CentralValleyForm';
+import FarmForm from '@/pages/model/create-model/components/Step1/components/FarmForm';
 
 const { TabPane } = Tabs;
 
 const Step1 = props => {
-  const { dispatch, token } = props;
+  const { dispatch, token, region = "CV" } = props;
   const onSubmit = (type, values) => {
     if (dispatch) {
       switch (type) {
         // extensible
         case "CV":
+          dispatch({
+            type: 'createModelForm/saveStepFormData',
+            payload: {
+              step1Type: type,
+              ...values
+            }
+          });
+          break;
+        case "farm":
           dispatch({
             type: 'createModelForm/saveStepFormData',
             payload: {
@@ -41,20 +51,20 @@ const Step1 = props => {
   }
   return (
     <>
-      <Tabs defaultActiveKey="0" tabPosition="top" centered>
-        <TabPane tab="Central Valley" key="0">
+      <Tabs defaultActiveKey={region} tabPosition="top" centered>
+        <TabPane tab="Central Valley" key="CV">
           <CentralValleyForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="County" key="1">
+        <TabPane tab="County" key="county">
           <CountyForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="B118 Basin" key="2" disabled>
+        <TabPane tab="B118 Basin" key="Basin" disabled>
           Content of Tab Pane 2
         </TabPane>
-        <TabPane tab="Cvhm Farm" key="3" disabled>
-          Content of Tab Pane 3
+        <TabPane tab="Cvhm Farm" key="farm">
+          <FarmForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="Subbasin" key="4" disabled>
+        <TabPane tab="Subbasin" key="sBasin" disabled>
           Content of Tab Pane 4
         </TabPane>
       </Tabs>
@@ -80,6 +90,7 @@ const Step1 = props => {
   );
 };
 
-export default connect(({ user }) => ({
-  token: user.currentUser.token
+export default connect(({ user, createModelForm }) => ({
+  token: user.currentUser.token,
+  region: createModelForm.step.step1Type
 }))(Step1);

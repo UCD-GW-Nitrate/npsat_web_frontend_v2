@@ -13,3 +13,7 @@ export function getCounties() {
 export function getCentralValley() {
   return getRegions("Central Valley");
 }
+
+export function getCVHMFarms() {
+  return getRegions("CVHMFarm");
+}
