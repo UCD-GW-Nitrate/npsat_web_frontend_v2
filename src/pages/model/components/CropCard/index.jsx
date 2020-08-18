@@ -119,36 +119,36 @@ const CropCard = (
           />
         </Col>
       </Row>
-      <Row gutter={16}>
-        <Col span={6}>
-          Percent of area to apply change
-        </Col>
-        <Col span={8}>
-          <Slider
-            max={100}
-            min={0}
-            marks={{
-              0: '0%',
-              100: '100%'
-            }}
-            tipFormatter={formatter}
-            onChange={changeArea}
-            value={area}
-            disabled={displayMode}
-          />
-        </Col>
-        <Col span={4}>
-          <InputNumber
-            min={0}
-            max={100}
-            style={{ margin: '0 16px' }}
-            value={area}
-            formatter={formatter}
-            onChange={changeArea}
-            disabled={displayMode}
-          />
-        </Col>
-      </Row>
+      {/*<Row gutter={16}>*/}
+      {/*  <Col span={6}>*/}
+      {/*    Percent of area to apply change*/}
+      {/*  </Col>*/}
+      {/*  <Col span={8}>*/}
+      {/*    <Slider*/}
+      {/*      max={100}*/}
+      {/*      min={0}*/}
+      {/*      marks={{*/}
+      {/*        0: '0%',*/}
+      {/*        100: '100%'*/}
+      {/*      }}*/}
+      {/*      tipFormatter={formatter}*/}
+      {/*      onChange={changeArea}*/}
+      {/*      value={area}*/}
+      {/*      disabled={displayMode}*/}
+      {/*    />*/}
+      {/*  </Col>*/}
+      {/*  <Col span={4}>*/}
+      {/*    <InputNumber*/}
+      {/*      min={0}*/}
+      {/*      max={100}*/}
+      {/*      style={{ margin: '0 16px' }}*/}
+      {/*      value={area}*/}
+      {/*      formatter={formatter}*/}
+      {/*      onChange={changeArea}*/}
+      {/*      disabled={displayMode}*/}
+      {/*    />*/}
+      {/*  </Col>*/}
+      {/*</Row>*/}
     </Card>
   );
 };

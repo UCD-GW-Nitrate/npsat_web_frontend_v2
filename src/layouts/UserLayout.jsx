@@ -29,8 +29,8 @@ const UserLayout = props => {
   return (
     <HelmetProvider>
       <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={title} />
+        <title>{`${title}NPSAT`}</title>
+        <meta name="description" content={`${title}NPSAT`} />
       </Helmet>
 
       <div className={styles.container}>

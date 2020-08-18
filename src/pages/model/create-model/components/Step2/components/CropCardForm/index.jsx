@@ -53,6 +53,8 @@ const CropCardForm = (props) => {
         rowKey="id"
         grid={{
           gutter: 24,
+          xxl: 2,
+          xl: 2,
           lg: 2,
           md: 2,
           sm: 1,
