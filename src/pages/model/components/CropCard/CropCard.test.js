@@ -15,7 +15,7 @@ describe('Model Card unit test suits', () => {
     expect(wrapper.find('Card').length).toBe(1);
   });
   it('#1.1 control components rendering', () => {
-    expect(wrapper.find('Slider').length).toBe(2);
+    expect(wrapper.find('Slider').length).toBe(1);
   })
 });
 
@@ -28,7 +28,7 @@ describe('Model Card unit test suits with props', () => {
     expect(wrapper.find('Switch').length).toBe(0);
   })
   it('#2.2 control components rendering', () => {
-    expect(wrapper.find('Slider').length).toBe(2);
+    expect(wrapper.find('Slider').length).toBe(1);
   })
 });
 
