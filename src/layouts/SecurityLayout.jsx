@@ -16,9 +16,17 @@ class SecurityLayout extends React.Component {
 
   render() {
     const { isReady } = this.state;
-    const { children, loading, currentUser } = this.props;
+    const { dispatch, children, loading, currentUser } = this.props;
 
-    const isLogin = currentUser && currentUser.token;
+    const cachedUser = JSON.parse(localStorage.getItem('npsat_user_info'));
+    if (cachedUser && cachedUser.token && Object.entries(currentUser).length === 0) {
+      dispatch({
+        type: 'user/loadingCache',
+        payload: cachedUser
+      });
+    }
+    const isLogin = (currentUser && currentUser.token) || (cachedUser && cachedUser.token);
+
     const queryString = stringify({
       redirect: window.location.href,
     });
