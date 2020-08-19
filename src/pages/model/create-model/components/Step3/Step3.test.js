@@ -12,7 +12,7 @@ configure({ adapter: new Adapter() });
 describe('Create Model Step3 unit shallow test suits', () => {
   const wrapper = shallow(<Step3.WrappedComponent user={{ currentUser: {} }} />);
   it("#1 Step3 Form rendering", () => {
-    expect(wrapper.find('FormItem').length).toBe(3);
+    expect(wrapper.find('FormItem').length).toBe(7);
   })
   it("#1 Step3 Divider rendering", () => {
     expect(wrapper.find('Divider').length).toBe(1);
