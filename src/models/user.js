@@ -11,6 +11,12 @@ const UserModel = {
     status: {},
   },
   effects: {
+    *loadingCache({ payload }, { put }) {
+      yield put({
+        type: 'saveCurrentUser',
+        payload
+      });
+    },
     *login({ payload }, { call, put }) {
       const response = yield call(userLogin, payload);
       yield put({
@@ -23,6 +29,8 @@ const UserModel = {
           type: 'saveCurrentUser',
           payload: response,
         });
+
+        localStorage.setItem('npsat_user_info', JSON.stringify(response))
 
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -54,10 +62,14 @@ const UserModel = {
       }
     },
 
-    logout() {
+    *logout(_, { put }) {
       const { redirect } = getPageQuery();
 
-      // further development warning: potential security leak if auth changes to cookies!
+      // remove cache
+      yield put({
+        type: 'exitAndClear'
+      })
+      localStorage.removeItem('npsat_user_info')
 
       if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
@@ -83,6 +95,9 @@ const UserModel = {
     changeLoginStatus(state, { payload }) {
       return { ...state, status: payload };
     },
+    exitAndClear() {
+      return { currentUser: {}, status: {} }
+    }
   },
 };
 export default UserModel;
