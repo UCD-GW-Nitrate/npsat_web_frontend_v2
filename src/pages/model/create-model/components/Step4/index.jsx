@@ -70,5 +70,5 @@ const Step4 = (props) => {
 }
 
 export default connect(({ createModelForm }) => ({
-  data: createModelForm.results.id
+  id: createModelForm.results.id
 }))(Step4);

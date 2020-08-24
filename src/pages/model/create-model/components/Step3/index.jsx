@@ -131,6 +131,8 @@ const Step3 = props => {
           initialValue={data.hasOwnProperty('scenario_name') ? data.scenario_name : undefined}
         >
           <Select>
+            <Select.Option value="C2VSIM_99_09" key="C2VSIM_99_09">C2VSIM_99_09</Select.Option>
+            <Select.Option value="CVHM_70_03" key="CVHM_70_03">CVHM_70_03</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item
