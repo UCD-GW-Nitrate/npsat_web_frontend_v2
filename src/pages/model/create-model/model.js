@@ -11,16 +11,22 @@ const Model = {
     *createModel({ payload }, { call, put }) {
       let response;
       try {
-        const crops = payload["crop-choice"];
+        const crops = payload.selectedCrops;
         const modifications = [];
-        for (const [ key, value ] of Object.entries(crops)) {
-          if (value.enable) {
+        crops.forEach(crop => {
+          const [ id, name ] = crop.split(',');
+          if (payload["crop-choice"].hasOwnProperty(id) && payload["crop-choice"][id].enable) {
             modifications.push({
-              crop: key,
-              proportion: value.load / 100,
+              crop: id,
+              proportion: payload["crop-choice"][id].load / 100,
+            })
+          } else {
+            modifications.push({
+              crop: id,
+              proportion: 1,
             })
           }
-        }
+        })
         const data = {
           name: payload["model-name"],
           description: payload["model-desc"],
@@ -53,6 +59,7 @@ const Model = {
           })
         }
       } catch (e) {
+        console.log(e)
         yield put({
           type: 'saveCreateModelResult',
           payload: -1 // general error code
