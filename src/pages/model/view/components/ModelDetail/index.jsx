@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { history } from 'umi';
 import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
-import { getCountyDetail, getCropDetails, getModelDetail } from '../../service';
+import { getRegionDetail, getCropDetails, getModelDetail } from '../../service';
 import styles from './index.less';
 
 const { Step } = Steps;
@@ -13,7 +13,7 @@ const { Step } = Steps;
 const ModelDetail = (props) => {
   const { id, token } = props;
   const [ info, setInfo ] = useState({});
-  const [ county, setCounty ] = useState({});
+  const [ regions, setRegions ] = useState([]);
   const [ status, setStatus ] = useState(0);
   const [ crop, setCrop ] = useState([]);
   const [ loading, setLoading ] = useState(true);
@@ -31,11 +31,11 @@ const ModelDetail = (props) => {
     })();
   }, []);
   useEffect(() => {
-    if (info.county) {
-      (async () => {
-        const result = await getCountyDetail({ id: info.county });
-        setCounty(result);
-      })();
+    if (info.regions) {
+      Promise.all(info.regions.map(region => (getRegionDetail({ id: region.id }))))
+        .then(results => {
+          setRegions(results);
+        });
     }
     if (info.modifications) {
       Promise.all(info.modifications.map(item => (getCropDetails({ id: item.crop }))))
@@ -89,10 +89,22 @@ const ModelDetail = (props) => {
               {info.date_completed ?
                 new Date(info.date_completed).toLocaleString() : "not yet completed"}
             </Descriptions.Item>
-            <Descriptions.Item label="Region">
-              {county.name || ""}
+            <Descriptions.Item label="Number of years to predict">
+              {info.n_years}
             </Descriptions.Item>
-            <Descriptions.Item label="Status message" span={2}>
+            <Descriptions.Item label="Reduction year">
+              {info.reduction_year}
+            </Descriptions.Item>
+            <Descriptions.Item label="Water content">
+              {`${info.water_content * 100}%`}
+            </Descriptions.Item>
+            <Descriptions.Item label="Scenario">
+              {info.scenario_name}
+            </Descriptions.Item>
+            <Descriptions.Item label="Region(s)" span={3}>
+              {regions.map(region => region.name).join(', ') || ""}
+            </Descriptions.Item>
+            <Descriptions.Item label="Status message" span={3}>
               {info.status_message || "no message"}
             </Descriptions.Item>
             <Descriptions.Item label="Model description" span={3}>
@@ -108,7 +120,7 @@ const ModelDetail = (props) => {
           }}
           bordered={false}
         >
-          { county ? <CountyMap data={county}/> : null }
+          { regions ? <CountyMap data={regions.map(region => region.geometry)}/> : null }
         </Card>
 
         <Card

@@ -16,7 +16,7 @@ export async function getModelList(params, token) {
   })
 }
 
-export async function getCountyDetail(params) {
+export async function getRegionDetail(params) {
   return request(`/api/region/${params.id}/`, {
     method: 'GET'
   })

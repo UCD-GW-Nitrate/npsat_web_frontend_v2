@@ -8,8 +8,8 @@ const CountyMap = props  => {
   return (
     <Map center={[38.5816, -121.4944]} zoom={6}>
       <GeoJSON
-        key={data.id}
-        data={data.geometry}
+        key={data.length}
+        data={data}
         onEachFeature={(feature, layer) => {
           layer.bindTooltip(feature.properties.name);
         }}
