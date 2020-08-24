@@ -11,23 +11,40 @@ const Model = {
     *createModel({ payload }, { call, put }) {
       let response;
       try {
+        const crops = payload["crop-choice"];
+        const modifications = [];
+        for (const [ key, value ] of Object.entries(crops)) {
+          if (value.enable) {
+            modifications.push({
+              crop: key,
+              proportion: value.load / 100,
+            })
+          }
+        }
+        const data = {
+          name: payload["model-name"],
+          description: payload["model-desc"],
+          water_content: payload.water_content / 100,
+          n_years: payload.n_years,
+          reduction_year: new Date(payload.reduction_year).getFullYear(),
+          scenario_name: payload.scenario_name,
+          modifications
+        };
+
         switch (payload.step1Type) {
           case "CV":
-            // TODO: after backend sync
+              data.regions = [ { id: payload.CV } ];
             break;
           default:
           case "county":
-            response = yield call(createModel,
-              {
-                name: payload["model-name"],
-                description: payload["model-desc"],
-                county: payload["county-choice"],
-                modifications: []
-              },
-              {
-                token: payload.token, id: payload.user_id
-              });
+          case "farm":
+            data.regions = payload[`${payload.step1Type}-choice`].map(id => ( { id } ));
         }
+
+        response = yield call(createModel,
+          data, {
+            token: payload.token, id: payload.user_id
+          });
 
         if (response.id) {
           yield put({

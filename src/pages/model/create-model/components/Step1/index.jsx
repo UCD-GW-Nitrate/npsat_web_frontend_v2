@@ -11,7 +11,6 @@ const { TabPane } = Tabs;
 const Step1 = props => {
   const { dispatch, token, region = "CV" } = props;
   const onSubmit = (type, values) => {
-    console.log(values)
     if (dispatch) {
       switch (type) {
         // extensible
