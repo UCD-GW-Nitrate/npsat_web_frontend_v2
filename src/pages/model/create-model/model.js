@@ -1,4 +1,4 @@
-import { createModel, modifyModel } from './service';
+import { createModel } from './service';
 
 const Model = {
   namespace: 'createModelForm',
@@ -40,44 +40,12 @@ const Model = {
           type: 'saveCreateModelResult',
           payload: -1 // general error code
         })
-        return;
       }
-
-      const crops = payload["crop-choice"];
-      let countTotal = 0;
-      let countSuccess = 0;
-      for (const [ key, value ] of Object.entries(crops)) {
-        if (value.enable) {
-          countTotal += 1;
-          countSuccess += 1;
-          try {
-            yield call(modifyModel, {
-              crop: key,
-              proportion: value.load / 100,
-              land_area_proportion: value.area / 100,
-              model_run: response.id
-            }, { token: payload.token })
-          } catch (e) {
-            countSuccess -= 1;
-          }
-        }
-      }
-      yield put({
-        type: 'saveModificationResult',
-        payload: {
-          countSuccess,
-          countTotal
-        }
-      })
     }
   },
   reducers: {
     saveCreateModelResult(state, { payload }) {
       return { ...state, results: { id: payload } };
-    },
-
-    saveModificationResult(state, { payload } ) {
-      return { ...state, results: { modification: payload, ...state.results } };
     },
 
     saveCurrentStep(state, { payload }) {

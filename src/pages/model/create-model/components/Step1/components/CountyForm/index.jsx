@@ -30,11 +30,11 @@ const CountyForm = (props) => {
         rules={[
           {
             required: true,
-            message: "Please choose a county"
+            message: "Please choose at least one county or other region(s)"
           }
         ]}
         initialValue={
-          data.hasOwnProperty("county-choice") ? data["county-choice"] : undefined
+          data.hasOwnProperty("county-choice") ? data["county-choice"] : []
         }
       >
         <SelectAndMap />
@@ -59,7 +59,7 @@ const CountyForm = (props) => {
   );
 }
 
-const SelectAndMap = ({ value, onChange }) => {
+const SelectAndMap = ({ value = [], onChange }) => {
   const [ countyList, setList ] = useState([]);
   const [ mapData, setMapData ] = useState([]);
   useEffect(() => {
@@ -79,6 +79,21 @@ const SelectAndMap = ({ value, onChange }) => {
     }
   }
 
+  const onMapSelect = (selectingMap, selectedMaps) => {
+    if (onChange) {
+      if (selectedMaps.indexOf(selectingMap) === -1) {
+        onChange([...selectedMaps, selectingMap]);
+      } else {
+        onChange(
+          [
+            ...selectedMaps.slice(0, selectedMaps.indexOf(selectingMap)),
+            ...selectedMaps.slice(selectedMaps.indexOf(selectingMap) + 1)
+          ]
+        )
+      }
+    }
+  };
+
   return countyList.length > 0 && mapData.length > 0 ? (
     <>
       <Select
@@ -90,12 +105,13 @@ const SelectAndMap = ({ value, onChange }) => {
         filterOption={(input, option) =>
           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
+        mode="multiple"
       >
         {countyList.map(county => (
           <Option value={county.id} key={county.id}>{county.name}</Option>
         ))}
       </Select>
-      <CountyMap data={mapData} onChange={onChange} value={value}/>
+      <CountyMap data={mapData} onChange={onMapSelect} values={value}/>
     </>
   ) : <Spin size="large" tip="loading county data and map..."/>
 }

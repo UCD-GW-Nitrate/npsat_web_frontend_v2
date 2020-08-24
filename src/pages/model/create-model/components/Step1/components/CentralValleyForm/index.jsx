@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Select, Button, Spin, Alert } from 'antd';
+import { Form, Button, Spin, Alert } from 'antd';
 import { getCentralValley } from '@/services/region'
 import styles from '../../index.less';
 import Map from '../FormMap';
 
-const { Option } = Select;
 const style = {
   labelCol: {
     span: 5,
@@ -32,7 +31,7 @@ const CentralValleyForm = props => {
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={() => onSubmit("CV", { id : data[0].properties.id })}
+      onFinish={() => onSubmit("CV", { "CV" : data[0].properties.id })}
     >
       <Form.Item
         wrapperCol={{
@@ -52,7 +51,7 @@ const CentralValleyForm = props => {
             <Map
               data={data}
               onChange={() => {}}
-              value={data[0].properties.id}
+              values={ [data[0].properties.id] }
             />
           </>
         )}

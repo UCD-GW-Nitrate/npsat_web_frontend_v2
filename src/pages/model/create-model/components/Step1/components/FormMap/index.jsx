@@ -11,21 +11,21 @@ export default class FormMap extends React.Component {
   }
 
   render() {
-    const { data, onChange, value } = this.props;
+    const { data, onChange, values } = this.props;
     const position = [this.state.lat, this.state.lng]
     return (
       <Map center={position} zoom={this.state.zoom}>
         <GeoJSON
-          key={data.length}
+          key={data.length + values.length}
           data={data}
           onEachFeature={(feature, layer) => {
             layer.on({
-              click: () => (onChange(feature.properties.id))
+              click: () => onChange(feature.properties.id, values)
             });
             layer.bindTooltip(feature.properties.name);
           }}
           style={feature => (
-            value === feature.properties.id ? {
+            values && values.indexOf(feature.properties.id) !== -1? {
               color: "red"
             } : {
               color: "blue"

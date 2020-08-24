@@ -30,11 +30,11 @@ const FarmForm = (props) => {
         rules={[
           {
             required: true,
-            message: "Please choose a farm"
+            message: "Please choose at least one farm or other region(s)"
           }
         ]}
         initialValue={
-          data.hasOwnProperty("farm-choice") ? data["farm-choice"] : undefined
+          data.hasOwnProperty("farm-choice") ? data["farm-choice"] : []
         }
       >
         <SelectAndMap />
@@ -59,7 +59,7 @@ const FarmForm = (props) => {
   );
 }
 
-const SelectAndMap = ({ value, onChange }) => {
+const SelectAndMap = ({ value = [], onChange }) => {
   const [ farmList, setList ] = useState([]);
   const [ mapData, setMapData ] = useState([]);
   useEffect(() => {
@@ -79,7 +79,20 @@ const SelectAndMap = ({ value, onChange }) => {
       onChange(v);
     }
   }
-
+  const onMapSelect = (selectingMap, selectedMaps) => {
+    if (onChange) {
+      if (selectedMaps.indexOf(selectingMap) === -1) {
+        onChange([...selectedMaps, selectingMap]);
+      } else {
+        onChange(
+          [
+            ...selectedMaps.slice(0, selectedMaps.indexOf(selectingMap)),
+            ...selectedMaps.slice(selectedMaps.indexOf(selectingMap) + 1)
+          ]
+        )
+      }
+    }
+  };
   return farmList.length > 0 && mapData.length > 0 ? (
     <>
       <Select
@@ -91,12 +104,13 @@ const SelectAndMap = ({ value, onChange }) => {
         filterOption={(input, option) =>
           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
+        mode="multiple"
       >
         {farmList.map(farm => (
           <Option value={farm.id} key={farm.id}>{farm.name}</Option>
         ))}
       </Select>
-      <Map data={mapData} onChange={onChange} value={value}/>
+      <Map data={mapData} onChange={onMapSelect} values={value}/>
     </>
   ) : <Spin size="large" tip="loading farm data and map..."/>
 }

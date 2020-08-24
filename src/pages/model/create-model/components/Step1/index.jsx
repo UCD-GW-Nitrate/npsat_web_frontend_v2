@@ -11,6 +11,7 @@ const { TabPane } = Tabs;
 const Step1 = props => {
   const { dispatch, token, region = "CV" } = props;
   const onSubmit = (type, values) => {
+    console.log(values)
     if (dispatch) {
       switch (type) {
         // extensible
@@ -61,7 +62,7 @@ const Step1 = props => {
         <TabPane tab="B118 Basin" key="Basin" disabled>
           Content of Tab Pane 2
         </TabPane>
-        <TabPane tab="Cvhm Farm" key="farm">
+        <TabPane tab="CVHM Farm" key="farm">
           <FarmForm onSubmit={onSubmit} />
         </TabPane>
         <TabPane tab="Subbasin" key="sBasin" disabled>
