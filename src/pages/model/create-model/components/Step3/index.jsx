@@ -1,6 +1,7 @@
 import { Button, Form, Divider, Input, InputNumber, DatePicker, Select } from 'antd';
 import React from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import styles from './index.less';
 
 const Step3 = props => {
@@ -84,7 +85,7 @@ const Step3 = props => {
               message: 'Please enter numbers of years to stimulate the model'
             }
           ]}
-          initialValue={data.hasOwnProperty('n_years') ? data.n_years : undefined}
+          initialValue={data.hasOwnProperty('n_years') ? data.n_years : 100}
         >
           <InputNumber min={100} max={500}/>
         </Form.Item>
@@ -97,7 +98,7 @@ const Step3 = props => {
               message: 'Please enter the reduction year'
             }
           ]}
-          initialValue={data.hasOwnProperty('reduction_year') ? data.reduction_year : undefined}
+          initialValue={data.hasOwnProperty('reduction_year') ? data.reduction_year : moment()}
         >
           <DatePicker picker="year"/>
         </Form.Item>
@@ -177,15 +178,15 @@ const Step3 = props => {
         </p>
         <h4>Years to stimulate</h4>
         <p>
-          Enter The number of years to simulate. For the time being this should not be less than 100 and no more than 500.
+          Enter The number of years to simulate, default to 100. For the time being this should not be less than 100 and no more than 500.
         </p>
         <h4>Reduction year</h4>
         <p>
-          The year to start the reduction.
+          The year to start the reduction, default to current year.
         </p>
         <h4>Water content</h4>
         <p>
-          This is the unsaturated zone mobile water content.
+          This is the unsaturated zone mobile water content, default to 0.
         </p>
         <h4>Scenario</h4>
         <p>

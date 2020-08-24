@@ -1,13 +1,11 @@
 import React from 'react';
-import { Result, Button, Progress } from 'antd';
+import { Result, Button } from 'antd';
 import { history } from 'umi';
 import { connect } from 'react-redux';
 import styles from './index.less';
 
 const Step4 = (props) => {
-  const { dispatch, data = {} } = props;
-  const { id, modification = {} } = data;
-  const { countTotal = 1, countSuccess = 0 } = modification;
+  const { dispatch, id } = props;
   const onView = () => {
     history.push({
       pathname: '/charts',
@@ -62,29 +60,15 @@ const Step4 = (props) => {
       />
     ) : (
     <Result
-        status={countTotal === countSuccess ? 'success' : 'warning'}
+        status='success'
         title="Model created"
-        subTitle={countTotal === countSuccess ? "Model will be running for a few seconds to generate results" :
-        "Some crops are not attached to model"}
+        subTitle="Model will be running for a few seconds to generate results"
         className={styles.result}
         extra={extra}
-    >
-      <span>
-        Number of attached crops to the model:&nbsp;
-      </span>
-      <Progress
-        percent={countSuccess / countTotal * 100}
-        steps={countTotal}
-        status={countTotal === countSuccess ? "success" : "exception"}
-        strokeColor={countTotal === countSuccess ? "#52c41a" : "red"}
-      />
-      <span>
-        &nbsp; ({countSuccess}/{countTotal})
-      </span>
-    </Result>
+    />
   )
 }
 
 export default connect(({ createModelForm }) => ({
-  data: createModelForm.results
+  data: createModelForm.results.id
 }))(Step4);
