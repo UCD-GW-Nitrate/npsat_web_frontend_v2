@@ -1,10 +1,12 @@
 import { Button, Form, Divider, Input, InputNumber, DatePicker, Select } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { getScenarios } from '@/services/scenario';
 import styles from './index.less';
 
 const Step3 = props => {
+  const [ scenarios, setScenarios ] = useState([]);
   const [form] = Form.useForm();
   const { getFieldsValue } = form;
   const { dispatch, user, data = {} } = props;
@@ -17,7 +19,12 @@ const Step3 = props => {
       span: 25,
     },
   };
-
+  useEffect(() => {
+    (async () => {
+      const { results } = await getScenarios();
+      setScenarios(results);
+    })();
+  }, []);
   const onSubmit = (values) => {
     dispatch({
       type: 'createModelForm/saveStepFormData',
@@ -120,7 +127,7 @@ const Step3 = props => {
           />
         </Form.Item>
         <Form.Item
-          name="scenario_name"
+          name="scenario"
           label="Scenario"
           required={[
             {
@@ -128,11 +135,10 @@ const Step3 = props => {
               message: 'Please choose a scenario'
             }
           ]}
-          initialValue={data.hasOwnProperty('scenario_name') ? data.scenario_name : undefined}
+          initialValue={data.hasOwnProperty('scenario') ? data.scenario_name : undefined}
         >
           <Select>
-            <Select.Option value="C2VSIM_99_09" key="C2VSIM_99_09">C2VSIM_99_09</Select.Option>
-            <Select.Option value="CVHM_70_03" key="CVHM_70_03">CVHM_70_03</Select.Option>
+            {scenarios.map(scenario => <Select.Option value={scenario.id} key={scenario.id}>{scenario.name}</Select.Option>)}
           </Select>
         </Form.Item>
         <Form.Item

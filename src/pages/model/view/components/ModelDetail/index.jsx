@@ -99,7 +99,7 @@ const ModelDetail = (props) => {
               {`${info.water_content * 100}%`}
             </Descriptions.Item>
             <Descriptions.Item label="Scenario">
-              {info.scenario_name}
+              {info.scenario ? info.scenario.name || "" : ""}
             </Descriptions.Item>
             <Descriptions.Item label="Region(s)" span={3}>
               {regions.map(region => region.name).join(', ') || ""}

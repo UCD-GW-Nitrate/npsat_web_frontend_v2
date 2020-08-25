@@ -33,7 +33,7 @@ const Model = {
           water_content: payload.water_content / 100,
           n_years: payload.n_years,
           reduction_year: new Date(payload.reduction_year).getFullYear(),
-          scenario_name: payload.scenario_name,
+          scenario: { id: payload.scenario },
           modifications
         };
 
@@ -59,7 +59,6 @@ const Model = {
           })
         }
       } catch (e) {
-        console.log(e)
         yield put({
           type: 'saveCreateModelResult',
           payload: -1 // general error code
