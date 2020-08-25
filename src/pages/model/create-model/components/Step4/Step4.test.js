@@ -14,7 +14,4 @@ describe('Create Model Step4 unit shallow test suits', () => {
   it("#1 Step4 Form rendering", () => {
     expect(wrapper.find('Result').length).toBe(1);
   })
-  it("#1 Step4 Divider rendering", () => {
-    expect(wrapper.find('Progress').length).toBe(1);
-  })
 });
