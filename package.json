@@ -64,7 +64,8 @@
     "umi": "^3.2.10",
     "umi-request": "^1.0.8",
     "use-merge-value": "^1.0.1",
-    "moment": "^2.27.0"
+    "moment": "^2.27.0",
+    "bizcharts": "^4.0.14"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.18",

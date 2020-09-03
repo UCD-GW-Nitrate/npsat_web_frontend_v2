@@ -41,3 +41,5 @@ export const getRouteAuthority = (path, routeData) => {
   });
   return authorities;
 };
+
+export const ordinalSuffix = num => `${num}${["st","nd","rd"][((num+90)%100-10)%10-1]||"th"}`

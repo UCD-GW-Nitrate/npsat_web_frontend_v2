@@ -34,3 +34,10 @@ export async function getCropDetails(params) {
     method: 'GET'
   })
 }
+
+export async function getModelResults(id, token) {
+  return request(`/api/model_results/${id}/`, {
+    headers: { 'Authorization': `Token ${token}` },
+    method: 'GET'
+  })
+}

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
-import { Card, Descriptions, Steps, Button } from 'antd';
+import { Card, Descriptions, Steps, Button, Tabs } from 'antd';
 import classNames from 'classnames';
 import { history } from 'umi';
+import MultilinePlot from '@/pages/model/components/MultilinePlot';
+import { ordinalSuffix } from '@/utils/utils';
 import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
-import { getRegionDetail, getCropDetails, getModelDetail } from '../../service';
+import { getRegionDetail, getCropDetails, getModelDetail, getModelResults } from '../../service';
 import styles from './index.less';
 
 const { Step } = Steps;
@@ -17,6 +19,8 @@ const ModelDetail = (props) => {
   const [ status, setStatus ] = useState(0);
   const [ crop, setCrop ] = useState([]);
   const [ loading, setLoading ] = useState(true);
+  const [ plotData, setData ] = useState({});
+  const [ percentiles, setPercentiles ] = useState([]);
   useEffect(() => {
     (async () => {
       const model = await getModelDetail( { id }, token);
@@ -50,6 +54,20 @@ const ModelDetail = (props) => {
           setCrop(data);
           setLoading(false);
         });
+    }
+    if (info.results) {
+      Promise.all(info.results.map(percentile => (getModelResults(percentile.id, token))))
+        .then(data => {
+          const results = {}
+          data.forEach(percentile => {
+            results[percentile.percentile] = percentile.values.map((value, index) => (
+              // start year is always 1945
+              { 'year': 1945 + index, value, percentile: ordinalSuffix(percentile)}
+            ))
+          })
+          setPercentiles(data.map(percentile => percentile.percentile));
+          setData(results);
+        })
     }
   }, [info]);
   const desc1 = (
@@ -104,6 +122,9 @@ const ModelDetail = (props) => {
             <Descriptions.Item label="Region(s)" span={3}>
               {regions.map(region => region.name).join(', ') || ""}
             </Descriptions.Item>
+            <Descriptions.Item label="Number of wells detected in selected region(s)">
+              {info.n_wells || "model run not yet finishes"}
+            </Descriptions.Item>
             <Descriptions.Item label="Status message" span={3}>
               {info.status_message || "no message"}
             </Descriptions.Item>
@@ -111,16 +132,6 @@ const ModelDetail = (props) => {
               {info.description || "no description"}
             </Descriptions.Item>
           </Descriptions>
-        </Card>
-
-        <Card
-          title="Region Map"
-          style={{
-            marginBottom: 32,
-          }}
-          bordered={false}
-        >
-          { regions ? <CountyMap data={regions.map(region => region.geometry)}/> : null }
         </Card>
 
         <Card
@@ -142,7 +153,7 @@ const ModelDetail = (props) => {
                 })
               }}
             >
-              View results
+              View combined model results
             </Button>
           }
         >
@@ -161,11 +172,42 @@ const ModelDetail = (props) => {
             )}
           </RouteContext.Consumer>
         </Card>
+
+        {
+          percentiles.length === 0 ? null:
+          <Card
+            title="Run result"
+            style={{
+              marginBottom: 32,
+            }}
+            bordered={false}
+          >
+            <Tabs tabPosition="top" centered>
+              <Tabs.TabPane tab="Line Plot" key="LP">
+                <MultilinePlot percentiles={percentiles} data={plotData}/>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Area Plot" key="AP">
+
+              </Tabs.TabPane>
+            </Tabs>
+          </Card>
+        }
+
         <Card
           title="Crop details"
           bordered={false}
+          style={{
+            marginBottom: 32,
+          }}
         >
           <TableWrapper data={crop} loading={loading} />
+        </Card>
+
+        <Card
+          title="Region Map"
+          bordered={false}
+        >
+          { regions ? <CountyMap data={regions.map(region => region.geometry)}/> : null }
         </Card>
       </div>
     </PageHeaderWrapper>
