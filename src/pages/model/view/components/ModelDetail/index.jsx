@@ -62,7 +62,7 @@ const ModelDetail = (props) => {
           data.forEach(percentile => {
             results[percentile.percentile] = percentile.values.map((value, index) => (
               // start year is always 1945
-              { 'year': 1945 + index, value, percentile: ordinalSuffix(percentile)}
+              { 'year': 1945 + index, value, percentile: `${ordinalSuffix(percentile.percentile)} percentile`}
             ))
           })
           setPercentiles(data.map(percentile => percentile.percentile));
@@ -184,7 +184,7 @@ const ModelDetail = (props) => {
           >
             <Tabs tabPosition="top" centered>
               <Tabs.TabPane tab="Line Plot" key="LP">
-                <MultilinePlot percentiles={percentiles} data={plotData}/>
+                <MultilinePlot percentiles={percentiles} data={plotData} reductionYear={info.reduction_year}/>
               </Tabs.TabPane>
               <Tabs.TabPane tab="Area Plot" key="AP">
 

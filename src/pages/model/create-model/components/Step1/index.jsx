@@ -1,10 +1,10 @@
 import React from 'react';
 import { Tabs, Divider } from 'antd';
 import { connect } from 'react-redux';
+import FarmForm from '@/pages/model/create-model/components/Step1/components/FarmForm';
 import styles from './index.less';
 import CountyForm from './components/CountyForm';
 import CentralValleyForm from './components/CentralValleyForm';
-import FarmForm from '@/pages/model/create-model/components/Step1/components/FarmForm';
 
 const { TabPane } = Tabs;
 
