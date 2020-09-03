@@ -1,5 +1,5 @@
 import { Chart, Line, Tooltip, Annotation, Slider, Legend, Axis } from 'bizcharts';
-import { Select } from 'antd';
+import { Button, Select, Divider } from 'antd';
 import React, { useState } from 'react';
 import { ordinalSuffix } from '@/utils/utils';
 import styles from './index.less';
@@ -7,15 +7,15 @@ import styles from './index.less';
 // usage: pass plot data, percentile list, and reduction year
 const MultilinePlot = ({ percentiles, data, reductionYear }) => {
   const [ shownLines, setLines ] = useState([])
-  console.log(data)
   return (
     <div className={styles.linePlot}>
       <div className={styles.linePlotSelect}>
         <Select
           mode="multiple"
-          placeholder="Select percentile(s) to shown in the plot"
+          placeholder="Select percentile(s) to show in the plot"
           style={{ width: '100%' }}
           onChange={value => setLines([...value])}
+          value={shownLines}
         >
           {percentiles.map(percentile =>
             <Select.Option value={percentile} key={percentile}>
@@ -23,6 +23,16 @@ const MultilinePlot = ({ percentiles, data, reductionYear }) => {
             </Select.Option>
           )}
         </Select>
+        <div className={styles.utilityButtons}>
+          <Button type="primary"
+                  style={{marginRight: "10px"}}
+                  onClick={() => setLines([...percentiles])}>
+            Select all</Button>
+          <Button
+            onClick={() => setLines([])}
+          >Deselect all</Button>
+        </div>
+        <Divider />
       </div>
       <Chart
         padding={[10, 20, 50, 60]}
@@ -32,7 +42,7 @@ const MultilinePlot = ({ percentiles, data, reductionYear }) => {
         scale={{ value: { min: 0, alias: 'Amount of Nitrogen' }, nice: true, year: { tickCount: 10 }}}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
         defaultInteractions={['tooltip', 'element-highlight', 'legend-highlight']}
-
+        pure
       >
         <Legend  position="top" />
         <Slider />
