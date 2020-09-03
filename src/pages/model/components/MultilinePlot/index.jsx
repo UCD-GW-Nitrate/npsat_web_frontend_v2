@@ -1,4 +1,4 @@
-import { Chart, Line, Tooltip, Annotation, Slider } from 'bizcharts';
+import { Chart, Line, Tooltip, Annotation, Slider, Legend, Axis } from 'bizcharts';
 import { Select } from 'antd';
 import React, { useState } from 'react';
 import { ordinalSuffix } from '@/utils/utils';
@@ -29,14 +29,17 @@ const MultilinePlot = ({ percentiles, data, reductionYear }) => {
         autoFit
         height={500}
         data={Object.keys(data).length === 0 ? [] : shownLines.map(index => data[index]).flat(1)}
-        scale={{ value: { min: 0 }, nice: true }}
+        scale={{ value: { min: 0, alias: 'Amount of Nitrogen' }, nice: true, year: { tickCount: 10 }}}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
         defaultInteractions={['tooltip', 'element-highlight', 'legend-highlight']}
 
       >
+        <Legend  position="top" />
         <Slider />
         <Line position="year*value" color="percentile"/>
         <Tooltip showCrosshairs shared />
+        <Axis name="value" title/>
+        <Axis name="year" />
         { reductionYear ?
           <Annotation.Line
             start={[reductionYear, 'min']}
