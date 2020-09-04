@@ -3,13 +3,13 @@ import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import { Card, Descriptions, Steps, Button, Tabs } from 'antd';
 import classNames from 'classnames';
 import { history } from 'umi';
-import MultilinePlot from '@/pages/model/components/MultilinePlot';
+import MultilinePlot from '@/pages/model/components/MultilinePlot/dynamic';
+import AreaPlot from '@/pages/model/components/AreaPlot/dynamic';
 import { ordinalSuffix } from '@/utils/utils';
 import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import { getRegionDetail, getCropDetails, getModelDetail, getModelResults } from '../../service';
 import styles from './index.less';
-import AreaPlot from '@/pages/model/components/AreaPlot';
 
 const { Step } = Steps;
 
