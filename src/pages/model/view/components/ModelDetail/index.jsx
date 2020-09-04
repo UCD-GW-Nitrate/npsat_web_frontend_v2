@@ -9,6 +9,7 @@ import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import { getRegionDetail, getCropDetails, getModelDetail, getModelResults } from '../../service';
 import styles from './index.less';
+import AreaPlot from '@/pages/model/components/AreaPlot';
 
 const { Step } = Steps;
 
@@ -187,7 +188,7 @@ const ModelDetail = (props) => {
                 <MultilinePlot percentiles={percentiles} data={plotData} reductionYear={info.reduction_year}/>
               </Tabs.TabPane>
               <Tabs.TabPane tab="Area Plot" key="AP">
-
+                <AreaPlot percentiles={percentiles} data={plotData} reductionYear={info.reduction_year}/>
               </Tabs.TabPane>
             </Tabs>
           </Card>
