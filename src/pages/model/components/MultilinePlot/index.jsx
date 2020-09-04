@@ -16,6 +16,7 @@ const MultilinePlot = ({ percentiles, data, reductionYear }) => {
           style={{ width: '100%' }}
           onChange={value => setLines([...value])}
           value={shownLines}
+          showArrow
         >
           {percentiles.map(percentile =>
             <Select.Option value={percentile} key={percentile}>

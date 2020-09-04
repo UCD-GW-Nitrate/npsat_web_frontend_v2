@@ -2,6 +2,7 @@ import { Chart, Tooltip, Annotation, Slider, Legend, Axis, Area } from 'bizchart
 import { Button, Select, Divider } from 'antd';
 import React, { useState } from 'react';
 import { ordinalSuffix } from '@/utils/utils';
+import 'antd/es/style/themes/default.less'
 import styles from './index.less';
 
 // usage: pass plot data, percentile list, and reduction year
@@ -13,7 +14,6 @@ const AreaPlot = ({ percentiles, data, reductionYear }) => {
       <div className={styles.linePlotSelect}>
         <Select
           placeholder="Select percentile upper bound"
-          style={{ width: '30%' }}
           onChange={setUpper}
           value={upperBound}
         >
@@ -25,7 +25,6 @@ const AreaPlot = ({ percentiles, data, reductionYear }) => {
         </Select>
         <Select
           placeholder="Select percentile lower bound"
-          style={{ width: '30%' }}
           onChange={setLower}
           value={lowerBound}
         >
@@ -51,7 +50,7 @@ const AreaPlot = ({ percentiles, data, reductionYear }) => {
       >
         <Legend position="top" />
         <Slider />
-        <Area position="year*value" color="percentile" style={ {fill: "blue"} }/>
+        <Area position="year*value" color="percentile" style={ {fill: "#1890ff"} }/>
         <Tooltip showCrosshairs shared />
         <Axis name="value" title/>
         <Axis name="year" />
