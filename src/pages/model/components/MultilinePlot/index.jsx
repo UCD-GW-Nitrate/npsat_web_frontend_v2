@@ -38,7 +38,7 @@ const MultilinePlot = ({ percentiles, data, reductionYear }) => {
             Select all</Button>
           <Button
             onClick={() => setLines([])}
-          >Deselect all</Button>
+          >Clear</Button>
         </div>
         <Divider />
       </div>
@@ -47,7 +47,7 @@ const MultilinePlot = ({ percentiles, data, reductionYear }) => {
         autoFit
         height={500}
         data={Object.keys(data).length === 0 ? [] : shownLines.map(index => data[index]).flat(1)}
-        scale={{ value: { min: 0, alias: 'Amount of Nitrogen' }, nice: true, year: { tickCount: 10 }}}
+        scale={{ value: { min: 0, alias: 'Amount of Nitrogen', nice: true }, year: { tickCount: 10 }}}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
         defaultInteractions={['tooltip', 'element-highlight', 'legend-highlight']}
         pure
