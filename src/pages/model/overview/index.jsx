@@ -1,5 +1,5 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message, Tooltip, Popconfirm } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Divider, message, Tooltip, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
@@ -11,26 +11,26 @@ import { deleteModel, queryModelList } from './service';
  * delete model
  * @param selectedRows
  */
-const handleRemoveBatch = async (selectedRows, token) => {
-  if (!selectedRows) return true;
-
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < selectedRows.length; i++) {
-    const hide = message.loading(`Deleting ${selectedRows[i].name}...`);
-    deleteModel({ id: selectedRows[i].id }, token)
-      .catch(() => {
-        hide();
-        message.error(`Model ${selectedRows[i].name} deletion failed`)
-      })
-      .then(
-      () => {
-        message.success(`Model ${selectedRows[i].name} deleted`);
-        hide();
-      }
-    );
-  }
-  return true;
-};
+// const handleRemoveBatch = async (selectedRows, token) => {
+//   if (!selectedRows) return true;
+//
+//   // eslint-disable-next-line no-plusplus
+//   for (let i = 0; i < selectedRows.length; i++) {
+//     const hide = message.loading(`Deleting ${selectedRows[i].name}...`);
+//     deleteModel({ id: selectedRows[i].id }, token)
+//       .catch(() => {
+//         hide();
+//         message.error(`Model ${selectedRows[i].name} deletion failed`)
+//       })
+//       .then(
+//       () => {
+//         message.success(`Model ${selectedRows[i].name} deleted`);
+//         hide();
+//       }
+//     );
+//   }
+//   return true;
+// };
 
 const handleViewBatch = (selectedRows) => {
   let modelGroup = '';
@@ -229,28 +229,9 @@ const OverviewList = props => {
               <PlusOutlined /> New Model
             </Button>,
             selectedRows && selectedRows.length > 0 && (
-              <Dropdown
-                overlay={
-                  <Menu
-                    onClick={async e => {
-                      if (e.key === 'remove') {
-                        await handleRemoveBatch(selectedRows, userToken);
-                        action.reload();
-                      } else {
-                        handleViewBatch(selectedRows);
-                      }
-                    }}
-                    selectedKeys={[]}
-                  >
-                    <Menu.Item key="remove">Delete models</Menu.Item>
-                    <Menu.Item key="plot">View results</Menu.Item>
-                  </Menu>
-                }
-              >
-                <Button>
-                  Batch Operation <DownOutlined />
+                <Button onClick={() => handleViewBatch(selectedRows)}>
+                  View results in group
                 </Button>
-              </Dropdown>
             ),
           ]}
           tableAlertRender={({ selectedRowKeys, selectedRows }) => (
