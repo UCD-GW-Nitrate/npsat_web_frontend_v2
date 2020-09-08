@@ -39,7 +39,12 @@ const ModelDetail = (props) => {
     if (info.regions) {
       Promise.all(info.regions.map(region => (getRegionDetail({ id: region.id }))))
         .then(results => {
-          setRegions(results);
+          const formattedRegions = results.map(region => {
+            const result = region;
+            result.geometry.properties.name = region.name;
+            return result;
+          })
+          setRegions(formattedRegions);
         });
     }
     if (info.modifications) {
