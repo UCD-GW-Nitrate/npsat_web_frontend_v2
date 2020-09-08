@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
-import { Card, Descriptions, Steps, Button, Tabs } from 'antd';
+import { Card, Descriptions, Steps, Button, Tabs, Anchor, } from 'antd';
 import classNames from 'classnames';
 import { history } from 'umi';
 import MultilinePlot from '@/pages/model/components/MultilinePlot/dynamic';
@@ -10,6 +10,7 @@ import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import { getRegionDetail, getCropDetails, getModelDetail, getModelResults } from '../../service';
 import styles from './index.less';
+import AnchorTitle from './components/AnchorTitle';
 
 const { Step } = Steps;
 
@@ -89,10 +90,22 @@ const ModelDetail = (props) => {
       </div>
     ) : null;
   return (
-    <PageHeaderWrapper >
+    <PageHeaderWrapper
+      content={
+        <Anchor affix={false}>
+          <Anchor.Link href="#info" title="Model info" />
+          <Anchor.Link href="#progress" title="Model progress" />
+          {
+            percentiles.length === 0 ? null: <Anchor.Link href="#results" title="Model results" />
+          }
+          <Anchor.Link href="#crop-details" title="Crop details" />
+          <Anchor.Link href="#region-map" title="Region map" />
+        </Anchor>
+      }
+    >
       <div className={styles.main}>
         <Card
-          title="Model info"
+          title={<AnchorTitle title="Model info" anchor="info"/>}
           bordered={false}
           style={{
             marginBottom: 32,
@@ -141,27 +154,11 @@ const ModelDetail = (props) => {
         </Card>
 
         <Card
-          title="Model progress"
+          title={<AnchorTitle title="Model progress" anchor="progress" />}
           style={{
             marginBottom: 32,
           }}
           bordered={false}
-          extra={
-            <Button
-              type="link"
-              disabled={!info.complete}
-              onClick={() => {
-                history.push({
-                  pathname: '/charts',
-                  query: {
-                    id: info.id
-                  }
-                })
-              }}
-            >
-              View combined model results
-            </Button>
-          }
         >
           <RouteContext.Consumer>
             {({ isMobile }) => (
@@ -182,11 +179,27 @@ const ModelDetail = (props) => {
         {
           percentiles.length === 0 ? null:
           <Card
-            title="Run result"
+            title={<AnchorTitle title="Run results" anchor="results"/>}
             style={{
               marginBottom: 32,
             }}
             bordered={false}
+            extra={
+              <Button
+                type="link"
+                disabled={!info.complete}
+                onClick={() => {
+                  history.push({
+                    pathname: '/charts',
+                    query: {
+                      id: info.id
+                    }
+                  })
+                }}
+              >
+                View combined model results
+              </Button>
+            }
           >
             <Tabs tabPosition="top" centered>
               <Tabs.TabPane tab="Line Plot" key="LP">
@@ -200,7 +213,7 @@ const ModelDetail = (props) => {
         }
 
         <Card
-          title="Crop details"
+          title={<AnchorTitle title="Crop details" anchor="crop-details" />}
           bordered={false}
           style={{
             marginBottom: 32,
@@ -210,7 +223,7 @@ const ModelDetail = (props) => {
         </Card>
 
         <Card
-          title="Region Map"
+          title={<AnchorTitle title="Region map" anchor="region-map" />}
           bordered={false}
         >
           { regions ? <CountyMap data={regions.map(region => region.geometry)}/> : null }
