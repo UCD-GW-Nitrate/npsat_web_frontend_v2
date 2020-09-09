@@ -15,7 +15,7 @@ import AnchorTitle from './components/AnchorTitle';
 const { Step } = Steps;
 
 const ModelDetail = (props) => {
-  const { id, token } = props;
+  const { id, token, hash } = props;
   const [ info, setInfo ] = useState({});
   const [ regions, setRegions ] = useState([]);
   const [ status, setStatus ] = useState(0);
@@ -77,6 +77,19 @@ const ModelDetail = (props) => {
         })
     }
   }, [info]);
+  // scroll into view if the requested url contains an anchor only when first loading
+  useEffect(() => {
+    if (!hash || hash[0] !== '#') {
+      return;
+    }
+    const view = hash.substr(1);
+    const card = document.getElementById(view);
+    if (card) {
+      card.scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  }, [])
   const desc1 = (
     <div className={classNames(styles.textSecondary, styles.stepDescription)}>
       {info.date_submitted ?

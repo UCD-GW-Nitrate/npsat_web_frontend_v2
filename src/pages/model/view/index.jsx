@@ -4,10 +4,11 @@ import { notification } from 'antd';
 import NoFoundPage from '@/pages/404';
 import ModelDetail from './components/ModelDetail';
 
-const View = (props) => {
+const View = props => {
   const location = useLocation();
   const { token } = props;
-  const { id = null } = location.query;
+  const { query = {}, hash } = location;
+  const { id = null } = query;
   useEffect(() => {
     if (id === null) {
       notification.warn({
@@ -21,7 +22,7 @@ const View = (props) => {
   }, [id]);
 
   return (
-    id ? <ModelDetail id={id} token={token} /> : <NoFoundPage />
+    id ? <ModelDetail id={id} token={token} hash={hash}/> : <NoFoundPage />
   );
 }
 
