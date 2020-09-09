@@ -8,15 +8,13 @@ import AreaPlot from '@/pages/model/components/AreaPlot/dynamic';
 import { ordinalSuffix } from '@/utils/utils';
 import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
-import { getRegionDetail, getCropDetails, getModelDetail, getModelResults } from '../../service';
+import { getRegionDetail, getCropDetails, getModelResults } from '../../service';
 import styles from './index.less';
 import AnchorTitle from './components/AnchorTitle';
 
 const { Step } = Steps;
 
-const ModelDetail = (props) => {
-  const { id, token, hash } = props;
-  const [ info, setInfo ] = useState({});
+const ModelDetail = ({ token, hash, info }) => {
   const [ regions, setRegions ] = useState([]);
   const [ status, setStatus ] = useState(0);
   const [ crop, setCrop ] = useState([]);
@@ -24,18 +22,14 @@ const ModelDetail = (props) => {
   const [ plotData, setData ] = useState({});
   const [ percentiles, setPercentiles ] = useState([]);
   useEffect(() => {
-    (async () => {
-      const model = await getModelDetail( { id }, token);
-      setInfo(model);
-      if (model.complete) {
-        setStatus(3);
-      } else if (model.running) {
-        setStatus(2);
-      } else if (model.ready) {
-        setStatus(1);
-      }
-    })();
-  }, []);
+    if (info.complete) {
+      setStatus(3);
+    } else if (info.running) {
+      setStatus(2);
+    } else if (info.ready) {
+      setStatus(1);
+    }
+  }, [info]);
   useEffect(() => {
     if (info.regions) {
       Promise.all(info.regions.map(region => (getRegionDetail({ id: region.id }))))
