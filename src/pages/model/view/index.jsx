@@ -13,16 +13,25 @@ const View = props => {
     if (id === null) {
       notification.warn({
         message: "Please choose a model to view details",
-        description: "No model specified"
+        description: "No model specified",
+        duration: 8
       });
-      history.push({
-        pathname: '/model/overview'
-      });
+      setTimeout(() => {
+        history.push({
+          pathname: '/model/overview'
+        });
+      }, 5000);
     }
   }, [id]);
 
   return (
-    id ? <ModelDetail id={id} token={token} hash={hash}/> : <NoFoundPage />
+    id ? <ModelDetail id={id} token={token} hash={hash}/> :
+      <NoFoundPage
+        subTitle="This page will be redirected in 5 seconds"
+        title="No model found"
+        redirection="/model/overview"
+        buttonText="Select model"
+      />
   );
 }
 
