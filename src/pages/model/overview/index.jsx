@@ -172,7 +172,7 @@ const OverviewList = props => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Tooltip title="view details and modify model">
+          <Tooltip title="view details">
             <Button
               type="link"
               onClick={() => onClickDetails(record.id)}
