@@ -53,11 +53,9 @@ const UserModel = {
 
         history.replace(redirect || '/');
       } else {
-        const { data } = response;
-
         yield put({
           type: 'changeLoginStatus',
-          payload: { status: 'error', message: data.non_field_errors[0] },
+          payload: { status: 'error', message: "Invalid username or password" },
         });
       }
     },
