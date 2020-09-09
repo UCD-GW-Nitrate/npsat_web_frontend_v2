@@ -16,14 +16,17 @@ const View = props => {
         description: "No model specified",
         duration: 8
       });
-      setTimeout(() => {
+      // set 5s timer
+      const redirectTimer = setTimeout(() => {
         history.push({
           pathname: '/model/overview'
         });
       }, 5000);
+      // componentWillUnmount
+      // avoid redirection after leaving current page
+      return () => clearTimeout(redirectTimer);
     }
   }, [id]);
-
   return (
     id ? <ModelDetail id={id} token={token} hash={hash}/> :
       <NoFoundPage
