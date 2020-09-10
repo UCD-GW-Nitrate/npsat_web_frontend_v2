@@ -48,8 +48,8 @@ const StepForm = ({ current }) => {
     setStepComponent(component);
   }, [current]);
   return (
-    <PageHeaderWrapper content="Follow the instructions to create a form. A model will be create
-    when all steps are completed">
+    <PageHeaderWrapper content="Follow the instructions to create a model. The model will
+     be scheduled to run once it's created">
       <Card bordered={false}>
         <>
           <Steps current={currentStep} className={styles.steps}>
