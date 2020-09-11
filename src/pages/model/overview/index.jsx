@@ -40,7 +40,7 @@ const handleViewBatch = (selectedRows) => {
   history.push({
     pathname: '/charts',
     query: {
-      id: encodeURI(modelGroup)
+      ids: encodeURI(modelGroup)
     }
   })
 }
@@ -54,8 +54,10 @@ const handleCreate = () => {
 }
 
 const ListResponseProcessing = (response) => {
-  const data = response.results;
-  data.forEach(model => {
+  const { results } = response;
+  const data = []
+  results.forEach(temp => {
+    const model = temp;
     if (model.complete) {
       model.status = 3;
     } else if (model.running) {
@@ -66,6 +68,7 @@ const ListResponseProcessing = (response) => {
       model.status = 0;
     }
     model.key = model.id
+    data.push(model);
   });
   return {
     data,
@@ -132,7 +135,7 @@ const OverviewList = props => {
       dataIndex: 'description',
       valueType: 'textarea',
       ellipsis: true,
-      width: 300
+      width: 250
     },
     {
       title: 'Status',
@@ -183,13 +186,13 @@ const OverviewList = props => {
             </Button>
           </Tooltip>
           <Divider type="vertical" />
-          <Tooltip title="view plots">
+          <Tooltip title="Compare with other models">
             <Button
               type="link"
               disabled={record.status !== 3}
               onClick={() => onClickResults(record.id)}
             >
-              Results
+              Compare
             </Button>
           </Tooltip>
           <Divider type="vertical" />
@@ -209,8 +212,13 @@ const OverviewList = props => {
       ),
     },
   ];
+
   return (
-    <PageHeaderWrapper>
+    <PageHeaderWrapper
+      subTitle="The table of all models available to you."
+      content="This table includes the models you created, all public models and base scenario models.
+       You can check them in details, compare their results, or delete the models created by you"
+    >
       <IntlProvider value={enUSIntl}>
         <ProTable
           headerTitle="Model Overview"
@@ -232,7 +240,7 @@ const OverviewList = props => {
             </Button>,
             selectedRows && selectedRows.length > 0 && (
                 <Button onClick={() => handleViewBatch(selectedRows)}>
-                  View results in group
+                  View/Compare results in group
                 </Button>
             ),
           ]}
