@@ -131,6 +131,8 @@ const OverviewList = props => {
       title: 'Description',
       dataIndex: 'description',
       valueType: 'textarea',
+      ellipsis: true,
+      width: 300
     },
     {
       title: 'Status',
