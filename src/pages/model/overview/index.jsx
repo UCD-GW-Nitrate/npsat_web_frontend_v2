@@ -29,9 +29,9 @@ const handleCreate = () => {
 }
 
 const TagRender = props => {
-  const { label, value, closable, onClose } = props;
+  const { value, closable, onClose } = props;
   let color;
-  switch (label) {
+  switch (value) {
     default:
     case "original":
       color = "volcano";
@@ -267,9 +267,9 @@ const OverviewList = props => {
                       action.reload();
                     }}
                     options={[
-                      { label: 'public', value: 'public' },
-                      { label: 'original', value: 'original' },
-                      { label: 'base', value: 'base' },
+                      { label: 'include public models', value: 'public' },
+                      { label: 'include self-created models', value: 'original' },
+                      { label: 'include base scenario models', value: 'base' },
                     ]}
                   />,
                   selectedRows && selectedRows.length > 0 && (
