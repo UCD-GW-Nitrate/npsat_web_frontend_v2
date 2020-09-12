@@ -1,36 +1,11 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Tooltip, Popconfirm } from 'antd';
+import { Button, Divider, message, Tooltip, Popconfirm, Tag, Select } from 'antd';
 import React, { useState, useRef } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import ProTable, {IntlProvider, enUSIntl,} from '@ant-design/pro-table';
 import { deleteModel, queryModelList } from './service';
-
-/**
- * delete model
- * @param selectedRows
- */
-// const handleRemoveBatch = async (selectedRows, token) => {
-//   if (!selectedRows) return true;
-//
-//   // eslint-disable-next-line no-plusplus
-//   for (let i = 0; i < selectedRows.length; i++) {
-//     const hide = message.loading(`Deleting ${selectedRows[i].name}...`);
-//     deleteModel({ id: selectedRows[i].id }, token)
-//       .catch(() => {
-//         hide();
-//         message.error(`Model ${selectedRows[i].name} deletion failed`)
-//       })
-//       .then(
-//       () => {
-//         message.success(`Model ${selectedRows[i].name} deleted`);
-//         hide();
-//       }
-//     );
-//   }
-//   return true;
-// };
 
 const handleViewBatch = (selectedRows) => {
   let modelGroup = '';
@@ -53,7 +28,16 @@ const handleCreate = () => {
   history.push('/model/create');
 }
 
-const ListResponseProcessing = (response) => {
+const TagRender = props => {
+  const { label, value, closable, onClose } = props;
+  return (
+    <Tag color={label} closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
+      {value}
+    </Tag>
+  );
+}
+
+const ListResponseProcessing = (response, userId) => {
   const { results } = response;
   const data = []
   results.forEach(temp => {
@@ -68,38 +52,22 @@ const ListResponseProcessing = (response) => {
       model.status = 0;
     }
     model.key = model.id
+    model.tags = [];
+    if (model.public) {
+      model.tags.push("public");
+    }
+    if (model.isBase) {
+      model.tags.push("base");
+    }
+    if (model.user === userId) {
+      model.tags.push("original");
+    }
     data.push(model);
   });
   return {
     data,
     total: response.count
   }
-}
-
-/**
- * handle click: check results of a model
- * @param id
- */
-const onClickResults = (id) => {
-  history.push({
-    pathname: '/charts',
-    query: {
-      id
-    }
-  })
-};
-
-/**
- * handle click: check details of a model
- * @param id
- */
-const onClickDetails = (id) => {
-  history.push({
-    pathname: '/model/view',
-    query: {
-      id
-    }
-  })
 }
 
 /**
@@ -121,8 +89,10 @@ const onClickDelete = async (id, token, action) => {
 }
 
 const OverviewList = props => {
-  const { userToken } = props;
-  const [sorter, setSorter] = useState('');
+  const { user } = props;
+  const { token: userToken, user_id: userId } = user;
+  const [ sorter, setSorter ] = useState('');
+  const [ types, setTypes ] = useState(['public', 'base', 'original']);
   const actionRef = useRef();
   const columns = [
     {
@@ -172,28 +142,59 @@ const OverviewList = props => {
       valueType: 'dateTime'
     },
     {
+      title: 'Types',
+      key: 'tags',
+      dataIndex: 'tags',
+      render: (tags, record) => (
+        <span>
+        {tags.map(tag => {
+          let color;
+          let title;
+          switch (tag) {
+            default:
+            case "original":
+              color = "volcano";
+              title = "created by you"
+              break;
+            case "public":
+              color = "geekblue"
+              title = "accessible by everyone"
+              break;
+            case "base":
+              color = "green"
+              title = `base model of ${record.scenario.name}`
+          }
+          return (
+            <Tooltip title={title} key={record.key + tag}>
+              <Tag color={color} key={tag}>
+                {tag}
+              </Tag>
+            </Tooltip>
+          );
+        })}
+        </span>
+      )
+    },
+    {
       title: 'Action',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
         <>
           <Tooltip title="view details">
-            <Button
-              type="link"
-              onClick={() => onClickDetails(record.id)}
+            <a
+              href={`/model/view?id=${record.id}`}
             >
               Details
-            </Button>
+            </a>
           </Tooltip>
           <Divider type="vertical" />
           <Tooltip title="Compare with other models">
-            <Button
-              type="link"
-              disabled={record.status !== 3}
-              onClick={() => onClickResults(record.id)}
+            <a
+              href={`/charts?id=${record.id}`}
             >
               Compare
-            </Button>
+            </a>
           </Tooltip>
           <Divider type="vertical" />
           <Popconfirm
@@ -203,7 +204,7 @@ const OverviewList = props => {
             onConfirm={() => onClickDelete(record.id, userToken, actionRef)}
           >
             <Tooltip title="delete model">
-              <Button type="link" danger>
+              <Button type="link" danger style={{ padding: 0 }}>
                 Delete
               </Button>
             </Tooltip>
@@ -217,60 +218,81 @@ const OverviewList = props => {
     <PageHeaderWrapper
       subTitle="The table of all models available to you."
       content="This table includes the models you created, all public models and base scenario models.
-       You can check them in details, compare their results, or delete the models created by you"
+       You can check them in details, compare their results, or delete the models created by you."
     >
       <IntlProvider value={enUSIntl}>
-        <ProTable
-          headerTitle="Model Overview"
-          actionRef={actionRef}
-          rowKey="key"
-          onChange={(_, _filter, _sorter) => {
-            const sorterResult = _sorter;
-
-            if (sorterResult.field) {
-              setSorter(`${sorterResult.field}_${sorterResult.order}`);
-            }
-          }}
-          params={{
-            sorter,
-          }}
-          toolBarRender={(action, { selectedRows }) => [
-            <Button type="primary" onClick={handleCreate}>
-              <PlusOutlined /> New Model
-            </Button>,
-            selectedRows && selectedRows.length > 0 && (
-                <Button onClick={() => handleViewBatch(selectedRows)}>
-                  View/Compare results in group
-                </Button>
-            ),
-          ]}
-          tableAlertRender={({ selectedRowKeys, selectedRows }) => (
-            <div>
-              Selected{' '}
-              <a
-                style={{
-                  fontWeight: 600,
+        <RouteContext.Consumer>
+          {
+            ({ isMobile }) => (
+              <ProTable
+                scroll={{ x: 'max-content' }}
+                headerTitle="Model Overview"
+                actionRef={actionRef}
+                rowKey="key"
+                onChange={(_, _filter, _sorter) => {
+                  const sorterResult = _sorter;
+                  if (sorterResult.field) {
+                    setSorter(`${sorterResult.field}_${sorterResult.order}`);
+                  }
                 }}
-              >
-                {selectedRowKeys.length}
-              </a>{' '}
-              Model(s)&nbsp;&nbsp;
-            </div>
-          )}
-          request={params => (queryModelList(params, userToken).then(ListResponseProcessing))}
-          columns={columns}
-          rowSelection={{}}
-          search={false}
-          pagination={{
-            showSizeChanger: false,
-            pageSize: 20
-          }}
-        />
+                params={{
+                  sorter,
+                }}
+                toolBarRender={ isMobile ? false : (action, { selectedRows }) => [
+                  <Button type="primary" onClick={handleCreate}>
+                    <PlusOutlined /> New Model
+                  </Button>,
+                  <Select
+                    mode="multiple"
+                    showArrow
+                    placeholder="Select model types"
+                    style={{ minWidth: 240 }}
+                    tagRender={TagRender}
+                    value={types}
+                    onChange={setTypes}
+                    options={[
+                      { label: 'geekblue', value: 'public' },
+                      { label: 'volcano', value: 'original' },
+                      { label: 'green', value: 'base' },
+                    ]}
+                  />,
+                  selectedRows && selectedRows.length > 0 && (
+                    <Button onClick={() => handleViewBatch(selectedRows)}>
+                      View/Compare results in group
+                    </Button>
+                  ),
+                ]}
+                tableAlertRender={ isMobile ? false : ({ selectedRowKeys, selectedRows }) => (
+                  <div>
+                    Selected{' '}
+                    <a
+                      style={{
+                        fontWeight: 600,
+                      }}
+                    >
+                      {selectedRowKeys.length}
+                    </a>{' '}
+                    Model(s)&nbsp;&nbsp;
+                  </div>
+                )}
+                request={params => queryModelList(params, userToken, types)
+                  .then(response => ListResponseProcessing(response, userId))}
+                columns={columns}
+                rowSelection={ isMobile ? false : {}}
+                search={false}
+                pagination={{
+                  showSizeChanger: false,
+                  pageSize: 20
+                }}
+              />
+            )
+          }
+        </RouteContext.Consumer>
       </IntlProvider>
     </PageHeaderWrapper>
   );
 };
 
 export default connect(({ user }) => ({
-  userToken: user.currentUser.token
+  user: user.currentUser
 }))(OverviewList);

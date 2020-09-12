@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-export async function queryModelList(params, token) {
+export async function queryModelList(params, token, filter) {
   const pageSize = 20;
   return request('/api/model_run', {
     headers: { 'Authorization': `Token ${token}` },
