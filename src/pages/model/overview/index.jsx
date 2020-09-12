@@ -30,8 +30,20 @@ const handleCreate = () => {
 
 const TagRender = props => {
   const { label, value, closable, onClose } = props;
+  let color;
+  switch (label) {
+    default:
+    case "original":
+      color = "volcano";
+      break;
+    case "public":
+      color = "geekblue"
+      break;
+    case "base":
+      color = "green"
+  }
   return (
-    <Tag color={label} closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
+    <Tag color={color} closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
       {value}
     </Tag>
   );
@@ -244,17 +256,20 @@ const OverviewList = props => {
                     <PlusOutlined /> New Model
                   </Button>,
                   <Select
-                    mode="multiple"
+                    mode="tags"
                     showArrow
                     placeholder="Select model types"
                     style={{ minWidth: 240 }}
                     tagRender={TagRender}
                     value={types}
-                    onChange={setTypes}
+                    onChange={value => {
+                      setTypes([...value]);
+                      action.reload();
+                    }}
                     options={[
-                      { label: 'geekblue', value: 'public' },
-                      { label: 'volcano', value: 'original' },
-                      { label: 'green', value: 'base' },
+                      { label: 'public', value: 'public' },
+                      { label: 'original', value: 'original' },
+                      { label: 'base', value: 'base' },
                     ]}
                   />,
                   selectedRows && selectedRows.length > 0 && (
