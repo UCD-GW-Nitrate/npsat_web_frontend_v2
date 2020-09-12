@@ -218,7 +218,8 @@ const OverviewList = props => {
     <PageHeaderWrapper
       subTitle="The table of all models available to you."
       content="This table includes the models you created, all public models and base scenario models.
-       You can check them in details, compare their results, or delete the models created by you."
+       You can check them in details, compare their results, or delete the models created by you.
+       Some features will be disabled when you view this with a mobile device"
     >
       <IntlProvider value={enUSIntl}>
         <RouteContext.Consumer>
