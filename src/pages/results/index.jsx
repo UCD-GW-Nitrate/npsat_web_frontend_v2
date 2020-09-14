@@ -1,23 +1,23 @@
 import React, { useEffect } from 'react';
-import { useLocation, connect, history } from "umi";
+import { useLocation, connect } from "umi";
 import NoFoundPage from '@/pages/404';
 
 const Result = props => {
   const location = useLocation();
-  const { token } = props;
-  const { id = null } = location.query;
+  const { user } = props;
+  const { id = null, ids = null } = location.query;
 
   return (
-    id ? null :
+    id && ids? null :
       <NoFoundPage
-        subTitle="This page will be redirected in 5 seconds"
-        title="No model found"
+        subTitle="There is no model(s) based on your query."
+        title="No model specified"
         redirection="/model/overview"
-        buttonText="Select model"
+        buttonText="Select model(s)"
       />
   );
 }
 
 export default connect(({ user }) => ({
-  token: user.currentUser.token
+  user: user.currentUser
 }))(Result);
