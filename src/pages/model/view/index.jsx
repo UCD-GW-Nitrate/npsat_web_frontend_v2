@@ -2,15 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, connect, history } from "umi";
 import { notification } from 'antd';
 import NoFoundPage from '@/pages/404';
-import { getModelDetail } from '@/pages/model/view/service';
+import { getModelDetail, putModel } from '@/pages/model/view/service';
 import ModelDetail from './components/ModelDetail';
 
 const View = props => {
   const location = useLocation();
-  const { token } = props;
+  const { user } = props;
+  const { token, user_id: userId } = user;
   const { query = {}, hash } = location;
   const { id = null } = query;
   const [ info, setInfo ] = useState({});
+  const publishOrUnpublish = model => {
+    (async () => {
+      const result = await putModel(id, {
+        ...model,
+        public: !info.public
+      }, token);
+      if (typeof result === "string" && result.startsWith("ERROR")) {
+        notification.error({
+          message: model.public? "un-publish model failed" : "publish model failed",
+          description: result.substr(5)
+        })
+      } else {
+        setInfo(result);
+        notification.success({
+          message: "request succeeded",
+          description: model.public? "un-published model" : "published model"
+        })
+      }
+    })();
+  };
   useEffect(() => {
     if (id === null) {
       notification.warn({
@@ -57,10 +78,12 @@ const View = props => {
       />
     )
   } else {
-    return <ModelDetail id={id} token={token} hash={hash} info={info}/>
+    return <ModelDetail id={id} token={token} hash={hash} info={info} publish={publishOrUnpublish}
+                        userId={userId}
+    />
   }
 }
 
 export default connect(({ user }) => ({
-  token: user.currentUser.token
+  user: user.currentUser
 }))(View);

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
-import { Card, Descriptions, Steps, Button, Tabs, Anchor, } from 'antd';
+import { Card, Descriptions, Steps, Button, Tabs, Anchor, Tooltip } from 'antd';
 import classNames from 'classnames';
 import { history } from 'umi';
-import MultilinePlot from '@/pages/model/components/MultilinePlot/dynamic';
-import AreaPlot from '@/pages/model/components/AreaPlot/dynamic';
+import MultilinePlot from '@/components/Plots/BizCharts/MultilinePlot/dynamic';
+import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
 import { ordinalSuffix } from '@/utils/utils';
 import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
@@ -14,7 +14,7 @@ import AnchorTitle from './components/AnchorTitle';
 
 const { Step } = Steps;
 
-const ModelDetail = ({ token, hash, info }) => {
+const ModelDetail = ({ token, userId, hash, info, publish }) => {
   const [ regions, setRegions ] = useState([]);
   const [ status, setStatus ] = useState(0);
   const [ crop, setCrop ] = useState([]);
@@ -98,6 +98,7 @@ const ModelDetail = ({ token, hash, info }) => {
     ) : null;
   return (
     <PageHeaderWrapper
+      subTitle="The complete information of model."
       content={
         <Anchor affix={false}>
           <Anchor.Link href="#info" title="Model info" />
@@ -117,6 +118,21 @@ const ModelDetail = ({ token, hash, info }) => {
           style={{
             marginBottom: 32,
           }}
+          extra={
+            <Tooltip
+              title="only model creator can publish/un-publish the model"
+            >
+              <Button
+                type="primary"
+                disabled={userId !== info.user}
+                onClick={() => {
+                  publish(info);
+                }}
+              >
+                {info.public ? "Un-publish the model" : "publish the model" }
+              </Button>
+            </Tooltip>
+          }
         >
           <Descriptions
             bordered
@@ -145,11 +161,17 @@ const ModelDetail = ({ token, hash, info }) => {
             <Descriptions.Item label="Scenario">
               {info.scenario ? info.scenario.name || "" : ""}
             </Descriptions.Item>
+            <Descriptions.Item label="is public model">
+              {info.public ? "yes" : "no" }
+            </Descriptions.Item>
+            <Descriptions.Item label="is base model">
+              {info.isBase ? "yes" : "no" }
+            </Descriptions.Item>
             <Descriptions.Item label="Region(s)" span={3}>
               {regions.map(region => region.name).join(', ') || ""}
             </Descriptions.Item>
             <Descriptions.Item label="Number of wells detected in selected region(s)">
-              {info.n_wells || "model run not yet finishes"}
+              {info.n_wells || "model run not yet complete"}
             </Descriptions.Item>
             <Descriptions.Item label="Status message" span={3}>
               {info.status_message || "no message"}
@@ -187,6 +209,7 @@ const ModelDetail = ({ token, hash, info }) => {
           percentiles.length === 0 ? null:
           <Card
             title={<AnchorTitle title="Run results" anchor="results"/>}
+            bodyStyle={{ paddingTop: 10 }}
             style={{
               marginBottom: 32,
             }}

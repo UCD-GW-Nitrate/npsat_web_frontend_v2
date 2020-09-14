@@ -41,3 +41,11 @@ export async function getModelResults(id, token) {
     method: 'GET'
   })
 }
+
+export async function putModel(id, params, token) {
+  return request(`/api/model_run/${id}/`, {
+    headers: { 'Authorization': `Token ${token}` },
+    method: 'PUT',
+    data: params
+  })
+}
