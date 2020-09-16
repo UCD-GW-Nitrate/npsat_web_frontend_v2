@@ -1,12 +1,12 @@
 import request from '@/utils/request';
 
 export async function queryModelList(params, token, filter) {
-  const pageSize = 20;
+  const { pageSize, current } = params;
   return request('/api/model_run', {
     headers: { 'Authorization': `Token ${token}` },
     params: {
-      limit: params.pageSize,
-      offset: pageSize * (params.current - 1),
+      limit: pageSize,
+      offset: pageSize * (current - 1),
       public: filter.includes("public"),
       isBase: filter.includes("base"),
       origin: filter.includes("original")

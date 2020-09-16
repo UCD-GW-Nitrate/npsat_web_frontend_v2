@@ -16,20 +16,10 @@ const { Step } = Steps;
 
 const ModelDetail = ({ token, userId, hash, info, publish }) => {
   const [ regions, setRegions ] = useState([]);
-  const [ status, setStatus ] = useState(0);
   const [ crop, setCrop ] = useState([]);
   const [ loading, setLoading ] = useState(true);
   const [ plotData, setData ] = useState({});
   const [ percentiles, setPercentiles ] = useState([]);
-  useEffect(() => {
-    if (info.complete) {
-      setStatus(3);
-    } else if (info.running) {
-      setStatus(2);
-    } else if (info.ready) {
-      setStatus(1);
-    }
-  }, [info]);
   useEffect(() => {
     if (info.regions) {
       Promise.all(info.regions.map(region => (getRegionDetail({ id: region.id }))))
@@ -194,10 +184,10 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
               <Steps
                 direction={isMobile ? 'vertical' : 'horizontal'}
                 progressDot
-                current={status}
+                current={info ? info.status : 0}
               >
                 <Step title="Model created" description={desc1}/>
-                <Step title="Ready" />
+                <Step title="Ready to run" />
                 <Step title="Running" />
                 <Step title="Completed" description={desc2}/>
               </Steps>

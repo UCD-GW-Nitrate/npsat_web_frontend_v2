@@ -54,15 +54,6 @@ const ListResponseProcessing = (response, userId) => {
   const data = []
   results.forEach(temp => {
     const model = temp;
-    if (model.complete) {
-      model.status = 3;
-    } else if (model.running) {
-      model.status = 2;
-    } else if (model.ready) {
-      model.status = 1;
-    } else {
-      model.status = 0;
-    }
     model.key = model.id
     model.tags = [];
     if (model.public) {
@@ -124,15 +115,15 @@ const OverviewList = props => {
       dataIndex: 'status',
       valueEnum: {
         0: {
-          text: 'Unknown',
+          text: 'Not ready',
           status: 'Error'
         },
         1: {
-          text: 'Ready',
+          text: 'In running queue',
           status: 'Default',
         },
         2: {
-          text: 'Pending',
+          text: 'Running',
           status: 'Processing',
         },
         3: {
@@ -296,10 +287,6 @@ const OverviewList = props => {
                 columns={columns}
                 rowSelection={ isMobile ? false : {}}
                 search={false}
-                pagination={{
-                  showSizeChanger: false,
-                  pageSize: 20
-                }}
               />
             )
           }
