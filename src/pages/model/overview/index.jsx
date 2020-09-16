@@ -247,7 +247,7 @@ const OverviewList = props => {
                     <PlusOutlined /> New Model
                   </Button>,
                   <Select
-                    mode="tags"
+                    mode="multiple"
                     showArrow
                     placeholder="Select model types"
                     style={{ minWidth: 240 }}
