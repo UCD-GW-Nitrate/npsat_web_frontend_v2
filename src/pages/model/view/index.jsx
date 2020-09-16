@@ -71,8 +71,8 @@ const View = props => {
   } else if (info.error) {
     return (
       <NoFoundPage
-        subTitle={`Model id with ${id} not found`}
-        title="The model you look for cannot be found"
+        subTitle={`The model id with ${id} inaccessible`}
+        title="The model you look for is private or cannot be found"
         redirection="/model/overview"
         buttonText="Select model"
       />
