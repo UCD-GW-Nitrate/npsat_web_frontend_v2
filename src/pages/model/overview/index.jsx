@@ -119,7 +119,7 @@ const OverviewList = props => {
           status: 'Error'
         },
         1: {
-          text: 'In running queue',
+          text: 'In queue',
           status: 'Default',
         },
         2: {
