@@ -271,14 +271,14 @@ const OverviewList = props => {
                 ]}
                 tableAlertRender={ isMobile ? false : ({ selectedRowKeys, selectedRows }) => (
                   <div>
-                    Selected{' '}
+                    Selected &nbsp;
                     <a
                       style={{
                         fontWeight: 600,
                       }}
                     >
                       {selectedRowKeys.length}
-                    </a>{' '}
+                    </a>&nbsp;
                     Model(s)&nbsp;&nbsp;
                   </div>
                 )}

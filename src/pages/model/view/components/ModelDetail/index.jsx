@@ -207,7 +207,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
             extra={
               <Button
                 type="link"
-                disabled={!info.complete}
+                disabled={info.status !== 3}
                 onClick={() => {
                   history.push({
                     pathname: '/charts',

@@ -7,15 +7,18 @@ const Result = props => {
   const { user } = props;
   const { id = null, ids = null } = location.query;
 
-  return (
-    id && ids? null :
+  if (!id && !ids) {
+    return (
       <NoFoundPage
         subTitle="There is no model(s) based on your query."
         title="No model specified"
         redirection="/model/overview"
         buttonText="Select model(s)"
       />
-  );
+    )
+  }
+
+  return null;
 }
 
 export default connect(({ user }) => ({
