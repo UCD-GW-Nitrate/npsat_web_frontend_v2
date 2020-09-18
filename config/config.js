@@ -53,35 +53,29 @@ export default defineConfig({
               icon: 'dashboard'
             },
             {
-              name: 'models',
+              name: 'overview',
               icon: 'appstore',
-              path: '/model',
-              routes: [
-                {
-                  name: 'overview',
-                  icon: 'bars',
-                  path: '/model/overview',
-                  component: './model/overview'
-                },
-                {
-                  name: 'createModel',
-                  icon: 'appstoreAdd',
-                  path: '/model/create',
-                  component: './model/create-model'
-                },
-                {
-                  name: 'viewModel',
-                  icon: 'edit',
-                  path: '/model/view',
-                  component: './model/view'
-                }
-              ]
+              path: '/model/overview',
+              component: './model/overview'
+            },
+            {
+              name: 'createModel',
+              icon: 'appstoreAdd',
+              path: '/model/create',
+              component: './model/create-model'
+            },
+            {
+              name: 'viewModel',
+              icon: 'edit',
+              path: '/model/view',
+              component: './model/view',
+              hideInMenu: true
             },
             {
               name: 'results',
               icon: 'lineChart',
               path: '/charts/select',
-              component: './results'
+              component: './results/select'
             },
             {
               path: '/charts/view',
