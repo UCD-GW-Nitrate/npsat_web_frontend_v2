@@ -80,8 +80,12 @@ export default defineConfig({
             {
               name: 'results',
               icon: 'lineChart',
-              path: '/charts',
+              path: '/charts/select',
               component: './results'
+            },
+            {
+              path: '/charts/view',
+              hideInMenu: true
             },
             {
               name: 'team',
