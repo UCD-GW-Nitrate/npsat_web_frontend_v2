@@ -130,6 +130,10 @@ const OverviewList = props => {
           text: 'Complete',
           status: 'Success',
         },
+        4: {
+          text: 'Error',
+          status: 'Error'
+        }
       },
     },
     {
