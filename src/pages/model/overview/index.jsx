@@ -8,14 +8,11 @@ import ProTable, {IntlProvider, enUSIntl,} from '@ant-design/pro-table';
 import { deleteModel, queryModelList } from './service';
 
 const handleViewBatch = (selectedRows) => {
-  let modelGroup = '';
-  selectedRows.forEach(item => {
-    modelGroup += `${item.id} `;
-  })
+  const ids = selectedRows.map(r => r.id);
   history.push({
-    pathname: '/charts',
+    pathname: '/charts/group',
     query: {
-      ids: encodeURI(modelGroup)
+      ids: ids.join(",")
     }
   })
 }
@@ -196,9 +193,9 @@ const OverviewList = props => {
             </a>
           </Tooltip>
           <Divider type="vertical" />
-          <Tooltip title="Compare with other models">
+          <Tooltip title="compare with base model">
             <a
-              href={`/charts?id=${record.id}`}
+              href={`/charts/compare?id=${record.id}`}
             >
               Compare
             </a>
@@ -269,7 +266,7 @@ const OverviewList = props => {
                   />,
                   selectedRows && selectedRows.length > 0 && (
                     <Button onClick={() => handleViewBatch(selectedRows)}>
-                      View/Compare results in group
+                      View results in group
                     </Button>
                   ),
                 ]}

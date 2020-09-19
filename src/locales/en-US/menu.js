@@ -47,9 +47,11 @@ export default {
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
   'menu.models': 'Model',
-  'menu.overview': 'Overview',
-  'menu.createModel': 'Create Model',
+  'menu.models.overview': 'Overview',
+  'menu.models.createModel': 'Create Model',
   'menu.models.viewModel': 'Model Details',
   'menu.results': 'Results',
+  'menu.results.compareWithBase': 'Compare with base model',
+  'menu.results.viewGroupResults': 'Compare with other models',
   'menu.team': 'Team',
 };

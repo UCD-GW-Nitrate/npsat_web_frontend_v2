@@ -53,33 +53,48 @@ export default defineConfig({
               icon: 'dashboard'
             },
             {
-              name: 'overview',
+              name: 'models',
               icon: 'appstore',
-              path: '/model/overview',
-              component: './model/overview'
-            },
-            {
-              name: 'createModel',
-              icon: 'appstoreAdd',
-              path: '/model/create',
-              component: './model/create-model'
-            },
-            {
-              name: 'viewModel',
-              icon: 'edit',
-              path: '/model/view',
-              component: './model/view',
-              hideInMenu: true
+              path: '/model',
+              routes: [
+                {
+                  name: 'overview',
+                  icon: 'bars',
+                  path: '/model/overview',
+                  component: './model/overview'
+                },
+                {
+                  name: 'createModel',
+                  icon: 'appstoreAdd',
+                  path: '/model/create',
+                  component: './model/create-model'
+                },
+                {
+                  name: 'viewModel',
+                  icon: 'edit',
+                  path: '/model/view',
+                  component: './model/view'
+                }
+              ]
             },
             {
               name: 'results',
               icon: 'lineChart',
-              path: '/charts/select',
-              component: './results/select'
-            },
-            {
-              path: '/charts/view',
-              hideInMenu: true
+              path: '/charts',
+              routes: [
+                {
+                  name: 'compareWithBase',
+                  icon: 'barChart',
+                  path: '/charts/compare',
+                  component: './results/compare',
+                },
+                {
+                  name: 'viewGroupResults',
+                  icon: 'heatMap',
+                  path: '/charts/group',
+                  component: './results/select'
+                }
+              ],
             },
             {
               name: 'team',
