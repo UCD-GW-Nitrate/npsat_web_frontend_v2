@@ -8,7 +8,7 @@ const Step4 = (props) => {
   const { dispatch, id } = props;
   const onView = () => {
     history.push({
-      pathname: '/charts',
+      pathname: '/model/view',
       query: {
         id
       }
@@ -16,7 +16,7 @@ const Step4 = (props) => {
   }
   const onCheck = () => {
     history.push({
-      pathname: '/model/view',
+      pathname: '/charts/compare',
       query: {
         id
       }
@@ -36,10 +36,10 @@ const Step4 = (props) => {
   const extra = (
     <>
       <Button type="primary" onClick={onView} style={{ marginBottom: 10 }}>
-        View results
+        View details
       </Button>
       <Button onClick={onCheck} style={{ marginBottom: 10 }}>
-        Check model details
+        Compare with base model
       </Button>
       <Button onClick={onCreate}>
         Create another model
