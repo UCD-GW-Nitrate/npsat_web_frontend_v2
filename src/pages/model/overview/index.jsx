@@ -196,12 +196,17 @@ const OverviewList = props => {
             </a>
           </Tooltip>
           <Divider type="vertical" />
-          <Tooltip title="compare with base model">
-            <a
+          <Tooltip title={record.isBase ? 'This a base model' : 'compare with base model'}
+            style={ { pointerEvents: 'all'} }
+          >
+            <Button
+              style={{ padding: 0 }}
               href={`/charts/compare?id=${record.id}`}
+              disabled={record.isBase}
+              type="link"
             >
               Compare
-            </a>
+            </Button>
           </Tooltip>
           <Divider type="vertical" />
           <Popconfirm
