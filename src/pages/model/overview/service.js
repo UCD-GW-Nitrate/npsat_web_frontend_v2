@@ -1,7 +1,12 @@
 import request from '@/utils/request';
 
-export async function queryModelList(params, token, filter) {
+export async function queryModelList(params, filter, token, ...options) {
   const { pageSize, current } = params;
+  const [ sorter, status ] = options;
+  const query = {};
+  if (sorter.length !== 0) {
+    query.sorter = sorter;
+  }
   return request('/api/model_run', {
     headers: { 'Authorization': `Token ${token}` },
     params: {
@@ -9,7 +14,9 @@ export async function queryModelList(params, token, filter) {
       offset: pageSize * (current - 1),
       public: filter.includes("public"),
       isBase: filter.includes("base"),
-      origin: filter.includes("original")
+      origin: filter.includes("original"),
+      status: status.join(","),
+      ...query
     }
   })
 }

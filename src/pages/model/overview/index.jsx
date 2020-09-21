@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import ProTable, {IntlProvider, enUSIntl,} from '@ant-design/pro-table';
 import { deleteModel, queryModelList } from './service';
+import { tokensToFunction } from 'path-to-regexp';
 
 const handleViewBatch = (selectedRows) => {
   const ids = selectedRows.map(r => r.id);
@@ -92,6 +93,8 @@ const OverviewList = props => {
   const { user } = props;
   const { token: userToken, user_id: userId } = user;
   const [ sorter, setSorter ] = useState('');
+  // this is only the status filter
+  const [ filter, setFilter ] = useState([0, 1, 2, 3, 4]);
   const [ types, setTypes ] = useState(['public', 'base', 'original']);
   const actionRef = useRef();
   const columns = [
@@ -236,12 +239,17 @@ const OverviewList = props => {
                 rowKey="key"
                 onChange={(_, _filter, _sorter) => {
                   const sorterResult = _sorter;
-                  if (sorterResult.field) {
-                    setSorter(`${sorterResult.field}_${sorterResult.order}`);
+                  const filterResult = _filter;
+                  if (sorterResult.order) {
+                    setSorter(`${sorterResult.field},${sorterResult.order}`);
+                  } else {
+                    setSorter('');
                   }
-                }}
-                params={{
-                  sorter,
+                  if (filterResult.status) {
+                    setFilter(filterResult.status.map(num => parseInt(num, 10)));
+                  } else {
+                    setFilter([0, 1, 2, 3, 4]);
+                  }
                 }}
                 toolBarRender={ isMobile ? false : (action, { selectedRows }) => [
                   <Button type="primary" onClick={handleCreate}>
@@ -283,7 +291,7 @@ const OverviewList = props => {
                     Model(s)&nbsp;&nbsp;
                   </div>
                 )}
-                request={params => queryModelList(params, userToken, types)
+                request={params => queryModelList(params, types, userToken, sorter, filter)
                   .then(response => ListResponseProcessing(response, userId))}
                 columns={columns}
                 rowSelection={ isMobile ? false : {}}
