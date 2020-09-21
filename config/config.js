@@ -92,7 +92,7 @@ export default defineConfig({
                   name: 'viewGroupResults',
                   icon: 'heatMap',
                   path: '/charts/group',
-                  component: './results/select'
+                  component: './results/group'
                 }
               ],
             },

@@ -3,6 +3,7 @@ import { useLocation, connect, history } from 'umi';
 import NoFoundPage from '@/pages/404';
 import { notification } from 'antd';
 import { getModelAndBaseModel } from '@/pages/results/service';
+import BaseComparison from '@/pages/results/compare/components/results';
 
 const ResultCompare = props => {
   const location = useLocation();
@@ -57,7 +58,7 @@ const ResultCompare = props => {
       />
     )
   } else {
-    return null;
+    return <BaseComparison info={info} />;
   }
 }
 
