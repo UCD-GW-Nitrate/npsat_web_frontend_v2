@@ -116,7 +116,7 @@ const OverviewList = props => {
       valueEnum: {
         0: {
           text: 'Not ready',
-          status: 'Error'
+          status: 'Warning'
         },
         1: {
           text: 'In queue',
