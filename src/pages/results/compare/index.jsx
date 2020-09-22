@@ -4,6 +4,7 @@ import NoFoundPage from '@/pages/404';
 import { notification } from 'antd';
 import { getModelAndBaseModel } from '@/pages/results/service';
 import BaseComparison from '@/pages/results/compare/components/results';
+import SearchTable from '@/components/ModelList';
 
 const ResultCompare = props => {
   const location = useLocation();
@@ -13,20 +14,7 @@ const ResultCompare = props => {
   const { id = null } = location.query;
   useEffect(() => {
     if (id === null) {
-      notification.warn({
-        message: "Please choose a model to compare with the base model",
-        description: "No model selected",
-        duration: 8
-      });
-      // set 5s timer
-      const redirectTimer = setTimeout(() => {
-        history.push({
-          pathname: '/model/overview'
-        });
-      }, 5000);
-      // componentWillUnmount
-      // avoid redirection after leaving current page
-      return () => clearTimeout(redirectTimer);
+      return;
     }
     (async () => {
       const model = await getModelAndBaseModel( { id }, token);
@@ -42,12 +30,8 @@ const ResultCompare = props => {
 
   if (!id) {
     return (
-      <NoFoundPage
-        subTitle="This page will be redirected in 5 seconds"
-        title="No model specified"
-        redirection="/model/overview"
-        buttonText="Select model"
-      />)
+      <SearchTable />
+    );
   } else if (info.error) {
     return (
       <NoFoundPage
