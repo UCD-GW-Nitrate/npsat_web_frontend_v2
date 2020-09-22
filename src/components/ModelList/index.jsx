@@ -5,6 +5,7 @@ import { history } from 'umi';
 import { connect } from 'react-redux';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { searchModel } from '@/services/model';
+import { getScenarios } from '@/services/scenario';
 
 const TagRender = props => {
   const { value, closable, onClose } = props;
@@ -61,11 +62,12 @@ const SearchTable = ({
   const [ data, setData ] = useState([]);
   const [ options, setOptions ] = useState({
     types: [ 'public', 'original', 'base' ],
-    search_text: ''
+    search_text: '',
+    scenarios: []
   });
   const [ pagination, setPagination] = useState({
     current: 1,
-    defaultPageSize: 20,
+    pageSize: 20,
     hideOnSinglePage: false,
     showSizeChanger: true,
     showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
@@ -94,7 +96,7 @@ const SearchTable = ({
     (async () => {
       const {
         data: results, total
-      } = await searchModel(pagination, values.types || [], user.token, values.search_text || '', sorter)
+      } = await searchModel(pagination, values.types || [], user.token, values.search_text || '', sorter, values.scenarios)
         .then(res => ListResponseProcessing(res, user.user_id));
       setData(results);
       setPagination({
@@ -139,7 +141,7 @@ const SearchTable = ({
               const {
                 data: results, total
               } = await searchModel(page, options.types || [], user.token, options.search_text || '',
-                sorter_query)
+                sorter_query, options.scenarios)
                 .then(res => ListResponseProcessing(res, user.user_id));
               setData(results);
               setPagination({
@@ -169,6 +171,13 @@ const NavigationButton = props => (
 );
 
 const SearchForm = ({ onSearch })  => {
+  const [ scenarios, setScenarios ] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const { results } = await getScenarios();
+      setScenarios(results);
+    })();
+  }, []);
   return (
     <Form
       style={{
@@ -208,7 +217,26 @@ const SearchForm = ({ onSearch })  => {
           </Form.Item>
         </Col>
       </Row>
-      <Row justify="end">
+      <Row>
+        <Col span={8}>
+          <Form.Item
+            name="scenarios"
+            label="Scenarios"
+          >
+            <Select
+              mode="multiple"
+              showArrow
+              placeholder="Filter scenarios"
+              style={{ width: '100%' }}
+            >
+              {scenarios.map(item => <Select.Option
+                key={item.id}
+                value={item.id}>
+                {item.name}
+              </Select.Option>)}
+            </Select>
+          </Form.Item>
+        </Col>
         <Col>
           <Form.Item
             style={{ margin: 0 }}

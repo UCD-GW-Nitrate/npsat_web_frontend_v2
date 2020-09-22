@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, connect, history } from 'umi';
+import { useLocation, connect } from 'umi';
 import NoFoundPage from '@/pages/404';
-import { Button, Divider, notification, Popconfirm, Tag, Tooltip } from 'antd';
+import { Tag, Tooltip } from 'antd';
 import { getModelAndBaseModel } from '@/pages/results/service';
 import BaseComparison from '@/pages/results/compare/components/results';
 import SearchTable from '@/components/ModelList';
@@ -31,7 +31,7 @@ const ResultCompare = props => {
   if (!id) {
     return (
       <SearchTable
-        subTitle="compare custom model with base model under same scenario"
+        subTitle={<span>Compare completed custom model with base model under same scenario</span>}
         columns={[
           {
             title: 'Name',

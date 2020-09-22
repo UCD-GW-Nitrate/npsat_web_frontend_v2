@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export async function searchModel(params, filter, token, search_text, ...options) {
   const { pageSize, current } = params;
-  const [ sorter ] = options;
+  const [ sorter, scenarios ] = options;
   const query = {};
   if (search_text.trim().length !== 0) {
     query.search = search_text;
@@ -10,6 +10,10 @@ export async function searchModel(params, filter, token, search_text, ...options
   if (sorter && sorter.length !== 0) {
     query.sorter = sorter;
   }
+  if (scenarios && scenarios.length > 0) {
+    query.scenarios = scenarios.join(",");
+  }
+
   return request('/api/model_run', {
     headers: { 'Authorization': `Token ${token}` },
     params: {
