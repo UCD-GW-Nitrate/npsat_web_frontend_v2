@@ -2,18 +2,18 @@ import request from '@/utils/request';
 
 export async function getRegions(type) {
   return request('/api/region/', {
-    params: { offset: 0, region_type: type }
-  })
+    params: { offset: 0, region_type: type },
+  });
 }
 
 export function getCounties() {
-  return getRegions("County");
+  return getRegions('County');
 }
 
 export function getCentralValley() {
-  return getRegions("Central Valley");
+  return getRegions('Central Valley');
 }
 
 export function getCVHMFarms() {
-  return getRegions("CVHMFarm");
+  return getRegions('CVHMFarm');
 }

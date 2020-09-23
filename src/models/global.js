@@ -4,8 +4,7 @@ const GlobalModel = {
     collapsed: false,
     notices: [],
   },
-  effects: {
-  },
+  effects: {},
   reducers: {
     changeLayoutCollapsed(
       state = {

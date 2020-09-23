@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Button, Spin } from 'antd';
-import { getCVHMFarms } from '@/services/region'
+import { getCVHMFarms } from '@/services/region';
 import { connect } from 'react-redux';
 import styles from '../../index.less';
 import Map from '../FormMap';
@@ -22,7 +22,7 @@ const FarmForm = (props) => {
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={(values) => onSubmit("farm", values)}
+      onFinish={(values) => onSubmit('farm', values)}
     >
       <Form.Item
         name="farm-choice"
@@ -30,12 +30,10 @@ const FarmForm = (props) => {
         rules={[
           {
             required: true,
-            message: "Please choose at least one farm or other region(s)"
-          }
+            message: 'Please choose at least one farm or other region(s)',
+          },
         ]}
-        initialValue={
-          data.hasOwnProperty("farm-choice") ? data["farm-choice"] : []
-        }
+        initialValue={data.hasOwnProperty('farm-choice') ? data['farm-choice'] : []}
       >
         <SelectAndMap />
       </Form.Item>
@@ -57,39 +55,39 @@ const FarmForm = (props) => {
       </Form.Item>
     </Form>
   );
-}
+};
 
 const SelectAndMap = ({ value = [], onChange }) => {
-  const [ farmList, setList ] = useState([]);
-  const [ mapData, setMapData ] = useState([]);
+  const [farmList, setList] = useState([]);
+  const [mapData, setMapData] = useState([]);
   useEffect(() => {
     (async () => {
       const { results: farms } = await getCVHMFarms();
       setList(farms);
-      setMapData(await farms.map(farm => {
-        const data = farm.geometry;
-        data.properties.id = farm.id;
-        data.properties.name = farm.name;
-        return data;
-      }));
+      setMapData(
+        await farms.map((farm) => {
+          const data = farm.geometry;
+          data.properties.id = farm.id;
+          data.properties.name = farm.name;
+          return data;
+        }),
+      );
     })();
   }, []);
-  const onListChange = v => {
+  const onListChange = (v) => {
     if (onChange) {
       onChange(v);
     }
-  }
+  };
   const onMapSelect = (selectingMap, selectedMaps) => {
     if (onChange) {
       if (selectedMaps.indexOf(selectingMap) === -1) {
         onChange([...selectedMaps, selectingMap]);
       } else {
-        onChange(
-          [
-            ...selectedMaps.slice(0, selectedMaps.indexOf(selectingMap)),
-            ...selectedMaps.slice(selectedMaps.indexOf(selectingMap) + 1)
-          ]
-        )
+        onChange([
+          ...selectedMaps.slice(0, selectedMaps.indexOf(selectingMap)),
+          ...selectedMaps.slice(selectedMaps.indexOf(selectingMap) + 1),
+        ]);
       }
     }
   };
@@ -106,15 +104,19 @@ const SelectAndMap = ({ value = [], onChange }) => {
         }
         mode="multiple"
       >
-        {farmList.map(farm => (
-          <Option value={farm.id} key={farm.id}>{farm.name}</Option>
+        {farmList.map((farm) => (
+          <Option value={farm.id} key={farm.id}>
+            {farm.name}
+          </Option>
         ))}
       </Select>
-      <Map data={mapData} onChange={onMapSelect} values={value}/>
+      <Map data={mapData} onChange={onMapSelect} values={value} />
     </>
-  ) : <Spin size="large" tip="loading farm data and map..."/>
-}
+  ) : (
+    <Spin size="large" tip="loading farm data and map..." />
+  );
+};
 
 export default connect(({ createModelForm }) => ({
-  data: createModelForm.step
+  data: createModelForm.step,
 }))(FarmForm);

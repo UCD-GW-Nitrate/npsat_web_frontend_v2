@@ -16,7 +16,7 @@ describe('Model Card unit test suits', () => {
   });
   it('#1.1 control components rendering', () => {
     expect(wrapper.find('Slider').length).toBe(1);
-  })
+  });
 });
 
 describe('Model Card unit test suits with props', () => {
@@ -26,20 +26,20 @@ describe('Model Card unit test suits with props', () => {
   });
   it('#2.1 control components rendering', () => {
     expect(wrapper.find('Switch').length).toBe(0);
-  })
+  });
   it('#2.2 control components rendering', () => {
     expect(wrapper.find('Slider').length).toBe(1);
-  })
+  });
 });
 
 describe('Formatter test', () => {
   it('#1 formatter test num', () => {
-    expect(formatter(100)).toBe('100%')
-  })
+    expect(formatter(100)).toBe('100%');
+  });
   it('#1 formatter test num', () => {
-    expect(formatter(0)).toBe('0%')
-  })
+    expect(formatter(0)).toBe('0%');
+  });
   it('#1 formatter test num', () => {
-    expect(formatter(156)).toBe('156%')
-  })
-})
+    expect(formatter(156)).toBe('156%');
+  });
+});

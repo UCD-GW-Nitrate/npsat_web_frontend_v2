@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Spin, Alert } from 'antd';
-import { getCentralValley } from '@/services/region'
+import { getCentralValley } from '@/services/region';
 import styles from '../../index.less';
 import Map from '../FormMap';
 
@@ -13,17 +13,19 @@ const style = {
   },
 };
 
-const CentralValleyForm = props => {
+const CentralValleyForm = (props) => {
   const { onSubmit } = props;
-  const [ data, setData ] = useState([]);
+  const [data, setData] = useState([]);
   useEffect(() => {
     (async () => {
       const { results: cv } = await getCentralValley();
-      setData(await cv.map(item => {
-        const geojson = item.geometry;
-        geojson.properties.id = item.id;
-        return geojson
-      }));
+      setData(
+        await cv.map((item) => {
+          const geojson = item.geometry;
+          geojson.properties.id = item.id;
+          return geojson;
+        }),
+      );
     })();
   }, []);
   return (
@@ -31,7 +33,7 @@ const CentralValleyForm = props => {
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={() => onSubmit("CV", { "CV" : data[0].properties.id })}
+      onFinish={() => onSubmit('CV', { CV: data[0].properties.id })}
     >
       <Form.Item
         wrapperCol={{
@@ -45,14 +47,12 @@ const CentralValleyForm = props => {
           },
         }}
       >
-        {data.length < 1 ? <Spin size="large" tip="loading data and map..."/> : (
+        {data.length < 1 ? (
+          <Spin size="large" tip="loading data and map..." />
+        ) : (
           <>
             <Alert message="You are selecting the entire Central Valley area." type="success" />
-            <Map
-              data={data}
-              onChange={() => {}}
-              values={ [data[0].properties.id] }
-            />
+            <Map data={data} onChange={() => {}} values={[data[0].properties.id]} />
           </>
         )}
       </Form.Item>
@@ -74,6 +74,6 @@ const CentralValleyForm = props => {
       </Form.Item>
     </Form>
   );
-}
+};
 
 export default CentralValleyForm;

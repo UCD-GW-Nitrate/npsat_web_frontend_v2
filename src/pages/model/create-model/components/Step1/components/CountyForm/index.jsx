@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Button, Spin } from 'antd';
 import { connect } from 'react-redux';
-import { getCounties } from '@/services/region'
+import { getCounties } from '@/services/region';
 import styles from '../../index.less';
 import CountyMap from '../FormMap';
 
@@ -22,7 +22,7 @@ const CountyForm = (props) => {
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={(values) => onSubmit("county", values)}
+      onFinish={(values) => onSubmit('county', values)}
     >
       <Form.Item
         name="county-choice"
@@ -30,12 +30,10 @@ const CountyForm = (props) => {
         rules={[
           {
             required: true,
-            message: "Please choose at least one county or other region(s)"
-          }
+            message: 'Please choose at least one county or other region(s)',
+          },
         ]}
-        initialValue={
-          data.hasOwnProperty("county-choice") ? data["county-choice"] : []
-        }
+        initialValue={data.hasOwnProperty('county-choice') ? data['county-choice'] : []}
       >
         <SelectAndMap />
       </Form.Item>
@@ -57,39 +55,39 @@ const CountyForm = (props) => {
       </Form.Item>
     </Form>
   );
-}
+};
 
 const SelectAndMap = ({ value = [], onChange }) => {
-  const [ countyList, setList ] = useState([]);
-  const [ mapData, setMapData ] = useState([]);
+  const [countyList, setList] = useState([]);
+  const [mapData, setMapData] = useState([]);
   useEffect(() => {
     (async () => {
       const { results: counties } = await getCounties();
       setList(counties);
-      setMapData(await counties.map(county => {
-        const data = county.geometry;
-        data.properties.id = county.id
-        return data;
-      }));
+      setMapData(
+        await counties.map((county) => {
+          const data = county.geometry;
+          data.properties.id = county.id;
+          return data;
+        }),
+      );
     })();
   }, []);
-  const onListChange = v => {
+  const onListChange = (v) => {
     if (onChange) {
       onChange(v);
     }
-  }
+  };
 
   const onMapSelect = (selectingMap, selectedMaps) => {
     if (onChange) {
       if (selectedMaps.indexOf(selectingMap) === -1) {
         onChange([...selectedMaps, selectingMap]);
       } else {
-        onChange(
-          [
-            ...selectedMaps.slice(0, selectedMaps.indexOf(selectingMap)),
-            ...selectedMaps.slice(selectedMaps.indexOf(selectingMap) + 1)
-          ]
-        )
+        onChange([
+          ...selectedMaps.slice(0, selectedMaps.indexOf(selectingMap)),
+          ...selectedMaps.slice(selectedMaps.indexOf(selectingMap) + 1),
+        ]);
       }
     }
   };
@@ -107,16 +105,19 @@ const SelectAndMap = ({ value = [], onChange }) => {
         }
         mode="multiple"
       >
-        {countyList.map(county => (
-          <Option value={county.id} key={county.id}>{county.name}</Option>
+        {countyList.map((county) => (
+          <Option value={county.id} key={county.id}>
+            {county.name}
+          </Option>
         ))}
       </Select>
-      <CountyMap data={mapData} onChange={onMapSelect} values={value}/>
+      <CountyMap data={mapData} onChange={onMapSelect} values={value} />
     </>
-  ) : <Spin size="large" tip="loading county data and map..."/>
-}
-
+  ) : (
+    <Spin size="large" tip="loading county data and map..." />
+  );
+};
 
 export default connect(({ createModelForm }) => ({
-  data: createModelForm.step
+  data: createModelForm.step,
 }))(CountyForm);

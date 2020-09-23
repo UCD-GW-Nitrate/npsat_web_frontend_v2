@@ -10,7 +10,7 @@ import CountyMap from './index.jsx';
 configure({ adapter: new Adapter() });
 
 describe('County Map rendering', () => {
-  const wrapper = shallow(<CountyMap data={[]}/>);
+  const wrapper = shallow(<CountyMap data={[]} />);
   it('#1 map rendering', () => {
     expect(wrapper.find('Map').length).toBe(1);
   });

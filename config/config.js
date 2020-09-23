@@ -50,7 +50,7 @@ export default defineConfig({
             {
               path: '/dashboard',
               name: 'dashboard',
-              icon: 'dashboard'
+              icon: 'dashboard',
             },
             {
               name: 'models',
@@ -61,21 +61,21 @@ export default defineConfig({
                   name: 'overview',
                   icon: 'bars',
                   path: '/model/overview',
-                  component: './model/overview'
+                  component: './model/overview',
                 },
                 {
                   name: 'createModel',
                   icon: 'appstoreAdd',
                   path: '/model/create',
-                  component: './model/create-model'
+                  component: './model/create-model',
                 },
                 {
                   name: 'viewModel',
                   icon: 'edit',
                   path: '/model/view',
-                  component: './model/view'
-                }
-              ]
+                  component: './model/view',
+                },
+              ],
             },
             {
               name: 'results',
@@ -92,14 +92,14 @@ export default defineConfig({
                   name: 'viewGroupResults',
                   icon: 'heatMap',
                   path: '/charts/group',
-                  component: './results/group'
-                }
+                  component: './results/group',
+                },
               ],
             },
             {
               name: 'team',
               icon: 'team',
-              path: '/team'
+              path: '/team',
             },
             {
               component: './404',

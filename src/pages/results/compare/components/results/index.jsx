@@ -3,7 +3,6 @@ import { Anchor, Button, Card, Descriptions, Steps, Tabs, Tooltip } from 'antd';
 import React from 'react';
 import styles from './style.less';
 
-
 const BaseComparison = ({ info }) => {
   return (
     <PageHeaderWrapper
@@ -11,12 +10,10 @@ const BaseComparison = ({ info }) => {
       subTitle="Compare a custom model with the base model under same scenario"
     >
       <div className={styles.main}>
-        <Card>
-
-        </Card>
+        <Card></Card>
       </div>
     </PageHeaderWrapper>
-  )
+  );
 };
 
 export default BaseComparison;

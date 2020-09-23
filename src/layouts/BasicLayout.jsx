@@ -28,8 +28,8 @@ const noMatch = (
 /**
  * use Authorized check all menu item
  */
-const menuDataRender = menuList =>
-  menuList.map(item => {
+const menuDataRender = (menuList) =>
+  menuList.map((item) => {
     const localItem = {
       ...item,
       children: item.children ? menuDataRender(item.children) : undefined,
@@ -57,7 +57,7 @@ const defaultFooterDom = (
   />
 );
 
-const BasicLayout = props => {
+const BasicLayout = (props) => {
   const {
     dispatch,
     children,
@@ -81,11 +81,11 @@ const BasicLayout = props => {
    * init variables
    */
 
-  const handleMenuCollapse = payload => {
+  const handleMenuCollapse = (payload) => {
     if (dispatch) {
       dispatch({
         type: 'global/changeLayoutCollapsed',
-        payload
+        payload,
       });
     }
   }; // get children authority

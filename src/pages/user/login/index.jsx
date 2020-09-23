@@ -17,11 +17,11 @@ const LoginMessage = ({ content }) => (
   />
 );
 
-const Login = props => {
+const Login = (props) => {
   const { userLogin = {}, submitting } = props;
-  const { status = { status: "unknown" } } = userLogin;
+  const { status = { status: 'unknown' } } = userLogin;
 
-  const handleSubmit = values => {
+  const handleSubmit = (values) => {
     const { dispatch } = props;
     dispatch({
       type: 'user/login',
@@ -32,9 +32,7 @@ const Login = props => {
   return (
     <div className={styles.main}>
       <LoginForm onSubmit={handleSubmit}>
-        {status.status === 'error' && !submitting && (
-          <LoginMessage content={status.message} />
-        )}
+        {status.status === 'error' && !submitting && <LoginMessage content={status.message} />}
 
         <UserName
           name="username"

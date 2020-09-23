@@ -3,46 +3,45 @@ import { Button, Select, Divider, Form, Row, Col, Checkbox, Popover } from 'antd
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { ordinalSuffix } from '@/utils/utils';
-import 'antd/es/style/themes/default.less'
+import 'antd/es/style/themes/default.less';
 import { useForm } from 'antd/es/form/Form';
 import styles from './index.less';
 
 // usage: pass plot data, percentile list, and reduction year
 const AreaPlot = ({ percentiles, data, reductionYear }) => {
-  const [ form ] = useForm();
-  const [ values, setValues ] = useState({
+  const [form] = useForm();
+  const [values, setValues] = useState({
     upperBound: 0,
     lowerBound: 0,
     existMedian: false,
     median: 0,
   });
-  const [ areas, setPlot ] = useState([]);
+  const [areas, setPlot] = useState([]);
   useEffect(() => {
     if (!(Object.keys(data).length === 0 || values.upperBound === 0 || values.lowerBound === 0)) {
       if (values.median !== 0) {
         // split low, med, up
         const med = data[values.median];
-        const temp = med.map((d, index) => (
-          {
+        const temp = med.map((d, index) => ({
+          year: d.year,
+          value: [data[values.lowerBound][index].value, d.value],
+          interval: `${ordinalSuffix(values.lowerBound)}-${ordinalSuffix(values.median)}`,
+        }));
+        const res = temp.concat(
+          med.map((d, index) => ({
             year: d.year,
-            value: [ data[values.lowerBound][index].value, d.value ],
-            interval: `${ordinalSuffix(values.lowerBound)}-${ordinalSuffix(values.median)}`
-          }));
-        const res = temp.concat(med.map((d, index) => (
-          {
-            year: d.year,
-            value: [ d.value, data[values.upperBound][index].value ],
-            interval: `${ordinalSuffix(values.median)}-${ordinalSuffix(values.upperBound)}`
-          })));
+            value: [d.value, data[values.upperBound][index].value],
+            interval: `${ordinalSuffix(values.median)}-${ordinalSuffix(values.upperBound)}`,
+          })),
+        );
         setPlot(res);
       } else {
         // split low, up
-        const temp = data[values.upperBound].map((d, index) => (
-            {
-              year: d.year,
-              value: [ data[values.lowerBound][index].value, d.value ],
-              interval: `${ordinalSuffix(values.lowerBound)}-${ordinalSuffix(values.upperBound)}`
-            }));
+        const temp = data[values.upperBound].map((d, index) => ({
+          year: d.year,
+          value: [data[values.lowerBound][index].value, d.value],
+          interval: `${ordinalSuffix(values.lowerBound)}-${ordinalSuffix(values.upperBound)}`,
+        }));
         setPlot(temp);
       }
     } else {
@@ -68,7 +67,7 @@ const AreaPlot = ({ percentiles, data, reductionYear }) => {
             if (upperBound && lowerBound && percentiles.includes((upperBound + lowerBound) / 2)) {
               update.existMedian = true;
               if (enableMedian) {
-                update.median = ((upperBound + lowerBound) / 2);
+                update.median = (upperBound + lowerBound) / 2;
               } else {
                 update.median = 0;
               }
@@ -78,24 +77,19 @@ const AreaPlot = ({ percentiles, data, reductionYear }) => {
             }
             setValues({
               ...values,
-              ...update
+              ...update,
             });
           }}
         >
           <Row gutter={40} className={styles.rowAdjust}>
             <Col span={10}>
-              <Form.Item
-                name="lowerBound"
-                label="Lower bound"
-              >
-                <Select
-                  placeholder="Select percentile lower bound"
-                >
-                  {percentiles.map(percentile =>
+              <Form.Item name="lowerBound" label="Lower bound">
+                <Select placeholder="Select percentile lower bound">
+                  {percentiles.map((percentile) => (
                     <Select.Option value={percentile} key={percentile}>
                       {`${ordinalSuffix(percentile)} percentile`}
                     </Select.Option>
-                  )}
+                  ))}
                 </Select>
               </Form.Item>
             </Col>
@@ -110,28 +104,22 @@ const AreaPlot = ({ percentiles, data, reductionYear }) => {
                       if (!value || getFieldValue('lowerBound') < value) {
                         return Promise.resolve();
                       }
-                      return Promise.reject('Upper bound must be greater than lower bound')
-                    }
-                  })
+                      return Promise.reject('Upper bound must be greater than lower bound');
+                    },
+                  }),
                 ]}
               >
-                <Select
-                  placeholder="Select percentile upper bound"
-                >
-                  {percentiles.map(percentile =>
+                <Select placeholder="Select percentile upper bound">
+                  {percentiles.map((percentile) => (
                     <Select.Option value={percentile} key={percentile}>
                       {`${ordinalSuffix(percentile)} percentile`}
                     </Select.Option>
-                  )}
+                  ))}
                 </Select>
               </Form.Item>
             </Col>
             <Col span={4}>
-              <Form.Item
-                label="Median"
-                name="enableMedian"
-                valuePropName="checked"
-              >
+              <Form.Item label="Median" name="enableMedian" valuePropName="checked">
                 <Checkbox disabled={!values.existMedian}>
                   <Popover content="some median percentiles may not be supported">
                     <QuestionCircleOutlined />
@@ -143,7 +131,7 @@ const AreaPlot = ({ percentiles, data, reductionYear }) => {
           <div className={styles.utilityButtons}>
             <Button
               type="primary"
-              style={{marginRight: "10px"}}
+              style={{ marginRight: '10px' }}
               onClick={() => {
                 setValues({
                   upperBound: 95,
@@ -154,26 +142,29 @@ const AreaPlot = ({ percentiles, data, reductionYear }) => {
                 form.setFieldsValue({
                   upperBound: 95,
                   lowerBound: 5,
-                  enableMedian: true
+                  enableMedian: true,
                 });
-              }}>
-              Select 5th, 50th, 95th</Button>
+              }}
+            >
+              Select 5th, 50th, 95th
+            </Button>
             <Button
               onClick={() => {
                 setValues({
                   upperBound: 90,
                   lowerBound: 10,
                   existMedian: true,
-                  median: 50
+                  median: 50,
                 });
                 form.setFieldsValue({
                   upperBound: 90,
                   lowerBound: 10,
-                  enableMedian: true
+                  enableMedian: true,
                 });
               }}
             >
-              Select 10th, 50th, 90th</Button>
+              Select 10th, 50th, 90th
+            </Button>
             <Divider type="vertical" />
             <Button
               onClick={() => {
@@ -186,10 +177,12 @@ const AreaPlot = ({ percentiles, data, reductionYear }) => {
                 form.setFieldsValue({
                   upperBound: undefined,
                   lowerBound: undefined,
-                  enableMedian: false
-                })
+                  enableMedian: false,
+                });
               }}
-            >Clear</Button>
+            >
+              Clear
+            </Button>
           </div>
         </Form>
         <Divider />
@@ -199,25 +192,32 @@ const AreaPlot = ({ percentiles, data, reductionYear }) => {
         autoFit
         height={500}
         data={areas}
-        scale={{ value: { min: 0, alias: 'Amount of Nitrogen', nice: true }, year: { tickCount: 10, sync: true } }}
+        scale={{
+          value: { min: 0, alias: 'Amount of Nitrogen', nice: true },
+          year: { tickCount: 10, sync: true },
+        }}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
-        defaultInteractions={['tooltip', 'element-highlight', 'legend-highlight', ]}
+        defaultInteractions={['tooltip', 'element-highlight', 'legend-highlight']}
         pure
       >
-        <Area position="year*value" color="interval"/>
-        <Line position="year*value" color="interval"/>
+        <Area position="year*value" color="interval" />
+        <Line position="year*value" color="interval" />
         <Tooltip showCrosshairs shared />
-        <Axis name="value" title/>
+        <Axis name="value" title />
         <Axis name="year" />
         <Legend position="top" />
-        { reductionYear ?
+        {reductionYear ? (
           <Annotation.Line
             start={[reductionYear, 'min']}
             end={[reductionYear, 'max']}
-            text={{ position: '90%', content: 'reduction year', style: { fill: 'red' }, autoRotate: false}}/>
-          :
-          null
-        }
+            text={{
+              position: '90%',
+              content: 'reduction year',
+              style: { fill: 'red' },
+              autoRotate: false,
+            }}
+          />
+        ) : null}
         <Slider />
       </Chart>
     </div>

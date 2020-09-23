@@ -1,4 +1,5 @@
 # NPSAT
+
 This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
 
 ## Environment Prepare
@@ -48,16 +49,19 @@ npm run lint:fix
 ### Test code
 
 To run all tests
+
 ```bash
 npm test
 ```
 
 To run only unit tests
+
 ```bash
 npm test .test
 ```
 
 To run only smoke tests
+
 ```bash
 npm test .e2e.test
 ```

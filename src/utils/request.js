@@ -26,7 +26,7 @@ import { notification } from 'antd';
 //  * 异常处理程序
 //  */
 //
-const errorHandler = error => {
+const errorHandler = (error) => {
   const { response } = error;
 
   if (response && response.status) {

@@ -22,7 +22,7 @@ class SecurityLayout extends React.Component {
     if (cachedUser && cachedUser.token && Object.entries(currentUser).length === 0) {
       dispatch({
         type: 'user/loadingCache',
-        payload: cachedUser
+        payload: cachedUser,
       });
     }
     const isLogin = (currentUser && currentUser.token) || (cachedUser && cachedUser.token);

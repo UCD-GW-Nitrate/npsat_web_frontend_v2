@@ -5,8 +5,8 @@ import { history } from 'umi';
 const NoFoundPage = ({
   redirection = '/',
   title = '404',
-  subTitle = "Sorry, the page you visited does not exist.",
-  buttonText = "Back Home"
+  subTitle = 'Sorry, the page you visited does not exist.',
+  buttonText = 'Back Home',
 }) => (
   <Result
     status="404"

@@ -6,17 +6,16 @@ import { connect } from 'react-redux';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import ProTable, {IntlProvider, enUSIntl,} from '@ant-design/pro-table';
 import { deleteModel, queryModelList } from './service';
-import { tokensToFunction } from 'path-to-regexp';
 
 const handleViewBatch = (selectedRows) => {
-  const ids = selectedRows.map(r => r.id);
+  const ids = selectedRows.map((r) => r.id);
   history.push({
     pathname: '/charts/group',
     query: {
-      ids: ids.join(",")
-    }
-  })
-}
+      ids: ids.join(','),
+    },
+  });
+};
 
 /**
  * handle crate new model button
@@ -24,52 +23,52 @@ const handleViewBatch = (selectedRows) => {
  */
 const handleCreate = () => {
   history.push('/model/create');
-}
+};
 
-const TagRender = props => {
+const TagRender = (props) => {
   const { value, closable, onClose } = props;
   let color;
   switch (value) {
     default:
-    case "original":
-      color = "volcano";
+    case 'original':
+      color = 'volcano';
       break;
-    case "public":
-      color = "geekblue"
+    case 'public':
+      color = 'geekblue';
       break;
-    case "base":
-      color = "green"
+    case 'base':
+      color = 'green';
   }
   return (
     <Tag color={color} closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
       {value}
     </Tag>
   );
-}
+};
 
 const ListResponseProcessing = (response, userId) => {
   const { results } = response;
-  const data = []
-  results.forEach(temp => {
+  const data = [];
+  results.forEach((temp) => {
     const model = temp;
-    model.key = model.id
+    model.key = model.id;
     model.tags = [];
     if (model.public) {
-      model.tags.push("public");
+      model.tags.push('public');
     }
     if (model.isBase) {
-      model.tags.push("base");
+      model.tags.push('base');
     }
     if (model.user === userId) {
-      model.tags.push("original");
+      model.tags.push('original');
     }
     data.push(model);
   });
   return {
     data,
-    total: response.count
-  }
-}
+    total: response.count,
+  };
+};
 
 /**
  * handle click: delete model
@@ -87,28 +86,28 @@ const onClickDelete = async (id, token, action) => {
     hide();
     message.error('Model deletion failed, please try again');
   }
-}
+};
 
-const OverviewList = props => {
+const OverviewList = (props) => {
   const { user } = props;
   const { token: userToken, user_id: userId } = user;
-  const [ sorter, setSorter ] = useState('');
+  const [sorter, setSorter] = useState('');
   // this is only the status filter
-  const [ filter, setFilter ] = useState([0, 1, 2, 3, 4]);
-  const [ types, setTypes ] = useState(['public', 'base', 'original']);
+  const [filter, setFilter] = useState([0, 1, 2, 3, 4]);
+  const [types, setTypes] = useState(['public', 'base', 'original']);
   const actionRef = useRef();
   const columns = [
     {
       title: 'Model Name',
       dataIndex: 'name',
-      valueType: 'textarea'
+      valueType: 'textarea',
     },
     {
       title: 'Description',
       dataIndex: 'description',
       valueType: 'textarea',
       ellipsis: true,
-      width: 250
+      width: 250,
     },
     {
       title: 'Status',
@@ -116,7 +115,7 @@ const OverviewList = props => {
       valueEnum: {
         0: {
           text: 'Not ready',
-          status: 'Warning'
+          status: 'Warning',
         },
         1: {
           text: 'In queue',
@@ -132,8 +131,8 @@ const OverviewList = props => {
         },
         4: {
           text: 'Error',
-          status: 'Error'
-        }
+          status: 'Error',
+        },
       },
     },
     {
@@ -146,7 +145,7 @@ const OverviewList = props => {
       title: 'Date Completed',
       dataIndex: 'date_completed',
       sorter: (a, b) => new Date(a.date_completed) > new Date(b.date_completed),
-      valueType: 'dateTime'
+      valueType: 'dateTime',
     },
     {
       title: 'Types',
@@ -154,33 +153,33 @@ const OverviewList = props => {
       dataIndex: 'tags',
       render: (tags, record) => (
         <span>
-        {tags.map(tag => {
-          let color;
-          let title;
-          switch (tag) {
-            default:
-            case "original":
-              color = "volcano";
-              title = "created by you"
-              break;
-            case "public":
-              color = "geekblue"
-              title = "accessible by everyone"
-              break;
-            case "base":
-              color = "green"
-              title = `base model of ${record.scenario.name}`
-          }
-          return (
-            <Tooltip title={title} key={record.key + tag}>
-              <Tag color={color} key={tag}>
-                {tag}
-              </Tag>
-            </Tooltip>
-          );
-        })}
+          {tags.map((tag) => {
+            let color;
+            let title;
+            switch (tag) {
+              default:
+              case 'original':
+                color = 'volcano';
+                title = 'created by you';
+                break;
+              case 'public':
+                color = 'geekblue';
+                title = 'accessible by everyone';
+                break;
+              case 'base':
+                color = 'green';
+                title = `base model of ${record.scenario.name}`;
+            }
+            return (
+              <Tooltip title={title} key={record.key + tag}>
+                <Tag color={color} key={tag}>
+                  {tag}
+                </Tag>
+              </Tooltip>
+            );
+          })}
         </span>
-      )
+      ),
     },
     {
       title: 'Action',
@@ -189,15 +188,12 @@ const OverviewList = props => {
       render: (_, record) => (
         <>
           <Tooltip title="view details">
-            <a
-              href={`/model/view?id=${record.id}`}
-            >
-              Details
-            </a>
+            <a href={`/model/view?id=${record.id}`}>Details</a>
           </Tooltip>
           <Divider type="vertical" />
-          <Tooltip title={record.isBase ? 'This a base model' : 'compare with base model'}
-            style={ { pointerEvents: 'all'} }
+          <Tooltip
+            title={record.isBase ? 'This a base model' : 'compare with base model'}
+            style={{ pointerEvents: 'all' }}
           >
             <Button
               style={{ padding: 0 }}
@@ -235,75 +231,84 @@ const OverviewList = props => {
     >
       <IntlProvider value={enUSIntl}>
         <RouteContext.Consumer>
-          {
-            ({ isMobile }) => (
-              <ProTable
-                scroll={{ x: 'max-content' }}
-                headerTitle="Model Overview"
-                actionRef={actionRef}
-                rowKey="key"
-                onChange={(_, _filter, _sorter) => {
-                  const sorterResult = _sorter;
-                  const filterResult = _filter;
-                  if (sorterResult.order) {
-                    setSorter(`${sorterResult.field},${sorterResult.order}`);
-                  } else {
-                    setSorter('');
-                  }
-                  if (filterResult.status) {
-                    setFilter(filterResult.status.map(num => parseInt(num, 10)));
-                  } else {
-                    setFilter([0, 1, 2, 3, 4]);
-                  }
-                }}
-                toolBarRender={ isMobile ? false : (action, { selectedRows }) => [
-                  <Button type="primary" onClick={handleCreate}>
-                    <PlusOutlined /> New Model
-                  </Button>,
-                  <Select
-                    mode="multiple"
-                    showArrow
-                    placeholder="Select model types"
-                    style={{ minWidth: 240 }}
-                    tagRender={TagRender}
-                    value={types}
-                    onChange={value => {
-                      setTypes([...value]);
-                      action.reload();
-                    }}
-                    options={[
-                      { label: 'include public models', value: 'public' },
-                      { label: 'include self-created models', value: 'original' },
-                      { label: 'include base scenario models', value: 'base' },
-                    ]}
-                  />,
-                  selectedRows && selectedRows.length > 0 && (
-                    <Button onClick={() => handleViewBatch(selectedRows)}>
-                      View results in group
-                    </Button>
-                  ),
-                ]}
-                tableAlertRender={ isMobile ? false : ({ selectedRowKeys, selectedRows }) => (
-                  <div>
-                    Selected &nbsp;
-                    <a
-                      style={{
-                        fontWeight: 600,
-                      }}
-                    >
-                      {selectedRowKeys.length}
-                    </a>&nbsp;
-                    Model(s)&nbsp;&nbsp;
-                  </div>
-                )}
-                request={params => queryModelList(params, types, userToken, sorter, filter)
-                  .then(response => ListResponseProcessing(response, userId))}
-                columns={columns}
-                rowSelection={ isMobile ? false : {}}
-                search={false}
-              />
-            )
-          }
+          {({ isMobile }) => (
+            <ProTable
+              scroll={{ x: 'max-content' }}
+              headerTitle="Model Overview"
+              actionRef={actionRef}
+              rowKey="key"
+              onChange={(_, _filter, _sorter) => {
+                const sorterResult = _sorter;
+                const filterResult = _filter;
+                if (sorterResult.order) {
+                  setSorter(`${sorterResult.field},${sorterResult.order}`);
+                } else {
+                  setSorter('');
+                }
+                if (filterResult.status) {
+                  setFilter(filterResult.status.map((num) => parseInt(num, 10)));
+                } else {
+                  setFilter([0, 1, 2, 3, 4]);
+                }
+              }}
+              toolBarRender={
+                isMobile
+                  ? false
+                  : (action, { selectedRows }) => [
+                      <Button type="primary" onClick={handleCreate}>
+                        <PlusOutlined /> New Model
+                      </Button>,
+                      <Select
+                        mode="multiple"
+                        showArrow
+                        placeholder="Select model types"
+                        style={{ minWidth: 240 }}
+                        tagRender={TagRender}
+                        value={types}
+                        onChange={(value) => {
+                          setTypes([...value]);
+                          action.reload();
+                        }}
+                        options={[
+                          { label: 'include public models', value: 'public' },
+                          { label: 'include self-created models', value: 'original' },
+                          { label: 'include base scenario models', value: 'base' },
+                        ]}
+                      />,
+                    selectedRows && selectedRows.length > 0 &&  (
+                        <Button onClick={() => handleViewBatch(selectedRows)}>
+                          View results in group
+                        </Button>
+                      ),
+                    ]
+              }
+              tableAlertRender={
+                isMobile
+                  ? false
+                  : ({ selectedRowKeys, selectedRows }) => (
+                      <div>
+                        Selected &nbsp;
+                        <a
+                          style={{
+                            fontWeight: 600,
+                          }}
+                        >
+                          {selectedRowKeys.length}
+                        </a>
+                        &nbsp; Model(s)&nbsp;&nbsp;
+                      </div>
+                    )
+              }
+              request={(params) =>
+                queryModelList(params, types, userToken, sorter, filter).then((response) =>
+                  ListResponseProcessing(response, userId),
+                )
+              }
+              columns={columns}
+              rowSelection={isMobile ? false : {}}
+              search={false}
+            />
+          )}
         </RouteContext.Consumer>
       </IntlProvider>
     </PageHeaderWrapper>
@@ -311,5 +316,5 @@ const OverviewList = props => {
 };
 
 export default connect(({ user }) => ({
-  user: user.currentUser
+  user: user.currentUser,
 }))(OverviewList);

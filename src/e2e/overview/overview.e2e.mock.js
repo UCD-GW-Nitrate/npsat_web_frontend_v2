@@ -40,7 +40,7 @@ describe('overview smoke test suits with mock data', () => {
     const url = await page.url();
     await page.close();
     expect(url).toBe(`${BASE_URL}/model/overview`);
-  })
+  });
 
   it('login then click overview on menu', async () => {
     // eslint-disable-next-line no-undef
@@ -122,12 +122,14 @@ describe('overview smoke test suits with mock data', () => {
     const url = await page.url();
     await page.close();
     expect(url).toBe(`${BASE_URL}/model/overview`);
-  })
+  });
 
   it('login redirect overview on menu', async () => {
     // eslint-disable-next-line no-undef
     const page = await browser.newPage();
-    await page.goto(`${BASE_URL}/user/login?redirect=http%3A%2F%2Flocalhost%3A8000%2Fmodel%2Foverview`);
+    await page.goto(
+      `${BASE_URL}/user/login?redirect=http%3A%2F%2Flocalhost%3A8000%2Fmodel%2Foverview`,
+    );
     await page.setRequestInterception(true);
     await page.on('request', async (request) => {
       const url = await request.url();
@@ -163,7 +165,9 @@ describe('overview smoke test suits with mock data', () => {
   it('login redirect overview on menu | click new model', async () => {
     // eslint-disable-next-line no-undef
     const page = await browser.newPage();
-    await page.goto(`${BASE_URL}/user/login?redirect=http%3A%2F%2Flocalhost%3A8000%2Fmodel%2Foverview`);
+    await page.goto(
+      `${BASE_URL}/user/login?redirect=http%3A%2F%2Flocalhost%3A8000%2Fmodel%2Foverview`,
+    );
     await page.setRequestInterception(true);
     await page.on('request', async (request) => {
       const url = await request.url();
@@ -193,11 +197,10 @@ describe('overview smoke test suits with mock data', () => {
     ]);
     await Promise.all([
       page.waitForNavigation({ waitUntil: 'networkidle2' }),
-      page.click('button[class="ant-btn ant-btn-primary"]')
+      page.click('button[class="ant-btn ant-btn-primary"]'),
     ]);
     const url = await page.url();
     await page.close();
     expect(url).toBe(`${BASE_URL}/model/create`);
   });
-
-})
+});

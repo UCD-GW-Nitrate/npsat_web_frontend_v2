@@ -13,12 +13,12 @@ const formItemLayout = {
   },
 };
 
-const Step2 = props => {
+const Step2 = (props) => {
   const [form] = Form.useForm();
   const { dispatch, token, data } = props;
   const { getFieldsValue } = form;
-  const [ selectedCrops, setSelected ] = useState(
-    data.hasOwnProperty("selectedCrops") ? data.selectedCrops : []
+  const [selectedCrops, setSelected] = useState(
+    data.hasOwnProperty('selectedCrops') ? data.selectedCrops : [],
   );
 
   const onNext = (values) => {
@@ -30,7 +30,7 @@ const Step2 = props => {
       type: 'createModelForm/saveCurrentStep',
       payload: 'Model Info',
     });
-  }
+  };
 
   const onPrev = () => {
     if (dispatch) {
@@ -61,28 +61,31 @@ const Step2 = props => {
           rules={[
             {
               required: true,
-              message: "Please choose at least one crop",
+              message: 'Please choose at least one crop',
             },
             {
               validator: () => {
-                const values = getFieldsValue(["crop-choice"])["crop-choice"];
+                const values = getFieldsValue(['crop-choice'])['crop-choice'];
                 if (!values) {
-                  return Promise.reject("choose at least one crop or enable selected crop(s)" +
-                    " or toggle 'All Crops'");
+                  return Promise.reject(
+                    'choose at least one crop or enable selected crop(s)' +
+                      " or toggle 'All Crops'",
+                  );
                 }
                 for (const config in values) {
                   if (values[config].enable) {
                     return Promise.resolve();
                   }
                 }
-                return Promise.reject("choose at least one crop or enable selected crop(s)" +
-                  " or toggle 'All Crops'");
-              }
-            }
+                return Promise.reject(
+                  'choose at least one crop or enable selected crop(s)' + " or toggle 'All Crops'",
+                );
+              },
+            },
           ]}
-          initialValue={data.hasOwnProperty("crop-choice")? data["crop-choice"] : undefined}
+          initialValue={data.hasOwnProperty('crop-choice') ? data['crop-choice'] : undefined}
         >
-          <CropCardForm selectedCrops={selectedCrops} setSelected={setSelected}/>
+          <CropCardForm selectedCrops={selectedCrops} setSelected={setSelected} />
         </Form.Item>
         <Form.Item
           style={{
@@ -120,9 +123,7 @@ const Step2 = props => {
       <div className={styles.desc}>
         <h3>Instructions</h3>
         <h4>Select a crop</h4>
-        <p>
-          Drag to change the proportion
-        </p>
+        <p>Drag to change the proportion</p>
       </div>
     </>
   );
@@ -130,5 +131,5 @@ const Step2 = props => {
 
 export default connect(({ user, createModelForm }) => ({
   token: user.currentUser.token,
-  data: createModelForm.step
+  data: createModelForm.step,
 }))(Step2);

@@ -11,7 +11,7 @@ configure({ adapter: new Adapter() });
 
 describe('Create Model Step1 CVForm unit shallow test suits', () => {
   const wrapper = shallow(<CVForm />);
-  it("#1 Form Item rendering", () => {
+  it('#1 Form Item rendering', () => {
     expect(wrapper.find('FormItem').length).toBe(2);
-  })
+  });
 });

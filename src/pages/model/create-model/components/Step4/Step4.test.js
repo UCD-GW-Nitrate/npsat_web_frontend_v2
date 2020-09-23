@@ -11,7 +11,7 @@ configure({ adapter: new Adapter() });
 
 describe('Create Model Step4 unit shallow test suits', () => {
   const wrapper = shallow(<Step4.WrappedComponent user={{ currentUser: {} }} />);
-  it("#1 Step4 Form rendering", () => {
+  it('#1 Step4 Form rendering', () => {
     expect(wrapper.find('Result').length).toBe(1);
-  })
+  });
 });

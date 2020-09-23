@@ -10,7 +10,7 @@ import styles from './style.less';
 
 const { Step } = Steps;
 
-const getCurrentStepAndComponent = current => {
+const getCurrentStepAndComponent = (current) => {
   switch (current) {
     case 'Select Crops':
       return {
@@ -27,8 +27,8 @@ const getCurrentStepAndComponent = current => {
     case 'Results':
       return {
         step: 3,
-        component: <Step4 />
-      }
+        component: <Step4 />,
+      };
 
     case 'Select Regions':
     default:
@@ -48,8 +48,10 @@ const StepForm = ({ current }) => {
     setStepComponent(component);
   }, [current]);
   return (
-    <PageHeaderWrapper content="Follow the instructions to create a model. The model will
-     be scheduled to run once it's created">
+    <PageHeaderWrapper
+      content="Follow the instructions to create a model. The model will
+     be scheduled to run once it's created"
+    >
       <Card bordered={false}>
         <>
           <Steps current={currentStep} className={styles.steps}>
@@ -66,5 +68,5 @@ const StepForm = ({ current }) => {
 };
 
 export default connect(({ createModelForm }) => ({
-  current: createModelForm.current
+  current: createModelForm.current,
 }))(StepForm);

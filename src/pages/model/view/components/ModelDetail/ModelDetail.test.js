@@ -16,8 +16,8 @@ describe('Model detail page unit test suits', () => {
   });
   it('#1.1 meta info rendering', () => {
     expect(wrapper.find('Descriptions').length).toBe(1);
-  })
+  });
   it('#1.2 table rendering', () => {
     expect(wrapper.find('TableWrapper').length).toBe(1);
-  })
+  });
 });

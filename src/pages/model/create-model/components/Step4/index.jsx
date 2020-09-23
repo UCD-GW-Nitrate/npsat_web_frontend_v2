@@ -10,18 +10,18 @@ const Step4 = (props) => {
     history.push({
       pathname: '/model/view',
       query: {
-        id
-      }
-    })
-  }
+        id,
+      },
+    });
+  };
   const onCheck = () => {
     history.push({
       pathname: '/charts/compare',
       query: {
-        id
-      }
-    })
-  }
+        id,
+      },
+    });
+  };
   const onCreate = () => {
     if (dispatch) {
       dispatch({
@@ -29,10 +29,10 @@ const Step4 = (props) => {
         payload: 'Select Regions',
       });
       dispatch({
-        type: 'createModelForm/clearStoredStepInfo'
-      })
+        type: 'createModelForm/clearStoredStepInfo',
+      });
     }
-  }
+  };
   const extra = (
     <>
       <Button type="primary" onClick={onView} style={{ marginBottom: 10 }}>
@@ -41,34 +41,31 @@ const Step4 = (props) => {
       <Button onClick={onCheck} style={{ marginBottom: 10 }}>
         Compare with base model
       </Button>
-      <Button onClick={onCreate}>
-        Create another model
-      </Button>
+      <Button onClick={onCreate}>Create another model</Button>
     </>
   );
-  return id === -1 ?
-    (
-      <Result
-        status="error"
-        title="Model creation failed"
-        subTitle="Please contact the site manager"
-        extra={
-          <Button onClick={onCreate} type="primary">
-            Create another model
-          </Button>
-        }
-      />
-    ) : (
+  return id === -1 ? (
     <Result
-        status='success'
-        title="Model created"
-        subTitle="Model will be running for a few seconds to generate results"
-        className={styles.result}
-        extra={extra}
+      status="error"
+      title="Model creation failed"
+      subTitle="Please contact the site manager"
+      extra={
+        <Button onClick={onCreate} type="primary">
+          Create another model
+        </Button>
+      }
     />
-  )
-}
+  ) : (
+    <Result
+      status="success"
+      title="Model created"
+      subTitle="Model will be running for a few seconds to generate results"
+      className={styles.result}
+      extra={extra}
+    />
+  );
+};
 
 export default connect(({ createModelForm }) => ({
-  id: createModelForm.results.id
+  id: createModelForm.results.id,
 }))(Step4);

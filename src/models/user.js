@@ -14,7 +14,7 @@ const UserModel = {
     *loadingCache({ payload }, { put }) {
       yield put({
         type: 'saveCurrentUser',
-        payload
+        payload,
       });
     },
     *login({ payload }, { call, put }) {
@@ -30,7 +30,7 @@ const UserModel = {
           payload: response,
         });
 
-        localStorage.setItem('npsat_user_info', JSON.stringify(response))
+        localStorage.setItem('npsat_user_info', JSON.stringify(response));
 
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -55,7 +55,7 @@ const UserModel = {
       } else {
         yield put({
           type: 'changeLoginStatus',
-          payload: { status: 'error', message: "Invalid username or password" },
+          payload: { status: 'error', message: 'Invalid username or password' },
         });
       }
     },
@@ -65,9 +65,9 @@ const UserModel = {
 
       // remove cache
       yield put({
-        type: 'exitAndClear'
-      })
-      localStorage.removeItem('npsat_user_info')
+        type: 'exitAndClear',
+      });
+      localStorage.removeItem('npsat_user_info');
 
       if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
@@ -94,8 +94,8 @@ const UserModel = {
       return { ...state, status: payload };
     },
     exitAndClear() {
-      return { currentUser: {}, status: {} }
-    }
+      return { currentUser: {}, status: {} };
+    },
   },
 };
 export default UserModel;

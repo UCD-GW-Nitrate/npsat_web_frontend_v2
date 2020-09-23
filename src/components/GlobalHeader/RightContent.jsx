@@ -10,7 +10,7 @@ const ENVTagColor = {
   pre: '#87d068',
 };
 
-const GlobalHeaderRight = props => {
+const GlobalHeaderRight = (props) => {
   const { theme, layout } = props;
   let className = styles.right;
 

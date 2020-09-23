@@ -5,8 +5,8 @@ import moment from 'moment';
 import { getScenarios } from '@/services/scenario';
 import styles from './index.less';
 
-const Step3 = props => {
-  const [ scenarios, setScenarios ] = useState([]);
+const Step3 = (props) => {
+  const [scenarios, setScenarios] = useState([]);
   const [form] = Form.useForm();
   const { getFieldsValue } = form;
   const { dispatch, user, data = {} } = props;
@@ -36,9 +36,9 @@ const Step3 = props => {
     });
     dispatch({
       type: 'createModelForm/createModel',
-      payload: { ...data, ...user, ...values }
-    })
-  }
+      payload: { ...data, ...user, ...values },
+    });
+  };
 
   const onPrev = () => {
     if (dispatch) {
@@ -69,19 +69,19 @@ const Step3 = props => {
           rules={[
             {
               required: true,
-              message: 'Please enter the model name'
-            }
+              message: 'Please enter the model name',
+            },
           ]}
           initialValue={data.hasOwnProperty('model-name') ? data['model-name'] : undefined}
         >
-          <Input placeholder="model name"/>
+          <Input placeholder="model name" />
         </Form.Item>
         <Form.Item
           name="model-desc"
           label="Description"
           initialValue={data.hasOwnProperty('model-desc') ? data['model-desc'] : undefined}
         >
-          <TextArea rows={4}/>
+          <TextArea rows={4} />
         </Form.Item>
         <Form.Item
           name="n_years"
@@ -89,12 +89,12 @@ const Step3 = props => {
           required={[
             {
               required: true,
-              message: 'Please enter numbers of years to stimulate the model'
-            }
+              message: 'Please enter numbers of years to stimulate the model',
+            },
           ]}
           initialValue={data.hasOwnProperty('n_years') ? data.n_years : 100}
         >
-          <InputNumber min={100} max={500}/>
+          <InputNumber min={100} max={500} />
         </Form.Item>
         <Form.Item
           name="reduction_year"
@@ -102,12 +102,12 @@ const Step3 = props => {
           required={[
             {
               required: true,
-              message: 'Please enter the reduction year'
-            }
+              message: 'Please enter the reduction year',
+            },
           ]}
           initialValue={data.hasOwnProperty('reduction_year') ? data.reduction_year : moment()}
         >
-          <DatePicker picker="year"/>
+          <DatePicker picker="year" />
         </Form.Item>
         <Form.Item
           name="water_content"
@@ -115,16 +115,12 @@ const Step3 = props => {
           required={[
             {
               required: true,
-              message: 'Please enter the water content'
-            }
+              message: 'Please enter the water content',
+            },
           ]}
           initialValue={data.hasOwnProperty('water_content') ? data.water_content : 0}
         >
-          <InputNumber
-            min={0}
-            max={100}
-            formatter={v => `${v}%`}
-          />
+          <InputNumber min={0} max={100} formatter={(v) => `${v}%`} />
         </Form.Item>
         <Form.Item
           name="scenario"
@@ -132,13 +128,17 @@ const Step3 = props => {
           required={[
             {
               required: true,
-              message: 'Please choose a scenario'
-            }
+              message: 'Please choose a scenario',
+            },
           ]}
           initialValue={data.hasOwnProperty('scenario') ? data.scenario_name : undefined}
         >
           <Select>
-            {scenarios.map(scenario => <Select.Option value={scenario.id} key={scenario.id}>{scenario.name}</Select.Option>)}
+            {scenarios.map((scenario) => (
+              <Select.Option value={scenario.id} key={scenario.id}>
+                {scenario.name}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
         <Form.Item
@@ -177,33 +177,22 @@ const Step3 = props => {
       <div className={styles.desc}>
         <h3>Instructions</h3>
         <h4>Model name</h4>
-        <p>
-          Enter a model name, limited 255 characters.
-        </p>
+        <p>Enter a model name, limited 255 characters.</p>
         <h4>Model description</h4>
-        <p>
-          Enter model optional description, no characters limit.
-        </p>
+        <p>Enter model optional description, no characters limit.</p>
         <h4>Years to stimulate</h4>
         <p>
-          Enter The number of years to simulate, default to 100. For the time being this should not be less than 100 and no more than 500.
+          Enter The number of years to simulate, default to 100. For the time being this should not
+          be less than 100 and no more than 500.
         </p>
         <h4>Reduction year</h4>
-        <p>
-          The year to start the reduction, default to current year.
-        </p>
+        <p>The year to start the reduction, default to current year.</p>
         <h4>Water content</h4>
-        <p>
-          This is the unsaturated zone mobile water content, default to 0.
-        </p>
+        <p>This is the unsaturated zone mobile water content, default to 0.</p>
         <h4>Scenario</h4>
-        <p>
-          This is a name that would correspond to steady state model/period.
-        </p>
+        <p>This is a name that would correspond to steady state model/period.</p>
         <h4>Other selections</h4>
-        <p>
-          Developing...
-        </p>
+        <p>Developing...</p>
       </div>
     </>
   );
@@ -211,5 +200,5 @@ const Step3 = props => {
 
 export default connect(({ user, createModelForm }) => ({
   user: user.currentUser,
-  data: createModelForm.step
+  data: createModelForm.step,
 }))(Step3);

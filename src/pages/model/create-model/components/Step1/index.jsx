@@ -8,47 +8,47 @@ import CentralValleyForm from './components/CentralValleyForm';
 
 const { TabPane } = Tabs;
 
-const Step1 = props => {
-  const { dispatch, token, region = "CV" } = props;
+const Step1 = (props) => {
+  const { dispatch, token, region = 'CV' } = props;
   const onSubmit = (type, values) => {
     if (dispatch) {
       switch (type) {
         // extensible
-        case "CV":
+        case 'CV':
           dispatch({
             type: 'createModelForm/saveStepFormData',
             payload: {
               step1Type: type,
-              ...values
-            }
+              ...values,
+            },
           });
           break;
-        case "farm":
+        case 'farm':
           dispatch({
             type: 'createModelForm/saveStepFormData',
             payload: {
               step1Type: type,
-              ...values
-            }
+              ...values,
+            },
           });
           break;
         default:
-        case "county":
+        case 'county':
           dispatch({
             type: 'createModelForm/saveStepFormData',
             payload: {
               step1Type: type,
-              ...values
-            }
+              ...values,
+            },
           });
       }
 
       dispatch({
         type: 'createModelForm/saveCurrentStep',
-        payload: 'Select Crops'
-      })
+        payload: 'Select Crops',
+      });
     }
-  }
+  };
   return (
     <>
       <Tabs defaultActiveKey={region} tabPosition="top" centered>
@@ -76,15 +76,9 @@ const Step1 = props => {
       <div className={styles.desc}>
         <h3>Instructions</h3>
         <h4>Select a region or regions</h4>
-        <p>
-          Choose the type of regions.
-        </p>
-        <p>
-          Choose region(s) on the map or in the dropdown list.
-        </p>
-        <p>
-          Click Next to continue selecting other model parameters.
-        </p>
+        <p>Choose the type of regions.</p>
+        <p>Choose region(s) on the map or in the dropdown list.</p>
+        <p>Click Next to continue selecting other model parameters.</p>
       </div>
     </>
   );
@@ -92,5 +86,5 @@ const Step1 = props => {
 
 export default connect(({ user, createModelForm }) => ({
   token: user.currentUser.token,
-  region: createModelForm.step.step1Type
+  region: createModelForm.step.step1Type,
 }))(Step1);
