@@ -65,6 +65,7 @@ const SearchTable = ({ user }) => {
       fixed: 'left',
       ellipsis: isMobile,
       width: isMobile ? 100 : 200,
+      copyable: true
     },
     {
       title: 'Description',
