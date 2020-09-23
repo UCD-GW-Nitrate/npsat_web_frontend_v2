@@ -1,9 +1,9 @@
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Row, Col, Tag, Select, Checkbox, Form, Input, message, Tooltip, Badge } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import { searchModel } from '@/services/model';
 import { getScenarios } from '@/services/scenario';
 
@@ -58,22 +58,26 @@ const SearchTable = ({
   subTitle = 'Choose a model to view full details',
   user,
 }) => {
+  const { isMobile } = useContext(RouteContext);
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
       fixed: 'left',
+      copyable: true,
+      ellipsis: isMobile,
+      width: isMobile ? 100 : 200
     },
     {
       title: 'Description',
       dataIndex: 'description',
       ellipsis: true,
-      width: 200,
-      textWrap: 'word-break',
+      width: 250,
     },
     {
       title: 'Scenario',
       dataIndex: 'scenario_name',
+      copyable: true,
     },
     {
       title: 'Status',
@@ -166,7 +170,7 @@ const SearchTable = ({
           <a href={`/model/view?id=${record.id}`}>Details</a>
         </Tooltip>
       ),
-      width: 100
+      width: 70
     },
   ];
   const [data, setData] = useState([]);
@@ -244,7 +248,6 @@ const SearchTable = ({
       }}>
         <ProTable
           headerTitle="Search results"
-          pagination={pagination}
           dataSource={data}
           scroll={{ x: 'max-content' }}
           rowKey="id"
@@ -282,6 +285,7 @@ const SearchForm = ({ onSearch }) => {
         marginTop: 20,
       }}
       onFinish={onSearch}
+      hideRequiredMark
     >
       <Row gutter={16}>
         <Col flex="auto">
@@ -329,8 +333,16 @@ const SearchForm = ({ onSearch }) => {
             name="status"
             valuePropName="checked"
             initialValue={["0", "1", "2", "3", "4"]}
+            rules={[
+              {
+                required: true,
+                message: 'You must select at least one status'
+              }
+            ]}
           >
-            <Checkbox.Group style={{ width: '100%' }}>
+            <Checkbox.Group style={{ width: '100%' }}
+              defaultValue={["0", "1", "2", "3", "4"]}
+            >
               <Row>
                 <Col span={8}>
                   <Checkbox value="0">

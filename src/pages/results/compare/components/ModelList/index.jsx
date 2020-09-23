@@ -1,10 +1,10 @@
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Row, Col, Tag, Select, Form, Input, message, Tooltip } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import { searchModel } from '@/services/model';
 import { getScenarios } from '@/services/scenario';
 
@@ -55,13 +55,15 @@ const ListResponseProcessing = (response, userId) => {
 };
 
 const SearchTable = ({ user }) => {
+  const { isMobile } = useContext(RouteContext);
   const subTitle = <span>Compare completed custom model with base model under same scenario</span>;
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
       fixed: 'left',
-      ellipsis: true
+      ellipsis: isMobile,
+      width: isMobile ? 100 : 200
     },
     {
       title: 'Description',
@@ -72,6 +74,7 @@ const SearchTable = ({ user }) => {
     {
       title: 'Scenario',
       dataIndex: 'scenario_name',
+      copyable: true
     },
     {
       title: 'Reduction year',
@@ -229,7 +232,6 @@ const SearchTable = ({ user }) => {
       }}>
         <ProTable
           headerTitle="Search results"
-          pagination={pagination}
           dataSource={data}
           rowKey="id"
           columns={columns}
