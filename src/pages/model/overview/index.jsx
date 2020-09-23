@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
-import ProTable, {IntlProvider, enUSIntl,} from '@ant-design/pro-table';
+import ProTable, {ConfigProvider, enUSIntl,} from '@ant-design/pro-table';
 import { deleteModel, queryModelList } from './service';
 
 const handleViewBatch = (selectedRows) => {
@@ -229,7 +229,9 @@ const OverviewList = (props) => {
        You can check them in details, compare their results, or delete the models created by you.
        Some features will be disabled if you view this page with a mobile device"
     >
-      <IntlProvider value={enUSIntl}>
+      <ConfigProvider value={{
+        intl: enUSIntl
+      }}>
         <RouteContext.Consumer>
           {({ isMobile }) => (
             <ProTable
@@ -310,7 +312,7 @@ const OverviewList = (props) => {
             />
           )}
         </RouteContext.Consumer>
-      </IntlProvider>
+      </ConfigProvider>
     </PageHeaderWrapper>
   );
 };

@@ -3,7 +3,6 @@ import request from '@/utils/request';
 export async function searchModel(params, filter, token, search_text, ...options) {
   const { pageSize, current } = params;
   const [sorter, scenarios, status] = options;
-  console.log(options);
   const query = {};
   if (search_text.trim().length !== 0) {
     query.search = search_text;
