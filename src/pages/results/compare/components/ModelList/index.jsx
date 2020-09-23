@@ -1,8 +1,9 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Row, Col, Tag, Select, Table, Card, Form, Input, message, Tooltip } from 'antd';
+import { Button, Row, Col, Tag, Select, Form, Input, message, Tooltip } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
+import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { searchModel } from '@/services/model';
 import { getScenarios } from '@/services/scenario';
@@ -60,6 +61,7 @@ const SearchTable = ({ user }) => {
       title: 'Name',
       dataIndex: 'name',
       fixed: 'left',
+      ellipsis: true
     },
     {
       title: 'Description',
@@ -141,6 +143,7 @@ const SearchTable = ({ user }) => {
             <a href={`/model/view?id=${record.id}`}>Details</a>
           </Tooltip>
         ),
+      width: 100
     },
   ];
   const [data, setData] = useState([]);
@@ -221,8 +224,11 @@ const SearchTable = ({ user }) => {
       }
       content={<SearchForm onSearch={onSearch} />}
     >
-      <Card title="Search results">
-        <Table
+      <ConfigProvider value={{
+        intl: enUSIntl
+      }}>
+        <ProTable
+          headerTitle="Search results"
           pagination={pagination}
           dataSource={data}
           rowKey="id"
@@ -239,8 +245,10 @@ const SearchTable = ({ user }) => {
             setSorter(sorter_query);
             query(page, options, sorter_query);
           }}
+          rowSelection={false}
+          search={false}
         />
-      </Card>
+      </ConfigProvider>
     </PageHeaderWrapper>
   );
 };

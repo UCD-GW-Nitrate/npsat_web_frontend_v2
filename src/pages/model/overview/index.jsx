@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
-import ProTable, {ConfigProvider, enUSIntl,} from '@ant-design/pro-table';
+import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { deleteModel, queryModelList } from './service';
 
 const handleViewBatch = (selectedRows) => {
@@ -229,9 +229,11 @@ const OverviewList = (props) => {
        You can check them in details, compare their results, or delete the models created by you.
        Some features will be disabled if you view this page with a mobile device"
     >
-      <ConfigProvider value={{
-        intl: enUSIntl
-      }}>
+      <ConfigProvider
+        value={{
+          intl: enUSIntl,
+        }}
+      >
         <RouteContext.Consumer>
           {({ isMobile }) => (
             <ProTable
@@ -277,7 +279,7 @@ const OverviewList = (props) => {
                           { label: 'include base scenario models', value: 'base' },
                         ]}
                       />,
-                    selectedRows && selectedRows.length > 0 &&  (
+                      selectedRows && selectedRows.length > 0 && (
                         <Button onClick={() => handleViewBatch(selectedRows)}>
                           View results in group
                         </Button>

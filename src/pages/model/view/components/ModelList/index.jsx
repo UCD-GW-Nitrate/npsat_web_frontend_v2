@@ -1,7 +1,8 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Row, Col, Tag, Select, Table, Card, Form, Input, message, Tooltip } from 'antd';
+import { Button, Row, Col, Tag, Select, Checkbox, Form, Input, message, Tooltip, Badge } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { searchModel } from '@/services/model';
 import { getScenarios } from '@/services/scenario';
@@ -74,7 +75,32 @@ const SearchTable = ({
       title: 'Scenario',
       dataIndex: 'scenario_name',
     },
-    {},
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      valueEnum: {
+        0: {
+          text: 'Not ready',
+          status: 'Warning',
+        },
+        1: {
+          text: 'In queue',
+          status: 'Default',
+        },
+        2: {
+          text: 'Running',
+          status: 'Processing',
+        },
+        3: {
+          text: 'Complete',
+          status: 'Success',
+        },
+        4: {
+          text: 'Error',
+          status: 'Error',
+        },
+      },
+    },
     {
       title: 'Reduction year',
       dataIndex: 'reduction_year',
@@ -140,6 +166,7 @@ const SearchTable = ({
           <a href={`/model/view?id=${record.id}`}>Details</a>
         </Tooltip>
       ),
+      width: 100
     },
   ];
   const [data, setData] = useState([]);
@@ -212,10 +239,14 @@ const SearchTable = ({
       subTitle={subTitle}
       content={<SearchForm onSearch={onSearch} />}
     >
-      <Card title="Search results">
-        <Table
+      <ConfigProvider value={{
+        intl: enUSIntl
+      }}>
+        <ProTable
+          headerTitle="Search results"
           pagination={pagination}
           dataSource={data}
+          scroll={{ x: 'max-content' }}
           rowKey="id"
           columns={columns}
           bordered
@@ -229,8 +260,10 @@ const SearchTable = ({
             setSorter(sorter_query);
             query(page, options, sorter_query);
           }}
+          rowSelection={false}
+          search={false}
         />
-      </Card>
+      </ConfigProvider>
     </PageHeaderWrapper>
   );
 };
@@ -291,6 +324,46 @@ const SearchForm = ({ onSearch }) => {
           </Form.Item>
         </Col>
         <Col xs={24} sm={8}>
+          <Form.Item
+            label="Status"
+            name="status"
+            valuePropName="checked"
+            initialValue={["0", "1", "2", "3", "4"]}
+          >
+            <Checkbox.Group style={{ width: '100%' }}>
+              <Row>
+                <Col span={8}>
+                  <Checkbox value="0">
+                    <Badge text="Not ready" status="warning"/>
+                  </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox value="1">
+                    <Badge text="In queue" status="default"/>
+                  </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox value="2">
+                    <Badge text="Running" status="processing"/>
+                  </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox value="3">
+                    <Badge text="Complete" status="success"/>
+                  </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox value="4">
+                    <Badge text="Error" status="error"/>
+                  </Checkbox>
+                </Col>
+              </Row>
+            </Checkbox.Group>
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
           <Form.Item style={{ margin: 0 }}>
             <Button type="primary" htmlType="submit" style={{ float: 'right' }}>
               <SearchOutlined />
