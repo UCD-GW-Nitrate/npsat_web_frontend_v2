@@ -1,5 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Row, Col, Tag, Select, Table, Card, Form, Input } from 'antd';
+import { Button, Row, Col, Tag, Select, Table, Card, Form, Input, message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
@@ -91,12 +91,15 @@ const SearchTable = ({
       })
     })();
   }, []);
-  const onSearch = (values) => {
-    setOptions({ ...values });
+  const query = (_pagination, _options, _sorter) => {
+    message.loading({
+      content: "searching...",
+      key: 'updating'
+    });
     (async () => {
       const {
         data: results, total
-      } = await searchModel(pagination, values.types || [], user.token, values.search_text || '', sorter, values.scenarios)
+      } = await searchModel(_pagination, _options.types || [], user.token, _options.search_text || '', _sorter, _options.scenarios)
         .then(res => ListResponseProcessing(res, user.user_id));
       setData(results);
       setPagination({
@@ -104,6 +107,14 @@ const SearchTable = ({
         total
       })
     })();
+    message.success({
+      content: "search success",
+      key: 'updating'
+    });
+  };
+  const onSearch = (values) => {
+    setOptions({ ...values });
+    query(pagination, values, sorter);
   };
   return (
     <PageHeaderWrapper
@@ -137,18 +148,7 @@ const SearchTable = ({
               sorter_query = '';
             }
             setSorter(sorter_query);
-            (async () => {
-              const {
-                data: results, total
-              } = await searchModel(page, options.types || [], user.token, options.search_text || '',
-                sorter_query, options.scenarios)
-                .then(res => ListResponseProcessing(res, user.user_id));
-              setData(results);
-              setPagination({
-                ...pagination,
-                total
-              })
-            })();
+            query(page, options, sorter_query);
           }}
         />
       </Card>
@@ -196,7 +196,7 @@ const SearchForm = ({ onSearch })  => {
             />
           </Form.Item>
         </Col>
-        <Col>
+        <Col xs={24} sm={8}>
           <Form.Item
             label="Model types"
             name="types"
@@ -206,7 +206,7 @@ const SearchForm = ({ onSearch })  => {
               mode="multiple"
               showArrow
               placeholder="Select model types"
-              style={{ minWidth: 240 }}
+              style={{ width: '100%' }}
               tagRender={TagRender}
               options={[
                 { label: 'include public models', value: 'public' },
@@ -217,8 +217,8 @@ const SearchForm = ({ onSearch })  => {
           </Form.Item>
         </Col>
       </Row>
-      <Row>
-        <Col span={8}>
+      <Row gutter={24}>
+        <Col xs={24} sm={16}>
           <Form.Item
             name="scenarios"
             label="Scenarios"
@@ -237,13 +237,14 @@ const SearchForm = ({ onSearch })  => {
             </Select>
           </Form.Item>
         </Col>
-        <Col>
+        <Col xs={24} sm={8}>
           <Form.Item
             style={{ margin: 0 }}
           >
             <Button
               type="primary"
               htmlType="submit"
+              style={{ float: 'right' }}
             >
               <SearchOutlined />
               Search
