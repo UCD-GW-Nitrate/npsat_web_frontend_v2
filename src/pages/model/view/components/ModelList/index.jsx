@@ -1,16 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons';
-import {
-  Button,
-  Row,
-  Col,
-  Tag,
-  Select,
-  Checkbox,
-  Form,
-  Input,
-  Tooltip,
-  Badge,
-} from 'antd';
+import { Button, Row, Col, Tag, Select, Checkbox, Form, Input, Tooltip, Badge } from 'antd';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';

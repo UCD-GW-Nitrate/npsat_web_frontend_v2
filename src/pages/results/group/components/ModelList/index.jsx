@@ -1,16 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons';
-import {
-  Button,
-  Row,
-  Col,
-  Tag,
-  Select,
-  Checkbox,
-  Form,
-  Input,
-  Tooltip,
-  Badge,
-} from 'antd';
+import { Button, Row, Col, Tag, Select, Checkbox, Form, Input, Tooltip, Badge, Space } from 'antd';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
@@ -191,6 +180,7 @@ const SearchTable = ({
     status: [0, 1, 2, 3, 4],
   });
   const [sorter, setSorter] = useState('');
+  const [models, setModels] = useState([]);
   const onSearch = (values) => {
     setOptions({ ...values });
     actionRef.current.reload();
@@ -202,12 +192,12 @@ const SearchTable = ({
       content={<SearchForm onSearch={onSearch} />}
       extra={
         <Button
-          href='/charts/compare'
-          type='primary'
+          href="/charts/compare"
+          type="primary"
           onClick={() => {
             history.push({
-              path: '/charts/compare'
-            })
+              path: '/charts/compare',
+            });
           }}
         >
           Switch to base model comparison
@@ -234,6 +224,49 @@ const SearchTable = ({
               setSorter('');
             }
           }}
+          tableAlertRender={({ selectedRowKeys }) => (
+            <div>
+              Selected &nbsp;
+              <a
+                style={{
+                  fontWeight: 600,
+                  color: selectedRowKeys.length > 5 ? 'red' : '#1890ff',
+                }}
+              >
+                {selectedRowKeys.length}
+              </a>
+              &nbsp; Model(s). Maximum of{' '}
+              <a
+                style={{
+                  fontWeight: 600,
+                  color: selectedRowKeys.length > 5 ? 'red' : '#1890ff',
+                }}
+              >
+                5
+              </a>{' '}
+              .
+            </div>
+          )}
+          toolBarRender={(action, { selectedRowKeys }) => [
+            <Tooltip title={() => {
+              if (selectedRowKeys.length === 0) {
+                return "Start select models.";
+              } else if (selectedRowKeys.length === 1) {
+                return "Select more models for comparison.";
+              } else if (selectedRowKeys.length > 5) {
+                return "Too much models selected.";
+              } else {
+                return "Confirm and compare models.";
+              }
+            }}>
+              <Button
+                type="primary"
+                disabled={selectedRowKeys.length <= 1 || selectedRowKeys.length > 5}
+              >
+                Compare in groups
+              </Button>
+            </Tooltip>,
+          ]}
           request={(_page) =>
             searchModel(
               _page,
