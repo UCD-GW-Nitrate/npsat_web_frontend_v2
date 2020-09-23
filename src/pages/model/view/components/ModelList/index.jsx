@@ -108,11 +108,13 @@ const SearchTable = ({
     {
       title: 'Reduction year',
       dataIndex: 'reduction_year',
+      sorter: (a, b) => a > b
     },
     {
       title: 'Water content',
       dataIndex: 'water_content',
       render: (value) => `${value * 100}%`,
+      sorter: (a, b) => a > b
     },
     {
       title: 'Date Created',
@@ -318,6 +320,7 @@ const SearchForm = ({ onSearch }) => {
               showArrow
               placeholder="Filter scenarios"
               style={{ width: '100%' }}
+              optionFilterProp="children"
             >
               {scenarios.map((item) => (
                 <Select.Option key={item.id} value={item.id}>

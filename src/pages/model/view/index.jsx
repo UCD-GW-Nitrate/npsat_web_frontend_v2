@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, connect } from 'umi';
-import { notification, Tag, Tooltip } from 'antd';
+import { notification } from 'antd';
 import NoFoundPage from '@/pages/404';
 import { getModelDetail, putModel } from '@/pages/model/view/service';
 import ModelDetail from './components/ModelDetail';

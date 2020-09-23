@@ -56,7 +56,7 @@ const ListResponseProcessing = (response, userId) => {
 
 const SearchTable = ({ user }) => {
   const { isMobile } = useContext(RouteContext);
-  const subTitle = <span>Compare completed custom model with base model under same scenario</span>;
+  const subTitle = "Compare a completed custom model with the base model under same scenario";
   const columns = [
     {
       title: 'Name',
@@ -79,11 +79,13 @@ const SearchTable = ({ user }) => {
     {
       title: 'Reduction year',
       dataIndex: 'reduction_year',
+      sorter: (a, b) => a > b
     },
     {
       title: 'Water content',
       dataIndex: 'water_content',
       render: (value) => `${value * 100}%`,
+      sorter: (a, b) => a > b
     },
     {
       title: 'Date Created',
@@ -301,6 +303,7 @@ const SearchForm = ({ onSearch }) => {
               showArrow
               placeholder="Filter scenarios"
               style={{ width: '100%' }}
+              optionFilterProp="children"
             >
               {scenarios.map((item) => (
                 <Select.Option key={item.id} value={item.id}>

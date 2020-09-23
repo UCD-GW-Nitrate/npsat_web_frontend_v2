@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, connect } from 'umi';
 import NoFoundPage from '@/pages/404';
-import { Tag, Tooltip } from 'antd';
 import { getModelAndBaseModel } from '@/pages/results/service';
 import BaseComparison from '@/pages/results/compare/components/results';
 import SearchTable from '@/pages/results/compare/components/ModelList';
