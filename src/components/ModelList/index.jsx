@@ -103,12 +103,12 @@ const SearchTable = ({
         .then(res => ListResponseProcessing(res, user.user_id));
       setData(results);
       setPagination({
-        ...pagination,
+        ..._pagination,
         total
       })
     })();
     message.success({
-      content: "search success",
+      content: "updated",
       key: 'updating'
     });
   };
@@ -133,7 +133,6 @@ const SearchTable = ({
         title="Search results"
       >
         <Table
-          size="small"
           pagination={pagination}
           dataSource={data}
           rowKey="id"
