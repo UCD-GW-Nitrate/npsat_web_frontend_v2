@@ -1,6 +1,6 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Row, Col, Tag, Select, Form, Input, message, Tooltip } from 'antd';
-import React, { useState, useEffect, useContext } from 'react';
+import { Button, Row, Col, Tag, Select, Form, Input, Tooltip } from 'antd';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
@@ -56,14 +56,15 @@ const ListResponseProcessing = (response, userId) => {
 
 const SearchTable = ({ user }) => {
   const { isMobile } = useContext(RouteContext);
-  const subTitle = "Compare a completed custom model with the base model under same scenario";
+  const actionRef = useRef();
+  const subTitle = 'Compare a completed custom model with the base model under same scenario';
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
       fixed: 'left',
       ellipsis: isMobile,
-      width: isMobile ? 100 : 200
+      width: isMobile ? 100 : 200,
     },
     {
       title: 'Description',
@@ -74,18 +75,24 @@ const SearchTable = ({ user }) => {
     {
       title: 'Scenario',
       dataIndex: 'scenario_name',
-      copyable: true
+      copyable: true,
+    },
+    {
+      title: 'Year range',
+      dataIndex: 'n_years',
+      render: (value) => `1945 - ${1945 + value}`,
+      sorter: (a, b) => a > b,
     },
     {
       title: 'Reduction year',
       dataIndex: 'reduction_year',
-      sorter: (a, b) => a > b
+      sorter: (a, b) => a > b,
     },
     {
       title: 'Water content',
       dataIndex: 'water_content',
       render: (value) => `${value * 100}%`,
-      sorter: (a, b) => a > b
+      sorter: (a, b) => a > b,
     },
     {
       title: 'Date Created',
@@ -148,67 +155,18 @@ const SearchTable = ({ user }) => {
             <a href={`/model/view?id=${record.id}`}>Details</a>
           </Tooltip>
         ),
-      width: 100
+      width: 100,
     },
   ];
-  const [data, setData] = useState([]);
   const [options, setOptions] = useState({
     types: ['public', 'original', 'base'],
     search_text: '',
     scenarios: [],
   });
-  const [pagination, setPagination] = useState({
-    current: 1,
-    pageSize: 20,
-    hideOnSinglePage: false,
-    showSizeChanger: true,
-    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-    responsive: true,
-  });
   const [sorter, setSorter] = useState('');
-  useEffect(() => {
-    (async () => {
-      const { data: results, total } = await searchModel(
-        pagination,
-        ['public', 'original', 'base'],
-        user.token,
-        '',
-      ).then((res) => ListResponseProcessing(res, user.user_id));
-      setData(results);
-      setPagination({
-        ...pagination,
-        total,
-      });
-    })();
-  }, []);
-  const query = (_pagination, _options, _sorter) => {
-    message.loading({
-      content: 'searching...',
-      key: 'updating',
-    });
-    (async () => {
-      const { data: results, total } = await searchModel(
-        _pagination,
-        _options.types || [],
-        user.token,
-        _options.search_text || '',
-        _sorter,
-        _options.scenarios,
-      ).then((res) => ListResponseProcessing(res, user.user_id));
-      setData(results);
-      setPagination({
-        ..._pagination,
-        total,
-      });
-    })();
-    message.success({
-      content: 'updated',
-      key: 'updating',
-    });
-  };
   const onSearch = (values) => {
     setOptions({ ...values });
-    query(pagination, values, sorter);
+    actionRef.current.reload();
   };
   return (
     <PageHeaderWrapper
@@ -229,13 +187,15 @@ const SearchTable = ({ user }) => {
       }
       content={<SearchForm onSearch={onSearch} />}
     >
-      <ConfigProvider value={{
-        intl: enUSIntl
-      }}>
+      <ConfigProvider
+        value={{
+          intl: enUSIntl,
+        }}
+      >
         <ProTable
           headerTitle="Search results"
-          dataSource={data}
           rowKey="id"
+          actionRef={actionRef}
           columns={columns}
           scroll={{ x: 'max-content' }}
           bordered
@@ -247,10 +207,20 @@ const SearchTable = ({ user }) => {
               sorter_query = '';
             }
             setSorter(sorter_query);
-            query(page, options, sorter_query);
           }}
           rowSelection={false}
           search={false}
+          request={(_page) =>
+            searchModel(
+              _page,
+              options.types,
+              user.token,
+              options.search_text,
+              sorter,
+              options.scenarios,
+              options.status,
+            ).then((res) => ListResponseProcessing(res, user.user_id))
+          }
         />
       </ConfigProvider>
     </PageHeaderWrapper>

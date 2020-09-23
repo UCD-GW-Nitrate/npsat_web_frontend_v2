@@ -7,16 +7,6 @@ import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { deleteModel, queryModelList } from './service';
 
-const handleViewBatch = (selectedRows) => {
-  const ids = selectedRows.map((r) => r.id);
-  history.push({
-    pathname: '/charts/group',
-    query: {
-      ids: ids.join(','),
-    },
-  });
-};
-
 /**
  * handle crate new model button
  * redirect page
@@ -74,6 +64,7 @@ const ListResponseProcessing = (response, userId) => {
  * handle click: delete model
  * @param id
  * @param token
+ * @param action
  */
 const onClickDelete = async (id, token, action) => {
   const hide = message.loading('Deleting...');
@@ -112,6 +103,7 @@ const OverviewList = (props) => {
     {
       title: 'Status',
       dataIndex: 'status',
+      filters: true,
       valueEnum: {
         0: {
           text: 'Not ready',
@@ -279,37 +271,16 @@ const OverviewList = (props) => {
                           { label: 'include base scenario models', value: 'base' },
                         ]}
                       />,
-                      selectedRows && selectedRows.length > 0 && (
-                        <Button onClick={() => handleViewBatch(selectedRows)}>
-                          View results in group
-                        </Button>
-                      ),
                     ]
               }
-              tableAlertRender={
-                isMobile
-                  ? false
-                  : ({ selectedRowKeys, selectedRows }) => (
-                      <div>
-                        Selected &nbsp;
-                        <a
-                          style={{
-                            fontWeight: 600,
-                          }}
-                        >
-                          {selectedRowKeys.length}
-                        </a>
-                        &nbsp; Model(s)&nbsp;&nbsp;
-                      </div>
-                    )
-              }
+              tableAlertRender={false}
               request={(params) =>
                 queryModelList(params, types, userToken, sorter, filter).then((response) =>
                   ListResponseProcessing(response, userId),
                 )
               }
               columns={columns}
-              rowSelection={isMobile ? false : {}}
+              rowSelection={false}
               search={false}
             />
           )}

@@ -12,6 +12,7 @@ import {
   Badge,
 } from 'antd';
 import React, { useState, useEffect, useContext, useRef } from 'react';
+import { history } from 'umi';
 import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
@@ -65,8 +66,8 @@ const ListResponseProcessing = (response, userId) => {
 };
 
 const SearchTable = ({
-  title = 'Model Details',
-  subTitle = 'Choose a model to view full details',
+  title = 'Custom models group comparison',
+  subTitle = 'Select up to 5 models to compare and view together.',
   user,
 }) => {
   const { isMobile } = useContext(RouteContext);
@@ -90,6 +91,7 @@ const SearchTable = ({
       title: 'Scenario',
       dataIndex: 'scenario_name',
       copyable: true,
+      width: 150,
     },
     {
       title: 'Status',
@@ -181,18 +183,6 @@ const SearchTable = ({
         </span>
       ),
     },
-    {
-      title: 'Action',
-      dataIndex: 'option',
-      valueType: 'option',
-      fixed: 'right',
-      render: (_, record) => (
-        <Tooltip title="View details">
-          <a href={`/model/view?id=${record.id}`}>Details</a>
-        </Tooltip>
-      ),
-      width: 70,
-    },
   ];
   const [options, setOptions] = useState({
     types: ['public', 'original', 'base'],
@@ -210,6 +200,19 @@ const SearchTable = ({
       title={title}
       subTitle={subTitle}
       content={<SearchForm onSearch={onSearch} />}
+      extra={
+        <Button
+          href='/charts/compare'
+          type='primary'
+          onClick={() => {
+            history.push({
+              path: '/charts/compare'
+            })
+          }}
+        >
+          Switch to base model comparison
+        </Button>
+      }
     >
       <ConfigProvider
         value={{
@@ -217,23 +220,20 @@ const SearchTable = ({
         }}
       >
         <ProTable
-          headerTitle="Search results"
           actionRef={actionRef}
+          headerTitle="Search results"
           scroll={{ x: 'max-content' }}
           rowKey="id"
           columns={columns}
           bordered
-          onChange={(page, _, _sorter) => {
-            let sorter_query;
-            if (_sorter.order) {
-              sorter_query = `${_sorter.field},${_sorter.order}`;
+          onChange={(_, _filter, _sorter) => {
+            const sorterResult = _sorter;
+            if (sorterResult.order) {
+              setSorter(`${sorterResult.field},${sorterResult.order}`);
             } else {
-              sorter_query = '';
+              setSorter('');
             }
-            setSorter(sorter_query);
           }}
-          rowSelection={false}
-          search={false}
           request={(_page) =>
             searchModel(
               _page,
@@ -245,6 +245,8 @@ const SearchTable = ({
               options.status,
             ).then((res) => ListResponseProcessing(res, user.user_id))
           }
+          rowSelection={{}}
+          search={false}
         />
       </ConfigProvider>
     </PageHeaderWrapper>

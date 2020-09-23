@@ -4,7 +4,7 @@ export async function searchModel(params, filter, token, search_text, ...options
   const { pageSize, current } = params;
   const [sorter, scenarios, status] = options;
   const query = {};
-  if (search_text.trim().length !== 0) {
+  if (search_text && search_text.trim().length !== 0) {
     query.search = search_text;
   }
   if (sorter && sorter.length !== 0) {
