@@ -1,8 +1,8 @@
 {
-  "name": "ant-design-pro",
-  "version": "4.0.0",
+  "name": "npsat",
+  "version": "1.0.0",
   "private": true,
-  "description": "An out-of-box UI solution for enterprise applications",
+  "description": "NPSAT tools, UC Davis",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "umi build",
@@ -49,7 +49,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-layout": "^5.0.17",
-    "@ant-design/pro-table": "2.7.4",
+    "@ant-design/pro-table": "2.6.3",
     "@ant-design/charts": "^0.9.13",
     "antd": "^4.4.0",
     "classnames": "^2.2.6",
