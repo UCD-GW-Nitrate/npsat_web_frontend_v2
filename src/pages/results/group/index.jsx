@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, connect } from 'umi';
 import NoFoundPage from '@/pages/404';
-import { getModelAndBaseModel } from '@/pages/results/service';
+import { getGroupOfModels } from '@/pages/results/service';
 import SearchTable from './components/ModelList';
 
 const ResultCompare = (props) => {

@@ -40,7 +40,7 @@ const ListResponseProcessing = (response, userId) => {
     if (model.public) {
       model.tags.push('public');
     }
-    if (model.isBase) {
+    if (model.is_base) {
       model.tags.push('base');
     }
     if (model.user === userId) {
@@ -65,7 +65,7 @@ const SearchTable = ({ user }) => {
       fixed: 'left',
       ellipsis: isMobile,
       width: isMobile ? 100 : 200,
-      copyable: true
+      copyable: true,
     },
     {
       title: 'Description',
@@ -147,7 +147,7 @@ const SearchTable = ({ user }) => {
       valueType: 'option',
       fixed: 'right',
       render: (_, record) =>
-        !record.isBase ? (
+        !record.is_base ? (
           <Tooltip title={`Compare with base model of scenario ${record.scenario.name}`}>
             <a href={`/charts/compare?id=${record.id}`}>Compare</a>
           </Tooltip>

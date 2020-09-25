@@ -18,11 +18,11 @@ const ResultCompare = (props) => {
     (async () => {
       const model = await getModelAndBaseModel({ id }, token);
       if (typeof model === 'string' && model.startsWith('ERROR')) {
-        setInfo({ error: model });
-        return true;
+        setInfo({ error: "The model you look for is private or cannot be found" });
+      } else if (!model.length) {
+        setInfo( { error : "Base model is private or cannot be found" } )
       } else {
         setInfo(model);
-        return false;
       }
     })();
   }, [id]);
@@ -32,14 +32,14 @@ const ResultCompare = (props) => {
   } else if (info.error) {
     return (
       <NoFoundPage
-        subTitle={`The model id with ${id} inaccessible`}
-        title="The model you look for is private or cannot be found"
+        subTitle="The model(s) is inaccessible"
+        title={info.error}
         redirection="/charts/compare"
-        buttonText="Select model"
+        buttonText="Reselect model"
       />
     );
   } else {
-    return <BaseComparison info={info} />;
+    return <BaseComparison customModel={info[0]} baseModel={info[1]} />;
   }
 };
 

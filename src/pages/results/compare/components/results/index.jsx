@@ -3,7 +3,7 @@ import { Anchor, Button, Card, Descriptions, Steps, Tabs, Tooltip } from 'antd';
 import React from 'react';
 import styles from './style.less';
 
-const BaseComparison = ({ info }) => {
+const BaseComparison = ({ customModel, baseModel }) => {
   return (
     <PageHeaderWrapper
       title="Base model comparison"

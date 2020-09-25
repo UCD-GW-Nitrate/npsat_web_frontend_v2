@@ -39,7 +39,7 @@ const ListResponseProcessing = (response, userId) => {
     if (model.public) {
       model.tags.push('public');
     }
-    if (model.isBase) {
+    if (model.is_base) {
       model.tags.push('base');
     }
     if (model.user === userId) {

@@ -46,7 +46,7 @@ const ListResponseProcessing = (response, userId) => {
     if (model.public) {
       model.tags.push('public');
     }
-    if (model.isBase) {
+    if (model.is_base) {
       model.tags.push('base');
     }
     if (model.user === userId) {
@@ -184,13 +184,13 @@ const OverviewList = (props) => {
           </Tooltip>
           <Divider type="vertical" />
           <Tooltip
-            title={record.isBase ? 'This a base model' : 'compare with base model'}
+            title={record.is_base ? 'This a base model' : 'compare with base model'}
             style={{ pointerEvents: 'all' }}
           >
             <Button
               style={{ padding: 0 }}
               href={`/charts/compare?id=${record.id}`}
-              disabled={record.isBase}
+              disabled={record.is_base}
               type="link"
             >
               Compare

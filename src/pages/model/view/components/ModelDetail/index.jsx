@@ -148,7 +148,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
               {info.public ? 'yes' : 'no'}
             </Descriptions.Item>
             <Descriptions.Item label="is base model">
-              {info.isBase ? 'yes' : 'no'}
+              {info.is_base ? 'yes' : 'no'}
             </Descriptions.Item>
             <Descriptions.Item label="Region(s)" span={3}>
               {regions.map((region) => region.name).join(', ') || ''}

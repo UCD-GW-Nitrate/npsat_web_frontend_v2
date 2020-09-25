@@ -40,7 +40,7 @@ const ListResponseProcessing = (response, userId) => {
     if (model.public) {
       model.tags.push('public');
     }
-    if (model.isBase) {
+    if (model.is_base) {
       model.tags.push('base');
     }
     if (model.user === userId) {
@@ -248,17 +248,19 @@ const SearchTable = ({
             </div>
           )}
           toolBarRender={(action, { selectedRowKeys }) => [
-            <Tooltip title={() => {
-              if (selectedRowKeys.length === 0) {
-                return "Start select models.";
-              } else if (selectedRowKeys.length === 1) {
-                return "Select more models for comparison.";
-              } else if (selectedRowKeys.length > 5) {
-                return "Too much models selected.";
-              } else {
-                return "Confirm and compare models.";
-              }
-            }}>
+            <Tooltip
+              title={() => {
+                if (selectedRowKeys.length === 0) {
+                  return 'Start select models.';
+                } else if (selectedRowKeys.length === 1) {
+                  return 'Select more models for comparison.';
+                } else if (selectedRowKeys.length > 5) {
+                  return 'Too much models selected.';
+                } else {
+                  return 'Confirm and compare models.';
+                }
+              }}
+            >
               <Button
                 type="primary"
                 disabled={selectedRowKeys.length <= 1 || selectedRowKeys.length > 5}
