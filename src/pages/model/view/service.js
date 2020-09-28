@@ -8,14 +8,6 @@ export async function getModelDetail(params, token) {
   });
 }
 
-export async function getModelList(params, token) {
-  const pageSize = 20;
-  return request('/api/model_run/', {
-    headers: { Authorization: `Token ${token}` },
-    params: { limit: pageSize, offset: pageSize * (params.current - 1) },
-  });
-}
-
 export async function getRegionDetail(params) {
   return request(`/api/region/${params.id}/`, {
     method: 'GET',

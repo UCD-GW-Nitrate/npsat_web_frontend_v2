@@ -10,7 +10,7 @@ import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import { getRegionDetail, getCropDetails, getModelResults } from '../../service';
 import styles from './index.less';
-import AnchorTitle from './components/AnchorTitle';
+import AnchorTitle from '../../../../../components/AnchorTitle';
 
 const { Step } = Steps;
 
