@@ -155,6 +155,7 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
                 baseData={baseResults}
                 customData={customResults}
                 percentiles={customPercentile}
+                reductionYear={customModel ? customModel.reduction_year: undefined}
               />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Difference heatmap" key="DHP">

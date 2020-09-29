@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Chart, Tooltip, Interval, Legend, Slider, Point, Axis, Annotation } from 'bizcharts';
+import { Chart, Tooltip, Interval, Legend, Slider, Axis, Annotation } from 'bizcharts';
 import { Select } from 'antd';
 import { ordinalSuffix } from '@/utils/utils';
-import styles from '@/components/Plots/BizCharts/MultilinePlot/index.less';
+import styles from './index.less';
 
-const DifferenceHistogram = ({ baseData, customData, percentiles }) => {
+const DifferenceHistogram = ({ baseData, customData, percentiles, reductionYear }) => {
   const [selected, setSelected] = useState([]);
   const [plotData, setPlotData] = useState({});
   useEffect(() => {
@@ -15,7 +15,7 @@ const DifferenceHistogram = ({ baseData, customData, percentiles }) => {
         const baseResult = baseData[p];
         const customResult = customData[p];
         const years = Math.min(baseResult.length, customResult.length);
-        for (let i = 0; i < years; i++) {
+        for (let i = 0; i < years; i += 1) {
           difference.push({
             ...baseResult[i],
             value: Number((baseResult[i].value - customResult[i].value).toFixed(6))
@@ -49,8 +49,8 @@ const DifferenceHistogram = ({ baseData, customData, percentiles }) => {
           value: { min: 0, alias: 'Amount of Nitrogen', nice: true },
           year: { tickCount: 10, type: 'cat' },
         }}
-        // placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
-        defaultInteractions={['tooltip', 'element-highlight', 'legend-highlight']}
+        placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
+        defaultInteractions={['tooltip', 'element-highlight-by-x', 'legend-highlight']}
       >
         <Interval
           adjust={[
@@ -69,6 +69,18 @@ const DifferenceHistogram = ({ baseData, customData, percentiles }) => {
         <Tooltip showCrosshairs shared />
         <Axis name="value" title />
         <Axis name="year" />
+        {reductionYear ? (
+          <Annotation.Line
+            start={[reductionYear, 'min']}
+            end={[reductionYear, 'max']}
+            text={{
+              position: '90%',
+              content: 'reduction year',
+              style: { fill: 'red' },
+              autoRotate: false,
+            }}
+          />
+        ) : null}
       </Chart>
     </>
   );
