@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Chart, Tooltip, Interval, Legend, Slider, Axis, Annotation } from 'bizcharts';
-import { Select } from 'antd';
+import { Select, notification } from 'antd';
 import { ordinalSuffix } from '@/utils/utils';
 import styles from './index.less';
 
@@ -27,26 +27,39 @@ const DifferenceHistogram = ({ baseData, customData, percentiles, reductionYear 
     }
   }, [baseData, customData]);
   return (
-    <>
-      <Select
-        style={{ width: '100%' }}
-        mode="multiple"
-        onChange={setSelected}
-        value={selected}
-      >
-        {percentiles.map((percentile) => (
-          <Select.Option value={percentile} key={percentile}>
-            {`${ordinalSuffix(percentile)} percentile`}
-          </Select.Option>
-        ))}
-      </Select>
+    <div className={styles.barPlot}>
+      <div className={styles.barPlotSelect}>
+        <Select
+          style={{ width: '100%' }}
+          mode="multiple"
+          placeholder="Select percentiles"
+          onChange={value => {
+            if (value.length > 5) {
+              notification.warning({
+                description: 'It is not recommended to select too much percentiles at the same time.' +
+                  'It could be slow to load and slide and some bars are too small to be displayed.',
+                message: 'Selection exceeds 5 percentiles',
+                key: 'max-warning'
+              })
+            }
+            setSelected([...value])
+          }}
+          value={selected}
+        >
+          {percentiles.map((percentile) => (
+            <Select.Option value={percentile} key={percentile}>
+              {`${ordinalSuffix(percentile)} percentile`}
+            </Select.Option>
+          ))}
+        </Select>
+      </div>
       <Chart
-        padding={[10, 20, 50, 60]}
+        padding={[10, 20, 50, 80]}
         height={500}
         data={Object.keys(plotData).length === 0 ? [] : selected.map((index) => plotData[index]).flat(1)}
         autoFit
         scale={{
-          value: { min: 0, alias: 'Amount of Nitrogen', nice: true },
+          value: { alias: 'Amount of Nitrogen', nice: true },
           year: { tickCount: 10, type: 'cat' },
         }}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
@@ -61,6 +74,7 @@ const DifferenceHistogram = ({ baseData, customData, percentiles, reductionYear 
             },
           ]}
           color="percentile"
+          shape="hollowRect"
           position="year*value"
         />
         <Tooltip shared />
@@ -82,7 +96,7 @@ const DifferenceHistogram = ({ baseData, customData, percentiles, reductionYear 
           />
         ) : null}
       </Chart>
-    </>
+    </div>
   );
 };
 export default DifferenceHistogram;
