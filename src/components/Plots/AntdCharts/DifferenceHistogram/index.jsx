@@ -9,7 +9,7 @@ const DifferenceHistogram = ({ baseData, customData, percentiles }) => {
   useEffect(() => {
     if (baseData && customData) {
       const data = {};
-      percentiles.forEach(p => {
+      percentiles.forEach((p) => {
         const difference = [];
         const baseResult = baseData[p];
         const customResult = customData[p];
@@ -17,8 +17,8 @@ const DifferenceHistogram = ({ baseData, customData, percentiles }) => {
         for (let i = 0; i < years; i++) {
           difference.push({
             ...baseResult[i],
-            value: Number((baseResult[i].value - customResult[i].value).toFixed(6))
-          })
+            value: Number((baseResult[i].value - customResult[i].value).toFixed(6)),
+          });
         }
         data[p] = difference;
       });
@@ -27,12 +27,7 @@ const DifferenceHistogram = ({ baseData, customData, percentiles }) => {
   }, [baseData, customData]);
   return (
     <>
-      <Select
-        style={{ width: '100%' }}
-        mode="multiple"
-        onChange={setSelected}
-        value={selected}
-      >
+      <Select style={{ width: '100%' }} mode="multiple" onChange={setSelected} value={selected}>
         {percentiles.map((percentile) => (
           <Select.Option value={percentile} key={percentile}>
             {`${ordinalSuffix(percentile)} percentile`}
@@ -46,14 +41,16 @@ const DifferenceHistogram = ({ baseData, customData, percentiles }) => {
         meta={{
           value: {
             alias: 'Amount of Nitrogen',
-          }
+          },
         }}
         interactions={[
           {
-            type: 'scrollbar'
-          }
+            type: 'scrollbar',
+          },
         ]}
-        data={Object.keys(plotData).length === 0 ? [] : selected.map((index) => plotData[index]).flat(1)}
+        data={
+          Object.keys(plotData).length === 0 ? [] : selected.map((index) => plotData[index]).flat(1)
+        }
       />
     </>
   );

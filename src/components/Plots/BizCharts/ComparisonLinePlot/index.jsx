@@ -1,51 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Chart, Tooltip, Interval, Legend, Slider, Axis, Annotation } from 'bizcharts';
-import { Select, notification } from 'antd';
+import { Chart, Tooltip, Interval, Legend, Slider, Axis, Annotation, Line } from 'bizcharts';
+import { Select } from 'antd';
 import { ordinalSuffix } from '@/utils/utils';
 import styles from './index.less';
 
-const DifferenceHistogram = ({ baseData, customData, percentiles, reductionYear }) => {
-  const [selected, setSelected] = useState([]);
+const ComparisonLinePlot = ({ baseData, customData, percentiles, reductionYear }) => {
+  const [selected, setSelected] = useState(undefined);
   const [plotData, setPlotData] = useState({});
   useEffect(() => {
     if (baseData && customData) {
       const data = {};
       percentiles.forEach((p) => {
-        const difference = [];
         const baseResult = baseData[p];
         const customResult = customData[p];
         const years = Math.min(baseResult.length, customResult.length);
         for (let i = 0; i < years; i += 1) {
-          difference.push({
-            ...baseResult[i],
-            value: Number((baseResult[i].value - customResult[i].value).toFixed(6)),
-          });
+          baseResult[i].model = "base";
+          customResult[i].model = "custom";
         }
-        data[p] = difference;
+        data[p] = [...baseResult.slice(0, years), ...customResult.slice(0, years)];
       });
       setPlotData(data);
     }
   }, [baseData, customData]);
   return (
-    <div className={styles.barPlot}>
-      <div className={styles.barPlotSelect}>
+    <div className={styles.comparisonLinePlot}>
+      <div className={styles.comparisonLineSelect}>
         <Select
           style={{ width: '100%' }}
-          mode="multiple"
-          showArrow
-          placeholder="Select percentile(s)"
-          onChange={(value) => {
-            if (value.length > 5) {
-              notification.warning({
-                description:
-                  'It is not recommended to select too much percentiles at the same time.' +
-                  'It could be slow to load and slide and some bars are too small to be displayed.',
-                message: 'Selection exceeds 5 percentiles',
-                key: 'max-warning',
-              });
-            }
-            setSelected([...value]);
-          }}
+          placeholder="Select percentile"
+          onChange={setSelected}
           value={selected}
         >
           {percentiles.map((percentile) => (
@@ -59,28 +43,17 @@ const DifferenceHistogram = ({ baseData, customData, percentiles, reductionYear 
         padding={[10, 20, 50, 80]}
         height={500}
         data={
-          Object.keys(plotData).length === 0 ? [] : selected.map((index) => plotData[index]).flat(1)
+          Object.keys(plotData).length === 0 && selected ? [] : plotData[selected]
         }
         autoFit
         scale={{
           value: { alias: 'Amount of Nitrogen', nice: true },
-          year: { tickCount: 10, type: 'cat' },
+          year: { tickCount: 10 },
         }}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
         defaultInteractions={['tooltip', 'element-highlight-by-x', 'legend-highlight']}
       >
-        <Interval
-          adjust={[
-            {
-              type: 'dodge',
-              marginRatio: 0,
-              dodgeBy: 'percentile',
-            },
-          ]}
-          color="percentile"
-          shape="hollowRect"
-          position="year*value"
-        />
+        <Line position="year*value" color="model" />
         <Tooltip shared />
         <Legend position="top" />
         <Slider />
@@ -103,4 +76,4 @@ const DifferenceHistogram = ({ baseData, customData, percentiles, reductionYear 
     </div>
   );
 };
-export default DifferenceHistogram;
+export default ComparisonLinePlot;

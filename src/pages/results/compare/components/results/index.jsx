@@ -1,12 +1,14 @@
-import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Anchor, Button, Card, Tabs, Tooltip } from 'antd';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import React, { useEffect, useState } from 'react';
 import { getModelResults } from '@/pages/model/view/service';
 import { ordinalSuffix } from '@/utils/utils';
 import { connect } from 'umi';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import AnchorTitle from '@/components/AnchorTitle';
 import DifferenceHistogram from '@/components/Plots/BizCharts/DifferenceHistogram/dynamic';
+import ComparisonLinePlot from '@/components/Plots/BizCharts/ComparisonLinePlot/dynamic';
 import styles from './style.less';
 
 const getResults = (model, token, resultsSetter, PercentileSetter) => {
@@ -26,12 +28,12 @@ const getResults = (model, token, resultsSetter, PercentileSetter) => {
         });
         PercentileSetter(data.map((percentile) => percentile.percentile));
         resultsSetter(results);
-      }
+      },
     );
     return true;
   }
   return false;
-}
+};
 
 const BaseComparison = ({ customModel, baseModel, user }) => {
   const { token } = user;
@@ -59,9 +61,9 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
     >
       <div className={styles.main}>
         <Card
-          title={<AnchorTitle anchor="settings" title="Model settings"/>}
+          title={<AnchorTitle anchor="settings" title="Model settings" />}
           style={{
-            marginBottom: 32
+            marginBottom: 32,
           }}
         >
           <ConfigProvider
@@ -74,42 +76,43 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
                 {
                   title: 'Name',
                   dataIndex: 'name',
-                  render: (value, record) =>
+                  render: (value, record) => (
                     <Tooltip title="Check model details">
                       <a href={`/model/view?id=${record.id}`}>{value}</a>
-                    </Tooltip>,
-                  fixed: true
+                    </Tooltip>
+                  ),
+                  fixed: true,
                 },
                 {
                   title: 'Base Model',
                   dataIndex: 'is_base',
-                  render: value => value ? "Yes" : "No"
+                  render: (value) => (value ? 'Yes' : 'No'),
                 },
                 {
                   title: 'Description',
                   dataIndex: 'description',
                   ellipsis: true,
-                  width: 250
+                  width: 250,
                 },
                 {
                   title: 'Scenario',
                   dataIndex: 'scenario',
-                  render: value => value.name
+                  render: (value) => value.name,
                 },
                 {
                   title: 'Regions',
                   dataIndex: 'regions',
-                  render: value => value.map(regions => regions.name).join(",")
+                  render: (value) => value.map((regions) => regions.name).join(','),
                 },
                 {
                   title: 'Wells included',
-                  dataIndex: 'n_wells'
+                  dataIndex: 'n_wells',
                 },
                 {
                   title: 'Year range',
                   dataIndex: 'n_years',
                   render: (value) => `1945 - ${1945 + value}`,
-                  width: 100
+                  width: 100,
                 },
                 {
                   title: 'Reduction year',
@@ -133,7 +136,7 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
               ]}
               dataSource={customModel && baseModel ? [customModel, baseModel] : []}
               scroll={{
-                x: 'max-content'
+                x: 'max-content',
               }}
               rowKey="id"
               bordered
@@ -143,26 +146,39 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
             />
           </ConfigProvider>
         </Card>
-        <Card
-          title={<AnchorTitle anchor="results" title="Results comparison"/>}
-        >
+        <Card title={<AnchorTitle anchor="results" title="Results comparison" />}>
           <Tabs tabPosition="top" centered>
-            <Tabs.TabPane tab="Line Plot" key="LP">
-
+            <Tabs.TabPane
+              tab={
+                <Tooltip title="Comparison under same percentile">
+                  Comparison Line Plot <InfoCircleOutlined />
+                </Tooltip>
+              }
+              key="LP">
+              <ComparisonLinePlot
+                baseData={baseResults}
+                customData={customResults}
+                percentiles={customPercentile}
+                reductionYear={customModel ? customModel.reduction_year : undefined}
+              />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Difference histogram" key="DH">
+            <Tabs.TabPane
+              tab={
+                <Tooltip title="Difference between base model and custom model">
+                  Difference histogram <InfoCircleOutlined />
+                </Tooltip>
+              }
+              key="DH"
+            >
               <DifferenceHistogram
                 baseData={baseResults}
                 customData={customResults}
                 percentiles={customPercentile}
-                reductionYear={customModel ? customModel.reduction_year: undefined}
+                reductionYear={customModel ? customModel.reduction_year : undefined}
               />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Difference heatmap" key="DHP">
-
-            </Tabs.TabPane>
+            <Tabs.TabPane tab="Difference heatmap" key="DHP"></Tabs.TabPane>
           </Tabs>
-
         </Card>
       </div>
     </PageHeaderWrapper>
@@ -172,4 +188,3 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
 export default connect(({ user }) => ({
   user: user.currentUser,
 }))(BaseComparison);
-

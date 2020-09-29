@@ -18,9 +18,9 @@ const ResultCompare = (props) => {
     (async () => {
       const model = await getModelAndBaseModel({ id }, token);
       if (typeof model === 'string' && model.startsWith('ERROR')) {
-        setInfo({ error: "The model you look for is private or cannot be found" });
+        setInfo({ error: 'The model you look for is private or cannot be found' });
       } else if (!model.length) {
-        setInfo( { error : "Base model is private or cannot be found" } )
+        setInfo({ error: 'Base model is private or cannot be found' });
       } else {
         setInfo(model);
       }
