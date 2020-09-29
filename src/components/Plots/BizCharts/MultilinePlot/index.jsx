@@ -56,7 +56,6 @@ const MultilinePlot = ({ percentiles, data, reductionYear }) => {
         }}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
         defaultInteractions={['tooltip', 'element-highlight', 'legend-highlight']}
-        pure
       >
         <Legend position="top" />
         <Slider />

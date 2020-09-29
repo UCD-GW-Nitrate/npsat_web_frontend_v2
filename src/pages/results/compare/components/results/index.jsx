@@ -6,6 +6,7 @@ import { getModelResults } from '@/pages/model/view/service';
 import { ordinalSuffix } from '@/utils/utils';
 import { connect } from 'umi';
 import AnchorTitle from '@/components/AnchorTitle';
+import DifferenceHistogram from '@/components/Plots/BizCharts/DifferenceHistogram/dynamic';
 import styles from './style.less';
 
 const getResults = (model, token, resultsSetter, PercentileSetter) => {
@@ -45,8 +46,6 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
   useEffect(() => {
     getResults(customModel, token, setCustomResults, setCustomPercentile);
   }, [customModel]);
-  console.log(customModel)
-  console.log(baseModel)
   return (
     <PageHeaderWrapper
       title="Base model comparison"
@@ -147,6 +146,21 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
         <Card
           title={<AnchorTitle anchor="results" title="Results comparison"/>}
         >
+          <Tabs tabPosition="top" centered>
+            <Tabs.TabPane tab="Line Plot" key="LP">
+
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Difference histogram" key="DH">
+              <DifferenceHistogram
+                baseData={baseResults}
+                customData={customResults}
+                percentiles={customPercentile}
+              />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Difference heatmap" key="DHP">
+
+            </Tabs.TabPane>
+          </Tabs>
 
         </Card>
       </div>

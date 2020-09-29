@@ -55,6 +55,9 @@ const Step1 = (props) => {
         <TabPane tab="Central Valley" key="CV">
           <CentralValleyForm onSubmit={onSubmit} />
         </TabPane>
+        <TabPane tab="Basin" key="sBasin" disabled>
+          Content of Tab Pane 4
+        </TabPane>
         <TabPane tab="County" key="county">
           <CountyForm onSubmit={onSubmit} />
         </TabPane>
@@ -63,9 +66,6 @@ const Step1 = (props) => {
         </TabPane>
         <TabPane tab="CVHM Farm" key="farm">
           <FarmForm onSubmit={onSubmit} />
-        </TabPane>
-        <TabPane tab="Subbasin" key="sBasin" disabled>
-          Content of Tab Pane 4
         </TabPane>
       </Tabs>
       <Divider

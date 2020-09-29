@@ -50,7 +50,7 @@
     "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-layout": "^5.0.17",
     "@ant-design/pro-table": "2.6.3",
-    "@ant-design/charts": "^0.9.13",
+    "@ant-design/charts": "1.0.0",
     "antd": "^4.4.0",
     "classnames": "^2.2.6",
     "leaflet": "^1.6.0",
