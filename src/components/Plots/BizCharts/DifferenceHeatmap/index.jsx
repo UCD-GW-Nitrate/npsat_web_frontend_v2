@@ -5,6 +5,7 @@ import { ordinalSuffix } from '@/utils/utils';
 import { RouteContext } from '@ant-design/pro-layout';
 import styles from './index.less';
 
+// TODO: responsive | Input | Prompt
 const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear }) => {
   const { isMobile } = useContext(RouteContext);
   const [selected, setSelected] = useState(20);
