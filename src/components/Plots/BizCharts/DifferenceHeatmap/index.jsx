@@ -1,35 +1,38 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { HeatmapChart } from 'bizcharts';
-import { Select, Col, Row, InputNumber } from 'antd';
-import { ordinalSuffix } from '@/utils/utils';
+import { Statistic, Col, Row, InputNumber, Form, Button, Tooltip } from 'antd';
 import { RouteContext } from '@ant-design/pro-layout';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
-// TODO: responsive | Input | Prompt
 const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear }) => {
   const { isMobile } = useContext(RouteContext);
-  const [selected, setSelected] = useState(20);
+  const [form] = Form.useForm();
+  const [selected, setSelected] = useState(undefined);
   const [plotData, setPlotData] = useState({});
   const [range, setRange] = useState(200);
   const aggregate = (data, level) => {
     const result = [];
+    if (!level || !data) {
+      return result;
+    }
     percentiles.forEach((p) => {
       const singleDifference = data[p];
       if (!singleDifference) {
-        return ;
+        return;
       }
       const len = singleDifference.length;
       for (let i = 0; i < len; i += level) {
         // assume divisible
         const temp = singleDifference.slice(i, Math.min(i + level, len));
         const agg = temp.reduce(
-          (acc, cur) => ({ ...acc, ...cur, value:
-              Number((acc.value + cur.value).toFixed(6)) }), { value: 0 }
-          );
+          (acc, cur) => ({ ...acc, ...cur, value: Number((acc.value + cur.value).toFixed(6)) }),
+          { value: 0 },
+        );
         if (i + 10 > len) {
-          agg.year_range = `${1945 + i} ~ ${1945 + len}`;
+          agg.year_range = `${1945 + i} - ${1945 + len}`;
         } else {
-          agg.year_range = `${1945 + i} ~ ${1945 + i + level}`;
+          agg.year_range = `${1945 + i} - ${1945 + i + level}`;
         }
         result.push(agg);
       }
@@ -41,6 +44,8 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
       const sample = baseData[percentiles[0]];
       if (sample) {
         setRange(sample.length);
+        setSelected(Math.ceil(sample.length / 10));
+        form.setFieldsValue({ years: sample.length / 10 });
       }
     }
   }, [baseData, percentiles]);
@@ -66,12 +71,63 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
   return (
     <div className={styles.heatmapPlot}>
       <div className={styles.heatmapPlotSelect}>
-        <InputNumber
-          value={selected}
-          onPressEnter={setSelected}
-          max={isMobile ? range : Math.ceil(range / 3)}
-          min={isMobile ? Math.ceil(range / 4) : Math.ceil(range / 40)}
-        />
+        <Form onFinish={({ years }) => setSelected(years)} hideRequiredMark form={form}>
+          <Row gutter={24}>
+            <Col span={8}>
+              <Statistic
+                title="Reduction year"
+                value={reductionYear}
+                formatter={(value) => `${value}`}
+              />
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                required
+                rules={[
+                  {
+                    validator: (_, value) => {
+                      if (isMobile) {
+                        if (value <= range && value >= Math.ceil(range / 4)) {
+                          return Promise.resolve();
+                        } else {
+                          return Promise.reject('Out of range');
+                        }
+                      } else {
+                        if (value <= Math.ceil(range / 3) && value >= Math.ceil(range / 40)) {
+                          return Promise.resolve();
+                        } else {
+                          return Promise.reject('Out of range');
+                        }
+                      }
+                    },
+                  },
+                ]}
+                label={
+                  <span>
+                    Aggregate years{' '}
+                    <Tooltip title="Options will be limited if viewed in mobile devices">
+                      <InfoCircleOutlined />
+                    </Tooltip>
+                  </span>
+                }
+                name="years"
+              >
+                <InputNumber
+                  style={{ width: '100%' }}
+                  max={isMobile ? range : Math.ceil(range / 3)}
+                  min={isMobile ? Math.ceil(range / 4) : Math.ceil(range / 40)}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item style={{ float: 'right' }}>
+                <Button htmlType="submit" type="primary">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
       </div>
       <HeatmapChart
         height={500}
@@ -79,30 +135,30 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
         yField="percentile"
         xField="year_range"
         sizeField="value"
-        colorField='value'
+        colorField="value"
         meta={{
           value: {
-            alias: 'Difference of Nitrogen'
-          }
+            alias: 'Difference of Nitrogen',
+          },
         }}
         tooltip={{
           visible: true,
           formatter: (years, percentile, value) => ({
             name: 'Difference of Nitrogen',
-            value: `${value} at ${percentile}`
-          })
+            value: `${value} at ${percentile}`,
+          }),
         }}
         xAxis={{
           label: {
             visible: true,
-            autoHide: false
-          }
+            autoHide: false,
+          },
         }}
         yAxis={{
-          visible: !isMobile
+          visible: !isMobile,
         }}
         legend={{
-          visible: !isMobile
+          visible: !isMobile,
         }}
         data={aggregate(plotData, selected)}
       />

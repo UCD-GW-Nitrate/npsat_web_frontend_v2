@@ -179,7 +179,14 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
                 reductionYear={customModel ? customModel.reduction_year : undefined}
               />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Difference heatmap" key="DHP">
+            <Tabs.TabPane
+              tab={
+                <Tooltip title="Aggregated difference between base mode and custom model">
+                  Difference heatmap <InfoCircleOutlined />
+                </Tooltip>
+              }
+              key="DHP"
+            >
               <DifferenceHeatmap
                 baseData={baseResults}
                 customData={customResults}
