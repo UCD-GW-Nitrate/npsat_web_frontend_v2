@@ -15,8 +15,8 @@ const ComparisonLinePlot = ({ baseData, customData, percentiles, reductionYear }
         const customResult = customData[p];
         const years = Math.min(baseResult.length, customResult.length);
         for (let i = 0; i < years; i += 1) {
-          baseResult[i].model = "base";
-          customResult[i].model = "custom";
+          baseResult[i].model = 'base';
+          customResult[i].model = 'custom';
         }
         data[p] = [...baseResult.slice(0, years), ...customResult.slice(0, years)];
       });
@@ -42,9 +42,7 @@ const ComparisonLinePlot = ({ baseData, customData, percentiles, reductionYear }
       <Chart
         padding={[10, 20, 50, 80]}
         height={500}
-        data={
-          Object.keys(plotData).length === 0 && selected ? [] : plotData[selected]
-        }
+        data={Object.keys(plotData).length === 0 && selected ? [] : plotData[selected]}
         autoFit
         scale={{
           value: { alias: 'Amount of Nitrogen', nice: true },

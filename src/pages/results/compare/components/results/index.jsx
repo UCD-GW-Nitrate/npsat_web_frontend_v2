@@ -9,6 +9,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import AnchorTitle from '@/components/AnchorTitle';
 import DifferenceHistogram from '@/components/Plots/BizCharts/DifferenceHistogram/dynamic';
 import ComparisonLinePlot from '@/components/Plots/BizCharts/ComparisonLinePlot/dynamic';
+import DifferenceHeatmap from '@/components/Plots/BizCharts/DifferenceHeatmap';
 import styles from './style.less';
 
 const getResults = (model, token, resultsSetter, PercentileSetter) => {
@@ -154,7 +155,8 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
                   Comparison Line Plot <InfoCircleOutlined />
                 </Tooltip>
               }
-              key="LP">
+              key="LP"
+            >
               <ComparisonLinePlot
                 baseData={baseResults}
                 customData={customResults}
@@ -177,7 +179,14 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
                 reductionYear={customModel ? customModel.reduction_year : undefined}
               />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Difference heatmap" key="DHP"></Tabs.TabPane>
+            <Tabs.TabPane tab="Difference heatmap" key="DHP">
+              <DifferenceHeatmap
+                baseData={baseResults}
+                customData={customResults}
+                percentiles={customPercentile}
+                reductionYear={customModel ? customModel.reduction_year : undefined}
+              />
+            </Tabs.TabPane>
           </Tabs>
         </Card>
       </div>
