@@ -34,20 +34,11 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
       );
     }
     if (info.modifications) {
-      Promise.all(info.modifications.map((item) => getCropDetails({ id: item.crop }))).then(
-        (results) => {
-          const data = [];
-          results.forEach((item, index) => {
-            const { name } = item;
-            data.push({
-              ...info.modifications[index],
-              name,
-            });
-          });
-          setCrop(data);
-          setLoading(false);
-        },
-      );
+      const crops = info.modifications.map((item) => ({
+        ...item, ...item.crop
+      }));
+      setCrop(crops);
+      setLoading(false);
     }
     if (info.results) {
       Promise.all(info.results.map((percentile) => getModelResults(percentile.id, token))).then(

@@ -57,6 +57,7 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
         <Anchor affix={false}>
           <Anchor.Link href="#settings" title="Model settings" />
           <Anchor.Link href="#results" title="Results comparison" />
+          <Anchor.Link href="#crops" title="Crop selection" />
         </Anchor>
       }
     >
@@ -147,7 +148,11 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
             />
           </ConfigProvider>
         </Card>
-        <Card title={<AnchorTitle anchor="results" title="Results comparison" />}>
+        <Card title={<AnchorTitle anchor="results" title="Results comparison" />}
+          style={{
+            marginBottom: 32
+          }}
+        >
           <Tabs tabPosition="top" centered>
             <Tabs.TabPane
               tab={
@@ -195,6 +200,11 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
               />
             </Tabs.TabPane>
           </Tabs>
+        </Card>
+        <Card
+          title={<AnchorTitle anchor="crops" title="Crop Selection"/>}
+        >
+
         </Card>
       </div>
     </PageHeaderWrapper>
