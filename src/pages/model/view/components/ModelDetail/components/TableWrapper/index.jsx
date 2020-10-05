@@ -30,7 +30,7 @@ const TableWrapper = (props) => {
         //   sorter: (a, b) => parseFloat(a.land_area_proportion) - parseFloat(b.land_area_proportion)
         // },
       ]}
-      rowKey={(modification) => modification.crop}
+      rowKey="id"
       pagination={false}
     />
   );

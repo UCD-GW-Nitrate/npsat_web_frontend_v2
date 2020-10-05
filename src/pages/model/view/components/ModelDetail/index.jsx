@@ -8,7 +8,7 @@ import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
 import { ordinalSuffix } from '@/utils/utils';
 import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
-import { getRegionDetail, getCropDetails, getModelResults } from '../../service';
+import { getRegionDetail, getModelResults } from '../../service';
 import styles from './index.less';
 import AnchorTitle from '../../../../../components/AnchorTitle';
 
