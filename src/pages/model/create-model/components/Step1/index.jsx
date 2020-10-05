@@ -5,6 +5,7 @@ import FarmForm from '@/pages/model/create-model/components/Step1/components/Far
 import styles from './index.less';
 import CountyForm from './components/CountyForm';
 import CentralValleyForm from './components/CentralValleyForm';
+import BasinForm from '@/pages/model/create-model/components/Step1/components/BasinForm';
 
 const { TabPane } = Tabs;
 
@@ -55,8 +56,8 @@ const Step1 = (props) => {
         <TabPane tab="Central Valley" key="CV">
           <CentralValleyForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="Basin" key="sBasin" disabled>
-          Content of Tab Pane 4
+        <TabPane tab="Basin" key="sBasin">
+          <BasinForm onSubmit={onSubmit}/>
         </TabPane>
         <TabPane tab="County" key="county">
           <CountyForm onSubmit={onSubmit} />

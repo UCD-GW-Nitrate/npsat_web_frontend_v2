@@ -17,3 +17,7 @@ export function getCentralValley() {
 export function getCVHMFarms() {
   return getRegions('CVHMFarm');
 }
+
+export function getBasins() {
+  return getRegions('Basin');
+}
