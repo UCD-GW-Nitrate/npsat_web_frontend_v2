@@ -44,6 +44,8 @@ const Model = {
           default:
           case 'county':
           case 'farm':
+          case 'basin':
+          case 'township':
             data.regions = payload[`${payload.step1Type}-choice`].map((id) => ({ id }));
         }
 

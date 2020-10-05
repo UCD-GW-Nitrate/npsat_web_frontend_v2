@@ -2,10 +2,11 @@ import React from 'react';
 import { Tabs, Divider } from 'antd';
 import { connect } from 'react-redux';
 import FarmForm from '@/pages/model/create-model/components/Step1/components/FarmForm';
+import BasinForm from '@/pages/model/create-model/components/Step1/components/BasinForm';
+import TownshipForm from '@/pages/model/create-model/components/Step1/components/TownshipForm';
 import styles from './index.less';
 import CountyForm from './components/CountyForm';
 import CentralValleyForm from './components/CentralValleyForm';
-import BasinForm from '@/pages/model/create-model/components/Step1/components/BasinForm';
 
 const { TabPane } = Tabs;
 
@@ -24,17 +25,11 @@ const Step1 = (props) => {
             },
           });
           break;
-        case 'farm':
-          dispatch({
-            type: 'createModelForm/saveStepFormData',
-            payload: {
-              step1Type: type,
-              ...values,
-            },
-          });
-          break;
         default:
         case 'county':
+        case 'farm':
+        case 'basin':
+        case 'township':
           dispatch({
             type: 'createModelForm/saveStepFormData',
             payload: {
@@ -67,6 +62,9 @@ const Step1 = (props) => {
         </TabPane>
         <TabPane tab="CVHM Farm" key="farm">
           <FarmForm onSubmit={onSubmit} />
+        </TabPane>
+        <TabPane tab="Township" key="town">
+          <TownshipForm onSubmit={onSubmit} />
         </TabPane>
       </Tabs>
       <Divider

@@ -96,7 +96,7 @@ const SelectAndMap = ({ value = [], onChange }) => {
     <>
       <Select
         showSearch
-        placeholder="Select a county"
+        placeholder="Select county(s)"
         optionFilterProp="children"
         value={value}
         onChange={onListChange}
