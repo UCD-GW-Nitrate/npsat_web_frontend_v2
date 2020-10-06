@@ -11,6 +11,7 @@ const ResultCompare = (props) => {
   const { token } = user;
   const [info, setInfo] = useState({});
   const { id = null } = location.query;
+  const { hash } = location;
   useEffect(() => {
     if (id === null) {
       return;
@@ -39,7 +40,7 @@ const ResultCompare = (props) => {
       />
     );
   } else {
-    return <BaseComparison customModel={info[0]} baseModel={info[1]} />;
+    return <BaseComparison customModel={info[0]} baseModel={info[1]} hash={hash} />;
   }
 };
 

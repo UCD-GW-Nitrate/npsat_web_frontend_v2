@@ -37,7 +37,7 @@ const getResults = (model, token, resultsSetter, PercentileSetter) => {
   return false;
 };
 
-const BaseComparison = ({ customModel, baseModel, user }) => {
+const BaseComparison = ({ customModel, baseModel, user, hash }) => {
   const { token } = user;
   const [baseResults, setBaseResults] = useState([]);
   const [basePercentile, setBasePercentile] = useState([]);
@@ -50,6 +50,18 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
   useEffect(() => {
     getResults(customModel, token, setCustomResults, setCustomPercentile);
   }, [customModel]);
+  useEffect(() => {
+    if (!hash || hash[0] !== '#') {
+      return;
+    }
+    const view = hash.substr(1);
+    const card = document.getElementById(view);
+    if (card) {
+      card.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
+  }, []);
   return (
     <PageHeaderWrapper
       title="Base model comparison"
