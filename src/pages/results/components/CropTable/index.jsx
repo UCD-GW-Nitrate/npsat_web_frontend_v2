@@ -49,6 +49,9 @@ const CropTable = ({ models }) => {
         columns={columns}
         rowKey="__id__"
         dataSource={data}
+        scroll={{
+          x: 'max-content',
+        }}
         bordered
         search={false}
         options={false}
