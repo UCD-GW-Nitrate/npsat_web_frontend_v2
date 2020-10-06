@@ -23,5 +23,5 @@ export function getBasins() {
 }
 
 export function getTownships() {
-  return getRegions('Townships')
+  return getRegions('Townships');
 }

@@ -1,5 +1,5 @@
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Anchor, Button, Card, Tabs, Tooltip } from 'antd';
+import { Anchor, Card, Tabs, Tooltip } from 'antd';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import React, { useEffect, useState } from 'react';
 import { getModelResults } from '@/pages/model/view/service';
@@ -10,6 +10,7 @@ import AnchorTitle from '@/components/AnchorTitle';
 import DifferenceHistogram from '@/components/Plots/BizCharts/DifferenceHistogram/dynamic';
 import ComparisonLinePlot from '@/components/Plots/BizCharts/ComparisonLinePlot/dynamic';
 import DifferenceHeatmap from '@/components/Plots/BizCharts/DifferenceHeatmap';
+import CropTable from '@/pages/results/components/CropTable';
 import styles from './style.less';
 
 const getResults = (model, token, resultsSetter, PercentileSetter) => {
@@ -148,9 +149,10 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
             />
           </ConfigProvider>
         </Card>
-        <Card title={<AnchorTitle anchor="results" title="Results comparison" />}
+        <Card
+          title={<AnchorTitle anchor="results" title="Results comparison" />}
           style={{
-            marginBottom: 32
+            marginBottom: 32,
           }}
         >
           <Tabs tabPosition="top" centered>
@@ -201,10 +203,8 @@ const BaseComparison = ({ customModel, baseModel, user }) => {
             </Tabs.TabPane>
           </Tabs>
         </Card>
-        <Card
-          title={<AnchorTitle anchor="crops" title="Crop Selection"/>}
-        >
-
+        <Card title={<AnchorTitle anchor="crops" title="Crop Selection" />}>
+          <CropTable models={customModel && baseModel ? [customModel, baseModel] : []} />
         </Card>
       </div>
     </PageHeaderWrapper>

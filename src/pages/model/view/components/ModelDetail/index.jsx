@@ -35,7 +35,8 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
     }
     if (info.modifications) {
       const crops = info.modifications.map((item) => ({
-        ...item, ...item.crop
+        ...item,
+        ...item.crop,
       }));
       setCrop(crops);
       setLoading(false);

@@ -52,7 +52,7 @@ const Step1 = (props) => {
           <CentralValleyForm onSubmit={onSubmit} />
         </TabPane>
         <TabPane tab="Basin" key="sBasin">
-          <BasinForm onSubmit={onSubmit}/>
+          <BasinForm onSubmit={onSubmit} />
         </TabPane>
         <TabPane tab="County" key="county">
           <CountyForm onSubmit={onSubmit} />
