@@ -29,6 +29,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
           (acc, cur) => ({ ...acc, ...cur, value: Number((acc.value + cur.value).toFixed(6)) }),
           { value: 0 },
         );
+        agg.value = Number((agg.value / level).toFixed(6));
         if (i + 10 > len) {
           agg.year_range = `${1945 + i} - ${1945 + len}`;
         } else {
@@ -138,13 +139,13 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
         colorField="value"
         meta={{
           value: {
-            alias: 'Difference of Nitrogen',
+            alias: 'Average difference of Nitrogen',
           },
         }}
         tooltip={{
           visible: true,
           formatter: (years, percentile, value) => ({
-            name: 'Difference of Nitrogen',
+            name: 'Average difference of Nitrogen',
             value: `${value} at ${percentile}`,
           }),
         }}
