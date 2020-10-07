@@ -84,7 +84,6 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
       if (sample) {
         setRange(sample.length);
         form.setFieldsValue({ years: sample.length / 10, threshold: 10 });
-        onSubmit({ years: sample.length / 10, threshold: 10 });
       }
     }
   }, [baseData, percentiles]);
@@ -149,6 +148,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
                     </Tooltip>
                   </span>
                 }
+                required
                 name="threshold"
               >
                 <InputNumber
@@ -168,7 +168,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
         </Form>
       </div>
       <Chart
-        padding={[10, 20, 50, 100]}
+        padding={isMobile ? [20, 10, 65, 10] : [20, 40, 65, 100]}
         height={500}
         data={processedData}
         autoFit
@@ -176,31 +176,40 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
         scale={{
           threshold: {
             type: 'cat',
-            values: percentiles.map(p => `${ordinalSuffix(p)} percentile`)
+            values: percentiles.map(p => `${ordinalSuffix(p)} percentile`),
           },
           percentile: {
             type: 'cat',
-            values: percentiles.map(p => `${ordinalSuffix(p)} percentile`)
+            values: percentiles.map(p => `${ordinalSuffix(p)} percentile`),
           },
           year_range: {
             type: 'cat',
-            values: processedInterval
+            values: processedInterval,
+            ticks: processedInterval
           },
         }}
       >
         <Polygon
           position="year_range*percentile"
-          color={['value', '#91d5ff-#003a8c']}
+          color={['value', '#BAE7FF-#1890FF-#0050B3']}
           size="value"
+          style={{
+            lineWidth: 1,
+            stroke: '#fff',
+          }}
           tooltip="year_range*percentile*value"
         />
-        <Legend name="value" visible={false} />
+        <Legend name="value" slidable={false} position='top'/>
         <Path
           shape="line"
           color="#faad14"
           position="year_range*threshold"
+          tooltip="year_range*threshold"
         />
         <Axis name="threshold" visible={false} />
+        <Axis name="percentile" position="left" visible={!isMobile}/>
+        <Tooltip shared />
+        <Interaction type='element-active' />
       </Chart>
     </div>
   );

@@ -202,12 +202,12 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
             <Tabs.TabPane
               tab={
                 <Tooltip title="Aggregated difference between base mode and custom model">
-                  Difference heatmap <InfoCircleOutlined />
+                  Threshold heatmap <InfoCircleOutlined />
                 </Tooltip>
               }
-              key="DHP"
+              key="THP"
             >
-              <DifferenceHeatmap
+              <ThresholdHeatmap
                 baseData={baseResults}
                 customData={customResults}
                 percentiles={customPercentile}
@@ -217,12 +217,12 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
             <Tabs.TabPane
               tab={
                 <Tooltip title="Aggregated difference between base mode and custom model">
-                  Threshold heatmap <InfoCircleOutlined />
+                  Difference heatmap <InfoCircleOutlined />
                 </Tooltip>
               }
-              key="THP"
+              key="DHP"
             >
-              <ThresholdHeatmap
+              <DifferenceHeatmap
                 baseData={baseResults}
                 customData={customResults}
                 percentiles={customPercentile}
