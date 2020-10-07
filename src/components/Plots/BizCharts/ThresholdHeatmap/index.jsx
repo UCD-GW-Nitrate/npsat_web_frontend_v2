@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Axis, Chart, Point, Path, Interaction, Legend, Polygon, Line } from 'bizcharts';
+import { Axis, Chart, Path, Interaction, Legend, Polygon } from 'bizcharts';
 import { Statistic, Col, Row, InputNumber, Form, Button, Tooltip } from 'antd';
 import { RouteContext } from '@ant-design/pro-layout';
 import { InfoCircleOutlined } from '@ant-design/icons';
@@ -109,13 +109,13 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
                         if (value <= range && value >= Math.ceil(range / 4)) {
                           return Promise.resolve();
                         } else {
-                          return Promise.reject('Out of range');
+                          return Promise.reject(`Out of range. Select from ${Math.ceil(range / 4)} to ${range}`);
                         }
                       } else {
-                        if (value <= Math.ceil(range / 3) && value >= Math.ceil(range / 40)) {
+                        if (value <= range && value >= Math.ceil(range / 40)) {
                           return Promise.resolve();
                         } else {
-                          return Promise.reject('Out of range');
+                          return Promise.reject(`Out of range. Select from ${Math.ceil(range / 40)} to ${range}`);
                         }
                       }
                     },
@@ -133,7 +133,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
               >
                 <InputNumber
                   style={{ width: '100%' }}
-                  max={isMobile ? range : Math.ceil(range / 3)}
+                  max={range}
                   min={isMobile ? Math.ceil(range / 4) : Math.ceil(range / 40)}
                 />
               </Form.Item>

@@ -29,7 +29,6 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
           (acc, cur) => ({ ...acc, ...cur, value: Number((acc.value + cur.value).toFixed(6)) }),
           { value: 0 },
         );
-        agg.value = Number((agg.value / level).toFixed(6));
         if (i + level > len) {
           agg.year_range = `${1945 + i} - ${1945 + len}`;
         } else {
@@ -91,13 +90,13 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
                         if (value <= range && value >= Math.ceil(range / 4)) {
                           return Promise.resolve();
                         } else {
-                          return Promise.reject('Out of range');
+                          return Promise.reject(`Out of range. Select from ${Math.ceil(range / 4)} to ${range}`);
                         }
                       } else {
-                        if (value <= Math.ceil(range / 3) && value >= Math.ceil(range / 40)) {
+                        if (value <= range && value >= Math.ceil(range / 40)) {
                           return Promise.resolve();
                         } else {
-                          return Promise.reject('Out of range');
+                          return Promise.reject(`Out of range. Select from ${Math.ceil(range / 40)} to ${range}`);
                         }
                       }
                     },
@@ -115,7 +114,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
               >
                 <InputNumber
                   style={{ width: '100%' }}
-                  max={isMobile ? range : Math.ceil(range / 3)}
+                  max={range}
                   min={isMobile ? Math.ceil(range / 4) : Math.ceil(range / 40)}
                 />
               </Form.Item>
