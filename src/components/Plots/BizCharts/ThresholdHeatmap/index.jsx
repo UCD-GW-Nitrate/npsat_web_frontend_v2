@@ -1,18 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { HeatmapChart } from 'bizcharts';
+import { Axis, Chart, Point, Path, Interaction, Legend, Polygon, Line } from 'bizcharts';
 import { Statistic, Col, Row, InputNumber, Form, Button, Tooltip } from 'antd';
 import { RouteContext } from '@ant-design/pro-layout';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { ordinalSuffix } from '@/utils/utils';
 import styles from './index.less';
 
 const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear }) => {
   const { isMobile } = useContext(RouteContext);
   const [form] = Form.useForm();
-  const [selected, setSelected] = useState(undefined);
   const [plotData, setPlotData] = useState({});
   const [range, setRange] = useState(200);
-  const aggregate = (data, level) => {
+  const [processedData, setProcessedData] = useState([]);
+  const [processedInterval, setProcessedInterval] = useState([]);
+  const aggregate = (data, level, threshold) => {
     const result = [];
+    const interval = new Set();
+    const differenceByYear = new Map();
     if (!level || !data) {
       return result;
     }
@@ -35,21 +39,21 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
         } else {
           agg.year_range = `${1945 + i} - ${1945 + i + level}`;
         }
+        interval.add(agg.year_range);
         result.push(agg);
+        if (!differenceByYear.has(agg.year_range) && agg.value >= threshold) {
+          differenceByYear.set(agg.year_range, {
+            year_range: agg.year_range,
+            threshold: agg.percentile
+          });
+        }
       }
     });
-    return result;
+    const path = [...differenceByYear.values()];
+    path.sort((a, b) => a.year_range.localeCompare(b.year_range));
+    result.push(...path);
+    return { result, interval: [...interval]};
   };
-  useEffect(() => {
-    if (baseData && percentiles) {
-      const sample = baseData[percentiles[0]];
-      if (sample) {
-        setRange(sample.length);
-        setSelected(Math.ceil(sample.length / 10));
-        form.setFieldsValue({ years: sample.length / 10 });
-      }
-    }
-  }, [baseData, percentiles]);
   useEffect(() => {
     if (baseData && customData) {
       const data = {};
@@ -69,19 +73,34 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
       setPlotData(data);
     }
   }, [baseData, customData]);
+  const onSubmit = ({ years, threshold }) => {
+    const { result, interval } = aggregate(plotData, years, threshold);
+    setProcessedData(result);
+    setProcessedInterval(interval);
+  }
+  useEffect(() => {
+    if (baseData && percentiles) {
+      const sample = baseData[percentiles[0]];
+      if (sample) {
+        setRange(sample.length);
+        form.setFieldsValue({ years: sample.length / 10, threshold: 10 });
+        onSubmit({ years: sample.length / 10, threshold: 10 });
+      }
+    }
+  }, [baseData, percentiles]);
   return (
     <div className={styles.heatmapPlot}>
       <div className={styles.heatmapPlotSelect}>
-        <Form onFinish={({ years }) => setSelected(years)} hideRequiredMark form={form}>
+        <Form onFinish={onSubmit} hideRequiredMark form={form}>
           <Row gutter={24}>
-            <Col span={8}>
+            <Col span={6}>
               <Statistic
                 title="Reduction year"
                 value={reductionYear}
                 formatter={(value) => `${value}`}
               />
             </Col>
-            <Col span={8}>
+            <Col span={6}>
               <Form.Item
                 required
                 rules={[
@@ -105,7 +124,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
                 ]}
                 label={
                   <span>
-                    Aggregate(sum) years{' '}
+                    Aggregate(avg) years{' '}
                     <Tooltip title="Options will be limited if viewed in mobile devices">
                       <InfoCircleOutlined />
                     </Tooltip>
@@ -120,7 +139,25 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
                 />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={6}>
+              <Form.Item
+                label={
+                  <span>
+                    Threshold{' '}
+                    <Tooltip title="A path that indicates the threshold entered">
+                      <InfoCircleOutlined />
+                    </Tooltip>
+                  </span>
+                }
+                name="threshold"
+              >
+                <InputNumber
+                  style={{ width: '100%' }}
+                  step={0.01}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={6}>
               <Form.Item style={{ float: 'right' }}>
                 <Button htmlType="submit" type="primary">
                   Submit
@@ -130,39 +167,41 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
           </Row>
         </Form>
       </div>
-      <HeatmapChart
+      <Chart
+        padding={[10, 20, 50, 100]}
         height={500}
-        forceFit
-        yField="percentile"
-        xField="year_range"
-        sizeField="value"
-        colorField="value"
-        meta={{
-          value: {
-            alias: 'Average difference of Nitrogen',
+        data={processedData}
+        autoFit
+        placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
+        scale={{
+          threshold: {
+            type: 'cat',
+            values: percentiles.map(p => `${ordinalSuffix(p)} percentile`)
+          },
+          percentile: {
+            type: 'cat',
+            values: percentiles.map(p => `${ordinalSuffix(p)} percentile`)
+          },
+          year_range: {
+            type: 'cat',
+            values: processedInterval
           },
         }}
-        tooltip={{
-          visible: true,
-          formatter: (years, percentile, value) => ({
-            name: 'Average difference of Nitrogen',
-            value: `${value} at ${percentile}`,
-          }),
-        }}
-        xAxis={{
-          label: {
-            visible: true,
-            autoHide: false,
-          },
-        }}
-        yAxis={{
-          visible: !isMobile,
-        }}
-        legend={{
-          visible: !isMobile,
-        }}
-        data={aggregate(plotData, selected)}
-      />
+      >
+        <Polygon
+          position="year_range*percentile"
+          color={['value', '#91d5ff-#003a8c']}
+          size="value"
+          tooltip="year_range*percentile*value"
+        />
+        <Legend name="value" visible={false} />
+        <Path
+          shape="line"
+          color="#faad14"
+          position="year_range*threshold"
+        />
+        <Axis name="threshold" visible={false} />
+      </Chart>
     </div>
   );
 };

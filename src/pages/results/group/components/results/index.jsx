@@ -9,8 +9,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import AnchorTitle from '@/components/AnchorTitle';
 import DifferenceHistogram from '@/components/Plots/BizCharts/DifferenceHistogram/dynamic';
 import ComparisonLinePlot from '@/components/Plots/BizCharts/ComparisonLinePlot/dynamic';
-import DifferenceHeatmap from '@/components/Plots/BizCharts/DifferenceHeatmap/dynamic';
-import ThresholdHeatmap from '@/components/Plots/BizCharts/ThresholdHeatmap/dynamic';
+import DifferenceHeatmap from '@/components/Plots/BizCharts/DifferenceHeatmap';
 import CropTable from '@/pages/results/components/CropTable';
 import styles from './style.less';
 
@@ -208,21 +207,6 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
               key="DHP"
             >
               <DifferenceHeatmap
-                baseData={baseResults}
-                customData={customResults}
-                percentiles={customPercentile}
-                reductionYear={customModel ? customModel.reduction_year : undefined}
-              />
-            </Tabs.TabPane>
-            <Tabs.TabPane
-              tab={
-                <Tooltip title="Aggregated difference between base mode and custom model">
-                  Threshold heatmap <InfoCircleOutlined />
-                </Tooltip>
-              }
-              key="THP"
-            >
-              <ThresholdHeatmap
                 baseData={baseResults}
                 customData={customResults}
                 percentiles={customPercentile}
