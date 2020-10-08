@@ -204,7 +204,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
           shape="line"
           color="#faad14"
           position="year_range*threshold"
-          tooltip="year_range*threshold"
+          tooltip
         />
         <Axis name="threshold" visible={false} />
         <Axis name="percentile" position="left" visible={!isMobile}/>

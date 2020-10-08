@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Chart, Tooltip, Interval, Legend, Slider, Axis, Annotation, Line } from 'bizcharts';
+import { Chart, Tooltip, Legend, Slider, Axis, Annotation, Line } from 'bizcharts';
 import { Select } from 'antd';
 import { ordinalSuffix } from '@/utils/utils';
 import styles from './index.less';
