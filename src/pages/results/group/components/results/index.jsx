@@ -13,43 +13,41 @@ import DifferenceHeatmap from '@/components/Plots/BizCharts/DifferenceHeatmap';
 import CropTable from '@/pages/results/components/CropTable';
 import styles from './style.less';
 
-const getResults = (model, token, resultsSetter, PercentileSetter) => {
-  if (model && model.results) {
-    Promise.all(model.results.map((percentile) => getModelResults(percentile.id, token))).then(
-      (data) => {
-        const results = {};
-        data.forEach((percentile) => {
-          results[percentile.percentile] = percentile.values.map((value, index) =>
-            // start year is always 1945
-            ({
-              year: 1945 + index,
-              value,
-              percentile: `${ordinalSuffix(percentile.percentile)} percentile`,
-            }),
-          );
-        });
-        PercentileSetter(data.map((percentile) => percentile.percentile));
-        resultsSetter(results);
-      },
-    );
-    return true;
-  }
-  return false;
-};
-
-const BaseComparison = ({ customModel, baseModel, user, hash }) => {
+const GroupComparison = ({ models, user, hash }) => {
   const { token } = user;
-  const [baseResults, setBaseResults] = useState([]);
-  const [basePercentile, setBasePercentile] = useState([]);
-  const [customResults, setCustomResults] = useState([]);
-  const [customPercentile, setCustomPercentile] = useState([]);
-
+  const [results, setResults] = useState({});
+  const [percentiles, setPercentiles] = useState({});
+  const [completedModels, setCompletedModels] = useState([]);
   useEffect(() => {
-    getResults(baseModel, token, setBaseResults, setBasePercentile);
-  }, [baseModel]);
-  useEffect(() => {
-    getResults(customModel, token, setCustomResults, setCustomPercentile);
-  }, [customModel]);
+    const availableModels = [];
+    const availableResults = {};
+    const availablePercentiles = {};
+    models.forEach(model => {
+      if (model && model.results && model.results.length > 0) {
+        availableModels.push(model);
+        Promise.all(model.results.map((percentile) => getModelResults(percentile.id, token))).then(
+          (data) => {
+            const modelResults = {};
+            data.forEach((percentile) => {
+              modelResults[percentile.percentile] = percentile.values.map((value, index) =>
+                // start year is always 1945
+                ({
+                  year: 1945 + index,
+                  value,
+                  percentile: `${ordinalSuffix(percentile.percentile)} percentile`,
+                }),
+              );
+            });
+            availableResults[model.id] = modelResults;
+            availablePercentiles[model.id] = data.map((percentile) => percentile.percentile);
+          },
+        );
+      }
+    });
+    setResults(availableResults);
+    setPercentiles(availablePercentiles);
+    setCompletedModels(availableModels);
+  }, [models]);
   useEffect(() => {
     if (!hash || hash[0] !== '#') {
       return;
@@ -65,12 +63,13 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
   return (
     <PageHeaderWrapper
       title="Base model comparison"
-      subTitle="Compare a custom model with the base model under same scenario"
+      subTitle="Compare selected models together"
       content={
         <Anchor affix={false}>
           <Anchor.Link href="#settings" title="Model settings" />
-          <Anchor.Link href="#results" title="Results comparison" />
           <Anchor.Link href="#crops" title="Crop selection" />
+          <Anchor.Link href="#results-pair" title="Results comparison in pairs" />
+          <Anchor.Link href="#results-group" title="Results comparison in group" />
         </Anchor>
       }
     >
@@ -110,6 +109,33 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   width: 250,
                 },
                 {
+                  title: 'Status',
+                  dataIndex: 'status',
+                  valueEnum: {
+                    0: {
+                      text: 'Not ready',
+                      status: 'Warning',
+                    },
+                    1: {
+                      text: 'In queue',
+                      status: 'Default',
+                    },
+                    2: {
+                      text: 'Running',
+                      status: 'Processing',
+                    },
+                    3: {
+                      text: 'Complete',
+                      status: 'Success',
+                    },
+                    4: {
+                      text: 'Error',
+                      status: 'Error',
+                    },
+                  },
+                  width: 100,
+                },
+                {
                   title: 'Scenario',
                   dataIndex: 'scenario',
                   render: (value) => value.name,
@@ -122,6 +148,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                 {
                   title: 'Wells included',
                   dataIndex: 'n_wells',
+                  render: value => value || 'Not completed'
                 },
                 {
                   title: 'Year range',
@@ -146,10 +173,10 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                 {
                   title: 'Date Completed',
                   dataIndex: 'date_completed',
-                  render: (value) => new Date(value).toLocaleString(),
+                  render: (value) => value ? new Date(value).toLocaleString() : 'Not completed',
                 },
               ]}
-              dataSource={customModel && baseModel ? [customModel, baseModel] : []}
+              dataSource={models}
               scroll={{
                 x: 'max-content',
               }}
@@ -161,68 +188,78 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
             />
           </ConfigProvider>
         </Card>
-        <Card
-          title={<AnchorTitle anchor="results" title="Results comparison" />}
+        <Card title={<AnchorTitle anchor="crops" title="Crop Selection" />}
           style={{
-            marginBottom: 32,
+            marginBottom: 32
           }}
         >
-          <Tabs tabPosition="top" centered>
-            <Tabs.TabPane
-              tab={
-                <Tooltip title="Comparison under same percentile">
-                  Comparison Line Plot <InfoCircleOutlined />
-                </Tooltip>
-              }
-              key="LP"
-            >
-              <ComparisonLinePlot
-                baseData={baseResults}
-                customData={customResults}
-                percentiles={customPercentile}
-                reductionYear={customModel ? customModel.reduction_year : undefined}
-              />
-            </Tabs.TabPane>
-            <Tabs.TabPane
-              tab={
-                <Tooltip title="Difference between base model and custom model">
-                  Difference histogram <InfoCircleOutlined />
-                </Tooltip>
-              }
-              key="DH"
-            >
-              <DifferenceHistogram
-                baseData={baseResults}
-                customData={customResults}
-                percentiles={customPercentile}
-                reductionYear={customModel ? customModel.reduction_year : undefined}
-              />
-            </Tabs.TabPane>
-            <Tabs.TabPane
-              tab={
-                <Tooltip title="Aggregated difference between base mode and custom model">
-                  Difference heatmap <InfoCircleOutlined />
-                </Tooltip>
-              }
-              key="DHP"
-            >
-              <DifferenceHeatmap
-                baseData={baseResults}
-                customData={customResults}
-                percentiles={customPercentile}
-                reductionYear={customModel ? customModel.reduction_year : undefined}
-              />
-            </Tabs.TabPane>
-          </Tabs>
-        </Card>
-        <Card title={<AnchorTitle anchor="crops" title="Crop Selection" />}>
-          <CropTable models={customModel && baseModel ? [customModel, baseModel] : []} />
+          <CropTable models={models} />
         </Card>
       </div>
     </PageHeaderWrapper>
   );
 };
 
+const ResultComparisonInPairs = ({ models }) => {
+
+  return (
+    <Card
+      title={<AnchorTitle anchor="results-pair" title="Results comparison in pairs" />}
+      style={{
+        marginBottom: 32,
+      }}
+    >
+      <Tabs tabPosition="top" centered>
+        <Tabs.TabPane
+          tab={
+            <Tooltip title="Comparison under same percentile">
+              Comparison Line Plot <InfoCircleOutlined />
+            </Tooltip>
+          }
+          key="LP"
+        >
+          <ComparisonLinePlot
+            baseData={baseResults}
+            customData={customResults}
+            percentiles={customPercentile}
+            reductionYear={customModel ? customModel.reduction_year : undefined}
+          />
+        </Tabs.TabPane>
+        <Tabs.TabPane
+          tab={
+            <Tooltip title="Difference between base model and custom model">
+              Difference histogram <InfoCircleOutlined />
+            </Tooltip>
+          }
+          key="DH"
+        >
+          <DifferenceHistogram
+            baseData={baseResults}
+            customData={customResults}
+            percentiles={customPercentile}
+            reductionYear={customModel ? customModel.reduction_year : undefined}
+          />
+        </Tabs.TabPane>
+        <Tabs.TabPane
+          tab={
+            <Tooltip title="Aggregated difference between base mode and custom model">
+              Difference heatmap <InfoCircleOutlined />
+            </Tooltip>
+          }
+          key="DHP"
+        >
+          <DifferenceHeatmap
+            baseData={baseResults}
+            customData={customResults}
+            percentiles={customPercentile}
+            reductionYear={customModel ? customModel.reduction_year : undefined}
+          />
+        </Tabs.TabPane>
+      </Tabs>
+    </Card>
+  );
+}
+
 export default connect(({ user }) => ({
   user: user.currentUser,
-}))(BaseComparison);
+}))(GroupComparison);

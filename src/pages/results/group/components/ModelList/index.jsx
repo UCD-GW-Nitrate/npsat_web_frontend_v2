@@ -264,6 +264,12 @@ const SearchTable = ({
               <Button
                 type="primary"
                 disabled={selectedRowKeys.length <= 1 || selectedRowKeys.length > 5}
+                onClick={() => {
+                  history.push({
+                    path: '/charts/group',
+                    query: { ids: selectedRowKeys.join(',') },
+                  });
+                }}
               >
                 Compare in groups
               </Button>

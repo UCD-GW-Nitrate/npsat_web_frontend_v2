@@ -8,10 +8,9 @@ export async function getModelAndBaseModel(params, token) {
   });
 }
 
-export async function getGroupOfModels(params, token) {
+export async function getModel(params, token) {
   return request(`/api/model_run/${params.id}/`, {
     method: 'GET',
     headers: { Authorization: `Token ${token}` },
-    data: { id: params.id },
   });
 }

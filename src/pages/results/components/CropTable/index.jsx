@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
+import { Tooltip } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 const CropTable = ({ models }) => {
   const [data, setData] = useState([]);
@@ -29,7 +31,17 @@ const CropTable = ({ models }) => {
         modelColumns.push({
           title: `Loading of ${name}`,
           dataIndex: name,
-          render: (num) => `${Math.round(parseFloat(num) * 100)}%`,
+          render: (num) =>
+            num ? (
+              `${Math.round(parseFloat(num) * 100)}%`
+            ) : (
+              <>
+                Not specified{' '}
+                <Tooltip title="The creator didn't specify the loading of this corp, so it is the same as 'All other crops'.">
+                  <InfoCircleOutlined />
+                </Tooltip>
+              </>
+            ),
           sorter: (a, b) => parseFloat(a[name]) - parseFloat(b[name]),
         });
       });

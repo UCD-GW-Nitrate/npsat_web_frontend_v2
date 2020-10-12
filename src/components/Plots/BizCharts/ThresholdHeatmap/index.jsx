@@ -44,7 +44,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
         if (!differenceByYear.has(agg.year_range) && agg.value >= threshold) {
           differenceByYear.set(agg.year_range, {
             year_range: agg.year_range,
-            threshold: agg.percentile
+            threshold: agg.percentile,
           });
         }
       }
@@ -52,7 +52,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
     const path = [...differenceByYear.values()];
     path.sort((a, b) => a.year_range.localeCompare(b.year_range));
     result.push(...path);
-    return { result, interval: [...interval]};
+    return { result, interval: [...interval] };
   };
   useEffect(() => {
     if (baseData && customData) {
@@ -77,7 +77,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
     const { result, interval } = aggregate(plotData, years, threshold);
     setProcessedData(result);
     setProcessedInterval(interval);
-  }
+  };
   useEffect(() => {
     if (baseData && percentiles) {
       const sample = baseData[percentiles[0]];
@@ -109,13 +109,17 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
                         if (value <= range && value >= Math.ceil(range / 4)) {
                           return Promise.resolve();
                         } else {
-                          return Promise.reject(`Out of range. Select from ${Math.ceil(range / 4)} to ${range}`);
+                          return Promise.reject(
+                            `Out of range. Select from ${Math.ceil(range / 4)} to ${range}`,
+                          );
                         }
                       } else {
                         if (value <= range && value >= Math.ceil(range / 40)) {
                           return Promise.resolve();
                         } else {
-                          return Promise.reject(`Out of range. Select from ${Math.ceil(range / 40)} to ${range}`);
+                          return Promise.reject(
+                            `Out of range. Select from ${Math.ceil(range / 40)} to ${range}`,
+                          );
                         }
                       }
                     },
@@ -151,10 +155,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
                 required
                 name="threshold"
               >
-                <InputNumber
-                  style={{ width: '100%' }}
-                  step={0.01}
-                />
+                <InputNumber style={{ width: '100%' }} step={0.01} />
               </Form.Item>
             </Col>
             <Col span={6}>
@@ -176,16 +177,16 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
         scale={{
           threshold: {
             type: 'cat',
-            values: percentiles.map(p => `${ordinalSuffix(p)} percentile`),
+            values: percentiles.map((p) => `${ordinalSuffix(p)} percentile`),
           },
           percentile: {
             type: 'cat',
-            values: percentiles.map(p => `${ordinalSuffix(p)} percentile`),
+            values: percentiles.map((p) => `${ordinalSuffix(p)} percentile`),
           },
           year_range: {
             type: 'cat',
             values: processedInterval,
-            ticks: processedInterval
+            ticks: processedInterval,
           },
         }}
       >
@@ -199,17 +200,12 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
           }}
           tooltip="year_range*percentile*value"
         />
-        <Legend name="value" slidable={false} position='top'/>
-        <Path
-          shape="line"
-          color="#faad14"
-          position="year_range*threshold"
-          tooltip
-        />
+        <Legend name="value" slidable={false} position="top" />
+        <Path shape="line" color="#faad14" position="year_range*threshold" tooltip />
         <Axis name="threshold" visible={false} />
-        <Axis name="percentile" position="left" visible={!isMobile}/>
+        <Axis name="percentile" position="left" visible={!isMobile} />
         <Tooltip shared />
-        <Interaction type='element-active' />
+        <Interaction type="element-active" />
       </Chart>
     </div>
   );
