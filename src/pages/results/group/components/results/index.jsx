@@ -63,7 +63,7 @@ const GroupComparison = ({ models, user, hash }) => {
   }, []);
   return (
     <PageHeaderWrapper
-      title="Base model comparison"
+      title="Group models comparison"
       subTitle="Compare selected models together"
       content={
         <Anchor affix={false}>
@@ -198,6 +198,11 @@ const GroupComparison = ({ models, user, hash }) => {
           <CropTable models={models} />
         </Card>
         <ResultComparisonInPairs
+          models={completedModels}
+          results={results}
+          percentiles={percentiles}
+        />
+        <ResultComparisonInGroup
           models={completedModels}
           results={results}
           percentiles={percentiles}
@@ -340,6 +345,49 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description="Select baseline and compared models on the top right"
         />
+      )}
+    </Card>
+  );
+};
+
+const ResultComparisonInGroup = ({ models, results, percentiles }) => {
+  const [chosenModels, setChosenModels] = useState([]);
+  const [modelsMap, setMap] = useState({});
+  useEffect(() => {
+    const map = {};
+    models.forEach((model) => {
+      map[model.id] = model;
+    });
+    setMap(map);
+  }, [models]);
+  return (
+    <Card
+      title={<AnchorTitle anchor="results-group" title="Results comparison in group" />}
+      extra={
+        <Space align="baseline">
+          <Select
+            value={chosenModels}
+            showArrow
+            mode="multiple"
+            onChange={setChosenModels}
+            placeholder="Select models to compare"
+            style={{
+              width: 325,
+            }}
+          >
+            {models.map((model) => (
+              <Select.Option key={model.id} value={model.id}>
+                {model.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Space>
+      }
+    >
+      {chosenModels.length > 0 ? (
+        <Tabs tabPosition="top" centered></Tabs>
+      ) : (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Select models on the top right" />
       )}
     </Card>
   );
