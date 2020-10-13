@@ -11,7 +11,7 @@ const ResultCompare = (props) => {
   const { token } = user;
   const [info, setInfo] = useState([]);
   const [error, setError] = useState(false);
-  const [errorMsg, setMsg] = useState("");
+  const [errorMsg, setMsg] = useState('');
   const { hash } = location;
   const { ids = null } = location.query;
   useEffect(() => {
@@ -22,11 +22,11 @@ const ResultCompare = (props) => {
       const models = await Promise.all(ids.split(',').map((id) => getModel({ id }, token)));
       if (models.length > 5) {
         setError(true);
-        setMsg("Too many models selected.");
+        setMsg('Too many models selected.');
         return;
       } else if (models.length < 2) {
         setError(true);
-        setMsg("Too few models selected.")
+        setMsg('Too few models selected.');
         return;
       }
       models.forEach((model) => {
@@ -41,12 +41,14 @@ const ResultCompare = (props) => {
   if (!ids) {
     return <SearchTable />;
   } else if (error) {
-    return errorMsg ? <NoFoundPage
-      subTitle="You should select not more than 5 models and no less than 2 models"
-      title={errorMsg}
-      redirection="/charts/group"
-      buttonText="Select models"
-    /> : (
+    return errorMsg ? (
+      <NoFoundPage
+        subTitle="You should select not more than 5 models and no less than 2 models"
+        title={errorMsg}
+        redirection="/charts/group"
+        buttonText="Select models"
+      />
+    ) : (
       <NoFoundPage
         subTitle="One are more models you selected are inaccessible"
         title="The model you look for is private or cannot be found"

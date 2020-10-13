@@ -1,16 +1,17 @@
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Anchor, Card, Tabs, Tooltip } from 'antd';
+import { Anchor, Card, Select, Tabs, Tooltip, Space, Button, Empty } from 'antd';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import React, { useEffect, useState } from 'react';
 import { getModelResults } from '@/pages/model/view/service';
 import { ordinalSuffix } from '@/utils/utils';
 import { connect } from 'umi';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, SwapOutlined } from '@ant-design/icons';
 import AnchorTitle from '@/components/AnchorTitle';
 import DifferenceHistogram from '@/components/Plots/BizCharts/DifferenceHistogram/dynamic';
 import ComparisonLinePlot from '@/components/Plots/BizCharts/ComparisonLinePlot/dynamic';
 import DifferenceHeatmap from '@/components/Plots/BizCharts/DifferenceHeatmap';
 import CropTable from '@/pages/results/components/CropTable';
+import ThresholdHeatmap from '@/components/Plots/BizCharts/ThresholdHeatmap/dynamic';
 import styles from './style.less';
 
 const GroupComparison = ({ models, user, hash }) => {
@@ -22,7 +23,7 @@ const GroupComparison = ({ models, user, hash }) => {
     const availableModels = [];
     const availableResults = {};
     const availablePercentiles = {};
-    models.forEach(model => {
+    models.forEach((model) => {
       if (model && model.results && model.results.length > 0) {
         availableModels.push(model);
         Promise.all(model.results.map((percentile) => getModelResults(percentile.id, token))).then(
@@ -148,7 +149,7 @@ const GroupComparison = ({ models, user, hash }) => {
                 {
                   title: 'Wells included',
                   dataIndex: 'n_wells',
-                  render: value => value || 'Not completed'
+                  render: (value) => value || 'Not completed',
                 },
                 {
                   title: 'Year range',
@@ -173,7 +174,7 @@ const GroupComparison = ({ models, user, hash }) => {
                 {
                   title: 'Date Completed',
                   dataIndex: 'date_completed',
-                  render: (value) => value ? new Date(value).toLocaleString() : 'Not completed',
+                  render: (value) => (value ? new Date(value).toLocaleString() : 'Not completed'),
                 },
               ]}
               dataSource={models}
@@ -188,77 +189,158 @@ const GroupComparison = ({ models, user, hash }) => {
             />
           </ConfigProvider>
         </Card>
-        <Card title={<AnchorTitle anchor="crops" title="Crop Selection" />}
+        <Card
+          title={<AnchorTitle anchor="crops" title="Crop Selection" />}
           style={{
-            marginBottom: 32
+            marginBottom: 32,
           }}
         >
           <CropTable models={models} />
         </Card>
+        <ResultComparisonInPairs
+          models={completedModels}
+          results={results}
+          percentiles={percentiles}
+        />
       </div>
     </PageHeaderWrapper>
   );
 };
 
-const ResultComparisonInPairs = ({ models }) => {
-
+const ResultComparisonInPairs = ({ models, results, percentiles }) => {
+  const [base, setBase] = useState(undefined);
+  const [compare, setCompare] = useState(undefined);
+  const [modelsMap, setMap] = useState({});
+  useEffect(() => {
+    const map = {};
+    models.forEach((model) => {
+      map[model.id] = model;
+    });
+    setMap(map);
+  }, [models]);
+  console.log(models, results, percentiles, base, compare);
   return (
     <Card
       title={<AnchorTitle anchor="results-pair" title="Results comparison in pairs" />}
       style={{
         marginBottom: 32,
       }}
+      extra={
+        <Space align="baseline">
+          <Select
+            value={base}
+            onChange={setBase}
+            placeholder="Baseline model"
+            style={{
+              width: 150,
+            }}
+          >
+            {models.map((model) => (
+              <Select.Option key={model.id} value={model.id}>
+                {model.name}
+              </Select.Option>
+            ))}
+          </Select>
+          <Button
+            type="link"
+            style={{
+              margin: 0,
+              padding: 0,
+            }}
+            onClick={() => {
+              setBase(compare);
+              setCompare(base);
+            }}
+          >
+            <Tooltip title="Swap baseline model">
+              <SwapOutlined />
+            </Tooltip>
+          </Button>
+          <Select
+            value={compare}
+            onChange={setCompare}
+            placeholder="Compared model"
+            style={{
+              width: 150,
+            }}
+          >
+            {models.map((model) => (
+              <Select.Option key={model.id} value={model.id}>
+                {model.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Space>
+      }
     >
-      <Tabs tabPosition="top" centered>
-        <Tabs.TabPane
-          tab={
-            <Tooltip title="Comparison under same percentile">
-              Comparison Line Plot <InfoCircleOutlined />
-            </Tooltip>
-          }
-          key="LP"
-        >
-          <ComparisonLinePlot
-            baseData={baseResults}
-            customData={customResults}
-            percentiles={customPercentile}
-            reductionYear={customModel ? customModel.reduction_year : undefined}
-          />
-        </Tabs.TabPane>
-        <Tabs.TabPane
-          tab={
-            <Tooltip title="Difference between base model and custom model">
-              Difference histogram <InfoCircleOutlined />
-            </Tooltip>
-          }
-          key="DH"
-        >
-          <DifferenceHistogram
-            baseData={baseResults}
-            customData={customResults}
-            percentiles={customPercentile}
-            reductionYear={customModel ? customModel.reduction_year : undefined}
-          />
-        </Tabs.TabPane>
-        <Tabs.TabPane
-          tab={
-            <Tooltip title="Aggregated difference between base mode and custom model">
-              Difference heatmap <InfoCircleOutlined />
-            </Tooltip>
-          }
-          key="DHP"
-        >
-          <DifferenceHeatmap
-            baseData={baseResults}
-            customData={customResults}
-            percentiles={customPercentile}
-            reductionYear={customModel ? customModel.reduction_year : undefined}
-          />
-        </Tabs.TabPane>
-      </Tabs>
+      {base && compare ? (
+        <Tabs tabPosition="top" centered>
+          <Tabs.TabPane
+            tab={
+              <Tooltip title="Comparison under same percentile">
+                Comparison Line Plot <InfoCircleOutlined />
+              </Tooltip>
+            }
+            key="LP"
+          >
+            <ComparisonLinePlot
+              baseData={results[base]}
+              customData={results[compare]}
+              percentiles={percentiles[compare]}
+            />
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab={
+              <Tooltip title="Difference between base model and custom model">
+                Difference histogram <InfoCircleOutlined />
+              </Tooltip>
+            }
+            key="DH"
+          >
+            <DifferenceHistogram
+              baseData={results[base]}
+              customData={results[compare]}
+              percentiles={percentiles[compare]}
+            />
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab={
+              <Tooltip title="Aggregated difference between base mode and custom model">
+                Threshold heatmap <InfoCircleOutlined />
+              </Tooltip>
+            }
+            key="THP"
+          >
+            <ThresholdHeatmap
+              baseData={results[base]}
+              customData={results[compare]}
+              percentiles={percentiles[compare]}
+            />
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab={
+              <Tooltip title="Aggregated difference between base mode and custom model">
+                Difference heatmap <InfoCircleOutlined />
+              </Tooltip>
+            }
+            key="DHP"
+          >
+            <DifferenceHeatmap
+              baseData={results[base]}
+              customData={results[compare]}
+              percentiles={percentiles[compare]}
+            />
+          </Tabs.TabPane>
+        </Tabs>
+      ) : (
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description="Select baseline and compared models on the top right"
+        />
+      )}
     </Card>
   );
-}
+};
 
 export default connect(({ user }) => ({
   user: user.currentUser,

@@ -83,7 +83,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
       const sample = baseData[percentiles[0]];
       if (sample) {
         setRange(sample.length);
-        form.setFieldsValue({ years: sample.length / 10, threshold: 10 });
+        // form.setFieldsValue({ years: sample.length / 10, threshold: 10 });
       }
     }
   }, [baseData, percentiles]);
