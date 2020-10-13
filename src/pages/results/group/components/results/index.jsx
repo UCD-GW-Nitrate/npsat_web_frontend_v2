@@ -218,7 +218,6 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
     });
     setMap(map);
   }, [models]);
-  console.log(models, results, percentiles, base, compare);
   return (
     <Card
       title={<AnchorTitle anchor="results-pair" title="Results comparison in pairs" />}
@@ -287,6 +286,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
               baseData={results[base]}
               customData={results[compare]}
               percentiles={percentiles[compare]}
+              reductionYear={modelsMap[compare].reduction_year}
             />
           </Tabs.TabPane>
           <Tabs.TabPane
@@ -301,6 +301,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
               baseData={results[base]}
               customData={results[compare]}
               percentiles={percentiles[compare]}
+              reductionYear={modelsMap[compare].reduction_year}
             />
           </Tabs.TabPane>
           <Tabs.TabPane
@@ -315,6 +316,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
               baseData={results[base]}
               customData={results[compare]}
               percentiles={percentiles[compare]}
+              reductionYear={modelsMap[compare].reduction_year}
             />
           </Tabs.TabPane>
           <Tabs.TabPane
@@ -329,6 +331,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
               baseData={results[base]}
               customData={results[compare]}
               percentiles={percentiles[compare]}
+              reductionYear={modelsMap[compare].reduction_year}
             />
           </Tabs.TabPane>
         </Tabs>
