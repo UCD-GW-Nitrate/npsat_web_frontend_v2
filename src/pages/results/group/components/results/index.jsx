@@ -71,7 +71,7 @@ const GroupComparison = ({ models, user, hash }) => {
           <Anchor.Link href="#settings" title="Model settings" />
           <Anchor.Link href="#crops" title="Crop selection" />
           <Anchor.Link href="#results-pair" title="Results comparison in pairs" />
-          {/*<Anchor.Link href="#results-group" title="Results comparison in group" />*/}
+          <Anchor.Link href="#results-group" title="Results comparison in group" />
         </Anchor>
       }
     >
@@ -385,7 +385,7 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
         </Space>
       }
     >
-      {chosenModels.length > 0 ? (
+      {chosenModels.length > 0 && Object.keys(results).length !== 0? (
         <Tabs tabPosition="top" centered>
           <Tabs.TabPane tab="Comparison Line Plot" key="GCLP">
             <GroupComparisonLinePlot
