@@ -6,6 +6,7 @@ import { history } from 'umi';
 import MultilinePlot from '@/components/Plots/BizCharts/MultilinePlot/dynamic';
 import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
 import { ordinalSuffix } from '@/utils/utils';
+import BoxPlot from '@/components/Plots/BizCharts/BoxPlot/dynamic';
 import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import { getRegionDetail, getModelResults } from '../../service';
@@ -215,6 +216,13 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
               </Tabs.TabPane>
               <Tabs.TabPane tab="Area Plot" key="AP">
                 <AreaPlot
+                  percentiles={percentiles}
+                  data={plotData}
+                  reductionYear={info.reduction_year}
+                />
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Box Plot" key="BP">
+                <BoxPlot
                   percentiles={percentiles}
                   data={plotData}
                   reductionYear={info.reduction_year}

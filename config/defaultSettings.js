@@ -7,7 +7,7 @@ export default {
   autoHideHeader: false,
   fixSiderbar: false,
   colorWeak: false,
-  title: '',
+  title: 'NPSAT',
   menu: {
     collapsed: false,
   },

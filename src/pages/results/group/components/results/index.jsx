@@ -12,6 +12,7 @@ import ComparisonLinePlot from '@/components/Plots/BizCharts/ComparisonLinePlot/
 import DifferenceHeatmap from '@/components/Plots/BizCharts/DifferenceHeatmap';
 import CropTable from '@/pages/results/components/CropTable';
 import ThresholdHeatmap from '@/components/Plots/BizCharts/ThresholdHeatmap/dynamic';
+import GroupComparisonLinePlot from '@/components/Plots/BizCharts/GroupComparisonLinePlot/dynamic';
 import styles from './style.less';
 
 const GroupComparison = ({ models, user, hash }) => {
@@ -45,8 +46,8 @@ const GroupComparison = ({ models, user, hash }) => {
         );
       }
     });
-    setResults(availableResults);
-    setPercentiles(availablePercentiles);
+    setResults({ ...availableResults });
+    setPercentiles({ ...availablePercentiles });
     setCompletedModels(availableModels);
   }, [models]);
   useEffect(() => {
@@ -70,7 +71,7 @@ const GroupComparison = ({ models, user, hash }) => {
           <Anchor.Link href="#settings" title="Model settings" />
           <Anchor.Link href="#crops" title="Crop selection" />
           <Anchor.Link href="#results-pair" title="Results comparison in pairs" />
-          <Anchor.Link href="#results-group" title="Results comparison in group" />
+          {/*<Anchor.Link href="#results-group" title="Results comparison in group" />*/}
         </Anchor>
       }
     >
@@ -202,11 +203,11 @@ const GroupComparison = ({ models, user, hash }) => {
           results={results}
           percentiles={percentiles}
         />
-        <ResultComparisonInGroup
-          models={completedModels}
-          results={results}
-          percentiles={percentiles}
-        />
+        {/*<ResultComparisonInGroup*/}
+        {/*  models={completedModels}*/}
+        {/*  results={results}*/}
+        {/*  percentiles={percentiles}*/}
+        {/*/>*/}
       </div>
     </PageHeaderWrapper>
   );
@@ -385,9 +386,17 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
       }
     >
       {chosenModels.length > 0 ? (
-        <Tabs tabPosition="top" centered></Tabs>
+        <Tabs tabPosition="top" centered>
+          <Tabs.TabPane tab="Comparison Line Plot" key="GCLP">
+            <GroupComparisonLinePlot
+              percentiles={percentiles[chosenModels[0]]}
+              models={models}
+              results={results}
+            />
+          </Tabs.TabPane>
+        </Tabs>
       ) : (
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Select models on the top right" />
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No completed models" />
       )}
     </Card>
   );
