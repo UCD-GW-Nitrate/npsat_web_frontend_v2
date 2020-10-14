@@ -125,7 +125,7 @@ const Step3 = (props) => {
         <Form.Item
           name="scenario"
           label="Scenario"
-          required={[
+          rules={[
             {
               required: true,
               message: 'Please choose a scenario',
