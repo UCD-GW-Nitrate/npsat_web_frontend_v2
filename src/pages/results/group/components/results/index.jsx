@@ -1,5 +1,5 @@
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Anchor, Card, Select, Tabs, Tooltip, Space, Button, Empty } from 'antd';
+import { Anchor, Card, Select, Tabs, Tooltip, Space, Button, Empty, Spin } from 'antd';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import React, { useEffect, useState } from 'react';
 import { getModelResults } from '@/pages/model/view/service';
@@ -20,6 +20,7 @@ const GroupComparison = ({ models, user, hash }) => {
   const [results, setResults] = useState({});
   const [percentiles, setPercentiles] = useState({});
   const [completedModels, setCompletedModels] = useState([]);
+  const [ready, setReady] = useState(false);
   useEffect(() => {
     const availableModels = [];
     const availableResults = {};
@@ -46,8 +47,8 @@ const GroupComparison = ({ models, user, hash }) => {
         );
       }
     });
-    setResults({ ...availableResults });
-    setPercentiles({ ...availablePercentiles });
+    setResults(availableResults);
+    setPercentiles(availablePercentiles);
     setCompletedModels(availableModels);
   }, [models]);
   useEffect(() => {
@@ -198,16 +199,20 @@ const GroupComparison = ({ models, user, hash }) => {
         >
           <CropTable models={models} />
         </Card>
-        <ResultComparisonInPairs
-          models={completedModels}
-          results={results}
-          percentiles={percentiles}
-        />
-        {/*<ResultComparisonInGroup*/}
-        {/*  models={completedModels}*/}
-        {/*  results={results}*/}
-        {/*  percentiles={percentiles}*/}
-        {/*/>*/}
+        {ready ? (
+          <>
+            <ResultComparisonInPairs
+              models={completedModels}
+              results={results}
+              percentiles={percentiles}
+            />
+            <ResultComparisonInGroup
+              models={completedModels}
+              results={results}
+              percentiles={percentiles}
+            />
+          </>
+        ) : <Spin />}
       </div>
     </PageHeaderWrapper>
   );
@@ -354,6 +359,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
 const ResultComparisonInGroup = ({ models, results, percentiles }) => {
   const [chosenModels, setChosenModels] = useState([]);
   const [modelsMap, setMap] = useState({});
+  console.log(models, results, percentiles);
   useEffect(() => {
     const map = {};
     models.forEach((model) => {
@@ -385,7 +391,7 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
         </Space>
       }
     >
-      {chosenModels.length > 0 && Object.keys(results).length !== 0? (
+      {chosenModels.length > 0 && Object.keys(results).length >= 0 ? (
         <Tabs tabPosition="top" centered>
           <Tabs.TabPane tab="Comparison Line Plot" key="GCLP">
             <GroupComparisonLinePlot

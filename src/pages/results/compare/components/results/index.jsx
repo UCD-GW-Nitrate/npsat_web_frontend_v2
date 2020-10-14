@@ -1,5 +1,5 @@
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Anchor, Card, Tabs, Tooltip } from 'antd';
+import { Anchor, Card, Spin, Tabs, Tooltip } from 'antd';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import React, { useEffect, useState } from 'react';
 import { getModelResults } from '@/pages/model/view/service';
@@ -44,13 +44,15 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
   const [basePercentile, setBasePercentile] = useState([]);
   const [customResults, setCustomResults] = useState([]);
   const [customPercentile, setCustomPercentile] = useState([]);
-
+  const [ready, setReady] = useState(false);
   useEffect(() => {
-    getResults(baseModel, token, setBaseResults, setBasePercentile);
-  }, [baseModel]);
-  useEffect(() => {
-    getResults(customModel, token, setCustomResults, setCustomPercentile);
-  }, [customModel]);
+    if (
+      getResults(baseModel, token, setBaseResults, setBasePercentile) &&
+      getResults(customModel, token, setCustomResults, setCustomPercentile)
+    ) {
+      setReady(true);
+    }
+  }, [baseModel, customModel]);
   useEffect(() => {
     if (!hash || hash[0] !== '#') {
       return;
@@ -162,75 +164,79 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
             />
           </ConfigProvider>
         </Card>
-        <Card
-          title={<AnchorTitle anchor="results" title="Results comparison" />}
-          style={{
-            marginBottom: 32,
-          }}
-        >
-          <Tabs tabPosition="top" centered>
-            <Tabs.TabPane
-              tab={
-                <Tooltip title="Comparison under same percentile">
-                  Comparison Line Plot <InfoCircleOutlined />
-                </Tooltip>
-              }
-              key="LP"
-            >
-              <ComparisonLinePlot
-                baseData={baseResults}
-                customData={customResults}
-                percentiles={customPercentile}
-                reductionYear={customModel ? customModel.reduction_year : undefined}
-              />
-            </Tabs.TabPane>
-            <Tabs.TabPane
-              tab={
-                <Tooltip title="Difference between base model and custom model">
-                  Difference histogram <InfoCircleOutlined />
-                </Tooltip>
-              }
-              key="DH"
-            >
-              <DifferenceHistogram
-                baseData={baseResults}
-                customData={customResults}
-                percentiles={customPercentile}
-                reductionYear={customModel ? customModel.reduction_year : undefined}
-              />
-            </Tabs.TabPane>
-            <Tabs.TabPane
-              tab={
-                <Tooltip title="Aggregated difference between base mode and custom model">
-                  Threshold heatmap <InfoCircleOutlined />
-                </Tooltip>
-              }
-              key="THP"
-            >
-              <ThresholdHeatmap
-                baseData={baseResults}
-                customData={customResults}
-                percentiles={customPercentile}
-                reductionYear={customModel ? customModel.reduction_year : undefined}
-              />
-            </Tabs.TabPane>
-            <Tabs.TabPane
-              tab={
-                <Tooltip title="Aggregated difference between base mode and custom model">
-                  Difference heatmap <InfoCircleOutlined />
-                </Tooltip>
-              }
-              key="DHP"
-            >
-              <DifferenceHeatmap
-                baseData={baseResults}
-                customData={customResults}
-                percentiles={customPercentile}
-                reductionYear={customModel ? customModel.reduction_year : undefined}
-              />
-            </Tabs.TabPane>
-          </Tabs>
-        </Card>
+        {ready ? (
+          <Card
+            title={<AnchorTitle anchor="results" title="Results comparison" />}
+            style={{
+              marginBottom: 32,
+            }}
+          >
+            <Tabs tabPosition="top" centered>
+              <Tabs.TabPane
+                tab={
+                  <Tooltip title="Comparison under same percentile">
+                    Comparison Line Plot <InfoCircleOutlined />
+                  </Tooltip>
+                }
+                key="LP"
+              >
+                <ComparisonLinePlot
+                  baseData={baseResults}
+                  customData={customResults}
+                  percentiles={customPercentile}
+                  reductionYear={customModel ? customModel.reduction_year : undefined}
+                />
+              </Tabs.TabPane>
+              <Tabs.TabPane
+                tab={
+                  <Tooltip title="Difference between base model and custom model">
+                    Difference histogram <InfoCircleOutlined />
+                  </Tooltip>
+                }
+                key="DH"
+              >
+                <DifferenceHistogram
+                  baseData={baseResults}
+                  customData={customResults}
+                  percentiles={customPercentile}
+                  reductionYear={customModel ? customModel.reduction_year : undefined}
+                />
+              </Tabs.TabPane>
+              <Tabs.TabPane
+                tab={
+                  <Tooltip title="Aggregated difference between base mode and custom model">
+                    Threshold heatmap <InfoCircleOutlined />
+                  </Tooltip>
+                }
+                key="THP"
+              >
+                <ThresholdHeatmap
+                  baseData={baseResults}
+                  customData={customResults}
+                  percentiles={customPercentile}
+                  reductionYear={customModel ? customModel.reduction_year : undefined}
+                />
+              </Tabs.TabPane>
+              <Tabs.TabPane
+                tab={
+                  <Tooltip title="Aggregated difference between base mode and custom model">
+                    Difference heatmap <InfoCircleOutlined />
+                  </Tooltip>
+                }
+                key="DHP"
+              >
+                <DifferenceHeatmap
+                  baseData={baseResults}
+                  customData={customResults}
+                  percentiles={customPercentile}
+                  reductionYear={customModel ? customModel.reduction_year : undefined}
+                />
+              </Tabs.TabPane>
+            </Tabs>
+          </Card>
+        ) : (
+          <Spin />
+        )}
         <Card title={<AnchorTitle anchor="crops" title="Crop Selection" />}>
           <CropTable models={customModel && baseModel ? [customModel, baseModel] : []} />
         </Card>
