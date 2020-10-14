@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Divider } from 'antd';
+import { Tabs, Divider, Alert } from 'antd';
 import { connect } from 'react-redux';
 import FarmForm from '@/pages/model/create-model/components/Step1/components/FarmForm';
 import BasinForm from '@/pages/model/create-model/components/Step1/components/BasinForm';
@@ -75,6 +75,7 @@ const Step1 = (props) => {
       <div className={styles.desc}>
         <h3>Instructions</h3>
         <h4>Select a region or regions</h4>
+        <p>You can only select one type of region to create a model.</p>
         <p>Choose the type of regions.</p>
         <p>Choose region(s) on the map or in the dropdown list.</p>
         <p>Click Next to continue selecting other model parameters.</p>
