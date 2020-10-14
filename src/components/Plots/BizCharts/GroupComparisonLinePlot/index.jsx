@@ -10,7 +10,16 @@ const GroupComparisonLinePlot = ({ results, percentiles, models }) => {
   useEffect(() => {
     if (models) {
       const data = {};
-      console.log(results, percentiles, models);
+      percentiles.forEach((p) => {
+        const modelResult = models.map(model => results[model.id][p]);
+        const years = Math.min(...modelResult.map(m => m.length));
+        for (let j = 0; j < modelResult.length; j += 1) {
+          for (let i = 0; i < years; i += 1) {
+            modelResult[j][i].model = `${models[j].name}[id:${models[j].id}]`;
+          }
+        }
+        data[p] = modelResult.flat(1);
+      });
       setPlotData(data);
     }
   }, [models]);

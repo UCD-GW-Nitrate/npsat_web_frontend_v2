@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { getModelResults } from '@/pages/model/view/service';
 import { ordinalSuffix } from '@/utils/utils';
 import { connect } from 'umi';
-import { InfoCircleOutlined, SwapOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, SwapOutlined, SelectOutlined } from '@ant-design/icons';
 import AnchorTitle from '@/components/AnchorTitle';
 import DifferenceHistogram from '@/components/Plots/BizCharts/DifferenceHistogram/dynamic';
 import ComparisonLinePlot from '@/components/Plots/BizCharts/ComparisonLinePlot/dynamic';
@@ -25,31 +25,35 @@ const GroupComparison = ({ models, user, hash }) => {
     const availableModels = [];
     const availableResults = {};
     const availablePercentiles = {};
-    models.forEach((model) => {
+    models.forEach(model => {
       if (model && model.results && model.results.length > 0) {
         availableModels.push(model);
-        Promise.all(model.results.map((percentile) => getModelResults(percentile.id, token))).then(
-          (data) => {
-            const modelResults = {};
-            data.forEach((percentile) => {
-              modelResults[percentile.percentile] = percentile.values.map((value, index) =>
-                // start year is always 1945
-                ({
-                  year: 1945 + index,
-                  value,
-                  percentile: `${ordinalSuffix(percentile.percentile)} percentile`,
-                }),
-              );
-            });
-            availableResults[model.id] = modelResults;
-            availablePercentiles[model.id] = data.map((percentile) => percentile.percentile);
-          },
-        );
       }
     });
-    setResults(availableResults);
-    setPercentiles(availablePercentiles);
-    setCompletedModels(availableModels);
+    Promise.all(availableModels.map(model => {
+      return Promise.all(model.results.map((percentile) => getModelResults(percentile.id, token)));
+    })).then(data => {
+      availableModels.forEach((model, index) => {
+        const modelData = data[index];
+        const modelResults = {};
+        modelData.forEach((percentile) => {
+          modelResults[percentile.percentile] = percentile.values.map((value, i) =>
+            // start year is always 1945
+            ({
+              year: 1945 + i,
+              value,
+              percentile: `${ordinalSuffix(percentile.percentile)} percentile`,
+            }),
+          );
+        });
+        availableResults[model.id] = modelResults;
+        availablePercentiles[model.id] = modelData.map((percentile) => percentile.percentile);
+      });
+      setReady(true);
+      setResults(availableResults);
+      setPercentiles(availablePercentiles);
+      setCompletedModels(availableModels);
+    });
   }, [models]);
   useEffect(() => {
     if (!hash || hash[0] !== '#') {
@@ -359,7 +363,6 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
 const ResultComparisonInGroup = ({ models, results, percentiles }) => {
   const [chosenModels, setChosenModels] = useState([]);
   const [modelsMap, setMap] = useState({});
-  console.log(models, results, percentiles);
   useEffect(() => {
     const map = {};
     models.forEach((model) => {
@@ -379,7 +382,7 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
             onChange={setChosenModels}
             placeholder="Select models to compare"
             style={{
-              width: 325,
+              width: 300,
             }}
           >
             {models.map((model) => (
@@ -388,6 +391,20 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
               </Select.Option>
             ))}
           </Select>
+          <Button
+            type="link"
+            style={{
+              margin: 0,
+              padding: 0,
+            }}
+            onClick={() => {
+              setChosenModels(models.map(m => m.id));
+            }}
+          >
+            <Tooltip title="Select all completed models">
+              <SelectOutlined />
+            </Tooltip>
+          </Button>
         </Space>
       }
     >
@@ -396,13 +413,13 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
           <Tabs.TabPane tab="Comparison Line Plot" key="GCLP">
             <GroupComparisonLinePlot
               percentiles={percentiles[chosenModels[0]]}
-              models={models}
-              results={results}
+              models={chosenModels.reduce((acc, cur) => ([...acc, modelsMap[cur]]), [])}
+              results={chosenModels.reduce((acc, cur) => ({...acc, [cur]: results[cur]}), {})}
             />
           </Tabs.TabPane>
         </Tabs>
       ) : (
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No completed models" />
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Select models on the top right" />
       )}
     </Card>
   );
