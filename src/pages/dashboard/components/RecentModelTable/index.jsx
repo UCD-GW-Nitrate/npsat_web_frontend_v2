@@ -5,7 +5,7 @@ import { Card } from 'antd';
 const RecentModelTable = ({ title, data, columns, extra = null }) => {
   return (
     <Card title={title} extra={extra}>
-      <ConfigProvider value={{ intl: enUSIntl }} >
+      <ConfigProvider value={{ intl: enUSIntl }}>
         <ProTable
           size="small"
           columns={columns}

@@ -11,8 +11,8 @@ const GroupComparisonLinePlot = ({ results, percentiles, models }) => {
     if (models) {
       const data = {};
       percentiles.forEach((p) => {
-        const modelResult = models.map(model => results[model.id][p]);
-        const years = Math.min(...modelResult.map(m => m.length));
+        const modelResult = models.map((model) => results[model.id][p]);
+        const years = Math.min(...modelResult.map((m) => m.length));
         for (let j = 0; j < modelResult.length; j += 1) {
           for (let i = 0; i < years; i += 1) {
             modelResult[j][i].model = `${models[j].name}[id:${models[j].id}]`;

@@ -31,8 +31,10 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
         );
         if (i + level > len) {
           agg.year_range = `${1945 + i} - ${1945 + len}`;
+          agg.value = Number((agg.value / (level - i)).toFixed(0));
         } else {
           agg.year_range = `${1945 + i} - ${1945 + i + level}`;
+          agg.value = Number((agg.value / level).toFixed(0));
         }
         result.push(agg);
       }
@@ -108,7 +110,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
                 ]}
                 label={
                   <span>
-                    Aggregate(sum) years{' '}
+                    Aggregate(avg) years{' '}
                     <Tooltip title="Options will be limited if viewed in mobile devices">
                       <InfoCircleOutlined />
                     </Tooltip>

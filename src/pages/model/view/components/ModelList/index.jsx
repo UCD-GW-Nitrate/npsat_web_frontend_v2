@@ -222,6 +222,9 @@ const SearchTable = ({
             setSorter(sorter_query);
           }}
           rowSelection={false}
+          pagination={{
+            defaultPageSize: 10,
+          }}
           search={false}
           request={(_page) =>
             searchModel(

@@ -7,7 +7,7 @@ export default {
   autoHideHeader: false,
   fixSiderbar: false,
   colorWeak: false,
-  title: 'NPSAT',
+  title: 'Mantis',
   menu: {
     collapsed: false,
   },

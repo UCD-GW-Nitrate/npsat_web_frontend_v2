@@ -17,12 +17,12 @@ const Model = {
           const [id, name] = crop.split(',');
           if (payload['crop-choice'].hasOwnProperty(id) && payload['crop-choice'][id].enable) {
             modifications.push({
-              crop: {id},
+              crop: { id },
               proportion: payload['crop-choice'][id].load / 100,
             });
           } else {
             modifications.push({
-              crop: {id},
+              crop: { id },
               proportion: 1,
             });
           }

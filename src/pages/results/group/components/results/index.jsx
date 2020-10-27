@@ -25,14 +25,18 @@ const GroupComparison = ({ models, user, hash }) => {
     const availableModels = [];
     const availableResults = {};
     const availablePercentiles = {};
-    models.forEach(model => {
+    models.forEach((model) => {
       if (model && model.results && model.results.length > 0) {
         availableModels.push(model);
       }
     });
-    Promise.all(availableModels.map(model => {
-      return Promise.all(model.results.map((percentile) => getModelResults(percentile.id, token)));
-    })).then(data => {
+    Promise.all(
+      availableModels.map((model) => {
+        return Promise.all(
+          model.results.map((percentile) => getModelResults(percentile.id, token)),
+        );
+      }),
+    ).then((data) => {
       availableModels.forEach((model, index) => {
         const modelData = data[index];
         const modelResults = {};
@@ -216,7 +220,9 @@ const GroupComparison = ({ models, user, hash }) => {
               percentiles={percentiles}
             />
           </>
-        ) : <Spin />}
+        ) : (
+          <Spin />
+        )}
       </div>
     </PageHeaderWrapper>
   );
@@ -398,7 +404,7 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
               padding: 0,
             }}
             onClick={() => {
-              setChosenModels(models.map(m => m.id));
+              setChosenModels(models.map((m) => m.id));
             }}
           >
             <Tooltip title="Select all completed models">
@@ -413,8 +419,8 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
           <Tabs.TabPane tab="Comparison Line Plot" key="GCLP">
             <GroupComparisonLinePlot
               percentiles={percentiles[chosenModels[0]]}
-              models={chosenModels.reduce((acc, cur) => ([...acc, modelsMap[cur]]), [])}
-              results={chosenModels.reduce((acc, cur) => ({...acc, [cur]: results[cur]}), {})}
+              models={chosenModels.reduce((acc, cur) => [...acc, modelsMap[cur]], [])}
+              results={chosenModels.reduce((acc, cur) => ({ ...acc, [cur]: results[cur] }), {})}
             />
           </Tabs.TabPane>
         </Tabs>
