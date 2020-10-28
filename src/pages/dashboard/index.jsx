@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { connect } from 'umi';
-import { GridContent } from '@ant-design/pro-layout';
+import { GridContent, RouteContext } from '@ant-design/pro-layout';
 import { Row, Col, Tag, Tooltip, Card, Statistic, Divider } from 'antd';
 import { getFeed } from '@/pages/dashboard/service';
 import RecentModelTable from '@/pages/dashboard/components/RecentModelTable';
-import styles from './index.less';
+import ScatterPlot from '@/components/Plots/BizCharts/ScatterPlot/dynamic';
 
 const Dashboard = ({ user }) => {
   const [data, setData] = useState({});
+  const { isMobile } = useContext(RouteContext);
   const { token } = user;
   const columns = [
     {
@@ -49,8 +50,12 @@ const Dashboard = ({ user }) => {
     <GridContent>
       <Row gutter={[24, 24]}>
         <Col xl={18} lg={24} md={24} sm={24} xs={24}>
-          <Card title="Model scatter plot">
-
+          <Card title="Completed model quick view" extra={<Tag color="#a0d911">completed</Tag>}>
+            {isMobile ? (
+              'Not available on mobile devices'
+            ) : (
+              <ScatterPlot data={data.plot_models_data} />
+            )}
           </Card>
         </Col>
         <Col xl={6} lg={24} md={24} sm={24} xs={24}>
