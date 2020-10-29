@@ -33,11 +33,12 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
           (acc, cur) => ({ ...acc, ...cur, value: Number((acc.value + cur.value).toFixed(6)) }),
           { value: 0 },
         );
-        agg.value = Number((agg.value / level).toFixed(6));
         if (i + level > len) {
           agg.year_range = `${1945 + i} - ${1945 + len}`;
+          agg.value = Number((agg.value / (level - i)).toFixed(6));
         } else {
           agg.year_range = `${1945 + i} - ${1945 + i + level}`;
+          agg.value = Number((agg.value / level).toFixed(6));
         }
         interval.add(agg.year_range);
         result.push(agg);
@@ -204,7 +205,6 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
         <Path shape="line" color="#faad14" position="year_range*threshold" tooltip />
         <Axis name="threshold" visible={false} />
         <Axis name="percentile" position="left" visible={!isMobile} />
-        <Tooltip shared />
         <Interaction type="element-active" />
       </Chart>
     </div>

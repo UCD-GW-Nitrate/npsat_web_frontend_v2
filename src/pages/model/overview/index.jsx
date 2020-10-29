@@ -247,6 +247,9 @@ const OverviewList = (props) => {
                   setFilter([0, 1, 2, 3, 4]);
                 }
               }}
+              pagination={{
+                defaultPageSize: 10,
+              }}
               toolBarRender={
                 isMobile
                   ? false

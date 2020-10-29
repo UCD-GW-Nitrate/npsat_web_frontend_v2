@@ -286,6 +286,9 @@ const SearchTable = ({
               options.status,
             ).then((res) => ListResponseProcessing(res, user.user_id))
           }
+          pagination={{
+            defaultPageSize: 10,
+          }}
           rowSelection={{}}
           search={false}
         />

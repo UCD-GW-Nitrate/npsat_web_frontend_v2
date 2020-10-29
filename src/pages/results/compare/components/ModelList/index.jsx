@@ -211,6 +211,9 @@ const SearchTable = ({ user }) => {
           }}
           rowSelection={false}
           search={false}
+          pagination={{
+            defaultPageSize: 10,
+          }}
           request={(_page) =>
             searchModel(
               _page,

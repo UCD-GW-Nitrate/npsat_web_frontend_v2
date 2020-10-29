@@ -50,11 +50,13 @@
     "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-layout": "^5.0.17",
     "@ant-design/pro-table": "2.6.3",
-    "@ant-design/charts": "1.0.0",
+    "@antv/g2plot": "^2.0.5",
     "antd": "^4.4.0",
+    "bizcharts": "^4.0.14",
     "classnames": "^2.2.6",
     "leaflet": "^1.6.0",
     "lodash": "^4.17.11",
+    "moment": "^2.27.0",
     "omit.js": "^1.0.2",
     "path-to-regexp": "2.4.0",
     "react": "^16.13.1",
@@ -64,9 +66,7 @@
     "react-redux": "^7.2.1",
     "umi": "^3.2.10",
     "umi-request": "^1.0.8",
-    "use-merge-value": "^1.0.1",
-    "moment": "^2.27.0",
-    "bizcharts": "^4.0.14"
+    "use-merge-value": "^1.0.1"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.18",

@@ -51,6 +51,7 @@ export default defineConfig({
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',
+              component: './dashboard',
             },
             {
               name: 'models',
@@ -96,11 +97,11 @@ export default defineConfig({
                 },
               ],
             },
-            {
-              name: 'team',
-              icon: 'team',
-              path: '/team',
-            },
+            // {
+            //   name: 'team',
+            //   icon: 'team',
+            //   path: '/team',
+            // },
             {
               component: './404',
             },
