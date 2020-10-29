@@ -2,7 +2,7 @@ import React, {useRef, useEffect} from "react";
 import { Liquid } from '@antv/g2plot';
 
 const WaterWave = ({ value }) => {
-  const container = useRef(null);
+  const container = useRef();
 
   useEffect(() => {
     if (!container.current) {
@@ -13,7 +13,7 @@ const WaterWave = ({ value }) => {
       height: 200
     });
     liquidPlot.render();
-  }, [container]);
+  }, [container, value]);
 
   return (
       <div ref={container} />
