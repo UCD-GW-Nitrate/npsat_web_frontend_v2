@@ -5,6 +5,7 @@ import { Row, Col, Tag, Tooltip, Card, Statistic, Divider } from 'antd';
 import { getFeed } from '@/pages/dashboard/service';
 import RecentModelTable from '@/pages/dashboard/components/RecentModelTable';
 import ScatterPlot from '@/components/Plots/BizCharts/ScatterPlot/dynamic';
+import WaterWave from '@/components/Plots/BizCharts/WaterWave/dynamic';
 
 const Dashboard = ({ user }) => {
   const [data, setData] = useState({});
@@ -72,6 +73,16 @@ const Dashboard = ({ user }) => {
               title="Completed models created by you"
               value={data.total_completed_number}
             />
+            {data.total_created_number ? <div
+              style={{
+                marginBottom: 20,
+                textAlign: 'center',
+                height: 200,
+              }}
+            >
+              Completion rate
+              <WaterWave value={data.total_completed_number / data.total_created_number} />
+            </div> : null}
             <Divider />
             <Statistic
               title={

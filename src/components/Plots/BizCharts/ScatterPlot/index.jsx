@@ -69,7 +69,7 @@ const ScatterPlot = ({ data }) => {
       </div>
       <Chart
         padding={[30, 20, 50, 60]}
-        height={500}
+        height={480}
         autoFit
         placeholder={<div className={styles.noDateEntry}>No completed models</div>}
         data={plotData}
