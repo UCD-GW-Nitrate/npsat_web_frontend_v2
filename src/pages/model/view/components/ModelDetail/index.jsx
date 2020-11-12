@@ -130,7 +130,8 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
                 : 'not yet completed'}
             </Descriptions.Item>
             <Descriptions.Item label="Number of years to predict">{info.n_years}</Descriptions.Item>
-            <Descriptions.Item label="Reduction year">{info.reduction_year}</Descriptions.Item>
+            <Descriptions.Item label="Implementation start year">{info.reduction_start_year}</Descriptions.Item>
+            <Descriptions.Item label="Implementation end year">{info.reduction_end_year}</Descriptions.Item>
             <Descriptions.Item label="Water content">
               {`${info.water_content * 100}%`}
             </Descriptions.Item>
@@ -211,21 +212,30 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
                 <MultilinePlot
                   percentiles={percentiles}
                   data={plotData}
-                  reductionYear={info.reduction_year}
+                  additionalInfo={{
+                    "reduction_start_year": info.reduction_start_year,
+                    "reduction_end_year": info.reduction_end_year
+                  }}
                 />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Area Plot" key="AP">
                 <AreaPlot
                   percentiles={percentiles}
                   data={plotData}
-                  reductionYear={info.reduction_year}
+                  additionalInfo={{
+                    "reduction_start_year": info.reduction_start_year,
+                    "reduction_end_year": info.reduction_end_year
+                  }}
                 />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Box Plot" key="BP">
                 <BoxPlot
                   percentiles={percentiles}
                   data={plotData}
-                  reductionYear={info.reduction_year}
+                  additionalInfo={{
+                    "reduction_start_year": info.reduction_start_year,
+                    "reduction_end_year": info.reduction_end_year
+                  }}
                 />
               </Tabs.TabPane>
             </Tabs>

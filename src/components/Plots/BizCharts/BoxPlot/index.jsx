@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import 'antd/es/style/themes/default.less';
 import styles from './index.less';
 
-// usage: pass plot data, percentile list, and reduction year
-const BoxPlot = ({ percentiles, data, reductionYear }) => {
+// usage: pass plot data, percentile list, and additional info
+const BoxPlot = ({ percentiles, data, additionalInfo }) => {
   const [range, setPlot] = useState([]);
   useEffect(() => {
     if (Object.keys(data).length !== 0) {
@@ -83,15 +83,27 @@ const BoxPlot = ({ percentiles, data, reductionYear }) => {
           }
         />
         <Axis name="year" />
-        {reductionYear ? (
+        {additionalInfo && additionalInfo.reduction_start_year ? (
           <Annotation.Line
-            start={[reductionYear, 'min']}
-            end={[reductionYear, 'max']}
+            start={[additionalInfo.reduction_start_year, 'min']}
+            end={[additionalInfo.reduction_start_year, 'max']}
             text={{
-              position: '90%',
-              content: 'reduction year',
+              position: '60%',
+              content: 'implementation start year',
               style: { fill: 'red' },
-              autoRotate: false,
+              autoRotate: true,
+            }}
+          />
+        ) : null}
+        {additionalInfo && additionalInfo.reduction_end_year ? (
+          <Annotation.Line
+            start={[additionalInfo.reduction_end_year, 'min']}
+            end={[additionalInfo.reduction_end_year, 'max']}
+            text={{
+              position: '60%',
+              content: 'implementation end year',
+              style: { fill: 'red' },
+              autoRotate: true,
             }}
           />
         ) : null}

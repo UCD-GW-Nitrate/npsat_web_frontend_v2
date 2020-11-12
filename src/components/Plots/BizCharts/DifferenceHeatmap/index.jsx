@@ -5,7 +5,7 @@ import { RouteContext } from '@ant-design/pro-layout';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
-const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear }) => {
+const DifferenceHeatmap = ({ baseData, customData, percentiles, additionalInfo }) => {
   const { isMobile } = useContext(RouteContext);
   const [form] = Form.useForm();
   const [selected, setSelected] = useState(undefined);
@@ -77,8 +77,8 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
           <Row gutter={24}>
             <Col span={8}>
               <Statistic
-                title="Reduction year"
-                value={reductionYear}
+                title="Implementation start year"
+                value={additionalInfo ? additionalInfo.reduction_start_year : undefined}
                 formatter={(value) => `${value}`}
               />
             </Col>

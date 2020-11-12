@@ -85,8 +85,13 @@ const SearchTable = ({ user }) => {
       sorter: (a, b) => a > b,
     },
     {
-      title: 'Reduction year',
-      dataIndex: 'reduction_year',
+      title: 'Implementation start year',
+      dataIndex: 'reduction_start_year',
+      sorter: (a, b) => a > b,
+    },
+    {
+      title: 'Implementation end year',
+      dataIndex: 'reduction_end_year',
       sorter: (a, b) => a > b,
     },
     {

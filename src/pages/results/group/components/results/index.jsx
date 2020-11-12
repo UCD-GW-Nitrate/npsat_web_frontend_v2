@@ -168,8 +168,12 @@ const GroupComparison = ({ models, user, hash }) => {
                   width: 100,
                 },
                 {
-                  title: 'Reduction year',
-                  dataIndex: 'reduction_year',
+                  title: 'Implementation start year',
+                  dataIndex: 'reduction_start_year',
+                },
+                {
+                  title: 'Implementation end year',
+                  dataIndex: 'reduction_end_year',
                 },
                 {
                   title: 'Water content',
