@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getCropList } from '@/services/crop';
+import { getCropListLoadType, CROP_MACROS } from '@/services/crop';
 import { Select, List, notification } from 'antd';
 import CropCard from '@/pages/model/components/CropCard';
 import styles from './index.less';
@@ -7,15 +7,15 @@ import styles from './index.less';
 const { Option } = Select;
 
 const CropCardForm = (props) => {
-  const { value = {}, onChange, selectedCrops, setSelected } = props;
+  const { value = {}, onChange, selectedCrops, setSelected, flowScen } = props;
   const [cropList, setList] = useState([]);
   const [special, setSpecial] = useState('');
   useEffect(() => {
     (async () => {
-      const { results: crops } = await getCropList();
+      const { results: crops } = await getCropListLoadType(flowScen);
       setList(crops);
       crops.forEach((item) => {
-        if (item.caml_code === 0) {
+        if (item.crop_type === CROP_MACROS.ALL_OTHER_CROP) {
           if (!selectedCrops.includes(`${item.id},${item.name}`)) {
             setSelected([...selectedCrops, `${item.id},${item.name}`]);
           }

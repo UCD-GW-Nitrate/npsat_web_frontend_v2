@@ -85,7 +85,7 @@ const Step3 = (props) => {
           ]}
           initialValue={data.hasOwnProperty('crop-choice') ? data['crop-choice'] : undefined}
         >
-          <CropCardForm selectedCrops={selectedCrops} setSelected={setSelected} />
+          <CropCardForm selectedCrops={selectedCrops} setSelected={setSelected} flowScen={data.load_scenario}/>
         </Form.Item>
         <Form.Item
           style={{
