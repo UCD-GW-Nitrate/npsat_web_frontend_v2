@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-const REGION_MACROS = {
+export const REGION_MACROS = {
   CENTRAL_VALLEY: 0,
   SUB_BASIN: 1,
   CVHM_FARM: 2,

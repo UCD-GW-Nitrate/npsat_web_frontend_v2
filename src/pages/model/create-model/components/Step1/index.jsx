@@ -41,7 +41,7 @@ const Step1 = (props) => {
 
       dispatch({
         type: 'createModelForm/saveCurrentStep',
-        payload: 'Select Crops',
+        payload: 'Select Scenarios',
       });
     }
   };

@@ -3,6 +3,7 @@ import { Card, Steps } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'umi';
 import Step1 from './components/Step1';
+import Step2 from './components/Step2';
 import Step3 from './components/Step3';
 import Step4 from './components/Step4';
 import Step5 from './components/Step5';
@@ -12,6 +13,12 @@ const { Step } = Steps;
 
 const getCurrentStepAndComponent = (current) => {
   switch (current) {
+    case 'Select Scenarios':
+      return {
+        step: 1,
+        component: <Step2 />,
+      };
+
     case 'Select Crops':
       return {
         step: 2,
