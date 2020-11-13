@@ -54,7 +54,7 @@ const StepForm = ({ current }) => {
     >
       <Card bordered={false}>
         <>
-          <Steps current={currentStep} className={styles.steps} >
+          <Steps current={currentStep} className={styles.steps}>
             <Step title="Select Regions" />
             <Step title="Select Scenarios" />
             <Step title="Select Crops" />

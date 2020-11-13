@@ -1,14 +1,14 @@
 import request from '@/utils/request';
 
 const REGION_MACROS = {
-  'CENTRAL_VALLEY': 0,
-  'SUB_BASIN': 1,
-  'CVHM_FARM': 2,
-  'B118_BASIN': 3,
-  'COUNTY': 4,
-  'TOWNSHIPS': 5,
-  'C2V_SIM_SUBREGIONS': 6
-}
+  CENTRAL_VALLEY: 0,
+  SUB_BASIN: 1,
+  CVHM_FARM: 2,
+  B118_BASIN: 3,
+  COUNTY: 4,
+  TOWNSHIPS: 5,
+  C2V_SIM_SUBREGIONS: 6,
+};
 
 export async function getRegions(type) {
   return request('/api/region/', {

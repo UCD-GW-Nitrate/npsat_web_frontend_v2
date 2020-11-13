@@ -73,16 +73,18 @@ const Dashboard = ({ user }) => {
               title="Completed models created by you"
               value={data.total_completed_number}
             />
-            {data.total_created_number ? <div
-              style={{
-                marginBottom: 20,
-                textAlign: 'center',
-                height: 200,
-              }}
-            >
-              Completion rate
-              <WaterWave value={data.total_completed_number / data.total_created_number} />
-            </div> : null}
+            {data.total_created_number ? (
+              <div
+                style={{
+                  marginBottom: 20,
+                  textAlign: 'center',
+                  height: 200,
+                }}
+              >
+                Completion rate
+                <WaterWave value={data.total_completed_number / data.total_created_number} />
+              </div>
+            ) : null}
             <Divider />
             <Statistic
               title={

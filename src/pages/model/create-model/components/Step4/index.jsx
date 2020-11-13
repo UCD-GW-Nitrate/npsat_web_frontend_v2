@@ -1,12 +1,12 @@
-import { Button, Form, Divider, Input, InputNumber, DatePicker, Select } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Button, Form, Divider, Input, InputNumber, DatePicker } from 'antd';
+import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { getScenarios } from '@/services/scenario';
 import styles from './index.less';
 
+const { RangePicker } = DatePicker;
+
 const Step4 = (props) => {
-  const [scenarios, setScenarios] = useState([]);
   const [form] = Form.useForm();
   const { getFieldsValue } = form;
   const { dispatch, user, data = {} } = props;
@@ -19,12 +19,6 @@ const Step4 = (props) => {
       span: 25,
     },
   };
-  useEffect(() => {
-    (async () => {
-      const { results } = await getScenarios();
-      setScenarios(results);
-    })();
-  }, []);
   const onSubmit = (values) => {
     dispatch({
       type: 'createModelForm/saveStepFormData',
@@ -94,20 +88,32 @@ const Step4 = (props) => {
           ]}
           initialValue={data.hasOwnProperty('n_years') ? data.n_years : 100}
         >
-          <InputNumber min={100} max={500} />
+          <InputNumber min={45} max={555} />
         </Form.Item>
         <Form.Item
           name="reduction_year"
-          label="Reduction year"
+          label="Reduction period"
           required={[
             {
               required: true,
               message: 'Please enter the reduction year',
             },
           ]}
-          initialValue={data.hasOwnProperty('reduction_year') ? data.reduction_year : moment()}
+          initialValue={
+            data.hasOwnProperty('reduction_year')
+              ? data.reduction_year
+              : [moment('2020'), moment('2025')]
+          }
         >
-          <DatePicker picker="year" />
+          <RangePicker
+            picker="year"
+            disabledDate={(current) => {
+              const end_year = form.getFieldValue('n_years') + 1946;
+              return (
+                current.isBefore(moment(), 'year') || current.isAfter(moment(`${end_year}`, 'year'))
+              );
+            }}
+          />
         </Form.Item>
         <Form.Item
           name="water_content"
@@ -121,25 +127,6 @@ const Step4 = (props) => {
           initialValue={data.hasOwnProperty('water_content') ? data.water_content : 0}
         >
           <InputNumber min={0} max={100} formatter={(v) => `${v}%`} />
-        </Form.Item>
-        <Form.Item
-          name="scenario"
-          label="Scenario"
-          rules={[
-            {
-              required: true,
-              message: 'Please choose a scenario',
-            },
-          ]}
-          initialValue={data.hasOwnProperty('scenario') ? data.scenario_name : undefined}
-        >
-          <Select>
-            {scenarios.map((scenario) => (
-              <Select.Option value={scenario.id} key={scenario.id}>
-                {scenario.name}
-              </Select.Option>
-            ))}
-          </Select>
         </Form.Item>
         <Form.Item
           style={{
@@ -185,12 +172,10 @@ const Step4 = (props) => {
           Enter The number of years to simulate, default to 100. For the time being this should not
           be less than 100 and no more than 500.
         </p>
-        <h4>Reduction year</h4>
-        <p>The year to start the reduction, default to current year.</p>
+        <h4>Reduction period</h4>
+        <p>The year to start the reduction and the year to reach the full reduction.</p>
         <h4>Water content</h4>
         <p>This is the unsaturated zone mobile water content, default to 0.</p>
-        <h4>Scenario</h4>
-        <p>This is a name that would correspond to steady state model/period.</p>
         <h4>Other selections</h4>
         <p>Developing...</p>
       </div>

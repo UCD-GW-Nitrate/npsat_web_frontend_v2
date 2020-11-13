@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Axis, Chart, Interaction, Point, Legend, Tooltip as ChartTooltip } from 'bizcharts';
-import { history } from 'umi'
+import { history } from 'umi';
 import { Space, InputNumber, Radio, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
@@ -88,9 +88,13 @@ const ScatterPlot = ({ data }) => {
           },
         }}
         defaultInteractions={['tooltip', 'legend-filter', 'legend-highlight']}
-        onPointClick={mode === 1 ? ({ data: model }) => {
-          history.push(`/model/view?id=${model.data.id}`)
-        } : () => {}}
+        onPointClick={
+          mode === 1
+            ? ({ data: model }) => {
+                history.push(`/model/view?id=${model.data.id}`);
+              }
+            : () => {}
+        }
       >
         <Point
           position="n_wells*value"
@@ -107,7 +111,7 @@ const ScatterPlot = ({ data }) => {
                 name,
                 n_wells,
                 n_years,
-                water_content: `${water_content * 100}%`
+                water_content: `${water_content * 100}%`,
               };
             },
           ]}
