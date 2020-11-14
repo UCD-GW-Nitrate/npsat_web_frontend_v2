@@ -138,20 +138,20 @@ const SearchTable = ({
     {
       title: 'Water content',
       dataIndex: 'water_content',
-      render: (value) => `${value * 100}%`,
+      render: (value) => `${(value * 100).toFixed(0)}%`,
       sorter: (a, b) => a > b,
     },
     {
       title: 'Date Created',
       dataIndex: 'date_submitted',
       sorter: (a, b) => new Date(a.date_submitted) > new Date(b.date_submitted),
-      render: (value) => new Date(value).toLocaleString(),
+      valueType: 'dateTime'
     },
     {
       title: 'Date Completed',
       dataIndex: 'date_completed',
       sorter: (a, b) => new Date(a.date_completed) > new Date(b.date_completed),
-      render: (value) => new Date(value).toLocaleString(),
+      valueType: 'dateTime',
     },
     {
       title: 'Types',

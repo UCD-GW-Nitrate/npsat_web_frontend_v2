@@ -111,7 +111,7 @@ const ScatterPlot = ({ data }) => {
                 name,
                 n_wells,
                 n_years,
-                water_content: `${water_content * 100}%`,
+                water_content: `${(water_content * 100).toFixed(0)}%`,
               };
             },
           ]}
@@ -135,7 +135,7 @@ const ScatterPlot = ({ data }) => {
             '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' +
             '<span style="padding-bottom: 5px">Number of years: {n_years}</span><br/>' +
             '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' +
-            '<span style="padding-bottom: 5px">Water content: {water_content}</span><br/>' +
+            '<span style="padding-bottom: 5px">Water content: {water_content.toFixed(0)}</span><br/>' +
             '</li>'
           }
         />
