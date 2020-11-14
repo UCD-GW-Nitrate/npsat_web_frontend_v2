@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import { searchModel } from '@/services/model';
-import { getScenarios } from '@/services/scenario';
+import { getScenarios, SCENARIO_MACROS } from '@/services/scenario';
 
 const TagRender = (props) => {
   const { value, closable, onClose } = props;
@@ -314,12 +314,19 @@ const SearchTable = ({
 };
 
 const SearchForm = ({ onSearch }) => {
-  const [scenarios, setScenarios] = useState([]);
+  const [flowScenarios, setFlowScenarios] = useState([]);
+  const [loadScenarios, setLoadScenarios] = useState([]);
+  const [unsatScenarios, setUnsatScenarios] = useState([]);
   useEffect(() => {
-    (async () => {
-      const { results } = await getScenarios();
-      setScenarios(results);
-    })();
+    getScenarios(SCENARIO_MACROS.TYPE_FLOW).then(({ results }) => {
+      setFlowScenarios(results);
+    });
+    getScenarios(SCENARIO_MACROS.TYPE_LOAD).then(({ results }) => {
+      setLoadScenarios(results);
+    });
+    getScenarios(SCENARIO_MACROS.TYPE_UNSAT).then(({ results }) => {
+      setUnsatScenarios(results);
+    });
   }, []);
   return (
     <Form
@@ -362,11 +369,27 @@ const SearchForm = ({ onSearch }) => {
               style={{ width: '100%' }}
               optionFilterProp="children"
             >
-              {scenarios.map((item) => (
-                <Select.Option key={item.id} value={item.id}>
-                  {item.name}
-                </Select.Option>
-              ))}
+              <Select.OptGroup label="Flow Scenario">
+                {flowScenarios.map((item) => (
+                  <Select.Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select.OptGroup>
+              <Select.OptGroup label="Load Scenario">
+                {loadScenarios.map((item) => (
+                  <Select.Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select.OptGroup>
+              <Select.OptGroup label="Unsat Scenario">
+                {unsatScenarios.map((item) => (
+                  <Select.Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select.OptGroup>
             </Select>
           </Form.Item>
         </Col>

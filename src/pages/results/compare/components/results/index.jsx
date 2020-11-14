@@ -115,17 +115,17 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                 {
                   title: 'Flow Scenario',
                   dataIndex: 'flow_scenario',
-                  render: v => v.name,
+                  render: (v) => v.name,
                 },
                 {
                   title: 'Load Scenario',
                   dataIndex: 'load_scenario',
-                  render: v => v.name,
+                  render: (v) => v.name,
                 },
                 {
                   title: 'Unsat Scenario',
                   dataIndex: 'unsat_scenario',
-                  render: v => v.name,
+                  render: (v) => v.name,
                 },
                 {
                   title: 'Regions',
