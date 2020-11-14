@@ -35,7 +35,9 @@ const ListResponseProcessing = (response, userId) => {
   results.forEach((temp) => {
     const model = temp;
     model.key = model.id;
-    model.scenario_name = model.scenario.name;
+    model.flow_scenario_name = model.flow_scenario.name;
+    model.load_scenario_name = model.load_scenario.name;
+    model.unsat_scenario_name = model.unsat_scenario.name;
     model.tags = [];
     if (model.public) {
       model.tags.push('public');
@@ -77,10 +79,19 @@ const SearchTable = ({
       width: 250,
     },
     {
-      title: 'Scenario',
-      dataIndex: 'scenario_name',
+      title: 'Flow Scenario',
+      dataIndex: 'flow_scenario_name',
       copyable: true,
-      width: 150,
+    },
+    {
+      title: 'Load Scenario',
+      dataIndex: 'load_scenario_name',
+      copyable: true,
+    },
+    {
+      title: 'Unsat Scenario',
+      dataIndex: 'unsat_scenario_name',
+      copyable: true,
     },
     {
       title: 'Status',

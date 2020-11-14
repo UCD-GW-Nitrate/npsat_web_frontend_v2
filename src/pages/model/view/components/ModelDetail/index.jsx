@@ -136,11 +136,17 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
             <Descriptions.Item label="Implementation end year">
               {info.reduction_end_year}
             </Descriptions.Item>
-            <Descriptions.Item label="Water content">
-              {`${info.water_content * 100}%`}
+            <Descriptions.Item label="Flow Scenario">
+              {info.flow_scenario ? info.flow_scenario.name || '' : ''}
             </Descriptions.Item>
-            <Descriptions.Item label="Scenario">
-              {info.scenario ? info.scenario.name || '' : ''}
+            <Descriptions.Item label="Load Scenario">
+              {info.load_scenario ? info.load_scenario.name || '' : ''}
+            </Descriptions.Item>
+            <Descriptions.Item label="Unsat Scenario">
+              {info.unsat_scenario ? info.unsat_scenario.name || '' : ''}
+            </Descriptions.Item>
+            <Descriptions.Item label="Water content">
+              {`${(info.water_content * 100).toFixed(0)}%`}
             </Descriptions.Item>
             <Descriptions.Item label="is public model">
               {info.public ? 'yes' : 'no'}

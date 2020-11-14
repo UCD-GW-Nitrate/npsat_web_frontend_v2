@@ -147,9 +147,19 @@ const GroupComparison = ({ models, user, hash }) => {
                   width: 100,
                 },
                 {
-                  title: 'Scenario',
-                  dataIndex: 'scenario',
-                  render: (value) => value.name,
+                  title: 'Flow Scenario',
+                  dataIndex: 'flow_scenario',
+                  render: v => v.name,
+                },
+                {
+                  title: 'Load Scenario',
+                  dataIndex: 'load_scenario',
+                  render: v => v.name,
+                },
+                {
+                  title: 'Unsat Scenario',
+                  dataIndex: 'unsat_scenario',
+                  render: v => v.name,
                 },
                 {
                   title: 'Regions',

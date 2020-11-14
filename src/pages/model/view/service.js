@@ -28,7 +28,7 @@ export async function getCropDetails(params) {
 }
 
 export async function getModelResults(id, token) {
-  return request(`/api/model_results/${id}/`, {
+  return request(`/api/model_result/${id}/`, {
     headers: { Authorization: `Token ${token}` },
     method: 'GET',
   });
