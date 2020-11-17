@@ -224,7 +224,7 @@ const AreaPlot = ({ percentiles, data, additionalInfo }) => {
             end={[additionalInfo.reduction_end_year, 'max']}
             text={{
               position: '60%',
-              content: 'implementation end year',
+              content: 'implementation complete year',
               style: { fill: 'red' },
               autoRotate: true,
             }}
