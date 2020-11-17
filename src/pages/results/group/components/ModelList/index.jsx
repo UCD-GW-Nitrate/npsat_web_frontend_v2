@@ -132,7 +132,7 @@ const SearchTable = ({
       sorter: (a, b) => a > b,
     },
     {
-      title: 'Implementation end year',
+      title: 'Implementation complete year',
       dataIndex: 'reduction_end_year',
       sorter: (a, b) => a > b,
     },

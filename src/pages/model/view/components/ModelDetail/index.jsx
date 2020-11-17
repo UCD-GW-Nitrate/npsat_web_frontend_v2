@@ -161,7 +161,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
             <Descriptions.Item label="Implementation start year">
               {info.reduction_start_year}
             </Descriptions.Item>
-            <Descriptions.Item label="Implementation end year">
+            <Descriptions.Item label="Implementation complete year">
               {info.reduction_end_year}
             </Descriptions.Item>
             <Descriptions.Item label="Flow Scenario">

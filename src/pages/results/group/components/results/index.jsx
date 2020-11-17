@@ -182,7 +182,7 @@ const GroupComparison = ({ models, user, hash }) => {
                   dataIndex: 'reduction_start_year',
                 },
                 {
-                  title: 'Implementation end year',
+                  title: 'Implementation complete year',
                   dataIndex: 'reduction_end_year',
                 },
                 {
