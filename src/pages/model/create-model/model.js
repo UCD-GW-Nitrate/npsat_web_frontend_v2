@@ -11,6 +11,7 @@ const Model = {
     *createModel({ payload }, { call, put }) {
       let response;
       try {
+        console.log(payload);
         const crops = payload.selectedCrops;
         const modifications = [];
         crops.forEach((crop) => {
@@ -32,8 +33,11 @@ const Model = {
           description: payload['model-desc'],
           water_content: payload.water_content / 100,
           n_years: payload.n_years,
-          reduction_year: new Date(payload.reduction_year).getFullYear(),
-          scenario: { id: payload.scenario },
+          reduction_start_year: new Date(payload.reduction_year[0]).getFullYear(),
+          reduction_end_year: new Date(payload.reduction_year[1]).getFullYear(),
+          flow_scenario: { id: payload.flow_scenario },
+          load_scenario: { id: payload.load_scenario },
+          unsat_scenario: { id: payload.unsat_scenario },
           modifications,
         };
 

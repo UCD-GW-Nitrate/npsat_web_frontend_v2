@@ -1,34 +1,59 @@
-import React, { useState } from 'react';
-import { Form, Button, Divider } from 'antd';
-import { connect } from 'umi';
-import CropCardForm from './components/CropCardForm';
+import { Button, Form, Divider, Select, Tooltip } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+import { SCENARIO_MACROS, getScenarios } from '@/services/scenario';
 import styles from './index.less';
-
-const formItemLayout = {
-  labelCol: {
-    span: 5,
-  },
-  wrapperCol: {
-    span: 19,
-  },
-};
 
 const Step2 = (props) => {
   const [form] = Form.useForm();
-  const { dispatch, token, data } = props;
   const { getFieldsValue } = form;
-  const [selectedCrops, setSelected] = useState(
-    data.hasOwnProperty('selectedCrops') ? data.selectedCrops : [],
-  );
-
-  const onNext = (values) => {
+  const { dispatch, user, data = {} } = props;
+  const [flowScen, setFlowScen] = useState([]);
+  const [loadScen, setLoadScen] = useState([]);
+  const [unsatScen, setUnsatScen] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const { results } = await getScenarios();
+      const tempFlow = [];
+      const tempLoad = [];
+      const tempUnsat = [];
+      results.forEach((scen) => {
+        switch (scen.scenario_type) {
+          case SCENARIO_MACROS.TYPE_LOAD:
+            tempLoad.push(scen);
+            break;
+          case SCENARIO_MACROS.TYPE_UNSAT:
+            tempUnsat.push(scen);
+            break;
+          default:
+          case SCENARIO_MACROS.TYPE_FLOW:
+            tempFlow.push(scen);
+        }
+      });
+      setFlowScen(tempFlow);
+      setLoadScen(tempLoad);
+      setUnsatScen(tempUnsat);
+    })();
+  }, []);
+  const formItemLayout = {
+    labelCol: {
+      span: 7,
+    },
+    wrapperCol: {
+      span: 25,
+    },
+  };
+  const onSubmit = (values) => {
     dispatch({
       type: 'createModelForm/saveStepFormData',
-      payload: { ...values, selectedCrops },
+      payload: {
+        ...values,
+      },
     });
     dispatch({
       type: 'createModelForm/saveCurrentStep',
-      payload: 'Model Info',
+      payload: 'Select Crops',
     });
   };
 
@@ -52,40 +77,86 @@ const Step2 = (props) => {
         {...formItemLayout}
         form={form}
         layout="horizontal"
-        onFinish={onNext}
         className={styles.stepForm}
+        onFinish={onSubmit}
       >
         <Form.Item
-          name="crop-choice"
-          label="Crop(s)"
+          name="flow_scenario"
+          label="Flow Scenario"
           rules={[
             {
               required: true,
-              message: 'Please choose at least one crop',
-            },
-            {
-              validator: () => {
-                const values = getFieldsValue(['crop-choice'])['crop-choice'];
-                if (!values) {
-                  return Promise.reject(
-                    'choose at least one crop or enable selected crop(s)' +
-                      " or toggle 'All Crops'",
-                  );
-                }
-                for (const config in values) {
-                  if (values[config].enable) {
-                    return Promise.resolve();
-                  }
-                }
-                return Promise.reject(
-                  'choose at least one crop or enable selected crop(s)' + " or toggle 'All Crops'",
-                );
-              },
+              message: 'Please select a flow scenario',
             },
           ]}
-          initialValue={data.hasOwnProperty('crop-choice') ? data['crop-choice'] : undefined}
+          initialValue={data.hasOwnProperty('flow_scenario') ? data.flow_scenario : undefined}
         >
-          <CropCardForm selectedCrops={selectedCrops} setSelected={setSelected} />
+          <Select>
+            {flowScen.map((scen) => (
+              <Select.Option value={scen.id} key={scen.id}>
+                <>
+                  {scen.name}{' '}
+                  {scen.description ? (
+                    <Tooltip title={scen.description}>
+                      <InfoCircleOutlined />
+                    </Tooltip>
+                  ) : null}
+                </>
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="load_scenario"
+          label="Load Scenario"
+          rules={[
+            {
+              required: true,
+              message: 'Please select a load scenario',
+            },
+          ]}
+          initialValue={data.hasOwnProperty('load_scenario') ? data.load_scenario : undefined}
+        >
+          <Select>
+            {loadScen.map((scen) => (
+              <Select.Option value={scen.id} key={scen.id}>
+                <>
+                  {scen.name}{' '}
+                  {scen.description ? (
+                    <Tooltip title={scen.description}>
+                      <InfoCircleOutlined />
+                    </Tooltip>
+                  ) : null}
+                </>
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="unsat_scenario"
+          label="Unsat Scenario"
+          rules={[
+            {
+              required: true,
+              message: 'Please select an unsat scenario',
+            },
+          ]}
+          initialValue={data.hasOwnProperty('unsat_scenario') ? data.unsat_scenario : undefined}
+        >
+          <Select>
+            {unsatScen.map((scen) => (
+              <Select.Option value={scen.id} key={scen.id}>
+                <>
+                  {scen.name}{' '}
+                  {scen.description ? (
+                    <Tooltip title={scen.description}>
+                      <InfoCircleOutlined />
+                    </Tooltip>
+                  ) : null}
+                </>
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           style={{
@@ -103,7 +174,7 @@ const Step2 = (props) => {
           }}
         >
           <Button type="primary" htmlType="submit">
-            Next
+            Submit
           </Button>
           <Button
             onClick={onPrev}
@@ -122,14 +193,17 @@ const Step2 = (props) => {
       />
       <div className={styles.desc}>
         <h3>Instructions</h3>
-        <h4>Select a crop</h4>
-        <p>Drag to change the proportion</p>
+        <h4>Select Scenarios</h4>
+        <p>
+          Hover on the info circle to see detailed explanation about the scenario. Scenario chosen
+          will determine type and number of crops in next step.
+        </p>
       </div>
     </>
   );
 };
 
 export default connect(({ user, createModelForm }) => ({
-  token: user.currentUser.token,
+  user: user.currentUser,
   data: createModelForm.step,
 }))(Step2);

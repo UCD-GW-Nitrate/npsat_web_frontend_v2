@@ -113,9 +113,19 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   width: 250,
                 },
                 {
-                  title: 'Scenario',
-                  dataIndex: 'scenario',
-                  render: (value) => value.name,
+                  title: 'Flow Scenario',
+                  dataIndex: 'flow_scenario',
+                  render: (v) => v.name,
+                },
+                {
+                  title: 'Load Scenario',
+                  dataIndex: 'load_scenario',
+                  render: (v) => v.name,
+                },
+                {
+                  title: 'Unsat Scenario',
+                  dataIndex: 'unsat_scenario',
+                  render: (v) => v.name,
                 },
                 {
                   title: 'Regions',
@@ -133,23 +143,29 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   width: 100,
                 },
                 {
-                  title: 'Reduction year',
-                  dataIndex: 'reduction_year',
+                  title: 'Implementation start year',
+                  dataIndex: 'reduction_start_year',
+                },
+                {
+                  title: 'Implementation end year',
+                  dataIndex: 'reduction_end_year',
                 },
                 {
                   title: 'Water content',
                   dataIndex: 'water_content',
-                  render: (value) => `${value * 100}%`,
+                  render: (value) => `${(value * 100).toFixed(0)}%`,
                 },
                 {
                   title: 'Date Created',
                   dataIndex: 'date_submitted',
-                  render: (value) => new Date(value).toLocaleString(),
+                  sorter: (a, b) => new Date(a.date_submitted) > new Date(b.date_submitted),
+                  valueType: 'dateTime'
                 },
                 {
                   title: 'Date Completed',
                   dataIndex: 'date_completed',
-                  render: (value) => new Date(value).toLocaleString(),
+                  sorter: (a, b) => new Date(a.date_completed) > new Date(b.date_completed),
+                  valueType: 'dateTime',
                 },
               ]}
               dataSource={customModel && baseModel ? [customModel, baseModel] : []}

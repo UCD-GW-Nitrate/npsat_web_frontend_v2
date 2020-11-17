@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from "react";
+import React, { useRef, useEffect } from 'react';
 import { Liquid } from '@antv/g2plot';
 
 const WaterWave = ({ value }) => {
@@ -10,13 +10,11 @@ const WaterWave = ({ value }) => {
     }
     const liquidPlot = new Liquid(container.current, {
       percent: value,
-      height: 200
+      height: 200,
     });
     liquidPlot.render();
   }, [container, value]);
 
-  return (
-      <div ref={container} />
-  );
+  return <div ref={container} />;
 };
 export default WaterWave;

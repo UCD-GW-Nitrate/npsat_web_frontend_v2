@@ -4,7 +4,7 @@ import { Select } from 'antd';
 import { ordinalSuffix } from '@/utils/utils';
 import styles from './index.less';
 
-const ComparisonLinePlot = ({ baseData, customData, percentiles, reductionYear }) => {
+const ComparisonLinePlot = ({ baseData, customData, percentiles, additionalInfo }) => {
   const [selected, setSelected] = useState(undefined);
   const [plotData, setPlotData] = useState({});
   useEffect(() => {
@@ -58,15 +58,27 @@ const ComparisonLinePlot = ({ baseData, customData, percentiles, reductionYear }
         <Tooltip showCrosshairs shared />
         <Axis name="value" title />
         <Axis name="year" />
-        {reductionYear ? (
+        {additionalInfo && additionalInfo.reduction_start_year ? (
           <Annotation.Line
-            start={[reductionYear, 'min']}
-            end={[reductionYear, 'max']}
+            start={[additionalInfo.reduction_start_year, 'min']}
+            end={[additionalInfo.reduction_start_year, 'max']}
             text={{
-              position: '90%',
-              content: 'reduction year',
+              position: '60%',
+              content: 'implementation start year',
               style: { fill: 'red' },
-              autoRotate: false,
+              autoRotate: true,
+            }}
+          />
+        ) : null}
+        {additionalInfo && additionalInfo.reduction_end_year ? (
+          <Annotation.Line
+            start={[additionalInfo.reduction_end_year, 'min']}
+            end={[additionalInfo.reduction_end_year, 'max']}
+            text={{
+              position: '60%',
+              content: 'implementation end year',
+              style: { fill: 'red' },
+              autoRotate: true,
             }}
           />
         ) : null}

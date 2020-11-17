@@ -6,28 +6,35 @@ import Step1 from './components/Step1';
 import Step2 from './components/Step2';
 import Step3 from './components/Step3';
 import Step4 from './components/Step4';
+import Step5 from './components/Step5';
 import styles from './style.less';
 
 const { Step } = Steps;
 
 const getCurrentStepAndComponent = (current) => {
   switch (current) {
-    case 'Select Crops':
+    case 'Select Scenarios':
       return {
         step: 1,
         component: <Step2 />,
       };
 
-    case 'Model Info':
+    case 'Select Crops':
       return {
         step: 2,
         component: <Step3 />,
       };
 
-    case 'Results':
+    case 'Model Info':
       return {
         step: 3,
         component: <Step4 />,
+      };
+
+    case 'Results':
+      return {
+        step: 4,
+        component: <Step5 />,
       };
 
     case 'Select Regions':
@@ -56,6 +63,7 @@ const StepForm = ({ current }) => {
         <>
           <Steps current={currentStep} className={styles.steps}>
             <Step title="Select Regions" />
+            <Step title="Select Scenarios" />
             <Step title="Select Crops" />
             <Step title="Enter Model Meta" />
             <Step title="Results" />

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import { searchModel } from '@/services/model';
-import { getScenarios } from '@/services/scenario';
+import { getScenarios, SCENARIO_MACROS } from '@/services/scenario';
 
 const TagRender = (props) => {
   const { value, closable, onClose } = props;
@@ -34,7 +34,9 @@ const ListResponseProcessing = (response, userId) => {
   results.forEach((temp) => {
     const model = temp;
     model.key = model.id;
-    model.scenario_name = model.scenario.name;
+    model.flow_scenario_name = model.flow_scenario.name;
+    model.load_scenario_name = model.load_scenario.name;
+    model.unsat_scenario_name = model.unsat_scenario.name;
     model.tags = [];
     if (model.public) {
       model.tags.push('public');
@@ -76,8 +78,18 @@ const SearchTable = ({
       width: 250,
     },
     {
-      title: 'Scenario',
-      dataIndex: 'scenario_name',
+      title: 'Flow Scenario',
+      dataIndex: 'flow_scenario_name',
+      copyable: true,
+    },
+    {
+      title: 'Load Scenario',
+      dataIndex: 'load_scenario_name',
+      copyable: true,
+    },
+    {
+      title: 'Unsat Scenario',
+      dataIndex: 'unsat_scenario_name',
       copyable: true,
     },
     {
@@ -114,27 +126,32 @@ const SearchTable = ({
       sorter: (a, b) => a > b,
     },
     {
-      title: 'Reduction year',
-      dataIndex: 'reduction_year',
+      title: 'Implementation start year',
+      dataIndex: 'reduction_start_year',
+      sorter: (a, b) => a > b,
+    },
+    {
+      title: 'Implementation end year',
+      dataIndex: 'reduction_end_year',
       sorter: (a, b) => a > b,
     },
     {
       title: 'Water content',
       dataIndex: 'water_content',
-      render: (value) => `${value * 100}%`,
+      render: (value) => `${(value * 100).toFixed(0)}%`,
       sorter: (a, b) => a > b,
     },
     {
       title: 'Date Created',
       dataIndex: 'date_submitted',
       sorter: (a, b) => new Date(a.date_submitted) > new Date(b.date_submitted),
-      render: (value) => new Date(value).toLocaleString(),
+      valueType: 'dateTime'
     },
     {
       title: 'Date Completed',
       dataIndex: 'date_completed',
       sorter: (a, b) => new Date(a.date_completed) > new Date(b.date_completed),
-      render: (value) => new Date(value).toLocaleString(),
+      valueType: 'dateTime',
     },
     {
       title: 'Types',
@@ -244,12 +261,19 @@ const SearchTable = ({
 };
 
 const SearchForm = ({ onSearch }) => {
-  const [scenarios, setScenarios] = useState([]);
+  const [flowScenarios, setFlowScenarios] = useState([]);
+  const [loadScenarios, setLoadScenarios] = useState([]);
+  const [unsatScenarios, setUnsatScenarios] = useState([]);
   useEffect(() => {
-    (async () => {
-      const { results } = await getScenarios();
-      setScenarios(results);
-    })();
+    getScenarios(SCENARIO_MACROS.TYPE_FLOW).then(({ results }) => {
+      setFlowScenarios(results);
+    });
+    getScenarios(SCENARIO_MACROS.TYPE_LOAD).then(({ results }) => {
+      setLoadScenarios(results);
+    });
+    getScenarios(SCENARIO_MACROS.TYPE_UNSAT).then(({ results }) => {
+      setUnsatScenarios(results);
+    });
   }, []);
   return (
     <Form
@@ -292,11 +316,27 @@ const SearchForm = ({ onSearch }) => {
               style={{ width: '100%' }}
               optionFilterProp="children"
             >
-              {scenarios.map((item) => (
-                <Select.Option key={item.id} value={item.id}>
-                  {item.name}
-                </Select.Option>
-              ))}
+              <Select.OptGroup label="Flow Scenario">
+                {flowScenarios.map((item) => (
+                  <Select.Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select.OptGroup>
+              <Select.OptGroup label="Load Scenario">
+                {loadScenarios.map((item) => (
+                  <Select.Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select.OptGroup>
+              <Select.OptGroup label="Unsat Scenario">
+                {unsatScenarios.map((item) => (
+                  <Select.Option key={item.id} value={item.id}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select.OptGroup>
             </Select>
           </Form.Item>
         </Col>
