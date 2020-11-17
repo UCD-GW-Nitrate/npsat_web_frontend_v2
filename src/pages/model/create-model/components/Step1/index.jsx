@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import FarmForm from '@/pages/model/create-model/components/Step1/components/FarmForm';
 import BasinForm from '@/pages/model/create-model/components/Step1/components/BasinForm';
 import TownshipForm from '@/pages/model/create-model/components/Step1/components/TownshipForm';
+import B118BasinForm from '@/pages/model/create-model/components/Step1/components/B118BasinForm';
 import styles from './index.less';
 import CountyForm from './components/CountyForm';
 import CentralValleyForm from './components/CentralValleyForm';
@@ -29,6 +30,7 @@ const Step1 = (props) => {
         case 'county':
         case 'farm':
         case 'basin':
+        case 'sBasin':
         case 'township':
           dispatch({
             type: 'createModelForm/saveStepFormData',
@@ -57,8 +59,8 @@ const Step1 = (props) => {
         <TabPane tab="County" key="county">
           <CountyForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="B118 Basin" key="Basin" disabled>
-          Content of Tab Pane 2
+        <TabPane tab="B118 Basin" key="Basin" >
+          <B118BasinForm onSubmit={onSubmit} />
         </TabPane>
         <TabPane tab="CVHM Farm" key="farm">
           <FarmForm onSubmit={onSubmit} />
