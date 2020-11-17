@@ -19,7 +19,7 @@ const Step4 = (props) => {
       span: 25,
     },
   };
-  const onSubmit = (values) => {
+  const onNext = (values) => {
     dispatch({
       type: 'createModelForm/saveStepFormData',
       payload: { ...values },
@@ -55,7 +55,7 @@ const Step4 = (props) => {
         form={form}
         layout="horizontal"
         className={styles.stepForm}
-        onFinish={onSubmit}
+        onFinish={onNext}
       >
         <Form.Item
           name="model-name"
@@ -144,7 +144,7 @@ const Step4 = (props) => {
           }}
         >
           <Button type="primary" htmlType="submit">
-            Submit
+            Next
           </Button>
           <Button
             onClick={onPrev}

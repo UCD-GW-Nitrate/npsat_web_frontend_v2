@@ -1,5 +1,5 @@
 import React from 'react';
-import { Result, Button } from 'antd';
+import { Result, Button, Spin } from 'antd';
 import { history } from 'umi';
 import { connect } from 'react-redux';
 import styles from './index.less';
@@ -33,6 +33,18 @@ const Step5 = (props) => {
       });
     }
   };
+  const onPrev = () => {
+    if (dispatch) {
+      dispatch({
+        type: 'createModelForm/saveCurrentStep',
+        payload: 'Model Info',
+      });
+      dispatch({
+        type: 'createModelForm/saveCreateModelResult',
+        payload: null,
+      });
+    }
+  };
   const extra = (
     <>
       <Button type="primary" onClick={onView} style={{ marginBottom: 10 }}>
@@ -44,15 +56,29 @@ const Step5 = (props) => {
       <Button onClick={onCreate}>Create another model</Button>
     </>
   );
+  if (id === null) {
+    return (
+      <div
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        <Spin size="large" tip="Creating..." />
+      </div>
+    );
+  }
   return id === -1 ? (
     <Result
       status="error"
       title="Model creation failed"
       subTitle="Please contact the site manager"
       extra={
-        <Button onClick={onCreate} type="primary">
-          Create another model
-        </Button>
+        <>
+          <Button onClick={onCreate} type="primary">
+            Create another model
+          </Button>
+          <Button onClick={onPrev}>Prev</Button>
+        </>
       }
     />
   ) : (

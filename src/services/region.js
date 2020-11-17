@@ -33,7 +33,7 @@ export function getBasins() {
 }
 
 export function getB118Basin() {
-  return getRegions(REGION_MACROS.B118_BASIN)
+  return getRegions(REGION_MACROS.B118_BASIN);
 }
 
 export function getTownships() {
