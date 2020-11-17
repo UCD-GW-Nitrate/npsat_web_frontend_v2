@@ -13,7 +13,6 @@ const Model = {
     *createModel({ payload }, { call, put }) {
       let response;
       try {
-        console.log(payload)
         const crops = payload.selectedCrops;
         const modifications = [];
         crops.forEach((crop) => {
