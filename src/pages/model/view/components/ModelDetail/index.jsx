@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import { Card, Descriptions, Steps, Button, Tabs, Anchor, Tooltip } from 'antd';
 import classNames from 'classnames';
@@ -7,6 +7,7 @@ import MultilinePlot from '@/components/Plots/BizCharts/MultilinePlot/dynamic';
 import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
 import { ordinalSuffix } from '@/utils/utils';
 import BoxPlot from '@/components/Plots/BizCharts/BoxPlot/dynamic';
+import { MODEL_STATUS_MACROS } from '@/services/model';
 import CountyMap from './components/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import { getRegionDetail, getModelResults } from '../../service';
@@ -21,6 +22,8 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
   const [loading, setLoading] = useState(true);
   const [plotData, setData] = useState({});
   const [percentiles, setPercentiles] = useState([]);
+  const [progress, setProgress] = useState({});
+  const { isMobile } = useContext(RouteContext);
   useEffect(() => {
     if (info.regions) {
       Promise.all(info.regions.map((region) => getRegionDetail({ id: region.id }))).then(
@@ -85,6 +88,31 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
       {new Date(info.date_completed).toLocaleString()}
     </div>
   ) : null;
+  useEffect(() => {
+    if (!info) {
+      setProgress({
+        status: 'wait',
+        current: MODEL_STATUS_MACROS.NOT_READY,
+      });
+    } else {
+      if (info.status === MODEL_STATUS_MACROS.ERROR) {
+        setProgress({
+          status: 'error',
+          current: MODEL_STATUS_MACROS.RUNNING,
+        });
+      } else if (info.status === MODEL_STATUS_MACROS.RUNNING) {
+        setProgress({
+          status: 'process',
+          current: info.status,
+        });
+      } else {
+        setProgress({
+          status: 'finish',
+          current: info.status,
+        });
+      }
+    }
+  }, [info]);
   return (
     <PageHeaderWrapper
       subTitle="The complete information of model."
@@ -176,20 +204,12 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
           }}
           bordered={false}
         >
-          <RouteContext.Consumer>
-            {({ isMobile }) => (
-              <Steps
-                direction={isMobile ? 'vertical' : 'horizontal'}
-                progressDot
-                current={info ? info.status : 0}
-              >
-                <Step title="Model created" description={desc1} />
-                <Step title="Ready to run" />
-                <Step title="Running" />
-                <Step title="Completed" description={desc2} />
-              </Steps>
-            )}
-          </RouteContext.Consumer>
+          <Steps direction={isMobile ? 'vertical' : 'horizontal'} {...progress}>
+            <Step title="Model created" description={desc1} />
+            <Step title="In queue" />
+            <Step title="Running" />
+            <Step title="Completed" description={desc2} />
+          </Steps>
         </Card>
 
         {percentiles.length === 0 ? null : (

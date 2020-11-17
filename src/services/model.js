@@ -1,5 +1,13 @@
 import request from '@/utils/request';
 
+export const MODEL_STATUS_MACROS = {
+  NOT_READY: 0,
+  READY: 1,
+  RUNNING: 2,
+  COMPLETED: 3,
+  ERROR: 4,
+};
+
 export async function searchModel(params, filter, token, search_text, ...options) {
   const { pageSize, current } = params;
   const [sorter, scenarios, status] = options;
