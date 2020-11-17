@@ -174,7 +174,8 @@ const SearchTable = ({
                 break;
               case 'base':
                 color = 'green';
-                title = `base model of ${record.scenario.name}`;
+                title = `base model of
+                ${record.flow_scenario_name}, ${record.load_scenario_name}, ${record.unsat_scenario_name}`;
             }
             return (
               <Tooltip title={title} key={record.key + tag}>

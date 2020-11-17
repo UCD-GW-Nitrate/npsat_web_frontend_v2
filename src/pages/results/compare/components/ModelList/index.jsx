@@ -145,7 +145,7 @@ const SearchTable = ({ user }) => {
                 break;
               case 'base':
                 color = 'green';
-                title = `base model of ${record.scenario.name}`;
+                title = `base model of  ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}`;
             }
             return (
               <Tooltip title={title} key={record.key + tag}>
@@ -165,7 +165,9 @@ const SearchTable = ({ user }) => {
       fixed: 'right',
       render: (_, record) =>
         !record.is_base ? (
-          <Tooltip title={`Compare with base model of scenario ${record.scenario.name}`}>
+          <Tooltip
+            title={`Compare with base model of scenario  ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}`}
+          >
             <a href={`/charts/compare?id=${record.id}`}>Compare</a>
           </Tooltip>
         ) : (
