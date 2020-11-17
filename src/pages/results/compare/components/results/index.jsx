@@ -159,7 +159,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   title: 'Date Created',
                   dataIndex: 'date_submitted',
                   sorter: (a, b) => new Date(a.date_submitted) > new Date(b.date_submitted),
-                  valueType: 'dateTime'
+                  valueType: 'dateTime',
                 },
                 {
                   title: 'Date Completed',
