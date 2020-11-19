@@ -88,11 +88,11 @@ const Step4 = (props) => {
           ]}
           initialValue={data.hasOwnProperty('n_years') ? data.n_years : moment('2100')}
         >
-          <DatePicker picker="year"
-                      disabledDate={(current) => (
-                          current.isBefore(moment('2020'), 'year') || current.isAfter(moment("2500", 'year'))
-                        )
-                      }
+          <DatePicker
+            picker="year"
+            disabledDate={(current) =>
+              current.isBefore(moment('2020'), 'year') || current.isAfter(moment('2500', 'year'))
+            }
           />
         </Form.Item>
         <Form.Item
@@ -104,8 +104,7 @@ const Step4 = (props) => {
               required: true,
               message: 'Please enter the reduction year',
             },
-            ({ getFieldValue }) =>
-              ({
+            ({ getFieldValue }) => ({
               validator: (_, _value) => {
                 const sim_end_year = getFieldValue('n_years');
                 if (!_value || _value.length <= 1) {
@@ -113,12 +112,12 @@ const Step4 = (props) => {
                 }
                 const [start_year, end_year] = _value;
                 if (end_year.isAfter(sim_end_year, 'year')) {
-                  return Promise.reject("Reduction end year must not be after sim end year.");
+                  return Promise.reject('Reduction end year must not be after sim end year.');
                 } else {
                   return Promise.resolve();
                 }
               },
-            })
+            }),
           ]}
           // initialValue={
           //   data.hasOwnProperty('reduction_year')
@@ -189,9 +188,7 @@ const Step4 = (props) => {
         <h4>Model description</h4>
         <p>Enter model optional description, no characters limit.</p>
         <h4>Sim end year</h4>
-        <p>
-          Enter simulation end year default to 2100. Selectable range from 2020 to 2500.
-        </p>
+        <p>Enter simulation end year default to 2100. Selectable range from 2020 to 2500.</p>
         <h4>Reduction period</h4>
         <p>The year to start the reduction and the year to reach the full reduction.</p>
         <h4>Water content</h4>

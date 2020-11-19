@@ -46,8 +46,8 @@ const CropCard = ({
   };
 
   useEffect(() => {
-    triggerChange(initialValues)
-  }, [])
+    triggerChange(initialValues);
+  }, []);
 
   const changeLoad = displayMode
     ? setLoad

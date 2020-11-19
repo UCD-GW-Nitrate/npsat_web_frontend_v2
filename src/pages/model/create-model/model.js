@@ -66,7 +66,7 @@ const Model = {
           });
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
         yield put({
           type: 'saveCreateModelResult',
           payload: -1, // general error code

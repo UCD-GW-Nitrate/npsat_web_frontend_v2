@@ -36,7 +36,7 @@ const CropCardForm = (props) => {
     }
   };
   if (cropList.length === 0) {
-    return <Spin />
+    return <Spin />;
   }
   return (
     <>
