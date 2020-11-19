@@ -128,7 +128,8 @@ const Step4 = (props) => {
           <RangePicker
             picker="year"
             disabledDate={(current) => {
-              const end_year = form.getFieldValue('n_years');
+              const end_year = form.getFieldValue('n_years').clone();
+              end_year.add(1, 'y');
               return (
                 current.isBefore(moment(), 'year') || current.isAfter(moment(end_year, 'year'))
               );
