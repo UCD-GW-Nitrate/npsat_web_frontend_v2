@@ -69,13 +69,13 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
     <PageHeaderWrapper
       title="Base model comparison"
       subTitle="Compare a custom model with the base model under same scenario"
-      content={
-        <Anchor affix={false}>
-          <Anchor.Link href="#settings" title="Model settings" />
-          <Anchor.Link href="#results" title="Results comparison" />
-          <Anchor.Link href="#crops" title="Crop selection" />
-        </Anchor>
-      }
+      // content={
+      //   <Anchor affix={false}>
+      //     <Anchor.Link href="#settings" title="Model settings" />
+      //     <Anchor.Link href="#results" title="Results comparison" />
+      //     <Anchor.Link href="#crops" title="Crop selection" />
+      //   </Anchor>
+      // }
     >
       <div className={styles.main}>
         <Card

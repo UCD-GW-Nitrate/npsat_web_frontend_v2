@@ -75,14 +75,14 @@ const GroupComparison = ({ models, user, hash }) => {
     <PageHeaderWrapper
       title="Group models comparison"
       subTitle="Compare selected models together"
-      content={
-        <Anchor affix={false}>
-          <Anchor.Link href="#settings" title="Model settings" />
-          <Anchor.Link href="#crops" title="Crop selection" />
-          <Anchor.Link href="#results-pair" title="Results comparison in pairs" />
-          <Anchor.Link href="#results-group" title="Results comparison in group" />
-        </Anchor>
-      }
+      // content={
+      //   <Anchor affix={false}>
+      //     <Anchor.Link href="#settings" title="Model settings" />
+      //     <Anchor.Link href="#crops" title="Crop selection" />
+      //     <Anchor.Link href="#results-pair" title="Results comparison in pairs" />
+      //     <Anchor.Link href="#results-group" title="Results comparison in group" />
+      //   </Anchor>
+      // }
     >
       <div className={styles.main}>
         <Card

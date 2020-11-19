@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
-import { Card, Descriptions, Steps, Button, Tabs, Anchor, Tooltip } from 'antd';
+import { Card, Descriptions, Steps, Button, Tabs, Tooltip } from 'antd';
 import classNames from 'classnames';
 import { history } from 'umi';
 import MultilinePlot from '@/components/Plots/BizCharts/MultilinePlot/dynamic';
@@ -114,18 +114,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
     }
   }, [info]);
   return (
-    <PageHeaderWrapper
-      subTitle="The complete information of model."
-      content={
-        <Anchor affix={false}>
-          <Anchor.Link href="#info" title="Model info" />
-          <Anchor.Link href="#progress" title="Model progress" />
-          {percentiles.length === 0 ? null : <Anchor.Link href="#results" title="Model results" />}
-          <Anchor.Link href="#crop-details" title="Crop details" />
-          <Anchor.Link href="#region-map" title="Region map" />
-        </Anchor>
-      }
-    >
+    <PageHeaderWrapper subTitle="The complete information of model.">
       <div className={styles.main}>
         <Card
           title={<AnchorTitle title="Model info" anchor="info" />}
@@ -142,7 +131,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
                   publish(info);
                 }}
               >
-                {info.public ? 'Un-publish the model' : 'publish the model'}
+                {info.public ? 'Make model private' : 'Share model publicly'}
               </Button>
             </Tooltip>
           }
@@ -182,9 +171,6 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
             <Descriptions.Item label="is base model">
               {info.is_base ? 'yes' : 'no'}
             </Descriptions.Item>
-            <Descriptions.Item label="Region(s)" span={3}>
-              {regions.map((region) => region.name).join(', ') || ''}
-            </Descriptions.Item>
             <Descriptions.Item label="Number of wells detected in selected region(s)">
               {info.n_wells || 'model run not yet complete'}
             </Descriptions.Item>
@@ -193,6 +179,9 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
             </Descriptions.Item>
             <Descriptions.Item label="Model description" span={3}>
               {info.description || 'no description'}
+            </Descriptions.Item>
+            <Descriptions.Item label="Region(s)" span={3}>
+              {regions.map((region) => region.name).join(', ') || ''}
             </Descriptions.Item>
           </Descriptions>
         </Card>
@@ -233,7 +222,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
                   });
                 }}
               >
-                View combined model results
+                Compare with base model run
               </Button>
             }
           >
@@ -273,7 +262,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
         )}
 
         <Card
-          title={<AnchorTitle title="Crop details" anchor="crop-details" />}
+          title={<AnchorTitle title="Crop loading details" anchor="crop-details" />}
           bordered={false}
           style={{
             marginBottom: 32,
@@ -282,7 +271,10 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
           <TableWrapper data={crop} loading={loading} />
         </Card>
 
-        <Card title={<AnchorTitle title="Region map" anchor="region-map" />} bordered={false}>
+        <Card
+          title={<AnchorTitle title="Region included in this model run" anchor="region-map" />}
+          bordered={false}
+        >
           {regions ? <CountyMap data={regions.map((region) => region.geometry)} /> : null}
         </Card>
       </div>
