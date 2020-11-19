@@ -136,7 +136,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
             </Tooltip>
           }
         >
-          <Descriptions bordered column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}>
+          <Descriptions bordered column={{ xxl: 4, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }}>
             <Descriptions.Item label="Model name">{info.name}</Descriptions.Item>
             <Descriptions.Item label="Date created">
               {info.date_submitted ? new Date(info.date_submitted).toLocaleString() : ''}
