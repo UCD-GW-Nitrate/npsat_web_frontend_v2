@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getCropListLoadType, CROP_MACROS } from '@/services/crop';
-import { Select, List, notification } from 'antd';
+import { Select, List, notification, Spin } from 'antd';
 import CropCard from '@/pages/model/components/CropCard';
 import styles from './index.less';
 
@@ -28,13 +28,16 @@ const CropCardForm = (props) => {
     if (!v.includes(special)) {
       notification.warning({
         message: `Cannot deselect "${special.split(',')[1]}"`,
-        description: `You can set "${special.split(',')[1]}" to default`,
+        description: `You can set "${special.split(',')[1]}" to default(100%)`,
       });
       setSelected([special, ...v]);
     } else {
       setSelected(v);
     }
   };
+  if (cropList.length === 0) {
+    return <Spin />;
+  }
   return (
     <>
       <Select
@@ -70,7 +73,7 @@ const CropCardForm = (props) => {
               : {
                   load: 100,
                   area: 100,
-                  enable: false,
+                  enable: true,
                 };
             return (
               <List.Item key={id}>

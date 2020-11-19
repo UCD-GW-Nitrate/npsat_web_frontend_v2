@@ -33,7 +33,7 @@ const Model = {
           name: payload['model-name'],
           description: payload['model-desc'],
           water_content: payload.water_content / 100,
-          n_years: payload.n_years,
+          n_years: new Date(payload.n_years).getFullYear() - 1945,
           reduction_start_year: new Date(payload.reduction_year[0]).getFullYear(),
           reduction_end_year: new Date(payload.reduction_year[1]).getFullYear(),
           flow_scenario: { id: payload.flow_scenario },
@@ -66,6 +66,7 @@ const Model = {
           });
         }
       } catch (e) {
+        console.log(e);
         yield put({
           type: 'saveCreateModelResult',
           payload: -1, // general error code

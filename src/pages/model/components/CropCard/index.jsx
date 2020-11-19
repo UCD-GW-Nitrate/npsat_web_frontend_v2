@@ -14,7 +14,7 @@ const CropCard = ({
   initialValues = {
     load: 100,
     area: 100,
-    enable: false,
+    enable: true,
   },
 }) => {
   const [load, setLoad] = useState(initialValues.load);
@@ -44,6 +44,10 @@ const CropCard = ({
       });
     }
   };
+
+  useEffect(() => {
+    triggerChange(initialValues);
+  }, []);
 
   const changeLoad = displayMode
     ? setLoad
