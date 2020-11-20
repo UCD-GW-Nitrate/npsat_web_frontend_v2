@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Axis, Chart, Interaction, Point, Legend, Tooltip as ChartTooltip } from 'bizcharts';
 import { history } from 'umi';
-import { Space, InputNumber, Radio, Tooltip } from 'antd';
+import { Space, DatePicker, Radio, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import moment from 'moment';
 import styles from './index.less';
 
 const ScatterPlot = ({ data }) => {
@@ -30,14 +31,16 @@ const ScatterPlot = ({ data }) => {
         <Space>
           <>
             Year:
-            <InputNumber
+            <DatePicker
+              picker="year"
               style={{
-                width: 70,
+                width: 80,
               }}
-              value={year}
-              onChange={setYear}
-              min={1945}
-              max={2445}
+              value={moment([year])}
+              onChange={(value) => setYear(new Date(value).getFullYear())}
+              disabledDate={(current) =>
+                current.isBefore(moment([1945]), 'year') || current.isAfter(moment([2500], 'year'))
+              }
             />
           </>
           <>
