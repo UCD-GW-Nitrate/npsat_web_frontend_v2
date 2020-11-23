@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Axis, Chart, Path, Interaction, Legend, Polygon } from 'bizcharts';
-import { Statistic, Col, Row, InputNumber, Form, Button, Tooltip } from 'antd';
+import { Statistic, Col, Row, InputNumber, Form, Button, Tooltip, Space } from 'antd';
 import { RouteContext } from '@ant-design/pro-layout';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { ordinalSuffix } from '@/utils/utils';
 import styles from './index.less';
 
-const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear }) => {
+const DifferenceHeatmap = ({ baseData, customData, percentiles, additionalInfo }) => {
   const { isMobile } = useContext(RouteContext);
   const [form] = Form.useForm();
   const [plotData, setPlotData] = useState({});
@@ -93,12 +93,19 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
       <div className={styles.heatmapPlotSelect}>
         <Form onFinish={onSubmit} hideRequiredMark form={form}>
           <Row gutter={24}>
-            <Col span={6}>
-              <Statistic
-                title="Reduction year"
-                value={reductionYear}
-                formatter={(value) => `${value}`}
-              />
+            <Col span={9}>
+              <Space>
+                <Statistic
+                  title="Implementation start year"
+                  value={additionalInfo.reduction_start_year}
+                  formatter={(value) => `${value}`}
+                />
+                <Statistic
+                  title="Implementation end year"
+                  value={additionalInfo.reduction_end_year}
+                  formatter={(value) => `${value}`}
+                />
+              </Space>
             </Col>
             <Col span={6}>
               <Form.Item
@@ -159,7 +166,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, reductionYear })
                 <InputNumber style={{ width: '100%' }} step={0.01} />
               </Form.Item>
             </Col>
-            <Col span={6}>
+            <Col span={3}>
               <Form.Item style={{ float: 'right' }}>
                 <Button htmlType="submit" type="primary">
                   Submit
