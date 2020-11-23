@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { HeatmapChart } from 'bizcharts';
-import { Statistic, Col, Row, InputNumber, Form, Button, Tooltip } from 'antd';
+import { Statistic, Col, Row, InputNumber, Form, Button, Tooltip, Space } from 'antd';
 import { RouteContext } from '@ant-design/pro-layout';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
@@ -76,11 +76,18 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, additionalInfo }
         <Form onFinish={({ years }) => setSelected(years)} hideRequiredMark form={form}>
           <Row gutter={24}>
             <Col span={8}>
-              <Statistic
-                title="Implementation start year"
-                value={additionalInfo ? additionalInfo.reduction_start_year : undefined}
-                formatter={(value) => `${value}`}
-              />
+              <Space>
+                <Statistic
+                  title="Implementation start year"
+                  value={additionalInfo.reduction_start_year}
+                  formatter={(value) => `${value}`}
+                />
+                <Statistic
+                  title="Implementation end year"
+                  value={additionalInfo.reduction_end_year}
+                  formatter={(value) => `${value}`}
+                />
+              </Space>
             </Col>
             <Col span={8}>
               <Form.Item
