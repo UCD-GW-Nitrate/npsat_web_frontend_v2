@@ -108,12 +108,12 @@ const ScatterPlot = ({ data }) => {
             strokeOpacity: 1,
           }}
           tooltip={[
-            'name*n_wells*n_years*water_content',
-            (name, n_wells, n_years, water_content) => {
+            'name*n_wells*sim_end_year*water_content',
+            (name, n_wells, sim_end_year, water_content) => {
               return {
                 name,
                 n_wells,
-                n_years,
+                sim_end_year,
                 water_content: `${(water_content * 100).toFixed(0)}%`,
               };
             },
@@ -136,7 +136,7 @@ const ScatterPlot = ({ data }) => {
             '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' +
             '<span style="padding-bottom: 5px">Number of wells: {n_wells}</span><br/>' +
             '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' +
-            '<span style="padding-bottom: 5px">Number of years: {n_years}</span><br/>' +
+            '<span style="padding-bottom: 5px">End year: {sim_end_year}</span><br/>' +
             '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' +
             '<span style="padding-bottom: 5px">Water content: {water_content.toFixed(0)}</span><br/>' +
             '</li>'

@@ -46,6 +46,7 @@ const CropCardForm = (props) => {
         placeholder="Please select a crop to start"
         onChange={onSelect}
         className={styles.select}
+        showArrow
       >
         {cropList.map((crop) => (
           <Option value={`${crop.id},${crop.name}`} key={crop.id}>
