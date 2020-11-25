@@ -165,7 +165,7 @@ const Step4 = (props) => {
           }}
         >
           <Button type="primary" htmlType="submit">
-            Next
+            Submit
           </Button>
           <Button
             onClick={onPrev}

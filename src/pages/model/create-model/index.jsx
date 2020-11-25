@@ -14,6 +14,7 @@ const { Step } = Steps;
 const getCurrentStepAndComponent = (current) => {
   switch (current) {
     case 'Select Scenarios':
+    case 1:
       return {
         step: 1,
         component: <Step2 />,
@@ -46,7 +47,15 @@ const getCurrentStepAndComponent = (current) => {
   }
 };
 
-const StepForm = ({ current }) => {
+const mapStepToCurrent = {
+  0: 'Select Regions',
+  1: 'Select Scenarios',
+  2: 'Select Crops',
+  3: 'Model Info',
+  4: 'Results',
+};
+
+const StepForm = ({ dispatch, current }) => {
   const [stepComponent, setStepComponent] = useState(<Step1 />);
   const [currentStep, setCurrentStep] = useState(0);
   useEffect(() => {
@@ -61,12 +70,23 @@ const StepForm = ({ current }) => {
     >
       <Card bordered={false}>
         <>
-          <Steps current={currentStep} className={styles.steps}>
-            <Step title="Select Regions" />
-            <Step title="Select Scenarios" />
-            <Step title="Select Crops" />
-            <Step title="Enter Model Meta" />
-            <Step title="Results" />
+          <Steps
+            current={currentStep}
+            className={styles.steps}
+            onChange={(step) => {
+              if (dispatch) {
+                dispatch({
+                  type: 'createModelForm/saveCurrentStep',
+                  payload: mapStepToCurrent[step],
+                });
+              }
+            }}
+          >
+            <Step title="Select Regions" disabled={currentStep >= 4} />
+            <Step title="Select Scenarios" disabled={currentStep < 1 || currentStep >= 4} />
+            <Step title="Select Crops" disabled={currentStep < 2 || currentStep >= 4} />
+            <Step title="Enter Model Meta" disabled={currentStep < 3 || currentStep >= 4} />
+            <Step title="Results" disabled />
           </Steps>
           {stepComponent}
         </>
