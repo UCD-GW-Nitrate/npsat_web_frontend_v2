@@ -146,7 +146,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
                 ? new Date(info.date_completed).toLocaleString()
                 : 'not yet completed'}
             </Descriptions.Item>
-            <Descriptions.Item label="Number of years to predict">{info.n_years}</Descriptions.Item>
+            <Descriptions.Item label="Stimulation end year">{info.sim_end_year}</Descriptions.Item>
             <Descriptions.Item label="Implementation start year">
               {info.reduction_start_year}
             </Descriptions.Item>

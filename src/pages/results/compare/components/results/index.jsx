@@ -138,8 +138,8 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                 },
                 {
                   title: 'Year range',
-                  dataIndex: 'n_years',
-                  render: (value) => `1945 - ${1945 + value}`,
+                  dataIndex: 'sim_end_year',
+                  render: (value) => `1945 - ${value}`,
                   width: 100,
                 },
                 {

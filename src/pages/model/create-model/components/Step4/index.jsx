@@ -78,7 +78,7 @@ const Step4 = (props) => {
           <TextArea rows={4} />
         </Form.Item>
         <Form.Item
-          name="n_years"
+          name="sim_end_year"
           label="Sim end year"
           required={[
             {
@@ -86,7 +86,7 @@ const Step4 = (props) => {
               message: 'Please enter numbers of years to stimulate the model',
             },
           ]}
-          initialValue={data.hasOwnProperty('n_years') ? data.n_years : moment('2100')}
+          initialValue={data.hasOwnProperty('sim_end_year') ? data.sim_end_year : moment('2100')}
         >
           <DatePicker
             picker="year"
@@ -98,7 +98,7 @@ const Step4 = (props) => {
         <Form.Item
           name="reduction_year"
           label="Reduction period"
-          dependencies={['n_years']}
+          dependencies={['sim_end_year']}
           rules={[
             {
               required: true,
@@ -106,7 +106,7 @@ const Step4 = (props) => {
             },
             ({ getFieldValue }) => ({
               validator: (_, _value) => {
-                const sim_end_year = getFieldValue('n_years');
+                const sim_end_year = getFieldValue('sim_end_year');
                 if (!_value || _value.length <= 1) {
                   return Promise.resolve();
                 }
@@ -128,7 +128,7 @@ const Step4 = (props) => {
           <RangePicker
             picker="year"
             disabledDate={(current) => {
-              const end_year = form.getFieldValue('n_years').clone();
+              const end_year = form.getFieldValue('sim_end_year').clone();
               end_year.add(1, 'y');
               return (
                 current.isBefore(moment(), 'year') || current.isAfter(moment(end_year, 'year'))
