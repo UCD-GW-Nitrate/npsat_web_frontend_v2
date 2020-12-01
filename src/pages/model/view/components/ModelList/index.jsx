@@ -194,7 +194,7 @@ const SearchTable = ({
       valueType: 'option',
       fixed: 'right',
       render: (_, record) => (
-        <Tooltip title="View details">
+        <Tooltip title="View details & results">
           <a href={`/model/view?id=${record.id}`}>Details</a>
         </Tooltip>
       ),

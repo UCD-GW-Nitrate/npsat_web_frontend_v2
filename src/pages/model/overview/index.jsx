@@ -179,7 +179,7 @@ const OverviewList = (props) => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Tooltip title="view details">
+          <Tooltip title="View details & results">
             <a href={`/model/view?id=${record.id}`}>Details</a>
           </Tooltip>
           <Divider type="vertical" />

@@ -49,9 +49,9 @@ export default {
   'menu.models': 'Model',
   'menu.models.overview': 'Overview',
   'menu.models.createModel': 'Create Model',
-  'menu.models.viewModel': 'Model Details',
-  'menu.results': 'Results',
-  'menu.results.compareWithBase': 'Compare with base model',
-  'menu.results.viewGroupResults': 'Compare with other models',
+  'menu.models.viewModel': 'Details & Results',
+  'menu.compare': 'Compare',
+  'menu.compare.compareWithBase': 'Compare with base model',
+  'menu.compare.viewGroupResults': 'Compare with other models',
   'menu.team': 'Team',
 };
