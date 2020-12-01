@@ -47,13 +47,13 @@ const Step5 = (props) => {
   };
   const extra = (
     <>
-      <Button type="primary" onClick={onView} style={{ marginBottom: 10 }}>
-        View details
+      <Button type="primary" onClick={onView} style={{ marginBottom: 10 }} size="large">
+        View model run
       </Button>
-      <Button onClick={onCheck} style={{ marginBottom: 10 }}>
+      <Button onClick={onCheck} style={{ marginBottom: 10 }} size="large">
         Compare with base model
       </Button>
-      <Button onClick={onCreate}>Create another model</Button>
+      <Button onClick={onCreate} size="large">Create another model</Button>
     </>
   );
   if (id === null) {

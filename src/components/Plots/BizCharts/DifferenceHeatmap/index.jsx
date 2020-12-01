@@ -151,13 +151,13 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, additionalInfo }
         colorField="value"
         meta={{
           value: {
-            alias: 'Average difference of Nitrogen',
+            alias: 'Average Concentration of Nitrate as N [mg/L]',
           },
         }}
         tooltip={{
           visible: true,
           formatter: (years, percentile, value) => ({
-            name: 'Average difference of Nitrogen',
+            name: 'Average Concentration of Nitrate as N [mg/L]',
             value: `${value} at ${percentile}`,
           }),
         }}

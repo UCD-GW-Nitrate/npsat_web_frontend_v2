@@ -45,7 +45,7 @@ const GroupComparisonLinePlot = ({ results, percentiles, models }) => {
         data={Object.keys(plotData).length === 0 && selected ? [] : plotData[selected]}
         autoFit
         scale={{
-          value: { alias: 'Amount of Nitrogen', nice: true },
+          value: { alias: 'Concentration of Nitrate as N [mg/L]', nice: true },
           year: { tickCount: 10 },
         }}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}

@@ -79,20 +79,20 @@ export default defineConfig({
               ],
             },
             {
-              name: 'results',
+              name: 'compare',
               icon: 'lineChart',
-              path: '/charts',
+              path: '/compare',
               routes: [
                 {
                   name: 'compareWithBase',
                   icon: 'barChart',
-                  path: '/charts/compare',
+                  path: '/compare/BAU',
                   component: './results/compare',
                 },
                 {
                   name: 'viewGroupResults',
                   icon: 'heatMap',
-                  path: '/charts/group',
+                  path: '/compare/group',
                   component: './results/group',
                 },
               ],
