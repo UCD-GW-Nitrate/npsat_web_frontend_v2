@@ -40,7 +40,7 @@ const BoxPlot = ({ percentiles, data, additionalInfo }) => {
         height={500}
         data={range}
         scale={{
-          range: { alias: 'Amount of Nitrogen', nice: true },
+          range: { alias: 'Concentration of Nitrate as N [mg/L]', nice: true },
           year: { tickCount: 10, sync: true },
         }}
         defaultInteractions={['tooltip']}
@@ -83,6 +83,7 @@ const BoxPlot = ({ percentiles, data, additionalInfo }) => {
           }
         />
         <Axis name="year" />
+        <Axis name="range" title />
         {additionalInfo && additionalInfo.reduction_start_year ? (
           <Annotation.Line
             start={[additionalInfo.reduction_start_year, 'min']}

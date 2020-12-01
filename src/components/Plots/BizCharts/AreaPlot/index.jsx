@@ -193,7 +193,7 @@ const AreaPlot = ({ percentiles, data, additionalInfo }) => {
         height={500}
         data={areas}
         scale={{
-          value: { min: 0, alias: 'Amount of Nitrogen', nice: true },
+          value: { min: 0, alias: 'Concentration of Nitrate as N [mg/L]', nice: true },
           year: { tickCount: 10, sync: true },
         }}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}

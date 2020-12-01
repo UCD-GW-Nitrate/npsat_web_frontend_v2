@@ -51,7 +51,7 @@ const MultilinePlot = ({ percentiles, data, additionalInfo }) => {
         height={500}
         data={Object.keys(data).length === 0 ? [] : shownLines.map((index) => data[index]).flat(1)}
         scale={{
-          value: { min: 0, alias: 'Amount of Nitrogen', nice: true },
+          value: { min: 0, alias: 'Concentration of Nitrate as N [mg/L]', nice: true },
           year: { tickCount: 10 },
         }}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
