@@ -65,10 +65,10 @@ const SelectAndMap = ({ value = [], onChange }) => {
       const { results: townships } = await getTownships();
       setList(townships);
       setMapData(
-        await townships.map((county) => {
-          const data = county.geometry;
-          data.properties.id = county.id;
-          data.properties.name = data.properties.TOWNSHIP;
+        await townships.map((township) => {
+          const data = township.geometry;
+          data.properties.id = township.id;
+          data.properties.name = township.name;
           return data;
         }),
       );
