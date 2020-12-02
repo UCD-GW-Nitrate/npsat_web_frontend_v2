@@ -160,7 +160,7 @@ const OverviewList = (props) => {
                 break;
               case 'base':
                 color = 'green';
-                title = `base model of ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}`;
+                title = `BAU of ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}`;
             }
             return (
               <Tooltip title={title} key={record.key + tag}>
@@ -184,12 +184,12 @@ const OverviewList = (props) => {
           </Tooltip>
           <Divider type="vertical" />
           <Tooltip
-            title={record.is_base ? 'This a base model' : 'compare with base model'}
+            title={record.is_base ? 'This a BAU' : 'compare with BAU'}
             style={{ pointerEvents: 'all' }}
           >
             <Button
               style={{ padding: 0 }}
-              href={`/charts/compare?id=${record.id}`}
+              href={`/compare/BAU?id=${record.id}`}
               disabled={record.is_base}
               type="link"
             >

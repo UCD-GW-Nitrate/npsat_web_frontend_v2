@@ -109,7 +109,7 @@ const GroupComparison = ({ models, user, hash }) => {
                   fixed: true,
                 },
                 {
-                  title: 'Base Model',
+                  title: 'BAU',
                   dataIndex: 'is_base',
                   render: (value) => (value ? 'Yes' : 'No'),
                 },
@@ -328,7 +328,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={
-              <Tooltip title="Difference between base model and custom model">
+              <Tooltip title="Difference between BAU and custom model">
                 Difference histogram <InfoCircleOutlined />
               </Tooltip>
             }

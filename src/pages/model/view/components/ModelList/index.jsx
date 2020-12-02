@@ -1,5 +1,5 @@
-import { SearchOutlined } from '@ant-design/icons';
-import { Button, Row, Col, Tag, Select, Checkbox, Form, Input, Tooltip, Badge } from 'antd';
+import { SearchOutlined, ClearOutlined, DoubleLeftOutlined } from '@ant-design/icons';
+import { Button, Row, Col, Tag, Select, Checkbox, Form, Input, Tooltip, Badge, Card } from 'antd';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
@@ -174,7 +174,7 @@ const SearchTable = ({
                 break;
               case 'base':
                 color = 'green';
-                title = `base model of
+                title = `BAU of
                 ${record.flow_scenario_name}, ${record.load_scenario_name}, ${record.unsat_scenario_name}`;
             }
             return (
@@ -209,15 +209,18 @@ const SearchTable = ({
   });
   const [sorter, setSorter] = useState('');
   const onSearch = (values) => {
-    setOptions({ ...values });
+    setOptions({ ...options, ...values });
     actionRef.current.reload();
   };
   return (
-    <PageHeaderWrapper
-      title={title}
-      subTitle={subTitle}
-      content={<SearchForm onSearch={onSearch} />}
-    >
+    <PageHeaderWrapper title={title} subTitle={subTitle}>
+      <Card
+        style={{
+          marginBottom: 16,
+        }}
+      >
+        <SearchForm onSearch={onSearch} />
+      </Card>
       <ConfigProvider
         value={{
           intl: enUSIntl,
@@ -262,6 +265,8 @@ const SearchTable = ({
 };
 
 const SearchForm = ({ onSearch }) => {
+  const [form] = Form.useForm();
+  const [expand, setExpand] = useState(false);
   const [flowScenarios, setFlowScenarios] = useState([]);
   const [loadScenarios, setLoadScenarios] = useState([]);
   const [unsatScenarios, setUnsatScenarios] = useState([]);
@@ -276,126 +281,181 @@ const SearchForm = ({ onSearch }) => {
       setUnsatScenarios(results);
     });
   }, []);
-  return (
-    <Form
-      style={{
-        marginTop: 20,
-      }}
-      onFinish={onSearch}
-      hideRequiredMark
-    >
-      <Row gutter={16}>
-        <Col flex="auto">
-          <Form.Item label="Name/Description" name="search_text">
-            <Input placeholder="Search by model name or description" />
-          </Form.Item>
-        </Col>
-        <Col xs={24} sm={8}>
-          <Form.Item label="Model types" name="types" initialValue={['public', 'original', 'base']}>
-            <Select
-              mode="multiple"
-              showArrow
-              placeholder="Select model types"
-              style={{ width: '100%' }}
-              tagRender={TagRender}
-              options={[
-                { label: 'include public models', value: 'public' },
-                { label: 'include self-created models', value: 'original' },
-                { label: 'include base scenario models', value: 'base' },
-              ]}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col xs={24} sm={16}>
-          <Form.Item name="scenarios" label="Scenarios">
-            <Select
-              mode="multiple"
-              showArrow
-              placeholder="Filter scenarios"
-              style={{ width: '100%' }}
-              optionFilterProp="children"
+  const getFields = () => {
+    return expand ? (
+      <>
+        <Row gutter={16}>
+          <Col flex="auto">
+            <Form.Item label="Name/Description" name="search_text">
+              <Input placeholder="Search by model name or description" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={8}>
+            <Form.Item
+              label="Model types"
+              name="types"
+              initialValue={['public', 'original', 'base']}
             >
-              <Select.OptGroup label="Flow Scenario">
-                {flowScenarios.map((item) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select.OptGroup>
-              <Select.OptGroup label="Load Scenario">
-                {loadScenarios.map((item) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select.OptGroup>
-              <Select.OptGroup label="Unsat Scenario">
-                {unsatScenarios.map((item) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select.OptGroup>
-            </Select>
-          </Form.Item>
-        </Col>
-        <Col xs={24} sm={8}>
-          <Form.Item
-            label="Status"
-            name="status"
-            valuePropName="checked"
-            initialValue={['0', '1', '2', '3', '4']}
-            rules={[
-              {
-                required: true,
-                message: 'You must select at least one status',
-              },
-            ]}
-          >
-            <Checkbox.Group style={{ width: '100%' }} defaultValue={['0', '1', '2', '3', '4']}>
-              <Row>
-                <Col span={8}>
-                  <Checkbox value="0">
-                    <Badge text="Not ready" status="warning" />
-                  </Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="1">
-                    <Badge text="In queue" status="default" />
-                  </Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="2">
-                    <Badge text="Running" status="processing" />
-                  </Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="3">
-                    <Badge text="Complete" status="success" />
-                  </Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="4">
-                    <Badge text="Error" status="error" />
-                  </Checkbox>
-                </Col>
-              </Row>
-            </Checkbox.Group>
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24}>
-          <Form.Item style={{ margin: 0 }}>
-            <Button type="primary" htmlType="submit" style={{ float: 'right' }}>
-              <SearchOutlined />
-              Search
-            </Button>
-          </Form.Item>
-        </Col>
-      </Row>
+              <Select
+                mode="multiple"
+                showArrow
+                placeholder="Select model types"
+                style={{ width: '100%' }}
+                tagRender={TagRender}
+                options={[
+                  { label: 'include public models', value: 'public' },
+                  { label: 'include self-created models', value: 'original' },
+                  { label: 'include base scenario models', value: 'base' },
+                ]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col xs={24} sm={14}>
+            <Form.Item name="scenarios" label="Scenarios">
+              <Select
+                mode="multiple"
+                showArrow
+                placeholder="Filter scenarios"
+                style={{ width: '100%' }}
+                optionFilterProp="children"
+              >
+                <Select.OptGroup label="Flow Scenario">
+                  {flowScenarios.map((item) => (
+                    <Select.Option key={item.id} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select.OptGroup>
+                <Select.OptGroup label="Load Scenario">
+                  {loadScenarios.map((item) => (
+                    <Select.Option key={item.id} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select.OptGroup>
+                <Select.OptGroup label="Unsat Scenario">
+                  {unsatScenarios.map((item) => (
+                    <Select.Option key={item.id} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select.OptGroup>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={10}>
+            <Form.Item
+              label="Status"
+              name="status"
+              valuePropName="checked"
+              initialValue={['0', '1', '2', '3', '4']}
+              rules={[
+                {
+                  required: true,
+                  message: 'You must select at least one status',
+                },
+              ]}
+            >
+              <Checkbox.Group style={{ width: '100%' }} defaultValue={['0', '1', '2', '3', '4']}>
+                <Row>
+                  <Col span={8}>
+                    <Checkbox value="0">
+                      <Badge text="Not ready" status="warning" />
+                    </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="1">
+                      <Badge text="In queue" status="default" />
+                    </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="2">
+                      <Badge text="Running" status="processing" />
+                    </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="3">
+                      <Badge text="Complete" status="success" />
+                    </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="4">
+                      <Badge text="Error" status="error" />
+                    </Checkbox>
+                  </Col>
+                </Row>
+              </Checkbox.Group>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Form.Item style={{ margin: 0, textAlign: 'right' }}>
+              <Button type="primary" htmlType="submit">
+                <SearchOutlined />
+                Search
+              </Button>
+              <Button
+                style={{ margin: '0 8px' }}
+                onClick={() => {
+                  form.resetFields();
+                }}
+              >
+                <ClearOutlined />
+                Clear
+              </Button>
+              <a
+                onClick={() => {
+                  setExpand(!expand);
+                }}
+              >
+                <DoubleLeftOutlined rotate={90} /> Collapse
+              </a>
+            </Form.Item>
+          </Col>
+        </Row>
+      </>
+    ) : (
+      <>
+        <Row gutter={16}>
+          <Col flex="auto">
+            <Form.Item label="Name/Description" name="search_text" style={{ margin: 0 }}>
+              <Input placeholder="Search by model name or description" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={8}>
+            <Form.Item style={{ margin: 0, textAlign: 'right' }}>
+              <Button type="primary" htmlType="submit">
+                <SearchOutlined />
+                Search
+              </Button>
+              <Button
+                style={{ margin: '0 8px' }}
+                onClick={() => {
+                  form.resetFields();
+                }}
+              >
+                <ClearOutlined />
+                Clear
+              </Button>
+              <a
+                onClick={() => {
+                  setExpand(!expand);
+                }}
+              >
+                <DoubleLeftOutlined rotate={270} /> Expand
+              </a>
+            </Form.Item>
+          </Col>
+        </Row>
+      </>
+    );
+  };
+  return (
+    <Form onFinish={onSearch} hideRequiredMark form={form}>
+      {getFields()}
     </Form>
   );
 };

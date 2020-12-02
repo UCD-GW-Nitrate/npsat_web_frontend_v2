@@ -26,16 +26,17 @@ export async function searchModel(params, filter, token, search_text, ...options
   } else {
     query.status = '3';
   }
+  if (filter) {
+    query.public = filter.includes('public');
+    query.isBase = filter.includes('base');
+    query.origin = filter.includes('original');
+  }
 
   return request('/api/model_run', {
     headers: { Authorization: `Token ${token}` },
     params: {
       limit: pageSize,
       offset: pageSize * (current - 1),
-      public: filter.includes('public'),
-      isBase: filter.includes('base'),
-      origin: filter.includes('original'),
-      status: '3',
       ...query,
     },
   });

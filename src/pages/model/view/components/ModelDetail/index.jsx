@@ -168,9 +168,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
             <Descriptions.Item label="is public model">
               {info.public ? 'yes' : 'no'}
             </Descriptions.Item>
-            <Descriptions.Item label="is base model">
-              {info.is_base ? 'yes' : 'no'}
-            </Descriptions.Item>
+            <Descriptions.Item label="is BAU">{info.is_base ? 'yes' : 'no'}</Descriptions.Item>
             <Descriptions.Item label="Number of wells detected in selected region(s)">
               {info.n_wells || 'model run not yet complete'}
             </Descriptions.Item>
@@ -215,14 +213,14 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
                 disabled={info.status !== 3}
                 onClick={() => {
                   history.push({
-                    pathname: '/charts/compare',
+                    pathname: '/compare/BAU',
                     query: {
                       id: info.id,
                     },
                   });
                 }}
               >
-                Compare with base model run
+                Compare with BAU run
               </Button>
             }
           >

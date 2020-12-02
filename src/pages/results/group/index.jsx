@@ -45,14 +45,14 @@ const ResultCompare = (props) => {
       <NoFoundPage
         subTitle="You should select not more than 5 models and no less than 2 models"
         title={errorMsg}
-        redirection="/charts/group"
+        redirection="/compare/group"
         buttonText="Select models"
       />
     ) : (
       <NoFoundPage
         subTitle="One are more models you selected are inaccessible"
         title="The model you look for is private or cannot be found"
-        redirection="/charts/group"
+        redirection="/compare/group"
         buttonText="Select models"
       />
     );
