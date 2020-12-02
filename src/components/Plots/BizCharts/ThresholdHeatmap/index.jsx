@@ -197,8 +197,8 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, additionalInfo }
             ticks: processedInterval,
           },
           value: {
-            alias: 'Concentration of Nitrate as N [mg/L]'
-          }
+            alias: 'Concentration of Nitrate as N [mg/L]',
+          },
         }}
       >
         <Polygon

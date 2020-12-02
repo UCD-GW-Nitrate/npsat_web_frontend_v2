@@ -53,7 +53,9 @@ const Step5 = (props) => {
       <Button onClick={onCheck} style={{ marginBottom: 10 }} size="large">
         Compare with base model
       </Button>
-      <Button onClick={onCreate} size="large">Create another model</Button>
+      <Button onClick={onCreate} size="large">
+        Create another model
+      </Button>
     </>
   );
   if (id === null) {
