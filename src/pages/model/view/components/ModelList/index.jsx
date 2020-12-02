@@ -174,7 +174,7 @@ const SearchTable = ({
                 break;
               case 'base':
                 color = 'green';
-                title = `base model of
+                title = `BAU of
                 ${record.flow_scenario_name}, ${record.load_scenario_name}, ${record.unsat_scenario_name}`;
             }
             return (
@@ -209,7 +209,6 @@ const SearchTable = ({
   });
   const [sorter, setSorter] = useState('');
   const onSearch = (values) => {
-    console.log(values);
     setOptions({ ...options, ...values });
     actionRef.current.reload();
   };

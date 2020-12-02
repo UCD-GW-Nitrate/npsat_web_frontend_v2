@@ -21,7 +21,7 @@ const ResultCompare = (props) => {
       if (typeof model === 'string' && model.startsWith('ERROR')) {
         setInfo({ error: 'The model you look for is private or cannot be found' });
       } else if (!model.length) {
-        setInfo({ error: 'Base model is private or cannot be found' });
+        setInfo({ error: 'BAU is private or cannot be found' });
       } else {
         setInfo(model);
       }
@@ -35,7 +35,7 @@ const ResultCompare = (props) => {
       <NoFoundPage
         subTitle="The model(s) is inaccessible"
         title={info.error}
-        redirection="/charts/compare"
+        redirection="/compare/BAU"
         buttonText="Reselect model"
       />
     );

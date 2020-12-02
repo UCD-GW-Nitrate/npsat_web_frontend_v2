@@ -67,8 +67,8 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
   }, []);
   return (
     <PageHeaderWrapper
-      title="Base model comparison"
-      subTitle="Compare a custom model with the base model under same scenario"
+      title="BAU comparison"
+      subTitle="Compare a custom model with the BAU under same scenario"
       // content={
       //   <Anchor affix={false}>
       //     <Anchor.Link href="#settings" title="Model settings" />
@@ -102,7 +102,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   fixed: true,
                 },
                 {
-                  title: 'Base Model',
+                  title: 'BAU',
                   dataIndex: 'is_base',
                   render: (value) => (value ? 'Yes' : 'No'),
                 },
@@ -205,7 +205,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
               </Tabs.TabPane>
               <Tabs.TabPane
                 tab={
-                  <Tooltip title="Difference between base model and custom model">
+                  <Tooltip title="Difference between BAU and custom model">
                     Difference histogram <InfoCircleOutlined />
                   </Tooltip>
                 }

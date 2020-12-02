@@ -16,7 +16,7 @@ const Step5 = (props) => {
   };
   const onCheck = () => {
     history.push({
-      pathname: '/charts/compare',
+      pathname: '/compare/BAU',
       query: {
         id,
       },
@@ -51,7 +51,7 @@ const Step5 = (props) => {
         View model run
       </Button>
       <Button onClick={onCheck} style={{ marginBottom: 10 }} size="large">
-        Compare with base model
+        Compare with BAU
       </Button>
       <Button onClick={onCreate} size="large">
         Create another model

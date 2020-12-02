@@ -51,7 +51,7 @@ export default {
   'menu.models.createModel': 'Create Model',
   'menu.models.viewModel': 'Details & Results',
   'menu.compare': 'Compare',
-  'menu.compare.compareWithBase': 'Compare with base model',
+  'menu.compare.compareWithBase': 'Compare with BAU',
   'menu.compare.viewGroupResults': 'Compare with other models',
   'menu.team': 'Team',
 };
