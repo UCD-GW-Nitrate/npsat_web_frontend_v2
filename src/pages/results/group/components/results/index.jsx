@@ -323,7 +323,10 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
               baseData={results[base]}
               customData={results[compare]}
               percentiles={percentiles[compare]}
-              reductionYear={modelsMap[compare].reduction_year}
+              additionalInfo={{
+                reduction_start_year: modelsMap[compare].reduction_start_year,
+                reduction_end_year: modelsMap[compare].reduction_end_year,
+              }}
             />
           </Tabs.TabPane>
           <Tabs.TabPane
