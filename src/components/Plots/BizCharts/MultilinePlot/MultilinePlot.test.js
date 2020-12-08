@@ -5,16 +5,17 @@
 import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import GroupComparisonLinePlot from './index';
+import MultilinePlot from './index';
 
 configure({ adapter: new Adapter() });
 
-describe('GroupComparisonLinePlot unit test suits', () => {
-  const wrapper = shallow(<GroupComparisonLinePlot percentiles={[]} data={[]} additionalInfo={{}}/>);
-  it('#1 GroupComparisonLinePlot rendering', () => {
-    expect(wrapper.find('div').length).toBe(2);
+describe('MultilinePlot unit test suits', () => {
+  const wrapper = shallow(<MultilinePlot percentiles={[]} data={[]} additionalInfo={{}}/>);
+  it('#1 MultilinePlot rendering', () => {
+    expect(wrapper.find('div').length).toBe(3);
   });
   it('#1.1 control components rendering', () => {
+    expect(wrapper.find('Button').length).toBe(4);
     expect(wrapper.find('Select').length).toBe(1);
   });
   it('#1.2 chart rendering', () => {
