@@ -10,7 +10,7 @@ import ComparisonLinePlot from './index';
 configure({ adapter: new Adapter() });
 
 describe('ComparisonLinePlot unit test suits', () => {
-  const wrapper = shallow(<ComparisonLinePlot percentiles={[]} data={[]}/>);
+  const wrapper = shallow(<ComparisonLinePlot percentiles={[]} data={[]} />);
   it('#1 ComparisonLinePlot rendering', () => {
     expect(wrapper.find('div').length).toBe(2);
   });

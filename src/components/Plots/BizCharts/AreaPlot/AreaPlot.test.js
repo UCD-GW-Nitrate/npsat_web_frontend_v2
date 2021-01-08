@@ -10,7 +10,7 @@ import AreaPlot from './index';
 configure({ adapter: new Adapter() });
 
 describe('Area plot unit test suits', () => {
-  const wrapper = shallow(<AreaPlot percentiles={[]} data={[]}/>);
+  const wrapper = shallow(<AreaPlot percentiles={[]} data={[]} />);
   it('#1 Area plot rendering', () => {
     expect(wrapper.find('div').length).toBe(3);
   });

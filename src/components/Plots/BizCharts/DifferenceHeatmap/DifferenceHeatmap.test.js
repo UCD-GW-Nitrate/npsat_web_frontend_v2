@@ -10,7 +10,7 @@ import DifferenceHeatmap from './index';
 configure({ adapter: new Adapter() });
 
 describe('DifferenceHeatmap unit test suits', () => {
-  const wrapper = shallow(<DifferenceHeatmap percentiles={[]} data={[]} additionalInfo={{}}/>);
+  const wrapper = shallow(<DifferenceHeatmap percentiles={[]} data={[]} additionalInfo={{}} />);
   it('#1 DifferenceHeatmap rendering', () => {
     expect(wrapper.find('div').length).toBe(2);
   });

@@ -10,7 +10,7 @@ import MultilinePlot from './index';
 configure({ adapter: new Adapter() });
 
 describe('MultilinePlot unit test suits', () => {
-  const wrapper = shallow(<MultilinePlot percentiles={[]} data={[]} additionalInfo={{}}/>);
+  const wrapper = shallow(<MultilinePlot percentiles={[]} data={[]} additionalInfo={{}} />);
   it('#1 MultilinePlot rendering', () => {
     expect(wrapper.find('div').length).toBe(3);
   });
