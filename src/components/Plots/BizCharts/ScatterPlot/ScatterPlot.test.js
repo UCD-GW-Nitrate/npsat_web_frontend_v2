@@ -10,7 +10,7 @@ import ScatterPlot from './index';
 configure({ adapter: new Adapter() });
 
 describe('ScatterPlot unit test suits', () => {
-  const wrapper = shallow(<ScatterPlot percentiles={[]} data={[]} additionalInfo={{}}/>);
+  const wrapper = shallow(<ScatterPlot percentiles={[]} data={[]} additionalInfo={{}} />);
   it('#1 ScatterPlot rendering', () => {
     expect(wrapper.find('div').length).toBe(2);
   });

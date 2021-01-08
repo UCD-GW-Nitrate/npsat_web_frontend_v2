@@ -10,7 +10,9 @@ import GroupComparisonLinePlot from './index';
 configure({ adapter: new Adapter() });
 
 describe('GroupComparisonLinePlot unit test suits', () => {
-  const wrapper = shallow(<GroupComparisonLinePlot percentiles={[]} data={[]} additionalInfo={{}}/>);
+  const wrapper = shallow(
+    <GroupComparisonLinePlot percentiles={[]} data={[]} additionalInfo={{}} />,
+  );
   it('#1 GroupComparisonLinePlot rendering', () => {
     expect(wrapper.find('div').length).toBe(2);
   });

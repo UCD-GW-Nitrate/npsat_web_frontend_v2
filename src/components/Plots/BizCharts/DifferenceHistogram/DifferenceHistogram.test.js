@@ -10,7 +10,7 @@ import DifferenceHistogram from './index';
 configure({ adapter: new Adapter() });
 
 describe('DifferenceHistogram unit test suits', () => {
-  const wrapper = shallow(<DifferenceHistogram percentiles={[]} data={[]} additionalInfo={{}}/>);
+  const wrapper = shallow(<DifferenceHistogram percentiles={[]} data={[]} additionalInfo={{}} />);
   it('#1 DifferenceHistogram rendering', () => {
     expect(wrapper.find('div').length).toBe(2);
   });

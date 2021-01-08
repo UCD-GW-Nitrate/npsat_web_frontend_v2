@@ -184,7 +184,7 @@ const OverviewList = (props) => {
           </Tooltip>
           <Divider type="vertical" />
           <Tooltip
-            title={record.is_base ? 'This a BAU' : 'compare with BAU'}
+            title={record.is_base ? 'This a BAU' : 'Compare with BAU'}
             style={{ pointerEvents: 'all' }}
           >
             <Button
@@ -202,9 +202,12 @@ const OverviewList = (props) => {
             okText="Yes"
             cancelText="No"
             onConfirm={() => onClickDelete(record.id, userToken, actionRef)}
+            disabled={record.user !== userId}
           >
-            <Tooltip title="delete model">
-              <Button type="link" danger style={{ padding: 0 }}>
+            <Tooltip
+              title={record.user === userId ? 'Delete model' : 'The model belongs to another user'}
+            >
+              <Button type="link" danger style={{ padding: 0 }} disabled={record.user !== userId}>
                 Delete
               </Button>
             </Tooltip>

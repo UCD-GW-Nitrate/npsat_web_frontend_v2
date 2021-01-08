@@ -10,7 +10,7 @@ import BoxPlot from './index';
 configure({ adapter: new Adapter() });
 
 describe('Box plot unit test suits', () => {
-  const wrapper = shallow(<BoxPlot percentiles={[]} data={[]}/>);
+  const wrapper = shallow(<BoxPlot percentiles={[]} data={[]} />);
   it('#1 Box plot rendering', () => {
     expect(wrapper.find('div').length).toBe(1);
   });

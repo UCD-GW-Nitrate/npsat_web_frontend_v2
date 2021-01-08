@@ -10,7 +10,7 @@ import ThresholdHeatmap from './index';
 configure({ adapter: new Adapter() });
 
 describe('ThresholdHeatmap unit test suits', () => {
-  const wrapper = shallow(<ThresholdHeatmap percentiles={[]} data={[]} additionalInfo={{}}/>);
+  const wrapper = shallow(<ThresholdHeatmap percentiles={[]} data={[]} additionalInfo={{}} />);
   it('#1 ThresholdHeatmap rendering', () => {
     expect(wrapper.find('div').length).toBe(2);
   });
