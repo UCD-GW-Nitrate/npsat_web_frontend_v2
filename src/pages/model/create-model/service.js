@@ -6,7 +6,6 @@ export async function createModel(params, user) {
     headers: { Authorization: `Token ${user.token}` },
     data: {
       ...params,
-      user: user.id,
     },
   });
 }
