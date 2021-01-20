@@ -15,7 +15,7 @@ import CropTable from '@/pages/results/components/CropTable';
 import styles from './style.less';
 
 const getResults = (model, token, resultsSetter, PercentileSetter) => {
-  if (model && model.results) {
+  if (model && model.results && model.results.length > 0) {
     Promise.all(model.results.map((percentile) => getModelResults(percentile.id, token))).then(
       (data) => {
         const results = {};
@@ -68,7 +68,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
   return (
     <PageHeaderWrapper
       title="BAU comparison"
-      subTitle="Compare a custom model with the BAU under same scenario"
+      subTitle="Compare a custom model with the BAU under same scenario and regions"
       // content={
       //   <Anchor affix={false}>
       //     <Anchor.Link href="#settings" title="Model settings" />
@@ -113,6 +113,32 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   width: 250,
                 },
                 {
+                  title: 'Status',
+                  dataIndex: 'status',
+                  valueEnum: {
+                    0: {
+                      text: 'Not ready',
+                      status: 'Warning',
+                    },
+                    1: {
+                      text: 'In queue',
+                      status: 'Default',
+                    },
+                    2: {
+                      text: 'Running',
+                      status: 'Processing',
+                    },
+                    3: {
+                      text: 'Complete',
+                      status: 'Success',
+                    },
+                    4: {
+                      text: 'Error',
+                      status: 'Error',
+                    },
+                  },
+                },
+                {
                   title: 'Flow Scenario',
                   dataIndex: 'flow_scenario',
                   render: (v) => v.name,
@@ -130,7 +156,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                 {
                   title: 'Regions',
                   dataIndex: 'regions',
-                  render: (value) => value.map((regions) => regions.name).join(','),
+                  render: (value) => value.map((regions) => regions.name).join(', '),
                 },
                 {
                   title: 'Wells included',
@@ -200,7 +226,10 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   baseData={baseResults}
                   customData={customResults}
                   percentiles={customPercentile}
-                  reductionYear={customModel ? customModel.reduction_year : undefined}
+                  additionalInfo={{
+                    reduction_start_year: customModel.reduction_start_year,
+                    reduction_end_year: customModel.reduction_end_year,
+                  }}
                 />
               </Tabs.TabPane>
               <Tabs.TabPane
@@ -215,7 +244,10 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   baseData={baseResults}
                   customData={customResults}
                   percentiles={customPercentile}
-                  reductionYear={customModel ? customModel.reduction_year : undefined}
+                  additionalInfo={{
+                    reduction_start_year: customModel.reduction_start_year,
+                    reduction_end_year: customModel.reduction_end_year,
+                  }}
                 />
               </Tabs.TabPane>
               <Tabs.TabPane
@@ -230,7 +262,10 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   baseData={baseResults}
                   customData={customResults}
                   percentiles={customPercentile}
-                  reductionYear={customModel ? customModel.reduction_year : undefined}
+                  additionalInfo={{
+                    reduction_start_year: customModel.reduction_start_year,
+                    reduction_end_year: customModel.reduction_end_year,
+                  }}
                 />
               </Tabs.TabPane>
               <Tabs.TabPane
@@ -245,14 +280,15 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   baseData={baseResults}
                   customData={customResults}
                   percentiles={customPercentile}
-                  reductionYear={customModel ? customModel.reduction_year : undefined}
+                  additionalInfo={{
+                    reduction_start_year: customModel.reduction_start_year,
+                    reduction_end_year: customModel.reduction_end_year,
+                  }}
                 />
               </Tabs.TabPane>
             </Tabs>
           </Card>
-        ) : (
-          <Spin />
-        )}
+        ) : null}
         <Card title={<AnchorTitle anchor="crops" title="Crop Selection" />}>
           <CropTable models={customModel && baseModel ? [customModel, baseModel] : []} />
         </Card>
