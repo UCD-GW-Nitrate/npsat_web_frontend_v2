@@ -76,6 +76,11 @@ export default defineConfig({
                   path: '/model/view',
                   component: './model/view',
                 },
+                {
+                  name: 'modifyModel',
+                  icon: 'copy',
+                  path: '/model/modify',
+                }
               ],
             },
             {
