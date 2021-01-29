@@ -53,17 +53,16 @@ const View = (props) => {
     })();
   }, [id]);
   if (waiting) {
-    return (
-      <WaitingSpin />
-    );
+    return <WaitingSpin />;
   }
-  return (
-    info.error ?       <NoFoundPage
-        subTitle={`The model id with ${id} inaccessible`}
-        title="The model you look for is private or cannot be found"
-        redirection="/model/overview"
-        buttonText="Select model"
-      /> :
+  return info.error ? (
+    <NoFoundPage
+      subTitle={`The model id with ${id} inaccessible`}
+      title="The model you look for is private or cannot be found"
+      redirection="/model/overview"
+      buttonText="Select model"
+    />
+  ) : (
     <ModelDetail
       id={id}
       token={token}

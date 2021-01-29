@@ -78,27 +78,27 @@ export default defineConfig({
                     {
                       path: './',
                       redirect: './list',
-                      exact: true
+                      exact: true,
                     },
                     {
                       path: './list',
                       component: './model/view/components/ModelList',
-                      exact: true
+                      exact: true,
                     },
                     {
                       path: './detail',
                       component: './model/view/components/SecurityRouter',
                     },
                     {
-                      component: './404'
-                    }
-                  ]
+                      component: './404',
+                    },
+                  ],
                 },
                 {
                   name: 'modifyModel',
                   icon: 'copy',
                   path: '/model/modify',
-                }
+                },
               ],
             },
             {

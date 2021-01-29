@@ -4,14 +4,12 @@ import React from 'react';
 const WaitingSpin = () => (
   <div
     style={{
-      'textAlign': 'center'
+      textAlign: 'center',
     }}
   >
     <Spin />
-    <p>
-      processing...
-    </p>
+    <p>processing...</p>
   </div>
-)
+);
 
 export default WaitingSpin;
