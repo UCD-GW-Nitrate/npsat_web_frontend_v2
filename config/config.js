@@ -74,25 +74,7 @@ export default defineConfig({
                   name: 'viewModel',
                   icon: 'edit',
                   path: '/model/view',
-                  routes: [
-                    {
-                      path: './',
-                      redirect: './list',
-                      exact: true,
-                    },
-                    {
-                      path: './list',
-                      component: './model/view/components/ModelList',
-                      exact: true,
-                    },
-                    {
-                      path: './detail',
-                      component: './model/view/components/SecurityRouter',
-                    },
-                    {
-                      component: './404',
-                    },
-                  ],
+                  component: './model/view/components/SecurityRouter'
                 },
                 {
                   name: 'modifyModel',
@@ -110,13 +92,13 @@ export default defineConfig({
                   name: 'compareWithBase',
                   icon: 'barChart',
                   path: '/compare/BAU',
-                  component: './results/compare',
+                  component: './results/compare/components/SecurityRouter',
                 },
                 {
                   name: 'viewGroupResults',
                   icon: 'heatMap',
                   path: '/compare/group',
-                  component: './results/group',
+                  component: './results/group/components/SecurityRouter',
                 },
               ],
             },

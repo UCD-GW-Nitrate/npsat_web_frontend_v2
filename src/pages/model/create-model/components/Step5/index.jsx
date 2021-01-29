@@ -8,7 +8,7 @@ const Step5 = (props) => {
   const { dispatch, id } = props;
   const onView = () => {
     history.push({
-      pathname: '/model/view/detail',
+      pathname: '/model/view',
       query: {
         id,
       },
@@ -16,7 +16,7 @@ const Step5 = (props) => {
   };
   const onCheck = () => {
     history.push({
-      pathname: '/compare/BAU',
+      pathname: '/compare/BAU/detail',
       query: {
         id,
       },

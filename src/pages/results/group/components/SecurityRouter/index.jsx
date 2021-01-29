@@ -3,7 +3,8 @@ import { useLocation, connect } from 'umi';
 import NoFoundPage from '@/pages/404';
 import { getModel } from '@/pages/results/service';
 import GroupComparison from '@/pages/results/group/components/results';
-import SearchTable from './components/ModelList';
+import WaitingSpin from '@/pages/waiting';
+import SearchTable from '../ModelList';
 
 const ResultCompare = (props) => {
   const location = useLocation();
@@ -14,8 +15,10 @@ const ResultCompare = (props) => {
   const [errorMsg, setMsg] = useState('');
   const { hash } = location;
   const { ids = null } = location.query;
+  const [waiting, setWaiting] = useState(true);
   useEffect(() => {
     if (ids === null) {
+      setWaiting(false);
       return;
     }
     (async () => {
@@ -35,12 +38,19 @@ const ResultCompare = (props) => {
         }
       });
       setInfo(models);
+      setWaiting(false);
     })();
   }, [ids]);
 
   if (!ids) {
     return <SearchTable />;
-  } else if (error) {
+  }
+
+  if (waiting) {
+    return <WaitingSpin />
+  }
+
+  if (error) {
     return errorMsg ? (
       <NoFoundPage
         subTitle="You should select not more than 5 models and no less than 2 models"

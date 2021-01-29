@@ -3,8 +3,9 @@ import { useLocation, connect } from 'umi';
 import { notification } from 'antd';
 import NoFoundPage from '@/pages/404';
 import { getModelDetail, putModel } from '@/pages/model/view/service';
-import ModelDetail from '../ModelDetail';
 import WaitingSpin from '@/pages/waiting';
+import ModelDetail from '../ModelDetail';
+import SearchTable from '@/pages/model/view/components/ModelList';
 
 const View = (props) => {
   const location = useLocation();
@@ -40,6 +41,7 @@ const View = (props) => {
   };
   useEffect(() => {
     if (id === null) {
+      setWaiting(false);
       return;
     }
     (async () => {
@@ -52,6 +54,9 @@ const View = (props) => {
       setWaiting(false);
     })();
   }, [id]);
+  if (!id) {
+    return <SearchTable />;
+  }
   if (waiting) {
     return <WaitingSpin />;
   }
