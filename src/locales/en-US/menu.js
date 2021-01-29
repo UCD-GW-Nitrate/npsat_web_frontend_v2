@@ -50,6 +50,7 @@ export default {
   'menu.models.overview': 'Overview',
   'menu.models.createModel': 'Create Model',
   'menu.models.viewModel': 'Details & Results',
+  'menu.models.modifyModel': 'Copy & Modify',
   'menu.compare': 'Compare',
   'menu.compare.compareWithBase': 'Compare with BAU',
   'menu.compare.viewGroupResults': 'Compare with other models',

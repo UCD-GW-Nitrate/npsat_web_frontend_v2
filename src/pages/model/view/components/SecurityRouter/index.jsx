@@ -3,8 +3,9 @@ import { useLocation, connect } from 'umi';
 import { notification } from 'antd';
 import NoFoundPage from '@/pages/404';
 import { getModelDetail, putModel } from '@/pages/model/view/service';
-import ModelDetail from './components/ModelDetail';
-import SearchTable from './components/ModelList';
+import WaitingSpin from '@/pages/waiting';
+import ModelDetail from '../ModelDetail';
+import SearchTable from '@/pages/model/view/components/ModelList';
 
 const View = (props) => {
   const location = useLocation();
@@ -13,7 +14,8 @@ const View = (props) => {
   const { query = {}, hash } = location;
   const { id = null } = query;
   const [info, setInfo] = useState({});
-  const publishOrUnpublish = (model) => {
+  const [waiting, setWaiting] = useState(true);
+  const onClickPublish = (model) => {
     (async () => {
       const result = await putModel(
         id,
@@ -39,6 +41,7 @@ const View = (props) => {
   };
   useEffect(() => {
     if (id === null) {
+      setWaiting(false);
       return;
     }
     (async () => {
@@ -48,28 +51,29 @@ const View = (props) => {
       } else {
         setInfo(model);
       }
+      setWaiting(false);
     })();
   }, [id]);
   if (!id) {
     return <SearchTable />;
   }
-  if (info.error) {
-    return (
-      <NoFoundPage
-        subTitle={`The model id with ${id} inaccessible`}
-        title="The model you look for is private or cannot be found"
-        redirection="/model/overview"
-        buttonText="Select model"
-      />
-    );
+  if (waiting) {
+    return <WaitingSpin />;
   }
-  return (
+  return info.error ? (
+    <NoFoundPage
+      subTitle={`The model id with ${id} inaccessible`}
+      title="The model you look for is private or cannot be found"
+      redirection="/model/overview"
+      buttonText="Select model"
+    />
+  ) : (
     <ModelDetail
       id={id}
       token={token}
       hash={hash}
       info={info}
-      publish={publishOrUnpublish}
+      publish={onClickPublish}
       userId={userId}
     />
   );
