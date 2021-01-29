@@ -64,7 +64,6 @@
     "react-helmet-async": "^1.0.4",
     "react-leaflet": "^2.7.0",
     "react-redux": "^7.2.1",
-    "react-router-dom": "^5.2.0",
     "umi": "^3.2.10",
     "umi-request": "^1.0.8",
     "use-merge-value": "^1.0.1"
