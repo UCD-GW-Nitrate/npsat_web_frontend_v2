@@ -80,6 +80,7 @@ export default defineConfig({
                   name: 'modifyModel',
                   icon: 'copy',
                   path: '/model/modify',
+                  component: './model/modify',
                 },
               ],
             },

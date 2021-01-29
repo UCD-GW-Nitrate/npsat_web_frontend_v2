@@ -1,4 +1,4 @@
-import { createModel } from './service';
+import { createModel } from '@/services/model';
 
 const Model = {
   namespace: 'createModelForm',

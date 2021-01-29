@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request from 'umi-request';
 
 export const MODEL_STATUS_MACROS = {
   NOT_READY: 0,
@@ -38,6 +38,26 @@ export async function searchModel(params, filter, token, search_text, ...options
       limit: pageSize,
       offset: pageSize * (current - 1),
       ...query,
+    },
+  });
+}
+
+export async function createModel(params, user) {
+  return request('/api/model_run/', {
+    method: 'POST',
+    headers: { Authorization: `Token ${user.token}` },
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function modifyModel(params, user) {
+  return request('/api/modification/', {
+    method: 'POST',
+    headers: { Authorization: `Token ${user.token}` },
+    data: {
+      ...params,
     },
   });
 }
