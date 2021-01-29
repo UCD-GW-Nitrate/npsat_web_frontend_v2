@@ -96,7 +96,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   dataIndex: 'name',
                   render: (value, record) => (
                     <Tooltip title="Check model details">
-                      <a href={`/model/view?id=${record.id}`}>{value}</a>
+                      <a href={`/model/view/detail?id=${record.id}`}>{value}</a>
                     </Tooltip>
                   ),
                   fixed: true,

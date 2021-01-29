@@ -74,7 +74,25 @@ export default defineConfig({
                   name: 'viewModel',
                   icon: 'edit',
                   path: '/model/view',
-                  component: './model/view',
+                  routes: [
+                    {
+                      path: './',
+                      redirect: './list',
+                      exact: true
+                    },
+                    {
+                      path: './list',
+                      component: './model/view/components/ModelList',
+                      exact: true
+                    },
+                    {
+                      path: './detail',
+                      component: './model/view/components/SecurityRouter',
+                    },
+                    {
+                      component: './404'
+                    }
+                  ]
                 },
                 {
                   name: 'modifyModel',

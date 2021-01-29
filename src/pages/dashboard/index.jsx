@@ -18,7 +18,7 @@ const Dashboard = ({ user }) => {
       fixed: 'left',
       render: (value, record) => (
         <Tooltip title="Check model details">
-          <a href={`/model/view?id=${record.id}`}>{value}</a>
+          <a href={`/model/view/detail?id=${record.id}`}>{value}</a>
         </Tooltip>
       ),
     },

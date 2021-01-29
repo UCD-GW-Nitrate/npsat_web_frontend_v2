@@ -172,7 +172,7 @@ const SearchTable = ({ user }) => {
           </Tooltip>
         ) : (
           <Tooltip title="BAU cannot compare with itself, check its detail instead">
-            <a href={`/model/view?id=${record.id}`}>Details</a>
+            <a href={`/model/view/detail?id=${record.id}`}>Details</a>
           </Tooltip>
         ),
       width: 100,

@@ -195,7 +195,7 @@ const SearchTable = ({
       fixed: 'right',
       render: (_, record) => (
         <Tooltip title="View details & results">
-          <a href={`/model/view?id=${record.id}`}>Details</a>
+          <a href={`/model/view/detail?id=${record.id}`}>Details</a>
         </Tooltip>
       ),
       width: 70,

@@ -8,7 +8,7 @@ const Step5 = (props) => {
   const { dispatch, id } = props;
   const onView = () => {
     history.push({
-      pathname: '/model/view',
+      pathname: '/model/view/detail',
       query: {
         id,
       },
