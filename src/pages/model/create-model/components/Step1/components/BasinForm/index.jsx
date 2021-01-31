@@ -3,7 +3,7 @@ import { Form, Button, Spin, Select } from 'antd';
 import { getBasins } from '@/services/region';
 import { connect } from 'react-redux';
 import styles from '../../index.less';
-import Map from '../FormMap';
+import Map from '../../../../../../../components/Maps/FormMap';
 
 const { Option } = Select;
 const style = {

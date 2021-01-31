@@ -3,7 +3,7 @@ import { Form, Select, Button, Spin } from 'antd';
 import { connect } from 'react-redux';
 import { getCounties } from '@/services/region';
 import styles from '../../index.less';
-import CountyMap from '../FormMap';
+import CountyMap from '../../../../../../../components/Maps/FormMap';
 
 const { Option } = Select;
 const style = {

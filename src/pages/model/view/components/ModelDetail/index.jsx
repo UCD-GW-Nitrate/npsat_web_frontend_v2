@@ -8,7 +8,7 @@ import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
 import { ordinalSuffix } from '@/utils/utils';
 import BoxPlot from '@/components/Plots/BizCharts/BoxPlot/dynamic';
 import { MODEL_STATUS_MACROS } from '@/services/model';
-import CountyMap from './components/CountyMap';
+import CountyMap from '../../../../../components/Maps/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import { getRegionDetail, getModelResults } from '../../service';
 import styles from './index.less';

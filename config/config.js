@@ -74,7 +74,7 @@ export default defineConfig({
                   name: 'viewModel',
                   icon: 'edit',
                   path: '/model/view',
-                  component: './model/view/components/SecurityRouter'
+                  component: './model/view/components/SecurityRouter',
                 },
                 {
                   name: 'modifyModel',

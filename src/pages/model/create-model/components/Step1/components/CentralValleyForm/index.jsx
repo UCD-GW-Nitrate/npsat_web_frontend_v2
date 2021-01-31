@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Spin, Alert } from 'antd';
 import { getCentralValley } from '@/services/region';
 import styles from '../../index.less';
-import Map from '../FormMap';
+import Map from '../../../../../../../components/Maps/FormMap';
 
 const style = {
   labelCol: {

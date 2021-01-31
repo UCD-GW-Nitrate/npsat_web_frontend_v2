@@ -2,7 +2,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Anchor, Card, Spin, Tabs, Tooltip } from 'antd';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import React, { useEffect, useState } from 'react';
-import { getModelResults } from '@/pages/model/view/service';
+import { getModelResults, getRegionDetail } from '@/pages/model/view/service';
 import { ordinalSuffix } from '@/utils/utils';
 import { connect } from 'umi';
 import { InfoCircleOutlined } from '@ant-design/icons';
@@ -12,6 +12,7 @@ import ComparisonLinePlot from '@/components/Plots/BizCharts/ComparisonLinePlot/
 import DifferenceHeatmap from '@/components/Plots/BizCharts/DifferenceHeatmap/dynamic';
 import ThresholdHeatmap from '@/components/Plots/BizCharts/ThresholdHeatmap/dynamic';
 import CropTable from '@/pages/results/components/CropTable';
+import CountyMap from '@/components/Maps/CountyMap';
 import styles from './style.less';
 
 const getResults = (model, token, resultsSetter, PercentileSetter) => {
@@ -45,12 +46,26 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
   const [customResults, setCustomResults] = useState([]);
   const [customPercentile, setCustomPercentile] = useState([]);
   const [ready, setReady] = useState(false);
+  const [regions, setRegions] = useState([]);
   useEffect(() => {
     if (
       getResults(baseModel, token, setBaseResults, setBasePercentile) &&
       getResults(customModel, token, setCustomResults, setCustomPercentile)
     ) {
       setReady(true);
+    }
+
+    if (baseModel.regions) {
+      Promise.all(baseModel.regions.map((region) => getRegionDetail({ id: region.id }))).then(
+        (results) => {
+          const formattedRegions = results.map((region) => {
+            const result = region;
+            result.geometry.properties.name = region.name;
+            return result;
+          });
+          setRegions(formattedRegions);
+        },
+      );
     }
   }, [baseModel, customModel]);
   useEffect(() => {
@@ -289,8 +304,16 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
             </Tabs>
           </Card>
         ) : null}
-        <Card title={<AnchorTitle anchor="crops" title="Crop Selection" />}>
+        <Card
+          title={<AnchorTitle anchor="crops" title="Crop Selection" />}
+          style={{
+            marginBottom: 32,
+          }}
+        >
           <CropTable models={customModel && baseModel ? [customModel, baseModel] : []} />
+        </Card>
+        <Card title={<AnchorTitle title="Region included" anchor="region-map" />} bordered={false}>
+          {regions ? <CountyMap data={regions.map((region) => region.geometry)} /> : null}
         </Card>
       </div>
     </PageHeaderWrapper>

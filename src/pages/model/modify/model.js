@@ -1,5 +1,3 @@
-
-
 const Model = {
   namespace: 'CopyAndModifyModelForm',
   state: {
@@ -9,8 +7,7 @@ const Model = {
       id: null,
     },
   },
-  effects: {
-  },
+  effects: {},
   reducers: {
     saveCreateModelResult(state, { payload }) {
       return { ...state, results: { id: payload } };

@@ -47,7 +47,7 @@ const ResultCompare = (props) => {
   }
 
   if (waiting) {
-    return <WaitingSpin />
+    return <WaitingSpin />;
   }
 
   if (error) {
