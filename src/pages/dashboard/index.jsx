@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { connect } from 'umi';
+import { connect } from 'react-redux';
 import { GridContent, RouteContext } from '@ant-design/pro-layout';
 import { Row, Col, Tag, Tooltip, Card, Statistic, Divider } from 'antd';
 import { getFeed } from '@/pages/dashboard/service';
@@ -7,6 +7,13 @@ import RecentModelTable from '@/pages/dashboard/components/RecentModelTable';
 import ScatterPlot from '@/components/Plots/BizCharts/ScatterPlot/dynamic';
 import WaterWave from '@/components/Plots/BizCharts/WaterWave/dynamic';
 
+/**
+ * It is the major UI components in /dashboard page.
+ * It should contain: 1) a scatter plot, 2) a liquid plot, 3) 2 model tables, 4) some stats
+ * @param user
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Dashboard = ({ user }) => {
   const [data, setData] = useState({});
   const { isMobile } = useContext(RouteContext);
