@@ -16,7 +16,7 @@ const Step5 = (props) => {
   };
   const onCheck = () => {
     history.push({
-      pathname: '/compare/BAU/detail',
+      pathname: '/compare/BAU',
       query: {
         id,
       },

@@ -213,7 +213,7 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
                 disabled={info.status !== 3}
                 onClick={() => {
                   history.push({
-                    pathname: '/compare/BAU/detail',
+                    pathname: '/compare/BAU',
                     query: {
                       id: info.id,
                     },
