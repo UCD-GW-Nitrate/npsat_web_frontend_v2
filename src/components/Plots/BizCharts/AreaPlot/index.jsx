@@ -8,6 +8,14 @@ import { useForm } from 'antd/es/form/Form';
 import styles from './index.less';
 
 // usage: pass plot data, percentile list, and additional info
+/**
+ * Area plot
+ * @param percentiles: an array of percentiles
+ * @param data: an array of data
+ * @param additionalInfo: an object containing any additional info
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const AreaPlot = ({ percentiles, data, additionalInfo }) => {
   const [form] = useForm();
   const [values, setValues] = useState({

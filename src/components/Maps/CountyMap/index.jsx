@@ -3,6 +3,12 @@ import { Map, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './index.less';
 
+/**
+ * a map component that used for regions with tooltips
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const CountyMap = (props) => {
   const { data } = props;
   return (
