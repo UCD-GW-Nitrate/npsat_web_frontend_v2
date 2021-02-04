@@ -10,7 +10,9 @@ import Dashboard from './index.jsx';
 configure({ adapter: new Adapter() });
 
 describe('Dashboard components RecentModelTable test', () => {
-  const wrapper = shallow(<Dashboard.WrappedComponent user={{ currentUser : { token: "123456"}} }/>);
+  const wrapper = shallow(
+    <Dashboard.WrappedComponent user={{ currentUser: { token: '123456' } }} />,
+  );
   it('#1 Wrapper UI skeleton ', () => {
     expect(wrapper.find('GridContent').length).toBe(1);
   });

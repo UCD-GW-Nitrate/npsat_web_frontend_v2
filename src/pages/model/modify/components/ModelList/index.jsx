@@ -1,5 +1,18 @@
 import { ClearOutlined, DoubleLeftOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Row, Col, Tag, Select, Form, Input, Tooltip, Card, Divider, Checkbox, Badge } from 'antd';
+import {
+  Button,
+  Row,
+  Col,
+  Tag,
+  Select,
+  Form,
+  Input,
+  Tooltip,
+  Card,
+  Divider,
+  Checkbox,
+  Badge,
+} from 'antd';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
@@ -143,9 +156,9 @@ const SearchTable = ({ user }) => {
       // warning: there is something wrong with the library of this render function
       // this is only a workaround after examine the internal structure
       // please be aware when the lib is upgraded
-      render: value => value.props.title.map(region => region.name).join(", "),
+      render: (value) => value.props.title.map((region) => region.name).join(', '),
       ellipsis: true,
-      width: 300
+      width: 300,
     },
     {
       title: 'Date Created',
@@ -198,18 +211,17 @@ const SearchTable = ({ user }) => {
       dataIndex: 'option',
       valueType: 'option',
       fixed: 'right',
-      render: (_, record) =>
-        (
-          <>
+      render: (_, record) => (
+        <>
           <Tooltip title="View details & results">
             <a href={`/model/view?id=${record.id}`}>Details</a>
           </Tooltip>
-            <Divider type="vertical" />
-            <Tooltip title="Create another model with settings pre-filled">
-              <a href={`/model/modify?id=${record.id}`}>Copy & Modify</a>
-            </Tooltip>
-            </>
-        ),
+          <Divider type="vertical" />
+          <Tooltip title="Create another model with settings pre-filled">
+            <a href={`/model/modify?id=${record.id}`}>Copy & Modify</a>
+          </Tooltip>
+        </>
+      ),
       width: 180,
     },
   ];
@@ -225,9 +237,7 @@ const SearchTable = ({ user }) => {
     actionRef.current.reload();
   };
   return (
-    <PageHeaderWrapper
-      subTitle={subTitle}
-    >
+    <PageHeaderWrapper subTitle={subTitle}>
       <Card
         style={{
           marginBottom: 16,
