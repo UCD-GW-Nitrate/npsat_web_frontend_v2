@@ -8,32 +8,26 @@ const { Step } = Steps;
 
 const getCurrentStepAndComponent = (current) => {
   switch (current) {
-    case 'Modify Settings':
+    case 'Modify Crops':
     case 1:
       return {
         step: 1,
         component: null,
       };
 
-    case 'Modify Crops':
+    case 'Modify Info':
       return {
         step: 2,
         component: null,
       };
 
-    case 'Modify Info':
+    case 'Results':
       return {
         step: 3,
         component: null,
       };
 
-    case 'Results':
-      return {
-        step: 4,
-        component: null,
-      };
-
-    case 'Select Model':
+    case 'Modify Settings':
     default:
       return {
         step: 0,
@@ -43,11 +37,10 @@ const getCurrentStepAndComponent = (current) => {
 };
 
 const mapStepToCurrent = {
-  0: 'Select Model',
-  1: 'Modify Settings',
-  2: 'Modify Crops',
-  3: 'Modify Info',
-  4: 'Results',
+  0: 'Modify Settings',
+  1: 'Modify Crops',
+  2: 'Modify Info',
+  3: 'Results',
 };
 
 const StepForm = ({ dispatch, current }) => {
@@ -71,16 +64,15 @@ const StepForm = ({ dispatch, current }) => {
             onChange={(step) => {
               if (dispatch) {
                 dispatch({
-                  type: 'createModelForm/saveCurrentStep',
+                  type: 'CopyAndModifyModelForm/saveCurrentStep',
                   payload: mapStepToCurrent[step],
                 });
               }
             }}
           >
-            <Step title="Select Model" disabled={currentStep >= 4} />
-            <Step title="Modify Settings" disabled={currentStep < 1 || currentStep >= 4} />
-            <Step title="Modify Crops" disabled={currentStep < 2 || currentStep >= 4} />
-            <Step title="Modify Info" disabled={currentStep < 3 || currentStep >= 4} />
+            <Step title="Modify Settings" disabled={currentStep >= 3} />
+            <Step title="Modify Crops" disabled={currentStep < 1 || currentStep >= 3} />
+            <Step title="Modify Info" disabled={currentStep < 2 || currentStep >= 3} />
             <Step title="Results" disabled />
           </Steps>
           {stepComponent}
