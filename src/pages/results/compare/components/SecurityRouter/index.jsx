@@ -24,7 +24,7 @@ const ResultCompare = (props) => {
       if (typeof model === 'string' && model.startsWith('ERROR')) {
         setInfo({ error: 'The model you look for is private or cannot be found' });
       } else if (!model.length) {
-        setInfo({ error: 'BAU is private or cannot be found' });
+        setInfo({ error: 'Select another model to be compared with BAU model' });
       } else {
         setInfo(model);
       }

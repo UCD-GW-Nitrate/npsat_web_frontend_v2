@@ -5,38 +5,24 @@ import classNames from 'classnames';
 import { history } from 'umi';
 import MultilinePlot from '@/components/Plots/BizCharts/MultilinePlot/dynamic';
 import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
-import { ordinalSuffix } from '@/utils/utils';
 import BoxPlot from '@/components/Plots/BizCharts/BoxPlot/dynamic';
 import { MODEL_STATUS_MACROS } from '@/services/model';
+import { useModelRegions, useModelResults } from '@/utils/hooks';
 import CountyMap from '../../../../../components/Maps/CountyMap';
 import TableWrapper from './components/TableWrapper';
-import { getRegionDetail, getModelResults } from '../../service';
 import styles from './index.less';
 import AnchorTitle from '../../../../../components/AnchorTitle';
 
 const { Step } = Steps;
 
 const ModelDetail = ({ token, userId, hash, info, publish }) => {
-  const [regions, setRegions] = useState([]);
+  const regions = useModelRegions(info.regions);
+  const [plotData, percentiles] = useModelResults(info.results, token);
   const [crop, setCrop] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [plotData, setData] = useState({});
-  const [percentiles, setPercentiles] = useState([]);
   const [progress, setProgress] = useState({});
   const { isMobile } = useContext(RouteContext);
   useEffect(() => {
-    if (info.regions) {
-      Promise.all(info.regions.map((region) => getRegionDetail({ id: region.id }))).then(
-        (results) => {
-          const formattedRegions = results.map((region) => {
-            const result = region;
-            result.geometry.properties.name = region.name;
-            return result;
-          });
-          setRegions(formattedRegions);
-        },
-      );
-    }
     if (info.modifications) {
       const crops = info.modifications.map((item) => ({
         ...item,
@@ -44,25 +30,6 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
       }));
       setCrop(crops);
       setLoading(false);
-    }
-    if (info.results) {
-      Promise.all(info.results.map((percentile) => getModelResults(percentile.id, token))).then(
-        (data) => {
-          const results = {};
-          data.forEach((percentile) => {
-            results[percentile.percentile] = percentile.values.map((value, index) =>
-              // start year is always 1945
-              ({
-                year: 1945 + index,
-                value,
-                percentile: `${ordinalSuffix(percentile.percentile)} percentile`,
-              }),
-            );
-          });
-          setPercentiles(data.map((percentile) => percentile.percentile));
-          setData(results);
-        },
-      );
     }
   }, [info]);
   // scroll into view if the requested url contains an anchor only when first loading
@@ -208,20 +175,32 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
             }}
             bordered={false}
             extra={
-              <Button
-                type="link"
-                disabled={info.status !== 3}
-                onClick={() => {
-                  history.push({
-                    pathname: '/compare/BAU',
-                    query: {
-                      id: info.id,
-                    },
-                  });
+              <Tooltip
+                title={() => {
+                  if (info.status !== 3) {
+                    return "Model hasn't finished running";
+                  } else if (info.is_base) {
+                    return 'Select another model to be compared with BAU';
+                  } else {
+                    return 'Compare this model with BAU results';
+                  }
                 }}
               >
-                Compare with BAU run
-              </Button>
+                <Button
+                  type="link"
+                  disabled={info.status !== 3 || info.is_base}
+                  onClick={() => {
+                    history.push({
+                      pathname: '/compare/BAU',
+                      query: {
+                        id: info.id,
+                      },
+                    });
+                  }}
+                >
+                  Compare with BAU run
+                </Button>
+              </Tooltip>
             }
           >
             <Tabs tabPosition="top" centered>

@@ -1,9 +1,8 @@
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Anchor, Card, Spin, Tabs, Tooltip } from 'antd';
+import { Card, Tabs, Tooltip } from 'antd';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import React, { useEffect, useState } from 'react';
-import { getModelResults, getRegionDetail } from '@/pages/model/view/service';
-import { ordinalSuffix } from '@/utils/utils';
+import { isObjectEmpty } from '@/utils/utils';
 import { connect } from 'umi';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import AnchorTitle from '@/components/AnchorTitle';
@@ -13,61 +12,22 @@ import DifferenceHeatmap from '@/components/Plots/BizCharts/DifferenceHeatmap/dy
 import ThresholdHeatmap from '@/components/Plots/BizCharts/ThresholdHeatmap/dynamic';
 import CropTable from '@/pages/results/components/CropTable';
 import CountyMap from '@/components/Maps/CountyMap';
+import { useModelRegions, useModelResults } from '@/utils/hooks';
 import styles from './style.less';
-
-const getResults = (model, token, resultsSetter, PercentileSetter) => {
-  if (model && model.results && model.results.length > 0) {
-    Promise.all(model.results.map((percentile) => getModelResults(percentile.id, token))).then(
-      (data) => {
-        const results = {};
-        data.forEach((percentile) => {
-          results[percentile.percentile] = percentile.values.map((value, index) =>
-            // start year is always 1945
-            ({
-              year: 1945 + index,
-              value,
-              percentile: `${ordinalSuffix(percentile.percentile)} percentile`,
-            }),
-          );
-        });
-        PercentileSetter(data.map((percentile) => percentile.percentile));
-        resultsSetter(results);
-      },
-    );
-    return true;
-  }
-  return false;
-};
 
 const BaseComparison = ({ customModel, baseModel, user, hash }) => {
   const { token } = user;
-  const [baseResults, setBaseResults] = useState([]);
-  const [basePercentile, setBasePercentile] = useState([]);
-  const [customResults, setCustomResults] = useState([]);
-  const [customPercentile, setCustomPercentile] = useState([]);
+  const [baseResults, basePercentile] = useModelResults(baseModel.results, token);
+  const [customResults, customPercentile] = useModelResults(customModel.results, token);
   const [ready, setReady] = useState(false);
-  const [regions, setRegions] = useState([]);
+  const regions = useModelRegions(baseModel.regions);
   useEffect(() => {
     if (
-      getResults(baseModel, token, setBaseResults, setBasePercentile) &&
-      getResults(customModel, token, setCustomResults, setCustomPercentile)
+      !isObjectEmpty(baseResults) && !isObjectEmpty(customResults)
     ) {
       setReady(true);
     }
-
-    if (baseModel.regions) {
-      Promise.all(baseModel.regions.map((region) => getRegionDetail({ id: region.id }))).then(
-        (results) => {
-          const formattedRegions = results.map((region) => {
-            const result = region;
-            result.geometry.properties.name = region.name;
-            return result;
-          });
-          setRegions(formattedRegions);
-        },
-      );
-    }
-  }, [baseModel, customModel]);
+  }, [baseResults, customResults]);
   useEffect(() => {
     if (!hash || hash[0] !== '#') {
       return;
