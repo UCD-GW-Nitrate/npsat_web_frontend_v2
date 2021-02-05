@@ -2,7 +2,7 @@ import { Chart, Tooltip, Annotation, Legend, Axis, Area, Slider, Line } from 'bi
 import { Button, Select, Divider, Form, Row, Col, Checkbox, Popover } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
-import { ordinalSuffix } from '@/utils/utils';
+import { isObjectEmpty, ordinalSuffix } from '@/utils/utils';
 import 'antd/es/style/themes/default.less';
 import { useForm } from 'antd/es/form/Form';
 import styles from './index.less';
@@ -26,7 +26,7 @@ const AreaPlot = ({ percentiles, data, additionalInfo }) => {
   });
   const [areas, setPlot] = useState([]);
   useEffect(() => {
-    if (!(Object.keys(data).length === 0 || values.upperBound === 0 || values.lowerBound === 0)) {
+    if (!(isObjectEmpty(data) || values.upperBound === 0 || values.lowerBound === 0)) {
       if (values.median !== 0) {
         // split low, med, up
         const med = data[values.median];

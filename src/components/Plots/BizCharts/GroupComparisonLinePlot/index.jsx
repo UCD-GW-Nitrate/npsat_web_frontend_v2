@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Chart, Tooltip, Legend, Slider, Axis, Line } from 'bizcharts';
 import { Select } from 'antd';
-import { ordinalSuffix } from '@/utils/utils';
+import { isObjectEmpty, ordinalSuffix } from '@/utils/utils';
 import styles from './index.less';
 
 const GroupComparisonLinePlot = ({ results, percentiles, models }) => {
@@ -41,7 +41,7 @@ const GroupComparisonLinePlot = ({ results, percentiles, models }) => {
       <Chart
         padding={[10, 20, 50, 80]}
         height={500}
-        data={Object.keys(plotData).length === 0 && selected ? [] : plotData[selected]}
+        data={isObjectEmpty(plotData) && selected ? [] : plotData[selected]}
         autoFit
         scale={{
           value: { alias: 'Concentration of Nitrate as N [mg/L]', nice: true },

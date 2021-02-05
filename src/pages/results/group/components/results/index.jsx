@@ -3,7 +3,7 @@ import { Anchor, Card, Select, Tabs, Tooltip, Space, Button, Empty, Spin } from 
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import React, { useEffect, useState } from 'react';
 import { getModelResults } from '@/pages/model/view/service';
-import { ordinalSuffix } from '@/utils/utils';
+import { isObjectEmpty, ordinalSuffix } from '@/utils/utils';
 import { connect } from 'umi';
 import { InfoCircleOutlined, SwapOutlined, SelectOutlined } from '@ant-design/icons';
 import AnchorTitle from '@/components/AnchorTitle';
@@ -442,7 +442,7 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
         </Space>
       }
     >
-      {chosenModels.length > 0 && Object.keys(results).length >= 0 ? (
+      {chosenModels.length > 0 && !isObjectEmpty(results) ? (
         <Tabs tabPosition="top" centered>
           <Tabs.TabPane tab="Comparison Line Plot" key="GCLP">
             <GroupComparisonLinePlot
