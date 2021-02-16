@@ -61,3 +61,13 @@ export async function modifyModel(params, user) {
     },
   });
 }
+
+export async function getModelsStatus(params, user) {
+  return request('/api/model_run__status/', {
+    method: 'GET',
+    headers: { Authorization: `Token ${ user.token }` },
+    params: {
+      ...params,
+    },
+  });
+}

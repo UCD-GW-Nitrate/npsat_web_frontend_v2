@@ -8,7 +8,7 @@ import StepForm from '@/pages/model/modify/components/ModifyForm';
 
 const ModifyRouter = (props) => {
   const location = useLocation();
-  const { user } = props;
+  const { dispatch, user } = props;
   const { token } = user;
   const [info, setInfo] = useState({});
   const { id = null } = location.query;
@@ -24,6 +24,14 @@ const ModifyRouter = (props) => {
         setInfo({ error: 'The model you look for is private or cannot be found' });
       } else {
         setInfo(model);
+        if (dispatch) {
+          dispatch({
+            type: "CopyAndModifyModelForm/saveTargetModelInfo",
+            payload: {
+              ...model
+            }
+          })
+        }
       }
       setWaiting(false);
     })();

@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
-import { Card, Descriptions, Steps, Button, Tabs, Tooltip } from 'antd';
+import { Card, Descriptions, Steps, Button, Tabs, Tooltip, notification } from 'antd';
 import classNames from 'classnames';
 import { history } from 'umi';
 import MultilinePlot from '@/components/Plots/BizCharts/MultilinePlot/dynamic';
 import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
 import BoxPlot from '@/components/Plots/BizCharts/BoxPlot/dynamic';
-import { MODEL_STATUS_MACROS } from '@/services/model';
+import { getModelsStatus, MODEL_STATUS_MACROS, modelStatusMacroString } from '@/services/model';
 import { useModelRegions, useModelResults } from '@/utils/hooks';
 import CountyMap from '../../../../../components/Maps/CountyMap';
 import TableWrapper from './components/TableWrapper';
@@ -15,7 +15,8 @@ import AnchorTitle from '../../../../../components/AnchorTitle';
 
 const { Step } = Steps;
 
-const ModelDetail = ({ token, userId, hash, info, publish }) => {
+const ModelDetail = ({ token, user, hash, info, publish }) => {
+  const { user_id: userId } = user;
   const regions = useModelRegions(info.regions);
   const [plotData, percentiles] = useModelResults(info.results, token);
   const [crop, setCrop] = useState([]);
@@ -43,6 +44,40 @@ const ModelDetail = ({ token, userId, hash, info, publish }) => {
       card.scrollIntoView({
         behavior: 'smooth',
       });
+    }
+  }, []);
+  // periodic fetch model status to see if a refresh is required
+  useEffect(() => {
+    let interval;
+    if (info.status && (info.status !== MODEL_STATUS_MACROS.COMPLETED
+      && info.status !== MODEL_STATUS_MACROS.ERROR)) {
+      interval = setInterval(() => {
+        getModelsStatus({ ids: info.id }, user).then(
+          ({ results }) => {
+            // there is a status update
+            if (results[0].status !== info.status) {
+              // prompt user to refresh the screen and clear the interval
+              notification.info({
+                message: "Model Status Update",
+                description: "Currently viewing model status has been updated. Click 'Refresh' to" +
+                  " see the new status and results.",
+                btn: <Button onClick={() => window.location.reload()} type="primary" size="small">
+                  Refresh
+                </Button>,
+                duration: 0
+              });
+              clearInterval(interval);
+            }
+            // do nothing otherwise, keep fetching
+          }
+        )
+      }, 5000);
+    }
+    return () => {
+      // clear interval if it hasn't been or not initialized
+      if (interval) {
+        clearInterval(interval);
+      }
     }
   }, []);
   const desc1 = (

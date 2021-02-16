@@ -4,13 +4,13 @@ import { notification } from 'antd';
 import NoFoundPage from '@/pages/404';
 import { getModelDetail, putModel } from '@/pages/model/view/service';
 import WaitingSpin from '@/pages/waiting';
-import ModelDetail from '../ModelDetail';
 import SearchTable from '@/pages/model/view/components/ModelList';
+import ModelDetail from '../ModelDetail';
 
 const View = (props) => {
   const location = useLocation();
   const { user } = props;
-  const { token, user_id: userId } = user;
+  const { token } = user;
   const { query = {}, hash } = location;
   const { id = null } = query;
   const [info, setInfo] = useState({});
@@ -74,7 +74,7 @@ const View = (props) => {
       hash={hash}
       info={info}
       publish={onClickPublish}
-      userId={userId}
+      user={user}
     />
   );
 };
