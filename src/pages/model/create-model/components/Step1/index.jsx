@@ -43,7 +43,7 @@ const Step1 = (props) => {
 
       dispatch({
         type: 'createModelForm/saveCurrentStep',
-        payload: 'Select Scenarios',
+        payload: 'Select Settings',
       });
     }
   };

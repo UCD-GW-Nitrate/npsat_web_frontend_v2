@@ -13,12 +13,11 @@ import {
   Checkbox,
   Badge,
 } from 'antd';
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import { searchModel } from '@/services/model';
-import { getScenarios, SCENARIO_MACROS } from '@/services/scenario';
 import { useScenarioGroups } from '@/hooks/scenario';
 
 const TagRender = (props) => {

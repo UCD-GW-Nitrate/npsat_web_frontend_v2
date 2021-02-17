@@ -1,4 +1,4 @@
-import { Button, Form, Divider, Input, DatePicker } from 'antd';
+import { Button, Form, Divider, Input } from 'antd';
 import React from 'react';
 import { connect } from 'react-redux';
 import styles from './index.less';
