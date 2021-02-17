@@ -49,28 +49,32 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
   // periodic fetch model status to see if a refresh is required
   useEffect(() => {
     let interval;
-    if (info.status && (info.status !== MODEL_STATUS_MACROS.COMPLETED
-      && info.status !== MODEL_STATUS_MACROS.ERROR)) {
+    if (
+      info.status &&
+      info.status !== MODEL_STATUS_MACROS.COMPLETED &&
+      info.status !== MODEL_STATUS_MACROS.ERROR
+    ) {
       interval = setInterval(() => {
-        getModelsStatus({ ids: info.id }, user).then(
-          ({ results }) => {
-            // there is a status update
-            if (results[0].status !== info.status) {
-              // prompt user to refresh the screen and clear the interval
-              notification.info({
-                message: "Model Status Update",
-                description: "Currently viewing model status has been updated. Click 'Refresh' to" +
-                  " see the new status and results.",
-                btn: <Button onClick={() => window.location.reload()} type="primary" size="small">
+        getModelsStatus({ ids: info.id }, user).then(({ results }) => {
+          // there is a status update
+          if (results[0].status !== info.status) {
+            // prompt user to refresh the screen and clear the interval
+            notification.info({
+              message: 'Model Status Update',
+              description:
+                "Currently viewing model status has been updated. Click 'Refresh' to" +
+                ' see the new status and results.',
+              btn: (
+                <Button onClick={() => window.location.reload()} type="primary" size="small">
                   Refresh
-                </Button>,
-                duration: 0
-              });
-              clearInterval(interval);
-            }
-            // do nothing otherwise, keep fetching
+                </Button>
+              ),
+              duration: 0,
+            });
+            clearInterval(interval);
           }
-        )
+          // do nothing otherwise, keep fetching
+        });
       }, 5000);
     }
     return () => {
@@ -78,7 +82,7 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
       if (interval) {
         clearInterval(interval);
       }
-    }
+    };
   }, []);
   const desc1 = (
     <div className={classNames(styles.textSecondary, styles.stepDescription)}>

@@ -58,9 +58,7 @@ const DifferenceHistogram = ({ baseData, customData, percentiles, additionalInfo
       <Chart
         padding={[10, 20, 50, 80]}
         height={500}
-        data={
-          isObjectEmpty(plotData) ? [] : selected.map((index) => plotData[index]).flat(1)
-        }
+        data={isObjectEmpty(plotData) ? [] : selected.map((index) => plotData[index]).flat(1)}
         autoFit
         scale={{
           value: { alias: 'Concentration of Nitrate as N [mg/L]', nice: true },

@@ -23,11 +23,10 @@ export const useModelRegions = (regionArray) => {
         },
       );
     }
-
   }, [regionArray]);
 
   return regions;
-}
+};
 
 /**
  * react hook that returns the model results in an array [plotData, percentiles]
@@ -62,4 +61,4 @@ export const useModelResults = (resultsArray, token) => {
   }, [resultsArray, token]);
 
   return [plotData, percentiles];
-}
+};

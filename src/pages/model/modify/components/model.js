@@ -6,7 +6,7 @@ const Model = {
     results: {
       id: null,
     },
-    model: {}
+    model: {},
   },
   effects: {},
   reducers: {
@@ -23,7 +23,7 @@ const Model = {
     },
 
     saveTargetModelInfo(state, { payload }) {
-      return { ...state, model: { ...payload} }
+      return { ...state, model: { ...payload } };
     },
 
     clearStoredStepInfo(state) {
