@@ -7,6 +7,7 @@ import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import { searchModel } from '@/services/model';
 import { getScenarios, SCENARIO_MACROS } from '@/services/scenario';
+import { useScenarioGroups } from '@/hooks/scenario';
 
 const TagRender = (props) => {
   const { value, closable, onClose } = props;
@@ -259,20 +260,7 @@ const SearchTable = ({ user }) => {
 const SearchForm = ({ onSearch }) => {
   const [form] = Form.useForm();
   const [expand, setExpand] = useState(false);
-  const [flowScenarios, setFlowScenarios] = useState([]);
-  const [loadScenarios, setLoadScenarios] = useState([]);
-  const [unsatScenarios, setUnsatScenarios] = useState([]);
-  useEffect(() => {
-    getScenarios(SCENARIO_MACROS.TYPE_FLOW).then(({ results }) => {
-      setFlowScenarios(results);
-    });
-    getScenarios(SCENARIO_MACROS.TYPE_LOAD).then(({ results }) => {
-      setLoadScenarios(results);
-    });
-    getScenarios(SCENARIO_MACROS.TYPE_UNSAT).then(({ results }) => {
-      setUnsatScenarios(results);
-    });
-  }, []);
+  const { flowScenarios, loadScenarios, unsatScenarios } = useScenarioGroups();
   const getFields = () => {
     return expand ? (
       <>

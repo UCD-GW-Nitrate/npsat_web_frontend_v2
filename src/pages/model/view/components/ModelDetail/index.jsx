@@ -7,11 +7,11 @@ import MultilinePlot from '@/components/Plots/BizCharts/MultilinePlot/dynamic';
 import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
 import BoxPlot from '@/components/Plots/BizCharts/BoxPlot/dynamic';
 import { getModelsStatus, MODEL_STATUS_MACROS } from '@/services/model';
-import { useModelRegions, useModelResults } from '@/utils/hooks';
 import CountyMap from '../../../../../components/Maps/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import styles from './index.less';
 import AnchorTitle from '../../../../../components/AnchorTitle';
+import { useModelRegions, useModelResults } from '@/hooks/model';
 
 const { Step } = Steps;
 
