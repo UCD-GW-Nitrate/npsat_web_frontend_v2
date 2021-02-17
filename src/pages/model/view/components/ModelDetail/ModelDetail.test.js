@@ -10,7 +10,7 @@ import ModelDetail from './index.jsx';
 configure({ adapter: new Adapter() });
 
 describe('Model detail page unit test suits', () => {
-  const wrapper = shallow(<ModelDetail info={{}} />);
+  const wrapper = shallow(<ModelDetail info={{}} user={{ user_id: 0 }} />);
   it('#1 detail card rendering', () => {
     expect(wrapper.find('Card').length).toBe(4);
   });

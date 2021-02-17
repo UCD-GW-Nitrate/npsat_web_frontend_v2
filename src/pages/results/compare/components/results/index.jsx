@@ -13,8 +13,8 @@ import ThresholdHeatmap from '@/components/Plots/BizCharts/ThresholdHeatmap/dyna
 import CropTable from '@/pages/results/components/CropTable';
 import CountyMap from '@/components/Maps/CountyMap';
 import { useModelRegions, useModelResults } from '@/utils/hooks';
-import styles from './style.less';
 import { getModelsStatus, MODEL_STATUS_MACROS } from '@/services/model';
+import styles from './style.less';
 
 const BaseComparison = ({ customModel, baseModel, user, hash }) => {
   const { token } = user;
