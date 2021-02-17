@@ -1,7 +1,7 @@
 import { Chart, Line, Tooltip, Annotation, Slider, Legend, Axis } from 'bizcharts';
 import { Button, Select, Divider } from 'antd';
 import React, { useState } from 'react';
-import { ordinalSuffix } from '@/utils/utils';
+import { ordinalSuffix, isObjectEmpty } from '@/utils/utils';
 import styles from './index.less';
 
 // usage: pass plot data, percentile list, and additional info
@@ -49,7 +49,7 @@ const MultilinePlot = ({ percentiles, data, additionalInfo }) => {
         padding={[10, 20, 50, 60]}
         autoFit
         height={500}
-        data={Object.keys(data).length === 0 ? [] : shownLines.map((index) => data[index]).flat(1)}
+        data={isObjectEmpty(data) ? [] : shownLines.map((index) => data[index]).flat(1)}
         scale={{
           value: { min: 0, alias: 'Concentration of Nitrate as N [mg/L]', nice: true },
           year: { tickCount: 10 },

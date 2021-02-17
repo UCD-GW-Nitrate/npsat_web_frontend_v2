@@ -1,13 +1,14 @@
 import { Chart, Tooltip, Annotation, Axis, Slider, Schema } from 'bizcharts';
 import React, { useEffect, useState } from 'react';
 import 'antd/es/style/themes/default.less';
+import { isObjectEmpty } from '@/utils/utils';
 import styles from './index.less';
 
 // usage: pass plot data, percentile list, and additional info
 const BoxPlot = ({ percentiles, data, additionalInfo }) => {
   const [range, setPlot] = useState([]);
   useEffect(() => {
-    if (Object.keys(data).length !== 0) {
+    if (!isObjectEmpty(data)) {
       const plotData = [];
       const year = data[percentiles[0]].length;
       for (let i = 0; i < year; i += 1) {

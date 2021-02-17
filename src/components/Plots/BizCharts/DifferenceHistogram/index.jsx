@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Chart, Tooltip, Interval, Legend, Slider, Axis, Annotation } from 'bizcharts';
 import { Select, notification } from 'antd';
-import { ordinalSuffix } from '@/utils/utils';
+import { isObjectEmpty, ordinalSuffix } from '@/utils/utils';
 import styles from './index.less';
 
 const DifferenceHistogram = ({ baseData, customData, percentiles, additionalInfo }) => {
@@ -58,9 +58,7 @@ const DifferenceHistogram = ({ baseData, customData, percentiles, additionalInfo
       <Chart
         padding={[10, 20, 50, 80]}
         height={500}
-        data={
-          Object.keys(plotData).length === 0 ? [] : selected.map((index) => plotData[index]).flat(1)
-        }
+        data={isObjectEmpty(plotData) ? [] : selected.map((index) => plotData[index]).flat(1)}
         autoFit
         scale={{
           value: { alias: 'Concentration of Nitrate as N [mg/L]', nice: true },

@@ -1,7 +1,19 @@
 import { ClearOutlined, DoubleLeftOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Row, Col, Tag, Select, Form, Input, Tooltip, Card } from 'antd';
+import {
+  Button,
+  Row,
+  Col,
+  Tag,
+  Select,
+  Form,
+  Input,
+  Tooltip,
+  Card,
+  Divider,
+  Checkbox,
+  Badge,
+} from 'antd';
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { history } from 'umi';
 import { connect } from 'react-redux';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
@@ -31,9 +43,8 @@ const TagRender = (props) => {
 
 const ListResponseProcessing = (response, userId) => {
   const { results } = response;
-  const data = [];
-  results.forEach((temp) => {
-    const model = temp;
+  const data = results.map((temp) => {
+    const model = { ...temp };
     model.key = model.id;
     model.flow_scenario_name = model.flow_scenario.name;
     model.load_scenario_name = model.load_scenario.name;
@@ -48,7 +59,7 @@ const ListResponseProcessing = (response, userId) => {
     if (model.user === userId) {
       model.tags.push('original');
     }
-    data.push(model);
+    return model;
   });
   return {
     data,
@@ -59,7 +70,7 @@ const ListResponseProcessing = (response, userId) => {
 const SearchTable = ({ user }) => {
   const { isMobile } = useContext(RouteContext);
   const actionRef = useRef();
-  const subTitle = 'Compare a completed custom model with the BAU under same scenario';
+  const subTitle = 'Create another model with similar settings swiftly';
   const columns = [
     {
       title: 'Name',
@@ -91,6 +102,33 @@ const SearchTable = ({ user }) => {
       copyable: true,
     },
     {
+      title: 'Status',
+      dataIndex: 'status',
+      valueEnum: {
+        0: {
+          text: 'Not ready',
+          status: 'Warning',
+        },
+        1: {
+          text: 'In queue',
+          status: 'Default',
+        },
+        2: {
+          text: 'Running',
+          status: 'Processing',
+        },
+        3: {
+          text: 'Complete',
+          status: 'Success',
+        },
+        4: {
+          text: 'Error',
+          status: 'Error',
+        },
+      },
+      width: 100,
+    },
+    {
       title: 'Year range',
       dataIndex: 'sim_end_year',
       render: (value) => `1945 - ${value}`,
@@ -111,6 +149,16 @@ const SearchTable = ({ user }) => {
       dataIndex: 'water_content',
       render: (value) => `${(value * 100).toFixed(0)}%`,
       sorter: (a, b) => a > b,
+    },
+    {
+      title: 'Regions',
+      dataIndex: 'regions',
+      // warning: there is something wrong with the library of this render function
+      // this is only a workaround after examine the internal structure
+      // please be aware when the lib is upgraded
+      render: (value) => value.props.title.map((region) => region.name).join(', '),
+      ellipsis: true,
+      width: 300,
     },
     {
       title: 'Date Created',
@@ -163,25 +211,25 @@ const SearchTable = ({ user }) => {
       dataIndex: 'option',
       valueType: 'option',
       fixed: 'right',
-      render: (_, record) =>
-        !record.is_base ? (
-          <Tooltip
-            title={`Compare with BAU of scenario  ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}, and related regions`}
-          >
-            <a href={`/compare/BAU?id=${record.id}`}>Compare</a>
-          </Tooltip>
-        ) : (
-          <Tooltip title="BAU cannot compare with itself, check its detail instead">
+      render: (_, record) => (
+        <>
+          <Tooltip title="View details & results">
             <a href={`/model/view?id=${record.id}`}>Details</a>
           </Tooltip>
-        ),
-      width: 100,
+          <Divider type="vertical" />
+          <Tooltip title="Create another model with settings pre-filled">
+            <a href={`/model/modify?id=${record.id}`}>Copy & Modify</a>
+          </Tooltip>
+        </>
+      ),
+      width: 180,
     },
   ];
   const [options, setOptions] = useState({
     types: ['public', 'original', 'base'],
     search_text: '',
     scenarios: [],
+    status: [0, 1, 2, 3, 4],
   });
   const [sorter, setSorter] = useState('');
   const onSearch = (values) => {
@@ -189,23 +237,7 @@ const SearchTable = ({ user }) => {
     actionRef.current.reload();
   };
   return (
-    <PageHeaderWrapper
-      title="BAU comparison"
-      subTitle={subTitle}
-      extra={
-        <Button
-          href="/compare/group"
-          onClick={() => {
-            history.push({
-              path: '/compare/group',
-            });
-          }}
-          type="primary"
-        >
-          Switch to custom models comparison
-        </Button>
-      }
-    >
+    <PageHeaderWrapper subTitle={subTitle}>
       <Card
         style={{
           marginBottom: 16,
@@ -304,8 +336,8 @@ const SearchForm = ({ onSearch }) => {
           </Col>
         </Row>
         <Row gutter={24}>
-          <Col xs={24} sm={16}>
-            <Form.Item name="scenarios" label="Scenarios" style={{ margin: 0 }}>
+          <Col xs={24} sm={14}>
+            <Form.Item name="scenarios" label="Scenarios">
               <Select
                 mode="multiple"
                 showArrow
@@ -337,7 +369,53 @@ const SearchForm = ({ onSearch }) => {
               </Select>
             </Form.Item>
           </Col>
-          <Col xs={24} sm={8}>
+          <Col xs={24} sm={10}>
+            <Form.Item
+              label="Status"
+              name="status"
+              valuePropName="checked"
+              initialValue={['0', '1', '2', '3', '4']}
+              rules={[
+                {
+                  required: true,
+                  message: 'You must select at least one status',
+                },
+              ]}
+            >
+              <Checkbox.Group style={{ width: '100%' }} defaultValue={['0', '1', '2', '3', '4']}>
+                <Row>
+                  <Col span={8}>
+                    <Checkbox value="0">
+                      <Badge text="Not ready" status="warning" />
+                    </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="1">
+                      <Badge text="In queue" status="default" />
+                    </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="2">
+                      <Badge text="Running" status="processing" />
+                    </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="3">
+                      <Badge text="Complete" status="success" />
+                    </Checkbox>
+                  </Col>
+                  <Col span={8}>
+                    <Checkbox value="4">
+                      <Badge text="Error" status="error" />
+                    </Checkbox>
+                  </Col>
+                </Row>
+              </Checkbox.Group>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
             <Form.Item style={{ margin: 0, textAlign: 'right' }}>
               <Button type="primary" htmlType="submit">
                 <SearchOutlined />
@@ -400,7 +478,7 @@ const SearchForm = ({ onSearch }) => {
     );
   };
   return (
-    <Form onFinish={onSearch} form={form}>
+    <Form onFinish={onSearch} hideRequiredMark form={form}>
       {getFields()}
     </Form>
   );

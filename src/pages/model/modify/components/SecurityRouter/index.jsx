@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, connect } from 'umi';
 import NoFoundPage from '@/pages/404';
-import { getModelAndBaseModel } from '@/pages/results/service';
-import BaseComparison from '@/pages/results/compare/components/results';
 import WaitingSpin from '@/pages/waiting';
-import SearchTable from '@/pages/results/compare/components/ModelList';
+import { getModel } from '@/pages/results/service';
+import SearchTable from '@/pages/model/modify/components/ModelList';
+import StepForm from '@/pages/model/modify/components/ModifyForm';
 
-const ResultCompare = (props) => {
+const ModifyRouter = (props) => {
   const location = useLocation();
-  const { user } = props;
+  const { dispatch, user } = props;
   const { token } = user;
   const [info, setInfo] = useState({});
   const { id = null } = location.query;
-  const { hash } = location;
   const [waiting, setWaiting] = useState(true);
   useEffect(() => {
     if (id === null) {
@@ -20,13 +19,19 @@ const ResultCompare = (props) => {
       return;
     }
     (async () => {
-      const model = await getModelAndBaseModel({ id }, token);
+      const model = await getModel({ id }, token);
       if (typeof model === 'string' && model.startsWith('ERROR')) {
         setInfo({ error: 'The model you look for is private or cannot be found' });
-      } else if (!model.length) {
-        setInfo({ error: 'Select another model to be compared with BAU model' });
       } else {
         setInfo(model);
+        if (dispatch) {
+          dispatch({
+            type: 'CopyAndModifyModelForm/saveTargetModelInfo',
+            payload: {
+              ...model,
+            },
+          });
+        }
       }
       setWaiting(false);
     })();
@@ -42,16 +47,16 @@ const ResultCompare = (props) => {
 
   return info.error ? (
     <NoFoundPage
-      subTitle="The model(s) is inaccessible"
+      subTitle="The model is inaccessible or unavailable"
       title={info.error}
-      redirection="/compare/BAU"
+      redirection="/model/modify"
       buttonText="Reselect model"
     />
   ) : (
-    <BaseComparison customModel={info[0]} baseModel={info[1]} hash={hash} />
+    <StepForm />
   );
 };
 
 export default connect(({ user }) => ({
   user: user.currentUser,
-}))(ResultCompare);
+}))(ModifyRouter);

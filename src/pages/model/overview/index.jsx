@@ -15,6 +15,12 @@ const handleCreate = () => {
   history.push('/model/create');
 };
 
+/**
+ * render tags
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const TagRender = (props) => {
   const { value, closable, onClose } = props;
   let color;
@@ -36,6 +42,13 @@ const TagRender = (props) => {
   );
 };
 
+/**
+ * additional processor for antd pro table
+ * @param response
+ * @param userId
+ * @returns {{total, data: []}}
+ * @constructor
+ */
 const ListResponseProcessing = (response, userId) => {
   const { results } = response;
   const data = [];
@@ -79,6 +92,12 @@ const onClickDelete = async (id, token, action) => {
   }
 };
 
+/**
+ * major UI components for overview page
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const OverviewList = (props) => {
   const { user } = props;
   const { token: userToken, user_id: userId } = user;

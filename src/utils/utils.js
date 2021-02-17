@@ -44,3 +44,5 @@ export const getRouteAuthority = (path, routeData) => {
 
 export const ordinalSuffix = (num) =>
   `${num}${['st', 'nd', 'rd'][((((num + 90) % 100) - 10) % 10) - 1] || 'th'}`;
+
+export const isObjectEmpty = (obj) => Object.keys(obj).length === 0;

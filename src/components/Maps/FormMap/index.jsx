@@ -3,6 +3,9 @@ import { Map, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './index.less';
 
+/**
+ * a map component that is used for selecting regions with tooltip
+ */
 export default class FormMap extends React.Component {
   state = {
     lat: 37.58,
