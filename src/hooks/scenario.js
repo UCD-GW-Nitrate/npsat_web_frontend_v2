@@ -21,6 +21,8 @@ export const useScenarioGroups = () => {
     });
   }, []);
   return {
-    flowScenarios, loadScenarios, unsatScenarios
+    flowScenarios,
+    loadScenarios,
+    unsatScenarios,
   };
-}
+};
