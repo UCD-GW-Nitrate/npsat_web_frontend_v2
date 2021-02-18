@@ -1,14 +1,4 @@
-import {
-  Button,
-  Form,
-  Divider,
-  Select,
-  Popover,
-  Tooltip,
-  InputNumber,
-  DatePicker,
-  Radio,
-} from 'antd';
+import { Button, Form, Divider, Select, Tooltip, InputNumber, DatePicker, Radio } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
@@ -49,7 +39,7 @@ const Step2 = (props) => {
     });
     dispatch({
       type: 'createModelForm/saveCurrentStep',
-      payload: 'Select Crops',
+      payload: isBAU ? 'Model Info' : 'Select Crops',
     });
   };
 
@@ -173,7 +163,20 @@ const Step2 = (props) => {
           />
         </Form.Item>
         <Form.Item
-          label={<span>Model type</span>}
+          name="water_content"
+          label="Water content"
+          required={[
+            {
+              required: true,
+              message: 'Please enter the water content',
+            },
+          ]}
+          initialValue={data.hasOwnProperty('water_content') ? data.water_content : 0}
+        >
+          <InputNumber min={0} max={200} formatter={(v) => `${v}%`} />
+        </Form.Item>
+        <Form.Item
+          label="Model type"
           name="is_base"
           required={[
             {
@@ -232,19 +235,6 @@ const Step2 = (props) => {
                   );
                 }}
               />
-            </Form.Item>
-            <Form.Item
-              name="water_content"
-              label="Water content"
-              required={[
-                {
-                  required: true,
-                  message: 'Please enter the water content',
-                },
-              ]}
-              initialValue={data.hasOwnProperty('water_content') ? data.water_content : 0}
-            >
-              <InputNumber min={0} max={200} formatter={(v) => `${v}%`} />
             </Form.Item>
           </>
         )}

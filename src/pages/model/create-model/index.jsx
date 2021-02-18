@@ -55,7 +55,7 @@ const mapStepToCurrent = {
   4: 'Results',
 };
 
-const StepForm = ({ dispatch, current }) => {
+const StepForm = ({ dispatch, current, isBAU }) => {
   const [stepComponent, setStepComponent] = useState(<Step1 />);
   const [currentStep, setCurrentStep] = useState(0);
   useEffect(() => {
@@ -84,7 +84,7 @@ const StepForm = ({ dispatch, current }) => {
           >
             <Step title="Select Regions" disabled={currentStep >= 4} />
             <Step title="Select Settings" disabled={currentStep < 1 || currentStep >= 4} />
-            <Step title="Select Crops" disabled={currentStep < 2 || currentStep >= 4} />
+            <Step title="Select Crops" disabled={currentStep < 2 || currentStep >= 4 || isBAU} />
             <Step title="Enter Model Meta" disabled={currentStep < 3 || currentStep >= 4} />
             <Step title="Results" disabled />
           </Steps>
@@ -97,4 +97,5 @@ const StepForm = ({ dispatch, current }) => {
 
 export default connect(({ createModelForm }) => ({
   current: createModelForm.current,
+  isBAU: createModelForm.step.is_base,
 }))(StepForm);

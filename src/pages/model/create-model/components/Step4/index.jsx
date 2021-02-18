@@ -7,6 +7,7 @@ const Step4 = (props) => {
   const [form] = Form.useForm();
   const { getFieldsValue } = form;
   const { dispatch, user, data = {} } = props;
+  const { is_base: isBAU } = data;
   const { TextArea } = Input;
   const formItemLayout = {
     labelCol: {
@@ -40,7 +41,7 @@ const Step4 = (props) => {
       });
       dispatch({
         type: 'createModelForm/saveCurrentStep',
-        payload: 'Select Crops',
+        payload: isBAU ? 'Select Settings' : 'Select Crops',
       });
     }
   };
