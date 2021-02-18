@@ -1,4 +1,14 @@
-import { Button, Form, Divider, Select, Tooltip, InputNumber, DatePicker, Radio } from 'antd';
+import {
+  Button,
+  Form,
+  Divider,
+  Select,
+  Popover,
+  Tooltip,
+  InputNumber,
+  DatePicker,
+  Radio,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
@@ -179,12 +189,7 @@ const Step2 = (props) => {
             defaultValue={isBAU}
           >
             <Radio.Button value={false}>Custom model</Radio.Button>
-            <Radio.Button value>
-              BAU model{' '}
-              <Tooltip title="BAU refers to 'Business As Usual', meaning no reduction or implementation. Reduction period and Crop selection will be disabled by selecting this option.">
-                <InfoCircleOutlined />
-              </Tooltip>
-            </Radio.Button>
+            <Radio.Button value>BAU model</Radio.Button>
           </Radio.Group>
         </Form.Item>
         {!isBAU && (
@@ -289,6 +294,11 @@ const Step2 = (props) => {
         <p>The year to start the reduction and the year to reach the full reduction.</p>
         <h4>Water content</h4>
         <p>This is the unsaturated zone mobile water content, default to 0.</p>
+        <h4>BAU</h4>
+        <p>
+          BAU refers to Business As Usual, meaning no reduction or implementation. Reduction period
+          and Crop selection will be disabled by selecting to create a BAU model.
+        </p>
         <h4>Other selections</h4>
         <p>Developing...</p>
       </div>
