@@ -20,8 +20,8 @@ const CropCardForm = (props) => {
       // since there might be a flow scenario change(meaning crop list will be different)
       // we have to make sure crops from different category will not be in the list
       const newSelectedCrops = [];
-      selectedCrops.forEach(selectedCrop => {
-        if (crops.find(crop => `${crop.id}` === selectedCrop.split(",")[0])) {
+      selectedCrops.forEach((selectedCrop) => {
+        if (crops.find((crop) => `${crop.id}` === selectedCrop.split(',')[0])) {
           newSelectedCrops.push(selectedCrop);
         }
       });
@@ -39,7 +39,7 @@ const CropCardForm = (props) => {
     })();
   }, []);
   const onSelectChange = (v) => {
-    if (!v.find(selectedCrop => parseInt(selectedCrop.split(",")[0], 10) === specialId)) {
+    if (!v.find((selectedCrop) => parseInt(selectedCrop.split(',')[0], 10) === specialId)) {
       notification.warning({
         message: `Cannot deselect "${specialName}"`,
         description: `You can set "${specialName}" to default(100%)`,
@@ -50,15 +50,15 @@ const CropCardForm = (props) => {
     }
   };
   const onSelect = (selectedValue) => {
-    const [id, name] = selectedValue.split(",")
+    const [id, name] = selectedValue.split(',');
     if (!value.hasOwnProperty(id) && onChange) {
       onChange({
         ...value,
         [id]: {
           load: 100,
-          enable: true
-        }
-      })
+          enable: true,
+        },
+      });
     }
   };
   if (cropList.length === 0) {
@@ -83,7 +83,7 @@ const CropCardForm = (props) => {
       </Select>
       <div className={styles.cardList}>
         <List
-          rowKey={record => record.split(',')[0]}
+          rowKey={(record) => record.split(',')[0]}
           grid={{
             gutter: 24,
             xxl: 2,

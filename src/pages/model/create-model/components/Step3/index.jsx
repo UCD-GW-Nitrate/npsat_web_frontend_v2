@@ -61,9 +61,9 @@ const Step3 = (props) => {
           rules={[
             {
               required: true,
-            }
+            },
           ]}
-          initialValue={data["crop-choice"]}
+          initialValue={data['crop-choice']}
         >
           <CropCardForm
             selectedCrops={selectedCrops}

@@ -4,14 +4,7 @@ import { Card, Slider, InputNumber, Switch, Row, Col } from 'antd';
 
 export const formatter = (value) => `${value}%`;
 
-const CropCard = ({
-  name,
-  id,
-  onChange,
-  values,
-  required = false,
-  initialValues,
-}) => {
+const CropCard = ({ name, id, onChange, values, required = false, initialValues }) => {
   const [enable, setEnable] = useState(initialValues.enable || required);
 
   useEffect(() => {
