@@ -41,7 +41,7 @@ const Step3 = (props) => {
       });
       dispatch({
         type: 'createModelForm/saveCurrentStep',
-        payload: 'Select Scenarios',
+        payload: 'Select Settings',
       });
     }
   };
@@ -61,28 +61,9 @@ const Step3 = (props) => {
           rules={[
             {
               required: true,
-              message: 'Please choose at least one crop',
-            },
-            {
-              validator: () => {
-                const values = getFieldsValue(['crop-choice'])['crop-choice'];
-                if (!values) {
-                  return Promise.reject(
-                    'choose at least one crop or enable selected crop(s)' +
-                      " or toggle 'All Crops'",
-                  );
-                }
-                for (const config in values) {
-                  if (values[config].enable) {
-                    return Promise.resolve();
-                  }
-                }
-                return Promise.reject(
-                  'choose at least one crop or enable selected crop(s)' + " or toggle 'All Crops'",
-                );
-              },
             },
           ]}
+          initialValue={data['crop-choice']}
         >
           <CropCardForm
             selectedCrops={selectedCrops}

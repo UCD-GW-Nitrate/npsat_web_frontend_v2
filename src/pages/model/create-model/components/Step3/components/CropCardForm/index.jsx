@@ -8,31 +8,57 @@ const { Option } = Select;
 
 const CropCardForm = (props) => {
   const { value = {}, onChange, selectedCrops, setSelected, flowScen } = props;
-  const [cropList, setList] = useState([]);
-  const [special, setSpecial] = useState('');
+  // used to store cropList at this level; used for selector component
+  const [cropList, setList] = useState(selectedCrops);
+  // used to store special crops(All other crops)
+  const [specialId, setSpecial] = useState(1);
+  const [specialName, setSpecialName] = useState('');
+  // query all crops
   useEffect(() => {
     (async () => {
       const { results: crops } = await getCropListLoadType(flowScen);
-      setList(crops);
+      // since there might be a flow scenario change(meaning crop list will be different)
+      // we have to make sure crops from different category will not be in the list
+      const newSelectedCrops = [];
+      selectedCrops.forEach((selectedCrop) => {
+        if (crops.find((crop) => `${crop.id}` === selectedCrop.split(',')[0])) {
+          newSelectedCrops.push(selectedCrop);
+        }
+      });
       crops.forEach((item) => {
         if (item.crop_type === CROP_MACROS.ALL_OTHER_CROP) {
           if (!selectedCrops.includes(`${item.id},${item.name}`)) {
-            setSelected([...selectedCrops, `${item.id},${item.name}`]);
+            newSelectedCrops.push(`${item.id},${item.name}`);
           }
-          setSpecial(`${item.id},${item.name}`);
+          setSpecial(item.id);
+          setSpecialName(item.name);
         }
       });
+      setSelected(newSelectedCrops);
+      setList(crops);
     })();
   }, []);
-  const onSelect = (v) => {
-    if (!v.includes(special)) {
+  const onSelectChange = (v) => {
+    if (!v.find((selectedCrop) => parseInt(selectedCrop.split(',')[0], 10) === specialId)) {
       notification.warning({
-        message: `Cannot deselect "${special.split(',')[1]}"`,
-        description: `You can set "${special.split(',')[1]}" to default(100%)`,
+        message: `Cannot deselect "${specialName}"`,
+        description: `You can set "${specialName}" to default(100%)`,
       });
-      setSelected([special, ...v]);
+      setSelected([`${specialId},${specialName}`, ...v]);
     } else {
       setSelected(v);
+    }
+  };
+  const onSelect = (selectedValue) => {
+    const [id, name] = selectedValue.split(',');
+    if (!value.hasOwnProperty(id) && onChange) {
+      onChange({
+        ...value,
+        [id]: {
+          load: 100,
+          enable: true,
+        },
+      });
     }
   };
   if (cropList.length === 0) {
@@ -44,7 +70,8 @@ const CropCardForm = (props) => {
         value={selectedCrops}
         mode="multiple"
         placeholder="Please select a crop to start"
-        onChange={onSelect}
+        onChange={onSelectChange}
+        onSelect={onSelect}
         className={styles.select}
         showArrow
       >
@@ -56,7 +83,7 @@ const CropCardForm = (props) => {
       </Select>
       <div className={styles.cardList}>
         <List
-          rowKey="id"
+          rowKey={(record) => record.split(',')[0]}
           grid={{
             gutter: 24,
             xxl: 2,
@@ -73,7 +100,6 @@ const CropCardForm = (props) => {
               ? value[id]
               : {
                   load: 100,
-                  area: 100,
                   enable: true,
                 };
             return (
@@ -82,7 +108,7 @@ const CropCardForm = (props) => {
                   values={value}
                   onChange={onChange}
                   name={name}
-                  required={id === special.split(',')[0]}
+                  required={parseInt(id, 10) === specialId}
                   id={id}
                   initialValues={prevValues}
                 />

@@ -12,9 +12,9 @@ import DifferenceHeatmap from '@/components/Plots/BizCharts/DifferenceHeatmap/dy
 import ThresholdHeatmap from '@/components/Plots/BizCharts/ThresholdHeatmap/dynamic';
 import CropTable from '@/pages/results/components/CropTable';
 import CountyMap from '@/components/Maps/CountyMap';
-import { useModelRegions, useModelResults } from '@/utils/hooks';
 import { getModelsStatus, MODEL_STATUS_MACROS } from '@/services/model';
 import styles from './style.less';
+import { useModelRegions, useModelResults } from '@/hooks/model';
 
 const BaseComparison = ({ customModel, baseModel, user, hash }) => {
   const { token } = user;

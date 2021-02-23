@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Divider, Alert } from 'antd';
+import { Tabs, Divider } from 'antd';
 import { connect } from 'react-redux';
 import FarmForm from '@/pages/model/create-model/components/Step1/components/FarmForm';
 import BasinForm from '@/pages/model/create-model/components/Step1/components/BasinForm';
@@ -43,7 +43,7 @@ const Step1 = (props) => {
 
       dispatch({
         type: 'createModelForm/saveCurrentStep',
-        payload: 'Select Scenarios',
+        payload: 'Select Settings',
       });
     }
   };

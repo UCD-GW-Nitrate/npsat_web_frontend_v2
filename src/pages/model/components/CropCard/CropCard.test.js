@@ -10,7 +10,7 @@ import CropCard, { formatter } from './index.jsx';
 configure({ adapter: new Adapter() });
 
 describe('Model Card unit test suits', () => {
-  const wrapper = shallow(<CropCard />);
+  const wrapper = shallow(<CropCard initialValues={{}} />);
   it('#1 Crop card rendering', () => {
     expect(wrapper.find('Card').length).toBe(1);
   });
@@ -20,7 +20,7 @@ describe('Model Card unit test suits', () => {
 });
 
 describe('Model Card unit test suits with props', () => {
-  const wrapper = shallow(<CropCard required />);
+  const wrapper = shallow(<CropCard required initialValues={{}} />);
   it('#2 Crop card rendering', () => {
     expect(wrapper.find('Card').length).toBe(1);
   });

@@ -1,41 +1,26 @@
-import { Button, Form, Divider, Select, Tooltip } from 'antd';
+import { Button, Form, Divider, Select, Tooltip, InputNumber, DatePicker, Radio } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { SCENARIO_MACROS, getScenarios } from '@/services/scenario';
+import { useScenarioGroups } from '@/hooks/scenario';
+import moment from 'moment';
 import styles from './index.less';
+
+const { RangePicker } = DatePicker;
 
 const Step2 = (props) => {
   const [form] = Form.useForm();
   const { getFieldsValue } = form;
   const { dispatch, user, data = {} } = props;
-  const [flowScen, setFlowScen] = useState([]);
-  const [loadScen, setLoadScen] = useState([]);
-  const [unsatScen, setUnsatScen] = useState([]);
+  const {
+    flowScenarios: flowScen,
+    loadScenarios: loadScen,
+    unsatScenarios: unsatScen,
+  } = useScenarioGroups();
+  const [isBAU, setBAU] = useState(data.hasOwnProperty('is_base') ? data.is_base : false);
   useEffect(() => {
-    (async () => {
-      const { results } = await getScenarios();
-      const tempFlow = [];
-      const tempLoad = [];
-      const tempUnsat = [];
-      results.forEach((scen) => {
-        switch (scen.scenario_type) {
-          case SCENARIO_MACROS.TYPE_LOAD:
-            tempLoad.push(scen);
-            break;
-          case SCENARIO_MACROS.TYPE_UNSAT:
-            tempUnsat.push(scen);
-            break;
-          default:
-          case SCENARIO_MACROS.TYPE_FLOW:
-            tempFlow.push(scen);
-        }
-      });
-      setFlowScen(tempFlow);
-      setLoadScen(tempLoad);
-      setUnsatScen(tempUnsat);
-    })();
-  }, []);
+    setBAU(data.hasOwnProperty('is_base') ? data.is_base : false);
+  }, [data]);
   const formItemLayout = {
     labelCol: {
       span: 7,
@@ -49,11 +34,12 @@ const Step2 = (props) => {
       type: 'createModelForm/saveStepFormData',
       payload: {
         ...values,
+        is_base: isBAU,
       },
     });
     dispatch({
       type: 'createModelForm/saveCurrentStep',
-      payload: 'Select Crops',
+      payload: isBAU ? 'Model Info' : 'Select Crops',
     });
   };
 
@@ -62,7 +48,7 @@ const Step2 = (props) => {
       const values = getFieldsValue();
       dispatch({
         type: 'createModelForm/saveStepFormData',
-        payload: { ...values },
+        payload: { ...values, is_base: isBAU },
       });
       dispatch({
         type: 'createModelForm/saveCurrentStep',
@@ -82,7 +68,7 @@ const Step2 = (props) => {
       >
         <Form.Item
           name="flow_scenario"
-          label="Flow Scenario"
+          label="Flow scenario"
           rules={[
             {
               required: true,
@@ -108,7 +94,7 @@ const Step2 = (props) => {
         </Form.Item>
         <Form.Item
           name="load_scenario"
-          label="Load Scenario"
+          label="Load scenario"
           rules={[
             {
               required: true,
@@ -134,7 +120,7 @@ const Step2 = (props) => {
         </Form.Item>
         <Form.Item
           name="unsat_scenario"
-          label="Unsat Scenario"
+          label="Unsat scenario"
           rules={[
             {
               required: true,
@@ -158,6 +144,100 @@ const Step2 = (props) => {
             ))}
           </Select>
         </Form.Item>
+        <Form.Item
+          name="sim_end_year"
+          label="Sim end year"
+          required={[
+            {
+              required: true,
+              message: 'Please enter numbers of years to stimulate the model',
+            },
+          ]}
+          initialValue={data.hasOwnProperty('sim_end_year') ? data.sim_end_year : moment('2100')}
+        >
+          <DatePicker
+            picker="year"
+            disabledDate={(current) =>
+              current.isBefore(moment('2020'), 'year') || current.isAfter(moment('2500', 'year'))
+            }
+          />
+        </Form.Item>
+        <Form.Item
+          name="water_content"
+          label="Water content"
+          required={[
+            {
+              required: true,
+              message: 'Please enter the water content',
+            },
+          ]}
+          initialValue={data.hasOwnProperty('water_content') ? data.water_content : 0}
+        >
+          <InputNumber min={0} max={200} formatter={(v) => `${v}%`} />
+        </Form.Item>
+        <Form.Item
+          label="Model type"
+          name="is_base"
+          required={[
+            {
+              required: true,
+              message: 'Please select model type',
+            },
+          ]}
+          initialValue={isBAU}
+        >
+          <Radio.Group
+            buttonStyle="solid"
+            onChange={(event) => setBAU(event.target.value)}
+            defaultValue={isBAU}
+          >
+            <Radio.Button value={false}>Custom model</Radio.Button>
+            <Radio.Button value>BAU model</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+        {!isBAU && (
+          <>
+            <Form.Item
+              name="reduction_year"
+              label="Reduction period"
+              dependencies={['sim_end_year']}
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter the reduction year',
+                },
+                ({ getFieldValue }) => ({
+                  validator: (_, _value) => {
+                    const sim_end_year = getFieldValue('sim_end_year');
+                    if (!_value || _value.length <= 1) {
+                      return Promise.resolve();
+                    }
+                    const [start_year, end_year] = _value;
+                    if (end_year.isAfter(sim_end_year, 'year')) {
+                      return Promise.reject('Reduction end year must not be after sim end year.');
+                    } else {
+                      return Promise.resolve();
+                    }
+                  },
+                }),
+              ]}
+              initialValue={
+                data.hasOwnProperty('reduction_year') ? data.reduction_year : [undefined, undefined]
+              }
+            >
+              <RangePicker
+                picker="year"
+                disabledDate={(current) => {
+                  const end_year = form.getFieldValue('sim_end_year').clone();
+                  end_year.add(1, 'y');
+                  return (
+                    current.isBefore(moment(), 'year') || current.isAfter(moment(end_year, 'year'))
+                  );
+                }}
+              />
+            </Form.Item>
+          </>
+        )}
         <Form.Item
           style={{
             marginBottom: 8,
@@ -198,6 +278,19 @@ const Step2 = (props) => {
           Hover on the info circle to see detailed explanation about the scenario. Scenario chosen
           will determine type and number of crops in next step.
         </p>
+        <h4>Sim end year</h4>
+        <p>Enter simulation end year default to 2100. Selectable range from 2020 to 2500.</p>
+        <h4>Reduction period</h4>
+        <p>The year to start the reduction and the year to reach the full reduction.</p>
+        <h4>Water content</h4>
+        <p>This is the unsaturated zone mobile water content, default to 0.</p>
+        <h4>BAU</h4>
+        <p>
+          BAU refers to Business As Usual, meaning no reduction or implementation. Reduction period
+          and Crop selection will be disabled by selecting to create a BAU model.
+        </p>
+        <h4>Other selections</h4>
+        <p>Developing...</p>
       </div>
     </>
   );

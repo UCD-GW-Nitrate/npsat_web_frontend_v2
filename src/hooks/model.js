@@ -1,5 +1,5 @@
-import { getModelResults, getRegionDetail } from '@/pages/model/view/service';
 import { useEffect, useState } from 'react';
+import { getModelResults, getRegionDetail } from '@/pages/model/view/service';
 import { ordinalSuffix } from '@/utils/utils';
 
 /**
@@ -27,7 +27,6 @@ export const useModelRegions = (regionArray) => {
 
   return regions;
 };
-
 /**
  * react hook that returns the model results in an array [plotData, percentiles]
  * @param resultsArray
