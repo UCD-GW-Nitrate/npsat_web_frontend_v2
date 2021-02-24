@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Steps } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'umi';
+import Step1 from '@/pages/model/modify/components/ModifyForm/components/Step1';
 import styles from './style.less';
 
 const { Step } = Steps;
@@ -31,7 +32,7 @@ const getCurrentStepAndComponent = (current) => {
     default:
       return {
         step: 0,
-        component: null,
+        component: <Step1 />,
       };
   }
 };
@@ -64,7 +65,7 @@ const StepForm = ({ dispatch, current }) => {
             onChange={(step) => {
               if (dispatch) {
                 dispatch({
-                  type: 'CopyAndModifyModelForm/saveCurrentStep',
+                  type: 'copyAndModifyModelForm/saveCurrentStep',
                   payload: mapStepToCurrent[step],
                 });
               }
@@ -82,6 +83,6 @@ const StepForm = ({ dispatch, current }) => {
   );
 };
 
-export default connect(({ CopyAndModifyModelForm }) => ({
-  current: CopyAndModifyModelForm.current,
+export default connect(({ copyAndModifyModelForm }) => ({
+  current: copyAndModifyModelForm.current,
 }))(StepForm);

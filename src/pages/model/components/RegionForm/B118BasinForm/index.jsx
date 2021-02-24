@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Spin, Select } from 'antd';
-import { getTownships } from '@/services/region';
+import { getB118Basin } from '@/services/region';
 import { connect } from 'react-redux';
-import styles from '../../index.less';
-import Map from '../../../../../../../components/Maps/FormMap';
+import styles from '../index.less';
+import Map from '../../../../../components/Maps/FormMap';
 
 const { Option } = Select;
 const style = {
@@ -15,25 +15,25 @@ const style = {
   },
 };
 
-const TownshipForm = (props) => {
+const B118BasinForm = (props) => {
   const { onSubmit, data = {} } = props;
   return (
     <Form
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={(values) => onSubmit('township', values)}
+      onFinish={(values) => onSubmit('basin', values)}
     >
       <Form.Item
-        name="township-choice"
-        label="Township"
+        name="basin-choice"
+        label="Basin"
         rules={[
           {
             required: true,
-            message: 'Please choose at least one township or other region(s)',
+            message: 'Please choose at least one basin or other region(s)',
           },
         ]}
-        initialValue={data.hasOwnProperty('township-choice') ? data['township-choice'] : []}
+        initialValue={data.hasOwnProperty('basin-choice') ? data['basin-choice'] : []}
       >
         <SelectAndMap />
       </Form.Item>
@@ -62,13 +62,13 @@ const SelectAndMap = ({ value = [], onChange }) => {
   const [mapData, setMapData] = useState([]);
   useEffect(() => {
     (async () => {
-      const { results: townships } = await getTownships();
-      setList(townships);
+      const { results: basins } = await getB118Basin();
+      setList(basins);
       setMapData(
-        await townships.map((township) => {
-          const data = township.geometry;
-          data.properties.id = township.id;
-          data.properties.name = township.name;
+        await basins.map((county) => {
+          const data = county.geometry;
+          data.properties.id = county.id;
+          data.properties.name = county.name;
           return data;
         }),
       );
@@ -97,7 +97,7 @@ const SelectAndMap = ({ value = [], onChange }) => {
     <>
       <Select
         showSearch
-        placeholder="Select township(s)"
+        placeholder="Select basin(s)"
         optionFilterProp="children"
         value={value}
         onChange={onListChange}
@@ -115,10 +115,10 @@ const SelectAndMap = ({ value = [], onChange }) => {
       <Map data={mapData} onChange={onMapSelect} values={value} />
     </>
   ) : (
-    <Spin size="large" tip="loading townships data and map..." />
+    <Spin size="large" tip="loading basin data and map..." />
   );
 };
 
 export default connect(({ createModelForm }) => ({
   data: createModelForm.step,
-}))(TownshipForm);
+}))(B118BasinForm);

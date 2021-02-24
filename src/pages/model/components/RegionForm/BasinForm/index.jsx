@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Spin, Select } from 'antd';
-import { getB118Basin } from '@/services/region';
+import { getBasins } from '@/services/region';
 import { connect } from 'react-redux';
-import styles from '../../index.less';
-import Map from '../../../../../../../components/Maps/FormMap';
+import styles from '../index.less';
+import Map from '../../../../../components/Maps/FormMap';
 
 const { Option } = Select;
 const style = {
@@ -15,7 +15,7 @@ const style = {
   },
 };
 
-const B118BasinForm = (props) => {
+const BasinForm = (props) => {
   const { onSubmit, data = {} } = props;
   return (
     <Form
@@ -62,13 +62,13 @@ const SelectAndMap = ({ value = [], onChange }) => {
   const [mapData, setMapData] = useState([]);
   useEffect(() => {
     (async () => {
-      const { results: basins } = await getB118Basin();
-      setList(basins);
+      const { results: counties } = await getBasins();
+      setList(counties);
       setMapData(
-        await basins.map((county) => {
+        await counties.map((county) => {
           const data = county.geometry;
           data.properties.id = county.id;
-          data.properties.name = county.name;
+          data.properties.name = data.properties.CVHM_Basin;
           return data;
         }),
       );
@@ -121,4 +121,4 @@ const SelectAndMap = ({ value = [], onChange }) => {
 
 export default connect(({ createModelForm }) => ({
   data: createModelForm.step,
-}))(B118BasinForm);
+}))(BasinForm);

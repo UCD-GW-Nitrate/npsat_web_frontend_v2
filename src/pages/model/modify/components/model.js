@@ -1,12 +1,12 @@
 const Model = {
-  namespace: 'CopyAndModifyModelForm',
+  namespace: 'copyAndModifyModelForm',
   state: {
     current: 'Select Model',
     step: {},
     results: {
       id: null,
     },
-    model: {},
+    targetModel: {},
   },
   effects: {},
   reducers: {
@@ -23,7 +23,7 @@ const Model = {
     },
 
     saveTargetModelInfo(state, { payload }) {
-      return { ...state, model: { ...payload } };
+      return { ...state, targetModel: { ...payload } };
     },
 
     clearStoredStepInfo(state) {
