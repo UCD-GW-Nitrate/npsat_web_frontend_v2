@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Spin, Select } from 'antd';
-import { getTownships } from '@/services/region';
+import { getTownships, REGION_MACROS } from '@/services/region';
 import { connect } from 'react-redux';
 import styles from '../index.less';
 import Map from '../../../../../components/Maps/FormMap';
@@ -22,10 +22,10 @@ const TownshipForm = (props) => {
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={(values) => onSubmit('township', values)}
+      onFinish={(values) => onSubmit(REGION_MACROS.TOWNSHIPS, values)}
     >
       <Form.Item
-        name="township-choice"
+        name={`region-${REGION_MACROS.TOWNSHIPS}-choice`}
         label="Township"
         rules={[
           {
@@ -33,7 +33,11 @@ const TownshipForm = (props) => {
             message: 'Please choose at least one township or other region(s)',
           },
         ]}
-        initialValue={data.hasOwnProperty('township-choice') ? data['township-choice'] : []}
+        initialValue={
+          data.hasOwnProperty(`region-${REGION_MACROS.TOWNSHIPS}-choice`)
+            ? data[`region-${REGION_MACROS.TOWNSHIPS}-choice`]
+            : []
+        }
       >
         <SelectAndMap />
       </Form.Item>

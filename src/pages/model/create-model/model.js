@@ -1,4 +1,5 @@
 import { createModel } from '@/services/model';
+import { REGION_MACROS } from '@/services/region';
 
 const Model = {
   namespace: 'createModelForm',
@@ -46,15 +47,15 @@ const Model = {
         };
 
         switch (payload.step1Type) {
-          case 'CV':
+          case REGION_MACROS.CENTRAL_VALLEY:
             data.regions = [{ id: payload.CV }];
             break;
           default:
-          case 'county':
-          case 'farm':
-          case 'basin':
-          case 'township':
-            data.regions = payload[`${payload.step1Type}-choice`].map((id) => ({ id }));
+          case REGION_MACROS.COUNTY:
+          case REGION_MACROS.CVHM_FARM:
+          case REGION_MACROS.B118_BASIN:
+          case REGION_MACROS.TOWNSHIPS:
+            data.regions = payload[`region-${payload.step1Type}-choice`].map((id) => ({ id }));
         }
 
         response = yield call(createModel, data, {

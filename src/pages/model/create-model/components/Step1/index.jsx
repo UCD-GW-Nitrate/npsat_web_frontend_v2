@@ -5,67 +5,50 @@ import FarmForm from '@/pages/model/components/RegionForm/FarmForm';
 import BasinForm from '@/pages/model/components/RegionForm/BasinForm';
 import TownshipForm from '@/pages/model/components/RegionForm/TownshipForm';
 import B118BasinForm from '@/pages/model/components/RegionForm/B118BasinForm';
-import styles from '../../../components/RegionForm/index.less';
+import { REGION_MACROS } from '@/services/region';
+import styles from './index.less';
 import CountyForm from '../../../components/RegionForm/CountyForm';
 import CentralValleyForm from '../../../components/RegionForm/CentralValleyForm';
 
 const { TabPane } = Tabs;
 
 const Step1 = (props) => {
-  const { dispatch, token, region = 'CV' } = props;
+  const { dispatch, token, region = REGION_MACROS.CENTRAL_VALLEY } = props;
   const onSubmit = (type, values) => {
     if (dispatch) {
-      switch (type) {
-        // extensible
-        case 'CV':
-          dispatch({
-            type: 'createModelForm/saveStepFormData',
-            payload: {
-              step1Type: type,
-              ...values,
-            },
-          });
-          break;
-        default:
-        case 'county':
-        case 'farm':
-        case 'basin':
-        case 'sBasin':
-        case 'township':
-          dispatch({
-            type: 'createModelForm/saveStepFormData',
-            payload: {
-              step1Type: type,
-              ...values,
-            },
-          });
-      }
-
       dispatch({
-        type: 'createModelForm/saveCurrentStep',
-        payload: 'Select Settings',
+        type: 'createModelForm/saveStepFormData',
+        payload: {
+          step1Type: type,
+          ...values,
+        },
       });
     }
+
+    dispatch({
+      type: 'createModelForm/saveCurrentStep',
+      payload: 'Select Settings',
+    });
   };
   return (
     <>
-      <Tabs defaultActiveKey={region} tabPosition="top" centered>
-        <TabPane tab="Central Valley" key="CV">
+      <Tabs defaultActiveKey={region.toString()} tabPosition="top" centered>
+        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()}>
           <CentralValleyForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="Basin" key="sBasin">
+        <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()}>
           <BasinForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="County" key="county">
+        <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()}>
           <CountyForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="B118 Basin" key="Basin">
+        <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()}>
           <B118BasinForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="CVHM Farm" key="farm">
+        <TabPane tab="CVHM Farm" key={REGION_MACROS.CVHM_FARM.toString()}>
           <FarmForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="Township" key="town">
+        <TabPane tab="Township" key={REGION_MACROS.TOWNSHIPS.toString()}>
           <TownshipForm onSubmit={onSubmit} />
         </TabPane>
       </Tabs>

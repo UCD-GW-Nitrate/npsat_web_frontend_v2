@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Button, Spin } from 'antd';
-import { getCVHMFarms } from '@/services/region';
+import { getCVHMFarms, REGION_MACROS } from '@/services/region';
 import { connect } from 'react-redux';
 import styles from '../index.less';
 import Map from '../../../../../components/Maps/FormMap';
@@ -22,10 +22,10 @@ const FarmForm = (props) => {
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={(values) => onSubmit('farm', values)}
+      onFinish={(values) => onSubmit(REGION_MACROS.CVHM_FARM, values)}
     >
       <Form.Item
-        name="farm-choice"
+        name={`region-${REGION_MACROS.CVHM_FARM}-choice`}
         label="Farm"
         rules={[
           {
@@ -33,7 +33,11 @@ const FarmForm = (props) => {
             message: 'Please choose at least one farm or other region(s)',
           },
         ]}
-        initialValue={data.hasOwnProperty('farm-choice') ? data['farm-choice'] : []}
+        initialValue={
+          data.hasOwnProperty(`region-${REGION_MACROS.CVHM_FARM}-choice`)
+            ? data[`region-${REGION_MACROS.CVHM_FARM}-choice`]
+            : []
+        }
       >
         <SelectAndMap />
       </Form.Item>

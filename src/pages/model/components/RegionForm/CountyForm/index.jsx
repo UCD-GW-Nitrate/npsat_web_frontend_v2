@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Select, Button, Spin } from 'antd';
 import { connect } from 'react-redux';
-import { getCounties } from '@/services/region';
+import { getCounties, REGION_MACROS } from '@/services/region';
 import styles from '../index.less';
 import CountyMap from '../../../../../components/Maps/FormMap';
 
@@ -22,10 +22,10 @@ const CountyForm = (props) => {
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={(values) => onSubmit('county', values)}
+      onFinish={(values) => onSubmit(REGION_MACROS.COUNTY, values)}
     >
       <Form.Item
-        name="county-choice"
+        name={`region-${REGION_MACROS.COUNTY}-choice`}
         label="County"
         rules={[
           {
@@ -33,7 +33,11 @@ const CountyForm = (props) => {
             message: 'Please choose at least one county or other region(s)',
           },
         ]}
-        initialValue={data.hasOwnProperty('county-choice') ? data['county-choice'] : []}
+        initialValue={
+          data.hasOwnProperty(`region-${REGION_MACROS.COUNTY}-choice`)
+            ? data[`region-${REGION_MACROS.COUNTY}-choice`]
+            : []
+        }
       >
         <SelectAndMap />
       </Form.Item>

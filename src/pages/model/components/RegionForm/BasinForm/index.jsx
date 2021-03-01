@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Spin, Select } from 'antd';
-import { getBasins } from '@/services/region';
+import { getBasins, REGION_MACROS } from '@/services/region';
 import { connect } from 'react-redux';
 import styles from '../index.less';
 import Map from '../../../../../components/Maps/FormMap';
@@ -22,10 +22,10 @@ const BasinForm = (props) => {
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={(values) => onSubmit('basin', values)}
+      onFinish={(values) => onSubmit(REGION_MACROS.SUB_BASIN, values)}
     >
       <Form.Item
-        name="basin-choice"
+        name={`region-${REGION_MACROS.SUB_BASIN}-choice`}
         label="Basin"
         rules={[
           {
@@ -33,7 +33,11 @@ const BasinForm = (props) => {
             message: 'Please choose at least one basin or other region(s)',
           },
         ]}
-        initialValue={data.hasOwnProperty('basin-choice') ? data['basin-choice'] : []}
+        initialValue={
+          data.hasOwnProperty(`region-${REGION_MACROS.SUB_BASIN}-choice`)
+            ? data[`region-${REGION_MACROS.SUB_BASIN}-choice`]
+            : []
+        }
       >
         <SelectAndMap />
       </Form.Item>
