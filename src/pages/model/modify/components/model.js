@@ -14,6 +14,24 @@ const Model = {
       return { ...state, results: { id: payload } };
     },
 
+    loadTemplateAtStep(state) {
+      const { regions } = state.targetModel;
+      const { region_type } = regions[0];
+      const loadedCrops = regions.map((region) => region.id);
+      switch (state.current) {
+        default:
+        case 'Modify Regions':
+          return {
+            ...state,
+            step: {
+              ...state.step,
+              step1Type: region_type,
+              [`region-${region_type}-choice`]: loadedCrops,
+            },
+          };
+      }
+    },
+
     saveCurrentStep(state, { payload }) {
       return { ...state, current: payload };
     },

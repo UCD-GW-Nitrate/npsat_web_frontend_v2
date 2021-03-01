@@ -10,25 +10,30 @@ const { Step } = Steps;
 const getCurrentStepAndComponent = (current) => {
   switch (current) {
     case 'Modify Crops':
-    case 1:
-      return {
-        step: 1,
-        component: null,
-      };
-
-    case 'Modify Info':
       return {
         step: 2,
         component: null,
       };
 
-    case 'Results':
+    case 'Modify Info':
       return {
         step: 3,
         component: null,
       };
 
+    case 'Results':
+      return {
+        step: 4,
+        component: null,
+      };
+
     case 'Modify Settings':
+      return {
+        step: 1,
+        component: null,
+      };
+
+    case 'Modify Regions':
     default:
       return {
         step: 0,
@@ -38,10 +43,11 @@ const getCurrentStepAndComponent = (current) => {
 };
 
 const mapStepToCurrent = {
-  0: 'Modify Settings',
-  1: 'Modify Crops',
-  2: 'Modify Info',
-  3: 'Results',
+  0: 'Modify Regions',
+  1: 'Modify Settings',
+  2: 'Modify Crops',
+  3: 'Modify Info',
+  4: 'Results',
 };
 
 const StepForm = ({ dispatch, current }) => {
@@ -71,9 +77,10 @@ const StepForm = ({ dispatch, current }) => {
               }
             }}
           >
-            <Step title="Modify Settings" disabled={currentStep >= 3} />
-            <Step title="Modify Crops" disabled={currentStep < 1 || currentStep >= 3} />
-            <Step title="Modify Info" disabled={currentStep < 2 || currentStep >= 3} />
+            <Step title="Modify Regions" disabled={currentStep >= 4} />
+            <Step title="Modify Settings" disabled={currentStep >= 4} />
+            <Step title="Modify Crops" disabled={currentStep < 2 || currentStep >= 4} />
+            <Step title="Modify Info" disabled={currentStep < 3 || currentStep >= 4} />
             <Step title="Results" disabled />
           </Steps>
           {stepComponent}

@@ -121,6 +121,10 @@ const SelectAndMap = ({ value = [], onChange }) => {
   );
 };
 
-export default connect(({ createModelForm }) => ({
+export const CreateModelFarmForm = connect(({ createModelForm }) => ({
   data: createModelForm.step,
+}))(FarmForm);
+
+export const CopyModelFarmForm = connect(({ copyAndModifyModelForm }) => ({
+  data: copyAndModifyModelForm.step,
 }))(FarmForm);

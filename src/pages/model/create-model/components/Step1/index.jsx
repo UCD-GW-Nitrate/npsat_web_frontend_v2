@@ -1,14 +1,16 @@
 import React from 'react';
 import { Tabs, Divider } from 'antd';
 import { connect } from 'react-redux';
-import FarmForm from '@/pages/model/components/RegionForm/FarmForm';
-import BasinForm from '@/pages/model/components/RegionForm/BasinForm';
-import TownshipForm from '@/pages/model/components/RegionForm/TownshipForm';
-import B118BasinForm from '@/pages/model/components/RegionForm/B118BasinForm';
+import {
+  FarmForm,
+  CentralValleyForm,
+  BasinForm,
+  B118BasinForm,
+  TownshipForm,
+  CountyForm,
+} from '@/pages/model/components/RegionForm/createModelForms';
 import { REGION_MACROS } from '@/services/region';
 import styles from './index.less';
-import CountyForm from '../../../components/RegionForm/CountyForm';
-import CentralValleyForm from '../../../components/RegionForm/CentralValleyForm';
 
 const { TabPane } = Tabs;
 

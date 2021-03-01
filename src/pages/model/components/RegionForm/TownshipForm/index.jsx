@@ -123,6 +123,10 @@ const SelectAndMap = ({ value = [], onChange }) => {
   );
 };
 
-export default connect(({ createModelForm }) => ({
+export const CreateModelTownshipForm = connect(({ createModelForm }) => ({
   data: createModelForm.step,
+}))(TownshipForm);
+
+export const CopyModelTownshipForm = connect(({ copyAndModifyModelForm }) => ({
+  data: copyAndModifyModelForm.step,
 }))(TownshipForm);

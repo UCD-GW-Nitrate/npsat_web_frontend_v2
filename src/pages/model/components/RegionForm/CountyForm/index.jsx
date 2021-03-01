@@ -122,6 +122,10 @@ const SelectAndMap = ({ value = [], onChange }) => {
   );
 };
 
-export default connect(({ createModelForm }) => ({
+export const CreateModelCountyForm = connect(({ createModelForm }) => ({
   data: createModelForm.step,
+}))(CountyForm);
+
+export const CopyModelCountyForm = connect(({ copyAndModifyModelForm }) => ({
+  data: copyAndModifyModelForm.step,
 }))(CountyForm);
