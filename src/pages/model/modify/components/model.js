@@ -70,7 +70,6 @@ const Model = {
     },
 
     saveTargetModelInfo(state, { payload }) {
-      console.log(payload);
       const {
         regions,
         flow_scenario,
