@@ -31,15 +31,15 @@ const Step2 = (props) => {
   };
   const onSubmit = (values) => {
     dispatch({
-      type: 'createModelForm/saveStepFormData',
+      type: 'copyAndModifyModelForm/saveStepFormData',
       payload: {
         ...values,
         is_base: isBAU,
       },
     });
     dispatch({
-      type: 'createModelForm/saveCurrentStep',
-      payload: isBAU ? 'Model Info' : 'Select Crops',
+      type: 'copyAndModifyModelForm/saveCurrentStep',
+      payload: isBAU ? 'Modify Info' : 'Modify Crops',
     });
   };
 
@@ -47,11 +47,11 @@ const Step2 = (props) => {
     if (dispatch) {
       const values = getFieldsValue();
       dispatch({
-        type: 'createModelForm/saveStepFormData',
+        type: 'copyAndModifyModelForm/saveStepFormData',
         payload: { ...values, is_base: isBAU },
       });
       dispatch({
-        type: 'createModelForm/saveCurrentStep',
+        type: 'copyAndModifyModelForm/saveCurrentStep',
         payload: 'Select Regions',
       });
     }
@@ -296,7 +296,7 @@ const Step2 = (props) => {
   );
 };
 
-export default connect(({ user, createModelForm }) => ({
+export default connect(({ user, copyAndModifyModelForm }) => ({
   user: user.currentUser,
-  data: createModelForm.step,
+  data: copyAndModifyModelForm.step,
 }))(Step2);

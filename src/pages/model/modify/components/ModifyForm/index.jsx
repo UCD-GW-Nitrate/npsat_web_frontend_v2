@@ -3,6 +3,7 @@ import { Card, Steps } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'umi';
 import Step1 from '@/pages/model/modify/components/ModifyForm/components/Step1';
+import Step2 from '@/pages/model/modify/components/ModifyForm/components/Step2';
 import styles from './style.less';
 
 const { Step } = Steps;
@@ -30,7 +31,7 @@ const getCurrentStepAndComponent = (current) => {
     case 'Modify Settings':
       return {
         step: 1,
-        component: null,
+        component: <Step2 />,
       };
 
     case 'Modify Regions':

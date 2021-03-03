@@ -27,14 +27,14 @@ const Step1 = (props) => {
     return template.regions[0].region_type;
   };
   const { region = getRegionType(targetModel) } = props;
-  const [tabKey, setTabKey] = useState(region.toString())
+  const [tabKey, setTabKey] = useState(region.toString());
   const loadDataFromTargetModel = () => {
     if (dispatch) {
       dispatch({
         type: 'copyAndModifyModelForm/loadTemplateAtStep',
       });
     }
-  }
+  };
   useEffect(() => {
     loadDataFromTargetModel();
   }, [targetModel]);
