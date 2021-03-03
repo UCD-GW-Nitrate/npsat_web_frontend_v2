@@ -14,14 +14,6 @@ import styles from '@/pages/model/create-model/components/Step1/index.less';
 
 const { TabPane } = Tabs;
 
-const loadDataFromTargetModel = (dispatch) => {
-  if (dispatch) {
-    dispatch({
-      type: 'copyAndModifyModelForm/loadTemplateAtStep',
-    });
-  }
-}
-
 /**
  * At this step, the user can select settings and maps for the new model.
  * Target model info will be pre-filled for the user and
@@ -36,8 +28,15 @@ const Step1 = (props) => {
   };
   const { region = getRegionType(targetModel) } = props;
   const [tabKey, setTabKey] = useState(region.toString())
+  const loadDataFromTargetModel = () => {
+    if (dispatch) {
+      dispatch({
+        type: 'copyAndModifyModelForm/loadTemplateAtStep',
+      });
+    }
+  }
   useEffect(() => {
-    loadDataFromTargetModel(dispatch);
+    loadDataFromTargetModel();
   }, [targetModel]);
 
   const onSubmit = (type, values) => {

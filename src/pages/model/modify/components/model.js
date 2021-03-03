@@ -41,7 +41,18 @@ const Model = {
     },
 
     saveTargetModelInfo(state, { payload }) {
-      return { ...state, targetModel: { ...payload } };
+      const { regions } = payload;
+      const { region_type } = regions[0];
+      const loadedCrops = regions.map((region) => region.id);
+      return {
+        ...state,
+        targetModel: { ...payload },
+        step: {
+          ...state.step,
+          step1Type: region_type,
+          [`region-${region_type}-choice`]: loadedCrops,
+        },
+      };
     },
 
     clearStoredStepInfo(state) {
