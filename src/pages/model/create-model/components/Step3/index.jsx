@@ -58,9 +58,10 @@ const Step3 = (props) => {
         <Form.Item
           name="crop-choice"
           label="Crop(s)"
+          required
           rules={[
             {
-              required: true,
+              validator: () => Promise.resolve(),
             },
           ]}
           initialValue={data['crop-choice']}

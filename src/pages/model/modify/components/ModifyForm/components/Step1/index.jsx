@@ -23,6 +23,7 @@ const { TabPane } = Tabs;
  */
 const Step1 = (props) => {
   const { targetModel, dispatch } = props;
+  console.log(targetModel);
   const getRegionType = (template) => {
     return template.regions[0].region_type;
   };

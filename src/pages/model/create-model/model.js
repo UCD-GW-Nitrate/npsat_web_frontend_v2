@@ -19,12 +19,15 @@ const Model = {
         const modifications = [];
         crops.forEach((crop) => {
           const [id, name] = crop.split(',');
-          if (payload['crop-choice'].hasOwnProperty(id) && payload['crop-choice'][id].enable) {
-            modifications.push({
-              crop: { id },
-              proportion: payload['crop-choice'][id].load / 100,
-            });
+          if (payload['crop-choice'] && payload['crop-choice'].hasOwnProperty(id)) {
+            if (payload['crop-choice'][id].enable) {
+              modifications.push({
+                crop: { id },
+                proportion: payload['crop-choice'][id].load / 100,
+              });
+            }
           } else {
+            // case for All other crops
             modifications.push({
               crop: { id },
               proportion: 1,

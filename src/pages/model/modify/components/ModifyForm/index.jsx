@@ -6,6 +6,7 @@ import Step1 from '@/pages/model/modify/components/ModifyForm/components/Step1';
 import Step2 from '@/pages/model/modify/components/ModifyForm/components/Step2';
 import Step3 from '@/pages/model/modify/components/ModifyForm/components/Step3';
 import Step4 from '@/pages/model/modify/components/ModifyForm/components/Step4';
+import Step5 from '@/pages/model/modify/components/ModifyForm/components/Step5';
 import styles from './style.less';
 
 const { Step } = Steps;
@@ -27,7 +28,7 @@ const getCurrentStepAndComponent = (current) => {
     case 'Results':
       return {
         step: 4,
-        component: null,
+        component: <Step5 />,
       };
 
     case 'Modify Settings':
