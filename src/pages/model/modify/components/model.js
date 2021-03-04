@@ -27,10 +27,35 @@ const Model = {
         water_content,
         is_base,
         sim_end_year,
+        modifications,
+        name,
+        description
       } = state.targetModel;
       const { region_type } = regions[0];
       const loadedCrops = regions.map((region) => region.id);
       switch (state.current) {
+        case 'Modify Info':
+          return {
+            ...state,
+            step: {
+              ...state.step,
+              "model-name": `${name} (copy)`,
+              "model-desc": description
+            }
+          };
+        case 'Modify Crops':
+          return {
+            ...state,
+            step: {
+              ...state.step,
+              selectedCrops: modifications.map(modification => `${modification.crop.id},${modification.crop.name}`),
+              "crop-choice": modifications.map(modification => ({
+                enable: true,
+                load: parseFloat(modification.proportion) * 100,
+                id: modification.crop.id
+              })).reduce((acc, curr) => ({ ...acc, [curr.id]: { ...curr } }), {}),
+            }
+          };
         case 'Modify Settings':
           return {
             ...state,
@@ -80,16 +105,22 @@ const Model = {
         water_content,
         is_base,
         sim_end_year,
+        modifications,
+        name,
+        description
       } = payload;
       const { region_type } = regions[0];
-      const loadedCrops = regions.map((region) => region.id);
+      const loadedRegions = regions.map((region) => region.id);
       return {
         ...state,
         targetModel: { ...payload },
         step: {
           ...state.step,
+          // step1 pre fill
           step1Type: region_type,
-          [`region-${region_type}-choice`]: loadedCrops,
+          [`region-${region_type}-choice`]: loadedRegions,
+
+          // step2 pre fill
           flow_scenario: flow_scenario.id,
           load_scenario: load_scenario.id,
           unsat_scenario: unsat_scenario.id,
@@ -100,6 +131,18 @@ const Model = {
             moment(reduction_end_year.toString()),
           ],
           is_base,
+
+          // step3 pre fill
+          selectedCrops: modifications.map(modification => `${modification.crop.id},${modification.crop.name}`),
+          "crop-choice": modifications.map(modification => ({
+            enable: true,
+            load: parseFloat(modification.proportion) * 100,
+            id: modification.crop.id
+          })).reduce((acc, curr) => ({ ...acc, [curr.id]: { ...curr } }), {}),
+
+          // step4 pre fill
+          "model-name": `${name} (copy)`,
+          "model-desc": description
         },
       };
     },

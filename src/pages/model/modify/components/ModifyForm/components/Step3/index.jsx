@@ -23,12 +23,12 @@ const Step3 = (props) => {
 
   const onNext = (values) => {
     dispatch({
-      type: 'createModelForm/saveStepFormData',
+      type: 'copyAndModifyModelForm/saveStepFormData',
       payload: { ...values, selectedCrops },
     });
     dispatch({
-      type: 'createModelForm/saveCurrentStep',
-      payload: 'Model Info',
+      type: 'copyAndModifyModelForm/saveCurrentStep',
+      payload: 'Modify Info',
     });
   };
 
@@ -36,12 +36,12 @@ const Step3 = (props) => {
     if (dispatch) {
       // const values = getFieldsValue();
       dispatch({
-        type: 'createModelForm/saveStepFormData',
+        type: 'copyAndModifyModelForm/saveStepFormData',
         payload: {},
       });
       dispatch({
-        type: 'createModelForm/saveCurrentStep',
-        payload: 'Select Settings',
+        type: 'copyAndModifyModelForm/saveCurrentStep',
+        payload: 'Modify Settings',
       });
     }
   };
@@ -113,7 +113,7 @@ const Step3 = (props) => {
   );
 };
 
-export default connect(({ user, createModelForm }) => ({
+export default connect(({ user, copyAndModifyModelForm }) => ({
   token: user.currentUser.token,
-  data: createModelForm.step,
+  data: copyAndModifyModelForm.step,
 }))(Step3);

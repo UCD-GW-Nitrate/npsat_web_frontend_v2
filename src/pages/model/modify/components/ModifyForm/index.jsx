@@ -4,6 +4,8 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'umi';
 import Step1 from '@/pages/model/modify/components/ModifyForm/components/Step1';
 import Step2 from '@/pages/model/modify/components/ModifyForm/components/Step2';
+import Step3 from '@/pages/model/modify/components/ModifyForm/components/Step3';
+import Step4 from '@/pages/model/modify/components/ModifyForm/components/Step4';
 import styles from './style.less';
 
 const { Step } = Steps;
@@ -13,13 +15,13 @@ const getCurrentStepAndComponent = (current) => {
     case 'Modify Crops':
       return {
         step: 2,
-        component: null,
+        component: <Step3 />,
       };
 
     case 'Modify Info':
       return {
         step: 3,
-        component: null,
+        component: <Step4 />,
       };
 
     case 'Results':
