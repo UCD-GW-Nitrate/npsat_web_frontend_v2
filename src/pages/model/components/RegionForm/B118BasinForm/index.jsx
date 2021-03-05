@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Select, Button, Spin } from 'antd';
-import { getCVHMFarms } from '@/services/region';
+import { Form, Button, Spin, Select } from 'antd';
+import { getB118Basin, REGION_MACROS } from '@/services/region';
 import { connect } from 'react-redux';
-import styles from '../../index.less';
-import Map from '../../../../../../../components/Maps/FormMap';
+import styles from '../index.less';
+import Map from '../../../../../components/Maps/FormMap';
 
 const { Option } = Select;
 const style = {
@@ -15,25 +15,29 @@ const style = {
   },
 };
 
-const FarmForm = (props) => {
+const B118BasinForm = (props) => {
   const { onSubmit, data = {} } = props;
   return (
     <Form
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={(values) => onSubmit('farm', values)}
+      onFinish={(values) => onSubmit(REGION_MACROS.B118_BASIN, values)}
     >
       <Form.Item
-        name="farm-choice"
-        label="Farm"
+        name={`region-${REGION_MACROS.B118_BASIN}-choice`}
+        label="Basin"
         rules={[
           {
             required: true,
-            message: 'Please choose at least one farm or other region(s)',
+            message: 'Please choose at least one basin or other region(s)',
           },
         ]}
-        initialValue={data.hasOwnProperty('farm-choice') ? data['farm-choice'] : []}
+        initialValue={
+          data.hasOwnProperty(`region-${REGION_MACROS.B118_BASIN}-choice`)
+            ? data[`region-${REGION_MACROS.B118_BASIN}-choice`]
+            : []
+        }
       >
         <SelectAndMap />
       </Form.Item>
@@ -58,17 +62,17 @@ const FarmForm = (props) => {
 };
 
 const SelectAndMap = ({ value = [], onChange }) => {
-  const [farmList, setList] = useState([]);
+  const [countyList, setList] = useState([]);
   const [mapData, setMapData] = useState([]);
   useEffect(() => {
     (async () => {
-      const { results: farms } = await getCVHMFarms();
-      setList(farms);
+      const { results: basins } = await getB118Basin();
+      setList(basins);
       setMapData(
-        await farms.map((farm) => {
-          const data = farm.geometry;
-          data.properties.id = farm.id;
-          data.properties.name = farm.name;
+        await basins.map((county) => {
+          const data = county.geometry;
+          data.properties.id = county.id;
+          data.properties.name = county.name;
           return data;
         }),
       );
@@ -79,6 +83,7 @@ const SelectAndMap = ({ value = [], onChange }) => {
       onChange(v);
     }
   };
+
   const onMapSelect = (selectingMap, selectedMaps) => {
     if (onChange) {
       if (selectedMaps.indexOf(selectingMap) === -1) {
@@ -91,11 +96,12 @@ const SelectAndMap = ({ value = [], onChange }) => {
       }
     }
   };
-  return farmList.length > 0 && mapData.length > 0 ? (
+
+  return countyList.length > 0 && mapData.length > 0 ? (
     <>
       <Select
         showSearch
-        placeholder="Select a farm"
+        placeholder="Select basin(s)"
         optionFilterProp="children"
         value={value}
         onChange={onListChange}
@@ -104,19 +110,23 @@ const SelectAndMap = ({ value = [], onChange }) => {
         }
         mode="multiple"
       >
-        {farmList.map((farm) => (
-          <Option value={farm.id} key={farm.id}>
-            {farm.name}
+        {countyList.map((county) => (
+          <Option value={county.id} key={county.id}>
+            {county.name}
           </Option>
         ))}
       </Select>
       <Map data={mapData} onChange={onMapSelect} values={value} />
     </>
   ) : (
-    <Spin size="large" tip="loading farm data and map..." />
+    <Spin size="large" tip="loading basin data and map..." />
   );
 };
 
-export default connect(({ createModelForm }) => ({
+export const CreateModelB118BasinForm = connect(({ createModelForm }) => ({
   data: createModelForm.step,
-}))(FarmForm);
+}))(B118BasinForm);
+
+export const CopyModelB118BasinForm = connect(({ copyAndModifyModelForm }) => ({
+  data: copyAndModifyModelForm.step,
+}))(B118BasinForm);

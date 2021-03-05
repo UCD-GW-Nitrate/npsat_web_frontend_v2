@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Spin, Select } from 'antd';
-import { getTownships } from '@/services/region';
+import { Form, Select, Button, Spin } from 'antd';
 import { connect } from 'react-redux';
-import styles from '../../index.less';
-import Map from '../../../../../../../components/Maps/FormMap';
+import { getCounties, REGION_MACROS } from '@/services/region';
+import styles from '../index.less';
+import CountyMap from '../../../../../components/Maps/FormMap';
 
 const { Option } = Select;
 const style = {
@@ -15,25 +15,29 @@ const style = {
   },
 };
 
-const TownshipForm = (props) => {
+const CountyForm = (props) => {
   const { onSubmit, data = {} } = props;
   return (
     <Form
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={(values) => onSubmit('township', values)}
+      onFinish={(values) => onSubmit(REGION_MACROS.COUNTY, values)}
     >
       <Form.Item
-        name="township-choice"
-        label="Township"
+        name={`region-${REGION_MACROS.COUNTY}-choice`}
+        label="County"
         rules={[
           {
             required: true,
-            message: 'Please choose at least one township or other region(s)',
+            message: 'Please choose at least one county or other region(s)',
           },
         ]}
-        initialValue={data.hasOwnProperty('township-choice') ? data['township-choice'] : []}
+        initialValue={
+          data.hasOwnProperty(`region-${REGION_MACROS.COUNTY}-choice`)
+            ? data[`region-${REGION_MACROS.COUNTY}-choice`]
+            : []
+        }
       >
         <SelectAndMap />
       </Form.Item>
@@ -62,13 +66,12 @@ const SelectAndMap = ({ value = [], onChange }) => {
   const [mapData, setMapData] = useState([]);
   useEffect(() => {
     (async () => {
-      const { results: townships } = await getTownships();
-      setList(townships);
+      const { results: counties } = await getCounties();
+      setList(counties);
       setMapData(
-        await townships.map((township) => {
-          const data = township.geometry;
-          data.properties.id = township.id;
-          data.properties.name = township.name;
+        await counties.map((county) => {
+          const data = county.geometry;
+          data.properties.id = county.id;
           return data;
         }),
       );
@@ -97,7 +100,7 @@ const SelectAndMap = ({ value = [], onChange }) => {
     <>
       <Select
         showSearch
-        placeholder="Select township(s)"
+        placeholder="Select county(s)"
         optionFilterProp="children"
         value={value}
         onChange={onListChange}
@@ -112,13 +115,17 @@ const SelectAndMap = ({ value = [], onChange }) => {
           </Option>
         ))}
       </Select>
-      <Map data={mapData} onChange={onMapSelect} values={value} />
+      <CountyMap data={mapData} onChange={onMapSelect} values={value} />
     </>
   ) : (
-    <Spin size="large" tip="loading townships data and map..." />
+    <Spin size="large" tip="loading county data and map..." />
   );
 };
 
-export default connect(({ createModelForm }) => ({
+export const CreateModelCountyForm = connect(({ createModelForm }) => ({
   data: createModelForm.step,
-}))(TownshipForm);
+}))(CountyForm);
+
+export const CopyModelCountyForm = connect(({ copyAndModifyModelForm }) => ({
+  data: copyAndModifyModelForm.step,
+}))(CountyForm);

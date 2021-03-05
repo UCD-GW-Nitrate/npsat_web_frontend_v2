@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Spin, Alert } from 'antd';
-import { getCentralValley } from '@/services/region';
-import styles from '../../index.less';
-import Map from '../../../../../../../components/Maps/FormMap';
+import { getCentralValley, REGION_MACROS } from '@/services/region';
+import styles from '../index.less';
+import Map from '../../../../../components/Maps/FormMap';
 
 const style = {
   labelCol: {
@@ -33,7 +33,7 @@ const CentralValleyForm = (props) => {
       {...style}
       layout="horizontal"
       className={styles.stepForm}
-      onFinish={() => onSubmit('CV', { CV: data[0].properties.id })}
+      onFinish={() => onSubmit(REGION_MACROS.CENTRAL_VALLEY, { CV: data[0].properties.id })}
     >
       <Form.Item
         wrapperCol={{

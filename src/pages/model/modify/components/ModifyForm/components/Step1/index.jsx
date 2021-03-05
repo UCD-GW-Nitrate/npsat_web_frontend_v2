@@ -1,6 +1,7 @@
-import React from 'react';
-import { Tabs, Divider } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { REGION_MACROS } from '@/services/region';
+import { Divider, Tabs } from 'antd';
 import {
   FarmForm,
   CentralValleyForm,
@@ -8,33 +9,56 @@ import {
   B118BasinForm,
   TownshipForm,
   CountyForm,
-} from '@/pages/model/components/RegionForm/createModelForms';
-import { REGION_MACROS } from '@/services/region';
-import styles from './index.less';
+} from '@/pages/model/components/RegionForm/copyAndModifyForms';
+import styles from '@/pages/model/create-model/components/Step1/index.less';
 
 const { TabPane } = Tabs;
 
+/**
+ * At this step, the user can select settings and maps for the new model.
+ * Target model info will be pre-filled for the user and
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Step1 = (props) => {
-  const { dispatch, token, region = REGION_MACROS.CENTRAL_VALLEY } = props;
+  const { targetModel, dispatch } = props;
+  console.log(targetModel);
+  const getRegionType = (template) => {
+    return template.regions[0].region_type;
+  };
+  const { region = getRegionType(targetModel) } = props;
+  const [tabKey, setTabKey] = useState(region.toString());
+  const loadDataFromTargetModel = () => {
+    if (dispatch) {
+      dispatch({
+        type: 'copyAndModifyModelForm/loadTemplateAtStep',
+      });
+    }
+  };
+  useEffect(() => {
+    loadDataFromTargetModel();
+  }, [targetModel]);
+
   const onSubmit = (type, values) => {
     if (dispatch) {
       dispatch({
-        type: 'createModelForm/saveStepFormData',
+        type: 'copyAndModifyModelForm/saveStepFormData',
         payload: {
           step1Type: type,
           ...values,
         },
       });
     }
-
     dispatch({
-      type: 'createModelForm/saveCurrentStep',
-      payload: 'Select Settings',
+      type: 'copyAndModifyModelForm/saveCurrentStep',
+      payload: 'Modify Settings',
     });
   };
+
   return (
     <>
-      <Tabs defaultActiveKey={region.toString()} tabPosition="top" centered>
+      <Tabs activeKey={tabKey} tabPosition="top" centered onChange={(key) => setTabKey(key)}>
         <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()}>
           <CentralValleyForm onSubmit={onSubmit} />
         </TabPane>
@@ -71,7 +95,7 @@ const Step1 = (props) => {
   );
 };
 
-export default connect(({ user, createModelForm }) => ({
-  token: user.currentUser.token,
-  region: createModelForm.step.step1Type,
+export default connect(({ copyAndModifyModelForm }) => ({
+  targetModel: copyAndModifyModelForm.targetModel,
+  region: copyAndModifyModelForm.step.step1Type,
 }))(Step1);

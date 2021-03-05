@@ -5,12 +5,14 @@
 import React from 'react';
 import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import TownshipForm from './index.jsx';
+import { CreateModelCountyForm } from './index.jsx';
 
 configure({ adapter: new Adapter() });
 
-describe('Create Model Step1 CVForm unit shallow test suits', () => {
-  const wrapper = shallow(<TownshipForm.WrappedComponent createModelForm={{ step: {} }} />);
+describe('Create Model Step1 CountyForm unit shallow test suits', () => {
+  const wrapper = shallow(
+    <CreateModelCountyForm.WrappedComponent createModelForm={{ step: {} }} />,
+  );
   it('#1 Form Item rendering', () => {
     expect(wrapper.find('FormItem').length).toBe(2);
   });

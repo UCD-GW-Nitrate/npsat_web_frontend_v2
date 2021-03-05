@@ -26,7 +26,7 @@ const ModifyRouter = (props) => {
         setInfo(model);
         if (dispatch) {
           dispatch({
-            type: 'CopyAndModifyModelForm/saveTargetModelInfo',
+            type: 'copyAndModifyModelForm/saveTargetModelInfo',
             payload: {
               ...model,
             },
