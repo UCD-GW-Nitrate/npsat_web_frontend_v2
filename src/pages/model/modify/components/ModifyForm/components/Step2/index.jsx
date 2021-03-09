@@ -175,21 +175,12 @@ const Step2 = (props) => {
             }
           />
         </Form.Item>
-        <Form.Item
-          label="Model type"
-          name="is_base"
-          required={[
-            {
-              required: true,
-              message: 'Please select model type',
-            },
-          ]}
-          initialValue={isBAU}
-        >
+        <Form.Item label="Model type" required initialValue={isBAU}>
           <Radio.Group
             buttonStyle="solid"
             onChange={(event) => setBAU(event.target.value)}
             defaultValue={isBAU}
+            value={isBAU}
           >
             <Radio.Button value={false}>Custom model</Radio.Button>
             <Radio.Button value>BAU model</Radio.Button>
@@ -264,6 +255,30 @@ const Step2 = (props) => {
           >
             Prev
           </Button>
+          <Divider type="vertical" />
+          <Tooltip title="Reset selections in this step to target model selections.">
+            <Button
+              danger
+              onClick={() => {
+                // dispatch is a synced method by redux
+                if (dispatch) {
+                  dispatch({
+                    type: 'copyAndModifyModelForm/loadTemplateAtStep',
+                  });
+                  form.resetFields([
+                    'flow_scenario',
+                    'load_scenario',
+                    'unsat_scenario',
+                    'water_content',
+                    'sim_end_year',
+                    'reduction_year',
+                  ]);
+                }
+              }}
+            >
+              Reset
+            </Button>
+          </Tooltip>
         </Form.Item>
       </Form>
       <Divider
