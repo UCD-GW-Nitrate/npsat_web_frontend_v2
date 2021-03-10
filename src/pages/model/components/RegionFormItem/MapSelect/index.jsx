@@ -22,9 +22,7 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
     (async () => {
       const { results: mapDate } = await getData();
       setList(mapDate);
-      setMapData(
-        await mapDate.map((region) => configureData(region)),
-      );
+      setMapData(mapDate.map((region) => configureData(region)));
     })();
   }, []);
   const onListChange = (v) => {

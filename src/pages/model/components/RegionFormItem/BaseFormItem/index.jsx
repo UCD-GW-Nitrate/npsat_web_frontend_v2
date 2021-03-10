@@ -7,28 +7,38 @@ import SelectAndMap from '@/pages/model/components/RegionFormItem/MapSelect';
  * @param data used for parent component Form
  * @param regionType region macros
  * @param formLabel label for form item
+ * @param configureData function passing into SelectAndMap
+ * @param getData function passing into SelectAndMap
+ * @param placeholder string passing into SelectAndMap
  * @returns {JSX.Element}
  * @constructor
  */
-const BaseFormItem = ({ data = {}, regionType, formLabel }) => {
+const BaseFormItem = ({
+  data = {},
+  regionType,
+  formLabel,
+  configureData,
+  getData,
+  placeholder,
+}) => {
   return (
-      <Form.Item
-        name={`region-${regionType}-choice`}
-        label={formLabel}
-        rules={[
-          {
-            required: true,
-            message: `Please choose at least one ${formLabel.toLowerCase()} or other region(s)`,
-          },
-        ]}
-        initialValue={
-          data.hasOwnProperty(`region-${regionType}-choice`)
-            ? data[`region-${regionType}-choice`]
-            : []
-        }
-      >
-        <SelectAndMap />
-      </Form.Item>
+    <Form.Item
+      name={`region-${regionType}-choice`}
+      label={formLabel}
+      rules={[
+        {
+          required: true,
+          message: `Please choose at least one ${formLabel.toLowerCase()} or other region(s)`,
+        },
+      ]}
+      initialValue={
+        data.hasOwnProperty(`region-${regionType}-choice`)
+          ? data[`region-${regionType}-choice`]
+          : []
+      }
+    >
+      <SelectAndMap configureData={configureData} getData={getData} placeholder={placeholder} />
+    </Form.Item>
   );
 };
 
