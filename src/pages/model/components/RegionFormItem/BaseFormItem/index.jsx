@@ -1,6 +1,7 @@
 import { Form } from 'antd';
 import React from 'react';
 import SelectAndMap from '@/pages/model/components/RegionFormItem/MapSelect';
+import styles from '../index.less';
 
 /**
  * Base form item extensible for all regions
@@ -23,6 +24,7 @@ const BaseFormItem = ({
 }) => {
   return (
     <Form.Item
+      className={styles.stepForm}
       name={`region-${regionType}-choice`}
       label={formLabel}
       rules={[
