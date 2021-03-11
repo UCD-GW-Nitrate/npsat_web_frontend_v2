@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Divider } from 'antd';
+import { Form, Button, Divider, Tooltip } from 'antd';
 import { connect } from 'umi';
 import CropCardForm from '@/pages/model/components/CropCardForm';
 import styles from './index.less';
@@ -98,6 +98,24 @@ const Step3 = (props) => {
           >
             Prev
           </Button>
+          <Divider type="vertical" />
+          <Tooltip title="Reset selections in this step to target model selections.">
+            <Button
+              danger
+              onClick={() => {
+                // dispatch is a synced method by redux
+                if (dispatch) {
+                  dispatch({
+                    type: 'copyAndModifyModelForm/loadTemplateAtStep',
+                  });
+                  setSelected(data.hasOwnProperty('selectedCrops') ? data.selectedCrops : []);
+                  form.resetFields(['crop-choice']);
+                }
+              }}
+            >
+              Reset
+            </Button>
+          </Tooltip>
         </Form.Item>
       </Form>
       <Divider

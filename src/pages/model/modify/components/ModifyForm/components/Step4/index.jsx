@@ -1,4 +1,4 @@
-import { Button, Form, Divider, Input } from 'antd';
+import { Button, Form, Divider, Input, Tooltip } from 'antd';
 import React from 'react';
 import { connect } from 'react-redux';
 import styles from './index.less';
@@ -101,6 +101,23 @@ const Step4 = (props) => {
           >
             Prev
           </Button>
+          <Divider type="vertical" />
+          <Tooltip title="Reset selections in this step to target model selections.">
+            <Button
+              danger
+              onClick={() => {
+                // dispatch is a synced method by redux
+                if (dispatch) {
+                  dispatch({
+                    type: 'copyAndModifyModelForm/loadTemplateAtStep',
+                  });
+                  form.resetFields(['model-name', 'model-desc']);
+                }
+              }}
+            >
+              Reset
+            </Button>
+          </Tooltip>
         </Form.Item>
       </Form>
       <Divider

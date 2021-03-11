@@ -1,7 +1,8 @@
 import React from 'react';
-import { Result, Button, Spin } from 'antd';
+import { Result, Button, Spin, Menu, Dropdown } from 'antd';
 import { history } from 'umi';
 import { connect } from 'react-redux';
+import { DownOutlined, CopyOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
 const Step5 = (props) => {
@@ -33,6 +34,30 @@ const Step5 = (props) => {
       });
     }
   };
+  const menu = (
+    <Menu>
+      <Menu.Item key="1">
+        <a onClick={() => onCreate()}>
+          <CopyOutlined
+            style={{
+              marginRight: 5,
+            }}
+          />{' '}
+          the original model
+        </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a href={`/model/modify?id=${id}`}>
+          <CopyOutlined
+            style={{
+              marginRight: 5,
+            }}
+          />{' '}
+          the new model
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
   const onPrev = () => {
     if (dispatch) {
       dispatch({
@@ -53,9 +78,11 @@ const Step5 = (props) => {
       <Button onClick={onCheck} style={{ marginBottom: 10 }} size="large">
         Compare with BAU
       </Button>
-      <Button onClick={onCreate} size="large">
-        Copy and modify target model again
-      </Button>
+      <Dropdown overlay={menu} placement="bottomCenter" arrow>
+        <Button size="large">
+          Copy and modify again <DownOutlined />
+        </Button>
+      </Dropdown>
     </>
   );
   if (id === null) {
