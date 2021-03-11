@@ -12,6 +12,24 @@ import styles from './index.less';
 
 const { TabPane } = Tabs;
 
+const renderRegionFormItem = (key) => {
+  switch (key) {
+    case REGION_MACROS.TOWNSHIPS.toString():
+      return <TownshipFormItem />;
+    case REGION_MACROS.CVHM_FARM.toString():
+      return <FarmFormItem />;
+    case REGION_MACROS.COUNTY.toString():
+      return <CountyFormItem />;
+    case REGION_MACROS.SUB_BASIN.toString():
+      return <BasinFormItem />;
+    case REGION_MACROS.B118_BASIN.toString():
+      return <B118BasinFormItem />;
+    case REGION_MACROS.CENTRAL_VALLEY:
+    default:
+      return <CentralValleyFormItem />;
+  }
+};
+
 /**
  * At this step, the user can select settings and maps for the new model.
  * Target model info will be pre-filled for the user and
@@ -34,15 +52,11 @@ const Step1 = (props) => {
     },
   };
   const { region = getRegionType(targetModel) } = props;
+  const [regionFormItem, setFormItem] = useState(null);
   const [tabKey, setTabKey] = useState(region.toString());
-  const loadDataFromTargetModel = () => {
-    if (dispatch) {
-      dispatch({
-        type: 'copyAndModifyModelForm/loadTemplateAtStep',
-      });
-    }
-  };
-
+  useEffect(() => {
+    setFormItem(renderRegionFormItem(tabKey));
+  }, [tabKey]);
   const onSubmit = (type, values) => {
     if (dispatch) {
       dispatch({
@@ -61,27 +75,21 @@ const Step1 = (props) => {
 
   return (
     <>
-      <Form form={form} {...style}>
-        <Tabs tabPosition="top" centered>
-          <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()}>
-            <CentralValleyFormItem />
-          </TabPane>
-          <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()}>
-            <BasinFormItem />
-          </TabPane>
-          <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()}>
-            <CountyFormItem />
-          </TabPane>
-          <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()}>
-            <B118BasinFormItem />
-          </TabPane>
-          <TabPane tab="CVHM Farm" key={REGION_MACROS.CVHM_FARM.toString()}>
-            <FarmFormItem />
-          </TabPane>
-          <TabPane tab="Township" key={REGION_MACROS.TOWNSHIPS.toString()}>
-            <TownshipFormItem />
-          </TabPane>
-        </Tabs>
+      <Tabs tabPosition="top" centered activeKey={tabKey} onChange={(key) => setTabKey(key)}>
+        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()} />
+        <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()} />
+        <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()} />
+        <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()} />
+        <TabPane tab="CVHM Farm" key={REGION_MACROS.CVHM_FARM.toString()} />
+        <TabPane tab="Township" key={REGION_MACROS.TOWNSHIPS.toString()} />
+      </Tabs>
+      <Form
+        form={form}
+        {...style}
+        className={styles.stepForm}
+        onFinish={(values) => onSubmit(parseInt(tabKey, 10), values)}
+      >
+        {regionFormItem}
         <Form.Item
           wrapperCol={{
             xs: {
@@ -108,13 +116,13 @@ const Step1 = (props) => {
                     type: 'copyAndModifyModelForm/loadTemplateAtStep',
                   });
                   form.resetFields([
-                    'flow_scenario',
-                    'load_scenario',
-                    'unsat_scenario',
-                    'water_content',
-                    'sim_end_year',
-                    'reduction_year',
+                    `region-${REGION_MACROS.SUB_BASIN}-choice`,
+                    `region-${REGION_MACROS.TOWNSHIPS}-choice`,
+                    `region-${REGION_MACROS.CVHM_FARM}-choice`,
+                    `region-${REGION_MACROS.COUNTY}-choice`,
+                    `region-${REGION_MACROS.B118_BASIN}-choice`,
                   ]);
+                  setTabKey(region.toString());
                 }
               }}
             >

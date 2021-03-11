@@ -24,7 +24,6 @@ const BaseFormItem = ({
 }) => {
   return (
     <Form.Item
-      className={styles.stepForm}
       name={`region-${regionType}-choice`}
       label={formLabel}
       rules={[
