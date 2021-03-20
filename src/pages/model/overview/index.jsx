@@ -1,5 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Tooltip, Popconfirm, Tag, Select } from 'antd';
+import { PlusOutlined, CopyOutlined, DownOutlined, BarChartOutlined } from '@ant-design/icons';
+import { Button, Divider, message, Tooltip, Popconfirm, Tag, Select, Menu, Dropdown } from 'antd';
 import React, { useState, useRef } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
@@ -14,6 +14,31 @@ import { deleteModel, queryModelList } from './service';
 const handleCreate = () => {
   history.push('/model/create');
 };
+
+/**
+ * used to create dropdown menu for action cols
+ * @param record
+ * @returns {JSX.Element} Action for "Compare", "Delete", "Copy & Modify"
+ */
+const createModelMenu = (record) => (
+  <Menu>
+    <Menu.Item disabled={record.is_base} icon={<BarChartOutlined />}>
+      <Tooltip title={record.is_base ? 'This a BAU' : 'Compare with BAU'}>
+        <a
+          href={`/compare/BAU?id=${record.id}`}
+          style={{ cursor: record.is_base ? 'not-allowed' : 'pointer' }}
+        >
+          Compare
+        </a>
+      </Tooltip>
+    </Menu.Item>
+    <Menu.Item icon={<CopyOutlined />}>
+      <Tooltip title="Copy this model and modify its presets">
+        <a href={`/model/modify?id=${record.id}`}>Copy & Modify</a>
+      </Tooltip>
+    </Menu.Item>
+  </Menu>
+);
 
 /**
  * render tags
@@ -202,20 +227,6 @@ const OverviewList = (props) => {
             <a href={`/model/view?id=${record.id}`}>Details</a>
           </Tooltip>
           <Divider type="vertical" />
-          <Tooltip
-            title={record.is_base ? 'This a BAU' : 'Compare with BAU'}
-            style={{ pointerEvents: 'all' }}
-          >
-            <Button
-              style={{ padding: 0 }}
-              href={`/compare/BAU?id=${record.id}`}
-              disabled={record.is_base}
-              type="link"
-            >
-              Compare
-            </Button>
-          </Tooltip>
-          <Divider type="vertical" />
           <Popconfirm
             title="Are you sure deleting this model?"
             okText="Yes"
@@ -231,6 +242,12 @@ const OverviewList = (props) => {
               </Button>
             </Tooltip>
           </Popconfirm>
+          <Divider type="vertical" />
+          <Dropdown overlay={createModelMenu(record)}>
+            <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+              More <DownOutlined />
+            </a>
+          </Dropdown>
         </>
       ),
     },
