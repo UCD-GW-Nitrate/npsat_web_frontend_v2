@@ -8,7 +8,7 @@ import styles from './index.less';
 
 const ScatterPlot = ({ data }) => {
   const [plotData, setPlotData] = useState([]);
-  const [year, setYear] = useState(2100);
+  const [year, setYear] = useState(2099);
   const [mode, setMode] = useState(1);
   useEffect(() => {
     if (data) {
