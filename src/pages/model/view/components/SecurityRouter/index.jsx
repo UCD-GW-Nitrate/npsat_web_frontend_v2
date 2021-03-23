@@ -24,7 +24,6 @@ const View = (props) => {
       },
       token,
     ).then((result) => {
-      console.log(result);
       if (typeof result === 'string' && result.startsWith('ERROR')) {
         notification.error({
           message: model.public ? 'un-publish model failed' : 'publish model failed',
