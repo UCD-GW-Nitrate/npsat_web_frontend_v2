@@ -7,11 +7,11 @@ import MultilinePlot from '@/components/Plots/BizCharts/MultilinePlot/dynamic';
 import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
 import BoxPlot from '@/components/Plots/BizCharts/BoxPlot/dynamic';
 import { getModelsStatus, MODEL_STATUS_MACROS } from '@/services/model';
+import { useModelRegions, useModelResults } from '@/hooks/model';
 import CountyMap from '../../../../../components/Maps/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import styles from './index.less';
 import AnchorTitle from '../../../../../components/AnchorTitle';
-import { useModelRegions, useModelResults } from '@/hooks/model';
 
 const { Step } = Steps;
 
@@ -21,6 +21,7 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
   const [plotData, percentiles] = useModelResults(info.results, token);
   const [crop, setCrop] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [publishLoading, setPublishLoading] = useState(false);
   const [progress, setProgress] = useState({});
   const { isMobile } = useContext(RouteContext);
   useEffect(() => {
@@ -133,8 +134,10 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
               <Button
                 type="primary"
                 disabled={userId !== info.user}
+                loading={publishLoading}
                 onClick={() => {
-                  publish(info);
+                  setPublishLoading(true);
+                  publish(info).then(() => setPublishLoading(false));
                 }}
               >
                 {info.public ? 'Make model private' : 'Share model publicly'}
