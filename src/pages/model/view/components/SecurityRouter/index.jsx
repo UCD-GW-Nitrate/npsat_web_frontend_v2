@@ -15,16 +15,15 @@ const View = (props) => {
   const { id = null } = query;
   const [info, setInfo] = useState({});
   const [waiting, setWaiting] = useState(true);
-  const onClickPublish = (model) => {
-    (async () => {
-      const result = await putModel(
-        id,
-        {
-          ...model,
-          public: !info.public,
-        },
-        token,
-      );
+  const onClickPublish = (model) =>
+    putModel(
+      id,
+      {
+        ...model,
+        public: !info.public,
+      },
+      token,
+    ).then((result) => {
       if (typeof result === 'string' && result.startsWith('ERROR')) {
         notification.error({
           message: model.public ? 'un-publish model failed' : 'publish model failed',
@@ -37,8 +36,7 @@ const View = (props) => {
           description: model.public ? 'un-published model' : 'published model',
         });
       }
-    })();
-  };
+    });
   useEffect(() => {
     if (id === null) {
       setWaiting(false);

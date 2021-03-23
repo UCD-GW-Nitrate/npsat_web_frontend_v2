@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
-import { Card, Descriptions, Steps, Button, Tabs, Tooltip, notification } from 'antd';
+import { Card, Descriptions, Steps, Button, Tabs, Tooltip, notification, Space } from 'antd';
 import classNames from 'classnames';
 import { history } from 'umi';
 import MultilinePlot from '@/components/Plots/BizCharts/MultilinePlot/dynamic';
 import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
 import BoxPlot from '@/components/Plots/BizCharts/BoxPlot/dynamic';
 import { getModelsStatus, MODEL_STATUS_MACROS } from '@/services/model';
+import { useModelRegions, useModelResults } from '@/hooks/model';
 import CountyMap from '../../../../../components/Maps/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import styles from './index.less';
 import AnchorTitle from '../../../../../components/AnchorTitle';
-import { useModelRegions, useModelResults } from '@/hooks/model';
 
 const { Step } = Steps;
 
@@ -21,6 +21,7 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
   const [plotData, percentiles] = useModelResults(info.results, token);
   const [crop, setCrop] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [publishLoading, setPublishLoading] = useState(false);
   const [progress, setProgress] = useState({});
   const { isMobile } = useContext(RouteContext);
   useEffect(() => {
@@ -129,17 +130,35 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
             marginBottom: 32,
           }}
           extra={
-            <Tooltip title="only model creator can publish/un-publish the model">
-              <Button
-                type="primary"
-                disabled={userId !== info.user}
-                onClick={() => {
-                  publish(info);
-                }}
-              >
-                {info.public ? 'Make model private' : 'Share model publicly'}
-              </Button>
-            </Tooltip>
+            <Space>
+              <Tooltip title="Copy and modify these model presets to create another model">
+                <Button
+                  onClick={() => {
+                    history.push({
+                      pathname: '/model/modify',
+                      query: {
+                        id: info.id,
+                      },
+                    });
+                  }}
+                >
+                  Copy & modify this model
+                </Button>
+              </Tooltip>
+              <Tooltip title="Only model creator can publish/un-publish the model">
+                <Button
+                  type="primary"
+                  disabled={userId !== info.user}
+                  loading={publishLoading}
+                  onClick={() => {
+                    setPublishLoading(true);
+                    publish(info).then(() => setPublishLoading(false));
+                  }}
+                >
+                  {info.public ? 'Make model private' : 'Share model publicly'}
+                </Button>
+              </Tooltip>
+            </Space>
           }
         >
           <Descriptions bordered column={{ xxl: 4, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }}>

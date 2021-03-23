@@ -136,6 +136,7 @@ const OverviewList = (props) => {
       title: 'Model Name',
       dataIndex: 'name',
       valueType: 'textarea',
+      width: 250,
     },
     {
       title: 'Description',
