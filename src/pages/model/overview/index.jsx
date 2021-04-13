@@ -26,7 +26,10 @@ const createModelMenu = (record) => (
       <Tooltip title={record.is_base ? 'This a BAU' : 'Compare with BAU'}>
         <a
           href={`/compare/BAU?id=${record.id}`}
-          style={{ cursor: record.is_base ? 'not-allowed' : 'pointer' }}
+          style={{
+            cursor: record.is_base ? 'not-allowed' : 'pointer',
+            pointerEvents: record.is_base ? 'none' : 'inherit',
+          }}
         >
           Compare
         </a>

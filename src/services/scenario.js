@@ -1,4 +1,7 @@
 import request from '@/utils/request';
+import apiConfig from '../../config/apiConfig';
+
+const { apiRoot } = apiConfig;
 
 export const SCENARIO_MACROS = {
   TYPE_FLOW: 1,
@@ -8,11 +11,11 @@ export const SCENARIO_MACROS = {
 
 export async function getScenarios(type) {
   if (type) {
-    return request('/api/scenario', {
+    return request(`${apiRoot}/api/scenario`, {
       params: { scenario_type: type },
     });
   }
-  return request('/api/scenario/');
+  return request(`${apiRoot}/api/scenario/`);
 }
 
 export async function getFlowScenario() {

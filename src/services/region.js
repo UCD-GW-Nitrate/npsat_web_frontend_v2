@@ -1,4 +1,7 @@
 import request from '@/utils/request';
+import apiConfig from '../../config/apiConfig';
+
+const { apiRoot } = apiConfig;
 
 export const REGION_MACROS = {
   CENTRAL_VALLEY: 0,
@@ -11,7 +14,7 @@ export const REGION_MACROS = {
 };
 
 export async function getRegions(type) {
-  return request('/api/region/', {
+  return request(`${apiRoot}/api/region/`, {
     params: { offset: 0, region_type: type, limit: 2000 },
   });
 }
