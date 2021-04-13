@@ -1,4 +1,7 @@
 import request from 'umi-request';
+import apiConfig from '../../config/apiConfig';
+
+const { apiRoot } = apiConfig;
 
 export const MODEL_STATUS_MACROS = {
   NOT_READY: 0,
@@ -32,7 +35,7 @@ export async function searchModel(params, filter, token, search_text, ...options
     query.origin = filter.includes('original');
   }
 
-  return request('/api/model_run', {
+  return request(`${apiRoot}/api/model_run`, {
     headers: { Authorization: `Token ${token}` },
     params: {
       limit: pageSize,
@@ -43,7 +46,7 @@ export async function searchModel(params, filter, token, search_text, ...options
 }
 
 export async function createModel(params, user) {
-  return request('/api/model_run/', {
+  return request(`${apiRoot}/api/model_run/`, {
     method: 'POST',
     headers: { Authorization: `Token ${user.token}` },
     data: {
@@ -53,7 +56,7 @@ export async function createModel(params, user) {
 }
 
 export async function modifyModel(params, user) {
-  return request('/api/modification/', {
+  return request(`${apiRoot}/api/modification/`, {
     method: 'POST',
     headers: { Authorization: `Token ${user.token}` },
     data: {
@@ -63,7 +66,7 @@ export async function modifyModel(params, user) {
 }
 
 export async function getModelsStatus(params, user) {
-  return request('/api/model_run__status/', {
+  return request(`${apiRoot}/api/model_run__status/`, {
     method: 'GET',
     headers: { Authorization: `Token ${user.token}` },
     params: {
