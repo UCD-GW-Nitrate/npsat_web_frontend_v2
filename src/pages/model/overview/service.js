@@ -1,4 +1,7 @@
 import request from '@/utils/request';
+import apiConfig from '../../../../config/apiConfig';
+
+const { apiRoot } = apiConfig;
 
 export async function queryModelList(params, filter, token, ...options) {
   const { pageSize, current } = params;
@@ -7,7 +10,7 @@ export async function queryModelList(params, filter, token, ...options) {
   if (sorter.length !== 0) {
     query.sorter = sorter;
   }
-  return request('/api/model_run', {
+  return request(`${apiRoot}/api/model_run`, {
     headers: { Authorization: `Token ${token}` },
     params: {
       limit: pageSize,
@@ -22,7 +25,7 @@ export async function queryModelList(params, filter, token, ...options) {
 }
 
 export async function deleteModel(params, token) {
-  return request(`/api/model_run/${params.id}`, {
+  return request(`${apiRoot}/api/model_run/${params.id}`, {
     method: 'DELETE',
     headers: { Authorization: `Token ${token}` },
   });

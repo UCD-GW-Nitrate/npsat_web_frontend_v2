@@ -1,4 +1,7 @@
 import request from '@/utils/request';
+import apiConfig from '../../../config/apiConfig';
+
+const { apiRoot } = apiConfig;
 
 /**
  * backend interface to get feed for dashboard
@@ -6,7 +9,7 @@ import request from '@/utils/request';
  * @returns {Promise<any>}
  */
 export async function getFeed(token) {
-  return request(`/api/feed/`, {
+  return request(`${apiRoot}/api/feed/`, {
     method: 'GET',
     headers: { Authorization: `Token ${token}` },
   });
