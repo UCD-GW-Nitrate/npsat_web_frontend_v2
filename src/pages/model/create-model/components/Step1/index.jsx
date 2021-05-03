@@ -47,7 +47,7 @@ const Step1 = (props) => {
         <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()}>
           <B118BasinForm onSubmit={onSubmit} />
         </TabPane>
-        <TabPane tab="CVHM Farm" key={REGION_MACROS.CVHM_FARM.toString()}>
+        <TabPane tab="Subregions" key={REGION_MACROS.CVHM_FARM.toString()}>
           <FarmForm onSubmit={onSubmit} />
         </TabPane>
         <TabPane tab="Township" key={REGION_MACROS.TOWNSHIPS.toString()}>

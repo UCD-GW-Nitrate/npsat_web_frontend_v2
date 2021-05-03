@@ -15,7 +15,7 @@ const style = {
   },
 };
 
-const FarmForm = (props) => {
+const SubRegionForm = (props) => {
   const { onSubmit, data = {} } = props;
   return (
     <Form
@@ -26,11 +26,11 @@ const FarmForm = (props) => {
     >
       <Form.Item
         name={`region-${REGION_MACROS.CVHM_FARM}-choice`}
-        label="Farm"
+        label="Subregion"
         rules={[
           {
             required: true,
-            message: 'Please choose at least one farm or other region(s)',
+            message: 'Please choose at least one subregion or other region(s)',
           },
         ]}
         initialValue={
@@ -99,7 +99,7 @@ const SelectAndMap = ({ value = [], onChange }) => {
     <>
       <Select
         showSearch
-        placeholder="Select a farm"
+        placeholder="Select a subregion"
         optionFilterProp="children"
         value={value}
         onChange={onListChange}
@@ -123,8 +123,8 @@ const SelectAndMap = ({ value = [], onChange }) => {
 
 export const CreateModelFarmForm = connect(({ createModelForm }) => ({
   data: createModelForm.step,
-}))(FarmForm);
+}))(SubRegionForm);
 
 export const CopyModelFarmForm = connect(({ copyAndModifyModelForm }) => ({
   data: copyAndModifyModelForm.step,
-}))(FarmForm);
+}))(SubRegionForm);
