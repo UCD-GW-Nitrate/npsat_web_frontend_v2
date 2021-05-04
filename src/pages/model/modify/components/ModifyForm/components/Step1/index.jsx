@@ -5,7 +5,7 @@ import { Button, Divider, Form, Tabs, Tooltip } from 'antd';
 import { CopyModelB118BasinFormItem as B118BasinFormItem } from '@/pages/model/components/RegionFormItem/B118BasinFormItem';
 import { CopyModelBasinFormItem as BasinFormItem } from '@/pages/model/components/RegionFormItem/BasinFormItem';
 import { CopyModelCountyFormItem as CountyFormItem } from '@/pages/model/components/RegionFormItem/CountyFormItem';
-import { CopyModelFarmFormItem as FarmFormItem } from '@/pages/model/components/RegionFormItem/FarmFormItem';
+import { CopyModelFarmFormItem as FarmFormItem } from '@/pages/model/components/RegionFormItem/SubRegionFormItem';
 import { CopyModelTownshipFormItem as TownshipFormItem } from '@/pages/model/components/RegionFormItem/TownshipFormItem';
 import CentralValleyFormItem from '@/pages/model/components/RegionFormItem/CentralValleyFormItem';
 import styles from './index.less';
@@ -80,7 +80,7 @@ const Step1 = (props) => {
         <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()} />
         <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()} />
         <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()} />
-        <TabPane tab="CVHM Farm" key={REGION_MACROS.CVHM_FARM.toString()} />
+        <TabPane tab="Subregions" key={REGION_MACROS.CVHM_FARM.toString()} />
         <TabPane tab="Township" key={REGION_MACROS.TOWNSHIPS.toString()} />
       </Tabs>
       <Form

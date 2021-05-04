@@ -1,4 +1,4 @@
-import { CreateModelFarmForm } from '@/pages/model/components/RegionForm/FarmForm';
+import { CreateModelFarmForm } from '@/pages/model/components/RegionForm/SubRegionForm';
 import { CreateModelB118BasinForm } from '@/pages/model/components/RegionForm/B118BasinForm';
 import { CreateModelBasinForm } from '@/pages/model/components/RegionForm/BasinForm';
 import { CreateModelTownshipForm } from '@/pages/model/components/RegionForm/TownshipForm';
