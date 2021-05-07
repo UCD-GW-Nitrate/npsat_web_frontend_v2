@@ -20,7 +20,12 @@ const Model = {
         crops.forEach((crop) => {
           const [id, name] = crop.split(',');
           if (payload['crop-choice'] && payload['crop-choice'].hasOwnProperty(id)) {
-            if (payload['crop-choice'][id].enable) {
+            if (
+              // case when all other crops being set (it does contain "enable")
+              !payload['crop-choice'][id].hasOwnProperty('enable') ||
+              // case when normal crops are enabled
+              payload['crop-choice'][id].enable
+            ) {
               modifications.push({
                 crop: { id },
                 proportion: payload['crop-choice'][id].load / 100,
