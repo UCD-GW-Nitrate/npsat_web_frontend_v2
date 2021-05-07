@@ -31,12 +31,6 @@ const Model = {
                 proportion: payload['crop-choice'][id].load / 100,
               });
             }
-          } else {
-            // case for All other crops
-            modifications.push({
-              crop: { id },
-              proportion: 1,
-            });
           }
         });
         const data = {
