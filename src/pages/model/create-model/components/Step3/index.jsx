@@ -34,10 +34,10 @@ const Step3 = (props) => {
 
   const onPrev = () => {
     if (dispatch) {
-      // const values = getFieldsValue();
+      const values = getFieldsValue();
       dispatch({
         type: 'createModelForm/saveStepFormData',
-        payload: {},
+        payload: { ...values, selectedCrops },
       });
       dispatch({
         type: 'createModelForm/saveCurrentStep',
