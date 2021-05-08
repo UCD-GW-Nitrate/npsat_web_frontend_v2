@@ -31,6 +31,12 @@ const Model = {
                 proportion: payload['crop-choice'][id].load / 100,
               });
             }
+          } else if (payload['crop-choice'] && !payload['crop-choice'].hasOwnProperty(id)) {
+            // case when 'all other crops' is not toggled/touched
+            modifications.push({
+              crop: { id },
+              proportion: 1,
+            });
           }
         });
         const data = {
