@@ -2,33 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { REGION_MACROS } from '@/services/region';
 import { Button, Divider, Form, Tabs, Tooltip } from 'antd';
-import { CopyModelB118BasinFormItem as B118BasinFormItem } from '@/pages/model/components/RegionFormItem/B118BasinFormItem';
-import { CopyModelBasinFormItem as BasinFormItem } from '@/pages/model/components/RegionFormItem/BasinFormItem';
-import { CopyModelCountyFormItem as CountyFormItem } from '@/pages/model/components/RegionFormItem/CountyFormItem';
-import { CopyModelFarmFormItem as FarmFormItem } from '@/pages/model/components/RegionFormItem/SubRegionFormItem';
-import { CopyModelTownshipFormItem as TownshipFormItem } from '@/pages/model/components/RegionFormItem/TownshipFormItem';
-import CentralValleyFormItem from '@/pages/model/components/RegionFormItem/CentralValleyFormItem';
+import { renderRegionFormItem } from '@/pages/model/components/RegionFormItem/copyAndModifyForms';
 import styles from './index.less';
 
 const { TabPane } = Tabs;
-
-const renderRegionFormItem = (key) => {
-  switch (key) {
-    case REGION_MACROS.TOWNSHIPS.toString():
-      return <TownshipFormItem />;
-    case REGION_MACROS.CVHM_FARM.toString():
-      return <FarmFormItem />;
-    case REGION_MACROS.COUNTY.toString():
-      return <CountyFormItem />;
-    case REGION_MACROS.SUB_BASIN.toString():
-      return <BasinFormItem />;
-    case REGION_MACROS.B118_BASIN.toString():
-      return <B118BasinFormItem />;
-    case REGION_MACROS.CENTRAL_VALLEY:
-    default:
-      return <CentralValleyFormItem />;
-  }
-};
 
 /**
  * At this step, the user can select settings and maps for the new model.

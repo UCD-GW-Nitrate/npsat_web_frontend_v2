@@ -1,21 +1,28 @@
-import React from 'react';
-import { Tabs, Divider } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Tabs, Divider, Form, Button } from 'antd';
 import { connect } from 'react-redux';
-import {
-  FarmForm,
-  CentralValleyForm,
-  BasinForm,
-  B118BasinForm,
-  TownshipForm,
-  CountyForm,
-} from '@/pages/model/components/RegionForm/createModelForms';
 import { REGION_MACROS } from '@/services/region';
+import { renderRegionFormItem } from '@/pages/model/components/RegionFormItem/createModelForms';
 import styles from './index.less';
 
 const { TabPane } = Tabs;
 
 const Step1 = (props) => {
-  const { dispatch, token, region = REGION_MACROS.CENTRAL_VALLEY } = props;
+  const [form] = Form.useForm();
+  const style = {
+    labelCol: {
+      span: 5,
+    },
+    wrapperCol: {
+      span: 19,
+    },
+  };
+  const { region = REGION_MACROS.CENTRAL_VALLEY, dispatch } = props;
+  const [regionFormItem, setFormItem] = useState(null);
+  const [tabKey, setTabKey] = useState(region.toString());
+  useEffect(() => {
+    setFormItem(renderRegionFormItem(tabKey));
+  }, [tabKey]);
   const onSubmit = (type, values) => {
     if (dispatch) {
       dispatch({
@@ -26,7 +33,6 @@ const Step1 = (props) => {
         },
       });
     }
-
     dispatch({
       type: 'createModelForm/saveCurrentStep',
       payload: 'Select Settings',
@@ -34,26 +40,38 @@ const Step1 = (props) => {
   };
   return (
     <>
-      <Tabs defaultActiveKey={region.toString()} tabPosition="top" centered>
-        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()}>
-          <CentralValleyForm onSubmit={onSubmit} />
-        </TabPane>
-        <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()}>
-          <BasinForm onSubmit={onSubmit} />
-        </TabPane>
-        <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()}>
-          <CountyForm onSubmit={onSubmit} />
-        </TabPane>
-        <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()}>
-          <B118BasinForm onSubmit={onSubmit} />
-        </TabPane>
-        <TabPane tab="Subregions" key={REGION_MACROS.CVHM_FARM.toString()}>
-          <FarmForm onSubmit={onSubmit} />
-        </TabPane>
-        <TabPane tab="Township" key={REGION_MACROS.TOWNSHIPS.toString()}>
-          <TownshipForm onSubmit={onSubmit} />
-        </TabPane>
+      <Tabs tabPosition="top" centered activeKey={tabKey} onChange={(key) => setTabKey(key)}>
+        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()} />
+        <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()} />
+        <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()} />
+        <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()} />
+        <TabPane tab="Subregions" key={REGION_MACROS.CVHM_FARM.toString()} />
+        <TabPane tab="Township" key={REGION_MACROS.TOWNSHIPS.toString()} />
       </Tabs>
+      <Form
+        form={form}
+        {...style}
+        className={styles.stepForm}
+        onFinish={(values) => onSubmit(parseInt(tabKey, 10), values)}
+      >
+        {regionFormItem}
+        <Form.Item
+          wrapperCol={{
+            xs: {
+              span: 24,
+              offset: 0,
+            },
+            sm: {
+              span: style.wrapperCol.span,
+              offset: style.labelCol.span,
+            },
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Next
+          </Button>
+        </Form.Item>
+      </Form>
       <Divider
         style={{
           margin: '40px 0 24px',
@@ -71,7 +89,6 @@ const Step1 = (props) => {
   );
 };
 
-export default connect(({ user, createModelForm }) => ({
-  token: user.currentUser.token,
+export default connect(({ createModelForm }) => ({
   region: createModelForm.step.step1Type,
 }))(Step1);

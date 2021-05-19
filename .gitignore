@@ -39,3 +39,6 @@ screenshot
 
 build
 /src/.umi/
+
+# local apiConfig
+/config/apiConfig.js

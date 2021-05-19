@@ -24,6 +24,10 @@ const BasinFormItem = (props) => {
   );
 };
 
+export const CreateModelBasinFormItem = connect(({ createModelForm }) => ({
+  data: createModelForm.step,
+}))(BasinFormItem);
+
 export const CopyModelBasinFormItem = connect(({ copyAndModifyModelForm }) => ({
   data: copyAndModifyModelForm.step,
 }))(BasinFormItem);
