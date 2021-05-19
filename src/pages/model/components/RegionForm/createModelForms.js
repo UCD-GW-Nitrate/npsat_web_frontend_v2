@@ -5,7 +5,7 @@ import { CreateModelTownshipForm } from '@/pages/model/components/RegionForm/Tow
 import { CreateModelCountyForm } from '@/pages/model/components/RegionForm/CountyForm';
 import CentralValleyForm from '@/pages/model/components/RegionForm/CentralValleyForm';
 // central export file for all createModel region forms
-
+// deprecated
 export { CreateModelCountyForm as CountyForm };
 export { CreateModelTownshipForm as TownshipForm };
 export { CreateModelBasinForm as BasinForm };

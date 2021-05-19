@@ -23,6 +23,10 @@ const CountyFormItem = (props) => {
   );
 };
 
+export const CreateModelCountyFormItem = connect(({ createModelForm }) => ({
+  data: createModelForm.step,
+}))(CountyFormItem);
+
 export const CopyModelCountyFormItem = connect(({ copyAndModifyModelForm }) => ({
   data: copyAndModifyModelForm.step,
 }))(CountyFormItem);

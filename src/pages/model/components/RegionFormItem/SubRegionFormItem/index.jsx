@@ -24,6 +24,10 @@ const SubRegionFormItem = (props) => {
   );
 };
 
+export const CreateModelFarmFormItem = connect(({ createModelForm }) => ({
+  data: createModelForm.step,
+}))(SubRegionFormItem);
+
 export const CopyModelFarmFormItem = connect(({ copyAndModifyModelForm }) => ({
   data: copyAndModifyModelForm.step,
 }))(SubRegionFormItem);
