@@ -85,6 +85,7 @@
     "@umijs/preset-ant-design-pro": "^1.2.0",
     "@umijs/preset-react": "^1.4.8",
     "@umijs/preset-ui": "^2.0.9",
+    "canvas": "^2.6.1",
     "carlo": "^0.9.46",
     "chalk": "^4.0.0",
     "cross-env": "^7.0.0",
@@ -103,8 +104,7 @@
     "pro-download": "1.0.1",
     "puppeteer": "^5.2.1",
     "puppeteer-core": "^3.0.0",
-    "stylelint": "^13.0.0",
-    "canvas": "^2.6.1"
+    "stylelint": "^13.0.0"
   },
   "engines": {
     "node": ">=10.0.0"
