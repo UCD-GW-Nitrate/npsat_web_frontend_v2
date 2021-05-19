@@ -28,7 +28,6 @@ export const CreateModelTownshipFormItem = connect(({ createModelForm }) => ({
   data: createModelForm.step,
 }))(TownshipFormItem);
 
-
 export const CopyModelTownshipFormItem = connect(({ copyAndModifyModelForm }) => ({
   data: copyAndModifyModelForm.step,
 }))(TownshipFormItem);
