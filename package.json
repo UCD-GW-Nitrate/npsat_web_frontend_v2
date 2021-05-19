@@ -32,9 +32,7 @@
     "tsc": "tsc"
   },
   "husky": {
-    "hooks": {
-      "pre-commit": "npm prettier"
-    }
+    "hooks": {}
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
