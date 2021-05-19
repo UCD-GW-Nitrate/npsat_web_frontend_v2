@@ -53,6 +53,7 @@
     "@antv/g2plot": "^2.0.5",
     "antd": "^4.5.4",
     "bizcharts": "^4.0.14",
+    "canvas": "^2.8.0",
     "classnames": "^2.2.6",
     "leaflet": "^1.6.0",
     "lodash": "^4.17.11",
