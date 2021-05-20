@@ -85,7 +85,7 @@ const BoxPlot = ({ percentiles, data, additionalInfo }) => {
         />
         <Axis name="year" />
         <Axis name="range" title />
-        {additionalInfo && additionalInfo.reduction_start_year ? (
+        {additionalInfo && additionalInfo.reduction_start_year && !additionalInfo.is_base ? (
           <Annotation.Line
             start={[additionalInfo.reduction_start_year, 'min']}
             end={[additionalInfo.reduction_start_year, 'max']}
@@ -97,7 +97,7 @@ const BoxPlot = ({ percentiles, data, additionalInfo }) => {
             }}
           />
         ) : null}
-        {additionalInfo && additionalInfo.reduction_end_year ? (
+        {additionalInfo && additionalInfo.reduction_end_year && !additionalInfo.is_base ? (
           <Annotation.Line
             start={[additionalInfo.reduction_end_year, 'min']}
             end={[additionalInfo.reduction_end_year, 'max']}

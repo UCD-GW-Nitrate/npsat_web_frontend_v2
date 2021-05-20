@@ -244,6 +244,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   additionalInfo={{
                     reduction_start_year: customModel.reduction_start_year,
                     reduction_end_year: customModel.reduction_end_year,
+                    is_base: customModel.is_base,
                   }}
                 />
               </Tabs.TabPane>
@@ -262,6 +263,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   additionalInfo={{
                     reduction_start_year: customModel.reduction_start_year,
                     reduction_end_year: customModel.reduction_end_year,
+                    is_base: customModel.is_base,
                   }}
                 />
               </Tabs.TabPane>
@@ -280,6 +282,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   additionalInfo={{
                     reduction_start_year: customModel.reduction_start_year,
                     reduction_end_year: customModel.reduction_end_year,
+                    is_base: customModel.is_base,
                   }}
                 />
               </Tabs.TabPane>
@@ -298,6 +301,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   additionalInfo={{
                     reduction_start_year: customModel.reduction_start_year,
                     reduction_end_year: customModel.reduction_end_year,
+                    is_base: customModel.is_base,
                   }}
                 />
               </Tabs.TabPane>
