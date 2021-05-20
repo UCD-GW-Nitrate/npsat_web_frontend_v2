@@ -326,7 +326,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
               additionalInfo={{
                 reduction_start_year: modelsMap[compare].reduction_start_year,
                 reduction_end_year: modelsMap[compare].reduction_end_year,
-                is_base: modelsMap[compare].is_base
+                is_base: modelsMap[compare].is_base,
               }}
             />
           </Tabs.TabPane>
@@ -345,7 +345,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
               additionalInfo={{
                 reduction_start_year: modelsMap[compare].reduction_start_year,
                 reduction_end_year: modelsMap[compare].reduction_end_year,
-                is_base: modelsMap[compare].is_base
+                is_base: modelsMap[compare].is_base,
               }}
             />
           </Tabs.TabPane>
@@ -364,7 +364,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
               additionalInfo={{
                 reduction_start_year: modelsMap[compare].reduction_start_year,
                 reduction_end_year: modelsMap[compare].reduction_end_year,
-                is_base: modelsMap[compare].is_base
+                is_base: modelsMap[compare].is_base,
               }}
             />
           </Tabs.TabPane>
@@ -383,7 +383,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
               additionalInfo={{
                 reduction_start_year: modelsMap[compare].reduction_start_year,
                 reduction_end_year: modelsMap[compare].reduction_end_year,
-                is_base: modelsMap[compare].is_base
+                is_base: modelsMap[compare].is_base,
               }}
             />
           </Tabs.TabPane>
