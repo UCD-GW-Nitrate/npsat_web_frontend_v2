@@ -269,6 +269,7 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
                   additionalInfo={{
                     reduction_start_year: info.reduction_start_year,
                     reduction_end_year: info.reduction_end_year,
+                    is_base: info.is_base
                   }}
                 />
               </Tabs.TabPane>
@@ -279,6 +280,7 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
                   additionalInfo={{
                     reduction_start_year: info.reduction_start_year,
                     reduction_end_year: info.reduction_end_year,
+                    is_base: info.is_base
                   }}
                 />
               </Tabs.TabPane>
@@ -289,6 +291,7 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
                   additionalInfo={{
                     reduction_start_year: info.reduction_start_year,
                     reduction_end_year: info.reduction_end_year,
+                    is_base: info.is_base
                   }}
                 />
               </Tabs.TabPane>
