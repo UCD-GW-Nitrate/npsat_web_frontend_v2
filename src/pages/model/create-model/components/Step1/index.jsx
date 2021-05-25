@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, Divider, Form, Button } from 'antd';
+import { Tabs, Divider, Form, Button, Slider, Switch } from 'antd';
 import { connect } from 'react-redux';
 import { REGION_MACROS } from '@/services/region';
 import { renderRegionFormItem } from '@/pages/model/components/RegionFormItem/createModelForms';
@@ -17,7 +17,9 @@ const Step1 = (props) => {
       span: 19,
     },
   };
-  const { region = REGION_MACROS.CENTRAL_VALLEY, dispatch } = props;
+  const { data, dispatch } = props;
+  const { step1Type: region = REGION_MACROS.CENTRAL_VALLEY, regionFilter = false } = data;
+  const [filter, setFilter] = useState(regionFilter);
   const [regionFormItem, setFormItem] = useState(null);
   const [tabKey, setTabKey] = useState(region.toString());
   useEffect(() => {
@@ -30,6 +32,7 @@ const Step1 = (props) => {
         payload: {
           step1Type: type,
           ...values,
+          regionFilter: filter
         },
       });
     }
@@ -55,6 +58,35 @@ const Step1 = (props) => {
         onFinish={(values) => onSubmit(parseInt(tabKey, 10), values)}
       >
         {regionFormItem}
+        <Form.Item
+          label="Advanced filter"
+          name="advanced_filter"
+        >
+          <Switch
+            checkedChildren="on"
+            unCheckedChildren="off"
+            checked={filter}
+            onClick={(checked => setFilter(checked))}
+          />
+        </Form.Item>
+        {filter ?
+          <>
+            <Form.Item
+              label="Depth range"
+              name="depth_range"
+            >
+              <Slider range />
+            </Form.Item>
+            <Form.Item
+              label="ScreenLen range"
+              name="screen_length_range"
+            >
+              <Slider range />
+            </Form.Item>
+          </>
+          :
+          null
+        }
         <Form.Item
           wrapperCol={{
             xs: {
@@ -90,5 +122,5 @@ const Step1 = (props) => {
 };
 
 export default connect(({ createModelForm }) => ({
-  region: createModelForm.step.step1Type,
+  data: createModelForm.step,
 }))(Step1);
