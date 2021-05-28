@@ -130,7 +130,10 @@ const Model = {
           screen_length_range_min,
         } = state.targetModel;
         regionFilterParams.depth_range = [parseFloat(depth_range_min), parseFloat(depth_range_max)];
-        regionFilterParams.screen_length_range = [parseFloat(screen_length_range_min), parseFloat(screen_length_range_max)];
+        regionFilterParams.screen_length_range = [
+          parseFloat(screen_length_range_min),
+          parseFloat(screen_length_range_max),
+        ];
       }
       const loadedCrops = regions.map((region) => region.id);
       switch (state.current) {
@@ -225,7 +228,10 @@ const Model = {
           screen_length_range_min,
         } = payload;
         regionFilterParams.depth_range = [parseFloat(depth_range_min), parseFloat(depth_range_max)];
-        regionFilterParams.screen_length_range = [parseFloat(screen_length_range_min), parseFloat(screen_length_range_max)];
+        regionFilterParams.screen_length_range = [
+          parseFloat(screen_length_range_min),
+          parseFloat(screen_length_range_max),
+        ];
       }
       const { region_type } = regions[0];
       const loadedRegions = regions.map((region) => region.id);
@@ -296,7 +302,10 @@ const Model = {
           screen_length_range_min,
         } = state.targetModel;
         regionFilterParams.depth_range = [parseFloat(depth_range_min), parseFloat(depth_range_max)];
-        regionFilterParams.screen_length_range = [parseFloat(screen_length_range_min), parseFloat(screen_length_range_max)];
+        regionFilterParams.screen_length_range = [
+          parseFloat(screen_length_range_min),
+          parseFloat(screen_length_range_max),
+        ];
       }
       const { region_type } = regions[0];
       const loadedRegions = regions.map((region) => region.id);

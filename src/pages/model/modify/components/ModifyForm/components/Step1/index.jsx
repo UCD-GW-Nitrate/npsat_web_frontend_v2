@@ -29,7 +29,10 @@ const Step1 = (props) => {
       span: 19,
     },
   };
-  const { step1Type: region = getRegionType(targetModel), regionFilter = targetModel.regionFilter } = data;
+  const {
+    step1Type: region = getRegionType(targetModel),
+    regionFilter = targetModel.regionFilter,
+  } = data;
   const [filter, setFilter] = useState(regionFilter);
   const [regionFormItem, setFormItem] = useState(null);
   const [tabKey, setTabKey] = useState(region.toString());
@@ -151,7 +154,7 @@ const Step1 = (props) => {
                     `region-${REGION_MACROS.COUNTY}-choice`,
                     `region-${REGION_MACROS.B118_BASIN}-choice`,
                     'depth_range',
-                    'screen_length_range'
+                    'screen_length_range',
                   ]);
                   setTabKey(region.toString());
                   setFilter(regionFilter);
