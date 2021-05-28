@@ -66,6 +66,21 @@ const Model = {
             data.regions = payload[`region-${payload.step1Type}-choice`].map((id) => ({ id }));
         }
 
+        // add region filter if applicable
+        if (payload.regionFilter) {
+          if (payload.hasOwnProperty('depth_range')) {
+            const [min, max] = payload.depth_range;
+            data.depth_range_max = max;
+            data.depth_range_min = min;
+          }
+
+          if (payload.hasOwnProperty('screen_length_range')) {
+            const [min, max] = payload.screen_length_range;
+            data.screen_length_range_max = max;
+            data.screen_length_range_min = min;
+          }
+        }
+
         response = yield call(createModel, data, {
           token: payload.token,
           id: payload.user_id,

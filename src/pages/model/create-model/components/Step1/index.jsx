@@ -73,6 +73,16 @@ const Step1 = (props) => {
               label="Depth range"
               name="depth_range"
               initialValue={data.hasOwnProperty('depth_range') ? data.depth_range : [10, 100]}
+              rules={[
+                {
+                  validator: (_, value) => {
+                    if (value[0] >= value[1]) {
+                      return Promise.reject('Range min should be less than max');
+                    }
+                    return Promise.resolve();
+                  }
+                }
+              ]}
             >
               <RangeFormItem rangeConfig={{ max: 100, min: 10, step: 1 }} />
             </Form.Item>
@@ -82,6 +92,16 @@ const Step1 = (props) => {
               initialValue={
                 data.hasOwnProperty('screen_length_range') ? data.screen_length_range : [10, 100]
               }
+              rules={[
+                {
+                  validator: (_, value) => {
+                    if (value[0] >= value[1]) {
+                      return Promise.reject('Range min should be less than max');
+                    }
+                    return Promise.resolve();
+                  }
+                }
+              ]}
             >
               <RangeFormItem rangeConfig={{ max: 100, min: 10, step: 1 }} />
             </Form.Item>
