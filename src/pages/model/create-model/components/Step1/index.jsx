@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, Divider, Form, Button, Slider, Switch } from 'antd';
+import { Tabs, Divider, Form, Button, Switch } from 'antd';
 import { connect } from 'react-redux';
 import { REGION_MACROS } from '@/services/region';
 import { renderRegionFormItem } from '@/pages/model/components/RegionFormItem/createModelForms';
+import RangeFormItem from '@/pages/model/components/RangeFormItem';
 import styles from './index.less';
 
 const { TabPane } = Tabs;
@@ -32,7 +33,7 @@ const Step1 = (props) => {
         payload: {
           step1Type: type,
           ...values,
-          regionFilter: filter
+          regionFilter: filter,
         },
       });
     }
@@ -58,35 +59,34 @@ const Step1 = (props) => {
         onFinish={(values) => onSubmit(parseInt(tabKey, 10), values)}
       >
         {regionFormItem}
-        <Form.Item
-          label="Advanced filter"
-          name="advanced_filter"
-        >
+        <Form.Item label="Advanced filter" name="advanced_filter">
           <Switch
             checkedChildren="on"
             unCheckedChildren="off"
             checked={filter}
-            onClick={(checked => setFilter(checked))}
+            onClick={(checked) => setFilter(checked)}
           />
         </Form.Item>
-        {filter ?
+        {filter ? (
           <>
             <Form.Item
               label="Depth range"
               name="depth_range"
+              initialValue={data.hasOwnProperty('depth_range') ? data.depth_range : [10, 100]}
             >
-              <Slider range />
+              <RangeFormItem rangeConfig={{ max: 100, min: 10, step: 1 }} />
             </Form.Item>
             <Form.Item
               label="ScreenLen range"
               name="screen_length_range"
+              initialValue={
+                data.hasOwnProperty('screen_length_range') ? data.screen_length_range : [10, 100]
+              }
             >
-              <Slider range />
+              <RangeFormItem rangeConfig={{ max: 100, min: 10, step: 1 }} />
             </Form.Item>
           </>
-          :
-          null
-        }
+        ) : null}
         <Form.Item
           wrapperCol={{
             xs: {
