@@ -10,7 +10,7 @@ import Step1 from './index.jsx';
 configure({ adapter: new Adapter() });
 
 describe('Create Model Step1 unit shallow test suits', () => {
-  const wrapper = shallow(<Step1.WrappedComponent user={{ currentUser: {} }} />);
+  const wrapper = shallow(<Step1.WrappedComponent data={{}} />);
   it('#1 Step1 Tab rendering', () => {
     expect(wrapper.find('Tabs').length).toBe(1);
   });

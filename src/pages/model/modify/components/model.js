@@ -49,6 +49,7 @@ const Model = {
           modifications,
           public: false,
           is_base: isBAU,
+          applied_simulation_filter: payload.regionFilter,
         };
 
         switch (payload.step1Type) {
@@ -61,6 +62,21 @@ const Model = {
           case REGION_MACROS.B118_BASIN:
           case REGION_MACROS.TOWNSHIPS:
             data.regions = payload[`region-${payload.step1Type}-choice`].map((id) => ({ id }));
+        }
+
+        // add region filter if applicable
+        if (payload.regionFilter) {
+          if (payload.hasOwnProperty('depth_range')) {
+            const [min, max] = payload.depth_range;
+            data.depth_range_max = max;
+            data.depth_range_min = min;
+          }
+
+          if (payload.hasOwnProperty('screen_length_range')) {
+            const [min, max] = payload.screen_length_range;
+            data.screen_length_range_max = max;
+            data.screen_length_range_min = min;
+          }
         }
 
         response = yield call(createModel, data, {
@@ -102,8 +118,20 @@ const Model = {
         modifications,
         name,
         description,
+        applied_simulation_filter: regionFilter,
       } = state.targetModel;
       const { region_type } = regions[0];
+      const regionFilterParams = {};
+      if (regionFilter) {
+        const {
+          depth_range_max,
+          depth_range_min,
+          screen_length_range_max,
+          screen_length_range_min,
+        } = state.targetModel;
+        regionFilterParams.depth_range = [parseFloat(depth_range_min), parseFloat(depth_range_max)];
+        regionFilterParams.screen_length_range = [parseFloat(screen_length_range_min), parseFloat(screen_length_range_max)];
+      }
       const loadedCrops = regions.map((region) => region.id);
       switch (state.current) {
         case 'Modify Info':
@@ -157,6 +185,8 @@ const Model = {
               ...state.step,
               step1Type: region_type,
               [`region-${region_type}-choice`]: loadedCrops,
+              regionFilter,
+              ...regionFilterParams,
             },
           };
       }
@@ -184,7 +214,19 @@ const Model = {
         modifications,
         name,
         description,
+        applied_simulation_filter: regionFilter,
       } = payload;
+      const regionFilterParams = {};
+      if (regionFilter) {
+        const {
+          depth_range_max,
+          depth_range_min,
+          screen_length_range_max,
+          screen_length_range_min,
+        } = payload;
+        regionFilterParams.depth_range = [parseFloat(depth_range_min), parseFloat(depth_range_max)];
+        regionFilterParams.screen_length_range = [parseFloat(screen_length_range_min), parseFloat(screen_length_range_max)];
+      }
       const { region_type } = regions[0];
       const loadedRegions = regions.map((region) => region.id);
       return {
@@ -195,6 +237,8 @@ const Model = {
           // step1 pre fill
           step1Type: region_type,
           [`region-${region_type}-choice`]: loadedRegions,
+          regionFilter,
+          ...regionFilterParams,
 
           // step2 pre fill
           flow_scenario: flow_scenario.id,
@@ -241,7 +285,19 @@ const Model = {
         modifications,
         name,
         description,
+        applied_simulation_filter: regionFilter,
       } = state.targetModel;
+      const regionFilterParams = {};
+      if (regionFilter) {
+        const {
+          depth_range_max,
+          depth_range_min,
+          screen_length_range_max,
+          screen_length_range_min,
+        } = state.targetModel;
+        regionFilterParams.depth_range = [parseFloat(depth_range_min), parseFloat(depth_range_max)];
+        regionFilterParams.screen_length_range = [parseFloat(screen_length_range_min), parseFloat(screen_length_range_max)];
+      }
       const { region_type } = regions[0];
       const loadedRegions = regions.map((region) => region.id);
       return {
@@ -252,6 +308,8 @@ const Model = {
           // step1 pre fill
           step1Type: region_type,
           [`region-${region_type}-choice`]: loadedRegions,
+          regionFilter,
+          ...regionFilterParams,
 
           // step2 pre fill
           flow_scenario: flow_scenario.id,
