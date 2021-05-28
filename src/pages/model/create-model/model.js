@@ -52,6 +52,7 @@ const Model = {
           modifications,
           public: false,
           is_base: isBAU,
+          applied_simulation_filter: payload.regionFilter,
         };
 
         switch (payload.step1Type) {

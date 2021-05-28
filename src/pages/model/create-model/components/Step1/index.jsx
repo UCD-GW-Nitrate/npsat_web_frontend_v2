@@ -80,8 +80,8 @@ const Step1 = (props) => {
                       return Promise.reject('Range min should be less than max');
                     }
                     return Promise.resolve();
-                  }
-                }
+                  },
+                },
               ]}
             >
               <RangeFormItem rangeConfig={{ max: 100, min: 10, step: 1 }} />
@@ -99,8 +99,8 @@ const Step1 = (props) => {
                       return Promise.reject('Range min should be less than max');
                     }
                     return Promise.resolve();
-                  }
-                }
+                  },
+                },
               ]}
             >
               <RangeFormItem rangeConfig={{ max: 100, min: 10, step: 1 }} />
