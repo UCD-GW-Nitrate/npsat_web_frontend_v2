@@ -4,6 +4,7 @@ import { REGION_MACROS } from '@/services/region';
 import { Button, Divider, Form, Switch, Tabs, Tooltip } from 'antd';
 import { renderRegionFormItem } from '@/pages/model/components/RegionFormItem/copyAndModifyForms';
 import RangeFormItem from '@/pages/model/components/RangeFormItem';
+import { DEPTH_RANGE_CONFIG, SCREEN_LENGTH_RANGE_CONFIG } from '@/services/model';
 import styles from './index.less';
 
 const { TabPane } = Tabs;
@@ -86,7 +87,7 @@ const Step1 = (props) => {
             <Form.Item
               label="Depth range"
               name="depth_range"
-              initialValue={data.hasOwnProperty('depth_range') ? data.depth_range : [10, 100]}
+              initialValue={data.hasOwnProperty('depth_range') ? data.depth_range : [0, 800]}
               rules={[
                 {
                   validator: (_, value) => {
@@ -99,13 +100,13 @@ const Step1 = (props) => {
                 },
               ]}
             >
-              <RangeFormItem rangeConfig={{ max: 100, min: 10, step: 1 }} />
+              <RangeFormItem rangeConfig={DEPTH_RANGE_CONFIG} />
             </Form.Item>
             <Form.Item
               label="ScreenLen range"
               name="screen_length_range"
               initialValue={
-                data.hasOwnProperty('screen_length_range') ? data.screen_length_range : [10, 100]
+                data.hasOwnProperty('screen_length_range') ? data.screen_length_range : [0, 800]
               }
               rules={[
                 {
@@ -118,7 +119,7 @@ const Step1 = (props) => {
                 },
               ]}
             >
-              <RangeFormItem rangeConfig={{ max: 100, min: 10, step: 1 }} />
+              <RangeFormItem rangeConfig={SCREEN_LENGTH_RANGE_CONFIG} />
             </Form.Item>
           </>
         ) : null}
