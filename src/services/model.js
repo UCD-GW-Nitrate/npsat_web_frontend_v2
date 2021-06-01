@@ -11,6 +11,18 @@ export const MODEL_STATUS_MACROS = {
   ERROR: 4,
 };
 
+export const DEPTH_RANGE_CONFIG = {
+  min: 0,
+  max: 800,
+  step: 1,
+};
+
+export const SCREEN_LENGTH_RANGE_CONFIG = {
+  min: 0,
+  max: 800,
+  step: 1,
+};
+
 export async function searchModel(params, filter, token, search_text, ...options) {
   const { pageSize, current } = params;
   const [sorter, scenarios, status] = options;

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, Divider, Form, Button } from 'antd';
+import { Tabs, Divider, Form, Button, Switch } from 'antd';
 import { connect } from 'react-redux';
 import { REGION_MACROS } from '@/services/region';
 import { renderRegionFormItem } from '@/pages/model/components/RegionFormItem/createModelForms';
+import RangeFormItem from '@/pages/model/components/RangeFormItem';
+import { DEPTH_RANGE_CONFIG, SCREEN_LENGTH_RANGE_CONFIG } from '@/services/model';
 import styles from './index.less';
 
 const { TabPane } = Tabs;
@@ -17,7 +19,9 @@ const Step1 = (props) => {
       span: 19,
     },
   };
-  const { region = REGION_MACROS.CENTRAL_VALLEY, dispatch } = props;
+  const { data, dispatch } = props;
+  const { step1Type: region = REGION_MACROS.CENTRAL_VALLEY, regionFilter = false } = data;
+  const [filter, setFilter] = useState(regionFilter);
   const [regionFormItem, setFormItem] = useState(null);
   const [tabKey, setTabKey] = useState(region.toString());
   useEffect(() => {
@@ -30,6 +34,7 @@ const Step1 = (props) => {
         payload: {
           step1Type: type,
           ...values,
+          regionFilter: filter,
         },
       });
     }
@@ -55,6 +60,54 @@ const Step1 = (props) => {
         onFinish={(values) => onSubmit(parseInt(tabKey, 10), values)}
       >
         {regionFormItem}
+        <Form.Item label="Advanced filter" name="advanced_filter">
+          <Switch
+            checkedChildren="on"
+            unCheckedChildren="off"
+            checked={filter}
+            onClick={(checked) => setFilter(checked)}
+          />
+        </Form.Item>
+        {filter ? (
+          <>
+            <Form.Item
+              label="Depth range"
+              name="depth_range"
+              initialValue={data.hasOwnProperty('depth_range') ? data.depth_range : [0, 800]}
+              rules={[
+                {
+                  validator: (_, value) => {
+                    if (value[0] >= value[1]) {
+                      return Promise.reject('Range min should be less than max');
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
+            >
+              <RangeFormItem rangeConfig={DEPTH_RANGE_CONFIG} />
+            </Form.Item>
+            <Form.Item
+              label="ScreenLen range"
+              name="screen_length_range"
+              initialValue={
+                data.hasOwnProperty('screen_length_range') ? data.screen_length_range : [0, 800]
+              }
+              rules={[
+                {
+                  validator: (_, value) => {
+                    if (value[0] >= value[1]) {
+                      return Promise.reject('Range min should be less than max');
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
+            >
+              <RangeFormItem rangeConfig={SCREEN_LENGTH_RANGE_CONFIG} />
+            </Form.Item>
+          </>
+        ) : null}
         <Form.Item
           wrapperCol={{
             xs: {
@@ -90,5 +143,5 @@ const Step1 = (props) => {
 };
 
 export default connect(({ createModelForm }) => ({
-  region: createModelForm.step.step1Type,
+  data: createModelForm.step,
 }))(Step1);

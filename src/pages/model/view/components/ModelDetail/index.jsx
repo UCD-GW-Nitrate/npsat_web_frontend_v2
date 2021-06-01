@@ -206,6 +206,18 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
             <Descriptions.Item label="Region(s)" span={3}>
               {regions.map((region) => region.name).join(', ') || ''}
             </Descriptions.Item>
+            {info.applied_simulation_filter ? (
+              <>
+                <Descriptions.Item
+                  label="Depth range"
+                  span={1.5}
+                >{`${info.depth_range_min} ~ ${info.depth_range_max}`}</Descriptions.Item>
+                <Descriptions.Item
+                  label="Screen length range"
+                  span={1.5}
+                >{`${info.screen_length_range_min} ~ ${info.screen_length_range_max}`}</Descriptions.Item>
+              </>
+            ) : null}
           </Descriptions>
         </Card>
 

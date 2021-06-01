@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { REGION_MACROS } from '@/services/region';
-import { Button, Divider, Form, Tabs, Tooltip } from 'antd';
+import { Button, Divider, Form, Switch, Tabs, Tooltip } from 'antd';
 import { renderRegionFormItem } from '@/pages/model/components/RegionFormItem/copyAndModifyForms';
+import RangeFormItem from '@/pages/model/components/RangeFormItem';
+import { DEPTH_RANGE_CONFIG, SCREEN_LENGTH_RANGE_CONFIG } from '@/services/model';
 import styles from './index.less';
 
 const { TabPane } = Tabs;
@@ -15,7 +17,7 @@ const { TabPane } = Tabs;
  * @constructor
  */
 const Step1 = (props) => {
-  const { targetModel, dispatch } = props;
+  const { targetModel, dispatch, data } = props;
   const getRegionType = (template) => {
     return template.regions[0].region_type;
   };
@@ -28,7 +30,11 @@ const Step1 = (props) => {
       span: 19,
     },
   };
-  const { region = getRegionType(targetModel) } = props;
+  const {
+    step1Type: region = getRegionType(targetModel),
+    regionFilter = targetModel.regionFilter,
+  } = data;
+  const [filter, setFilter] = useState(regionFilter);
   const [regionFormItem, setFormItem] = useState(null);
   const [tabKey, setTabKey] = useState(region.toString());
   useEffect(() => {
@@ -41,6 +47,7 @@ const Step1 = (props) => {
         payload: {
           step1Type: type,
           ...values,
+          regionFilter: filter,
         },
       });
     }
@@ -67,6 +74,55 @@ const Step1 = (props) => {
         onFinish={(values) => onSubmit(parseInt(tabKey, 10), values)}
       >
         {regionFormItem}
+        <Form.Item label="Advanced filter">
+          <Switch
+            checkedChildren="on"
+            unCheckedChildren="off"
+            checked={filter}
+            onClick={(checked) => setFilter(checked)}
+          />
+        </Form.Item>
+        {filter ? (
+          <>
+            <Form.Item
+              label="Depth range"
+              name="depth_range"
+              initialValue={data.hasOwnProperty('depth_range') ? data.depth_range : [0, 800]}
+              rules={[
+                {
+                  validator: (_, value) => {
+                    if (value[0] >= value[1]) {
+                      console.log(value);
+                      return Promise.reject('Range min should be less than max');
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
+            >
+              <RangeFormItem rangeConfig={DEPTH_RANGE_CONFIG} />
+            </Form.Item>
+            <Form.Item
+              label="ScreenLen range"
+              name="screen_length_range"
+              initialValue={
+                data.hasOwnProperty('screen_length_range') ? data.screen_length_range : [0, 800]
+              }
+              rules={[
+                {
+                  validator: (_, value) => {
+                    if (value[0] >= value[1]) {
+                      return Promise.reject('Range min should be less than max');
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
+            >
+              <RangeFormItem rangeConfig={SCREEN_LENGTH_RANGE_CONFIG} />
+            </Form.Item>
+          </>
+        ) : null}
         <Form.Item
           wrapperCol={{
             xs: {
@@ -98,8 +154,11 @@ const Step1 = (props) => {
                     `region-${REGION_MACROS.CVHM_FARM}-choice`,
                     `region-${REGION_MACROS.COUNTY}-choice`,
                     `region-${REGION_MACROS.B118_BASIN}-choice`,
+                    'depth_range',
+                    'screen_length_range',
                   ]);
                   setTabKey(region.toString());
+                  setFilter(regionFilter);
                 }
               }}
             >
@@ -127,5 +186,5 @@ const Step1 = (props) => {
 
 export default connect(({ copyAndModifyModelForm }) => ({
   targetModel: copyAndModifyModelForm.targetModel,
-  region: copyAndModifyModelForm.step.step1Type,
+  data: copyAndModifyModelForm.step,
 }))(Step1);
