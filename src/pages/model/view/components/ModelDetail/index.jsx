@@ -6,7 +6,12 @@ import { history } from 'umi';
 import MultilinePlot from '@/components/Plots/BizCharts/MultilinePlot/dynamic';
 import AreaPlot from '@/components/Plots/BizCharts/AreaPlot/dynamic';
 import BoxPlot from '@/components/Plots/BizCharts/BoxPlot/dynamic';
-import { getModelsStatus, MODEL_STATUS_MACROS } from '@/services/model';
+import {
+  getModelsStatus,
+  MODEL_STATUS_MACROS,
+  DEPTH_RANGE_CONFIG,
+  SCREEN_LENGTH_RANGE_CONFIG,
+} from '@/services/model';
 import { useModelRegions, useModelResults } from '@/hooks/model';
 import CountyMap from '../../../../../components/Maps/CountyMap';
 import TableWrapper from './components/TableWrapper';
@@ -208,14 +213,18 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
             </Descriptions.Item>
             {info.applied_simulation_filter ? (
               <>
-                <Descriptions.Item
-                  label="Depth range"
-                  span={1.5}
-                >{`${info.depth_range_min} ~ ${info.depth_range_max}`}</Descriptions.Item>
-                <Descriptions.Item
-                  label="Screen length range"
-                  span={1.5}
-                >{`${info.screen_length_range_min} ~ ${info.screen_length_range_max}`}</Descriptions.Item>
+                <Descriptions.Item label="Depth range" span={1.5}>{`${info.depth_range_min} ~ ${
+                  // intentional using "==" instead of "===" to compare float and string
+                  info.depth_range_max == DEPTH_RANGE_CONFIG.max + 1 ? 'max' : info.depth_range_max
+                }`}</Descriptions.Item>
+                <Descriptions.Item label="Screen length range" span={1.5}>{`${
+                  info.screen_length_range_min
+                } ~ ${
+                  // intentional using "==" instead of "===" to compare float and string
+                  info.screen_length_range_max == SCREEN_LENGTH_RANGE_CONFIG.max + 1
+                    ? 'max'
+                    : info.screen_length_range_max
+                }`}</Descriptions.Item>
               </>
             ) : null}
           </Descriptions>

@@ -15,12 +15,14 @@ export const DEPTH_RANGE_CONFIG = {
   min: 0,
   max: 800,
   step: 1,
+  maxIdentifier: true,
 };
 
 export const SCREEN_LENGTH_RANGE_CONFIG = {
   min: 0,
   max: 800,
   step: 1,
+  maxIdentifier: true,
 };
 
 export async function searchModel(params, filter, token, search_text, ...options) {
