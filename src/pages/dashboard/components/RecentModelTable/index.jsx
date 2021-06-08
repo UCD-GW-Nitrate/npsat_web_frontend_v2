@@ -24,6 +24,7 @@ const RecentModelTable = ({ title, data, columns, extra = null }) => {
           search={false}
           options={false}
           pagination={false}
+          scroll={{ x: 'max-content' }}
         />
       </ConfigProvider>
     </Card>

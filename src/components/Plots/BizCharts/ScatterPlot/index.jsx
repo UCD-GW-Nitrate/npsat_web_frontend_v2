@@ -138,7 +138,7 @@ const ScatterPlot = ({ data }) => {
             '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' +
             '<span style="padding-bottom: 5px">End year: {sim_end_year}</span><br/>' +
             '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' +
-            '<span style="padding-bottom: 5px">Water content: {water_content.toFixed(0)}</span><br/>' +
+            '<span style="padding-bottom: 5px">Water content: {water_content}</span><br/>' +
             '</li>'
           }
         />
