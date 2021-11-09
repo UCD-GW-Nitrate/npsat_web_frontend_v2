@@ -4,7 +4,7 @@ import { REGION_MACROS } from '@/services/region';
 const Model = {
   namespace: 'createModelForm',
   state: {
-    current: 'Select Regions',
+    current: 'Select Settings',
     step: { is_base: false },
     results: {
       id: null,

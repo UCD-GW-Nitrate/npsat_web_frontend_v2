@@ -20,9 +20,9 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
   const [mapData, setMapData] = useState([]);
   useEffect(() => {
     (async () => {
-      const { results: mapDate } = await getData();
-      setList(mapDate);
-      setMapData(mapDate.map((region) => configureData(region)));
+      const { results: mapData } = await getData();
+      setList(mapData);
+      setMapData(mapData.map((region) => configureData(region)));
     })();
   }, []);
   const onListChange = (v) => {

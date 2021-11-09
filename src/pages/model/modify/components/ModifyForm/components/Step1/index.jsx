@@ -31,7 +31,7 @@ const Step1 = (props) => {
     },
   };
   const {
-    step1Type: region = getRegionType(targetModel),
+    step2Type: region = getRegionType(targetModel),
     regionFilter = targetModel.regionFilter,
   } = data;
   const [filter, setFilter] = useState(regionFilter);
@@ -45,7 +45,7 @@ const Step1 = (props) => {
       dispatch({
         type: 'copyAndModifyModelForm/saveStepFormData',
         payload: {
-          step1Type: type,
+          step2Type: type,
           ...values,
           regionFilter: filter,
         },

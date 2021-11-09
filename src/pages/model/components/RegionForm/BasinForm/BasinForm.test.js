@@ -9,7 +9,7 @@ import { CreateModelBasinForm } from './index.jsx';
 
 configure({ adapter: new Adapter() });
 
-describe('Create Model Step1 CVForm unit shallow test suits', () => {
+describe('Create Model Step1(1)(1) CVForm unit shallow test suits', () => {
   const wrapper = shallow(<CreateModelBasinForm.WrappedComponent createModelForm={{ step: {} }} />);
   it('#1 Form Item rendering', () => {
     expect(wrapper.find('FormItem').length).toBe(2);

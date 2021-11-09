@@ -13,7 +13,7 @@ const { Step } = Steps;
 
 const getCurrentStepAndComponent = (current) => {
   switch (current) {
-    case 'Select Settings':
+    case 'Select Regions':
     case 1:
       return {
         step: 1,
@@ -38,7 +38,7 @@ const getCurrentStepAndComponent = (current) => {
         component: <Step5 />,
       };
 
-    case 'Select Regions':
+    case 'Select Settings':
     default:
       return {
         step: 0,
@@ -48,8 +48,8 @@ const getCurrentStepAndComponent = (current) => {
 };
 
 const mapStepToCurrent = {
-  0: 'Select Regions',
-  1: 'Select Settings',
+  0: 'Select Settings',
+  1: 'Select Regions',
   2: 'Select Crops',
   3: 'Model Info',
   4: 'Results',
@@ -82,8 +82,8 @@ const StepForm = ({ dispatch, current, isBAU }) => {
               }
             }}
           >
-            <Step title="Select Regions" disabled={currentStep >= 4} />
-            <Step title="Select Settings" disabled={currentStep < 1 || currentStep >= 4} />
+            <Step title="Select Settings" disabled={currentStep >= 4} />
+            <Step title="Select Regions" disabled={currentStep < 1 || currentStep >= 4} />
             <Step title="Select Crops" disabled={currentStep < 2 || currentStep >= 4 || isBAU} />
             <Step title="Enter Model Meta" disabled={currentStep < 3 || currentStep >= 4} />
             <Step title="Results" disabled />
