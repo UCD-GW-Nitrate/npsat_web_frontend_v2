@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Select, Spin } from 'antd';
 import Map from '@/components/Maps/FormMap';
+import { Row,Col, } from 'antd';
+
 
 const { Option } = Select;
 
@@ -63,7 +65,16 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
           </Option>
         ))}
       </Select>
-      <Map data={mapData} onChange={onMapSelect} values={value} />
+
+      <Row>
+        <Col span={19}>
+          <Map data={mapData} onChange={onMapSelect} values={value} />
+        </Col>
+        <Col span={1}/>
+        <Col span={4}>
+          <h1> The number of wells shows here!</h1>
+        </Col>
+      </Row>   
     </>
   ) : (
     <Spin size="large" tip="loading data and map..." />

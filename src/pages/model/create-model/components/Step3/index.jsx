@@ -41,7 +41,7 @@ const Step3 = (props) => {
       });
       dispatch({
         type: 'createModelForm/saveCurrentStep',
-        payload: 'Select Settings',
+        payload: 'Select Regions',
       });
     }
   };

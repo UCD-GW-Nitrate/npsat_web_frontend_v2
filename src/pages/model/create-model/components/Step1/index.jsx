@@ -18,6 +18,7 @@ const Step1 = (props) => {
     flowScenarios: flowScen,
     loadScenarios: loadScen,
     unsatScenarios: unsatScen,
+    welltypeScenarios: welltypeScen,
   } = useScenarioGroups();
   
   const [isBAU, setBAU] = useState(data.hasOwnProperty('is_base') ? data.is_base : false);
@@ -114,6 +115,32 @@ const Step1 = (props) => {
         >
           <Select>
             {loadScen.map((scen) => (
+              <Select.Option value={scen.id} key={scen.id}>
+                <>
+                  {scen.name}{' '}
+                  {scen.description ? (
+                    <Tooltip title={scen.description}>
+                      <InfoCircleOutlined />
+                    </Tooltip>
+                  ) : null}
+                </>
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="welltype_scenario"
+          label="Well Type scenario"
+          rules={[
+            {
+              required: true,
+              message: 'Please select a well type scenario',
+            },
+          ]}
+          initialValue={data.hasOwnProperty('welltype_scenario') ? data.welltype_scenario : undefined}
+        >
+          <Select>
+            {welltypeScen.map((scen) => (
               <Select.Option value={scen.id} key={scen.id}>
                 <>
                   {scen.name}{' '}

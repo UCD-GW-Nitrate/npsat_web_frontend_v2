@@ -7,6 +7,7 @@ export const SCENARIO_MACROS = {
   TYPE_FLOW: 1,
   TYPE_UNSAT: 2,
   TYPE_LOAD: 3,
+  TYPE_WELLTYPE: 4,
 };
 
 export async function getScenarios(type) {
@@ -28,4 +29,8 @@ export async function getUnsatScenario() {
 
 export async function getLoadScenario() {
   return getScenarios(SCENARIO_MACROS.TYPE_LOAD);
+}
+
+export async function getWelltypeScenario() {
+  return getScenarios(SCENARIO_MACROS.TYPE_WELLTYPE);
 }

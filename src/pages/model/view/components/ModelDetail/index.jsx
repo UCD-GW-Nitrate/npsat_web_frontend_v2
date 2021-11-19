@@ -189,6 +189,9 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
             <Descriptions.Item label="Load Scenario">
               {info.load_scenario ? info.load_scenario.name || '' : ''}
             </Descriptions.Item>
+            <Descriptions.Item label="Well Type Scenario">
+              {info.welltype_scenario ? info.welltype_scenario.name || '' : ''}
+            </Descriptions.Item>
             <Descriptions.Item label="Unsat Scenario">
               {info.unsat_scenario ? info.unsat_scenario.name || '' : ''}
             </Descriptions.Item>
