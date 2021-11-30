@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Select, Spin } from 'antd';
 import Map from '@/components/Maps/FormMap';
 import { Row,Col, } from 'antd';
+import WellNumber from './WellNumber';
 
 
 const { Option } = Select;
@@ -17,9 +18,10 @@ const { Option } = Select;
  * @returns {JSX.Element}
  * @constructor
  */
-const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholder }) => {
+const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholder, regionType }) => {
   const [countyList, setList] = useState([]);
   const [mapData, setMapData] = useState([]);
+  const [selectedArea, setArea] = useState([]);
   useEffect(() => {
     (async () => {
       const { results: mapData } = await getData();
@@ -27,13 +29,37 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
       setMapData(mapData.map((region) => configureData(region)));
     })();
   }, []);
+  
   const onListChange = (v) => {
-    if (onChange) {
+
+    if (onChange) { 
       onChange(v);
+      setArea(v);
     }
   };
 
+  const onListSelect = (v,o) => {
+    if (selectedArea.indexOf(v) === -1) {
+     setArea([...selectedArea, v]);
+    }
+    else{
+        selectedArea.slice(0,selectedArea.indexOf(v)).concat(
+          selectedArea.slice(selectedArea.indexOf(v) + 1)
+        );
+    }
+  };
+  
+
   const onMapSelect = (selectingMap, selectedMaps) => {
+    if (selectedArea.indexOf(selectingMap) === -1) {
+      setArea([...selectedArea, selectingMap]);
+     }
+     else{
+         selectedArea.slice(0,selectedArea.indexOf(selectingMap)).concat(
+           selectedArea.slice(selectedArea.indexOf(selectingMap) + 1)
+         );
+     }
+
     if (onChange) {
       if (selectedMaps.indexOf(selectingMap) === -1) {
         onChange([...selectedMaps, selectingMap]);
@@ -53,11 +79,13 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
         placeholder={placeholder}
         optionFilterProp="children"
         value={value}
+        onSelect={onListSelect}
         onChange={onListChange}
         // filterOption={(input, option) =>
         //   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         // }
         mode="multiple"
+        allowClear={true}
       >
         {countyList.map((county) => (
           <Option value={county.id} key={county.id}>
@@ -65,16 +93,8 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
           </Option>
         ))}
       </Select>
-
-      <Row>
-        <Col span={19}>
+          <WellNumber countyList={countyList} onChange={selectedArea} regionType={regionType}></WellNumber>
           <Map data={mapData} onChange={onMapSelect} values={value} />
-        </Col>
-        <Col span={1}/>
-        <Col span={4}>
-          <h1> The number of wells shows here!</h1>
-        </Col>
-      </Row>   
     </>
   ) : (
     <Spin size="large" tip="loading data and map..." />

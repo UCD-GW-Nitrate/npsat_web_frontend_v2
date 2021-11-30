@@ -38,7 +38,7 @@ const BaseFormItem = ({
           : []
       }
     >
-      <SelectAndMap configureData={configureData} getData={getData} placeholder={placeholder} />
+      <SelectAndMap configureData={configureData} getData={getData} placeholder={placeholder} regionType={regionType}/>
     </Form.Item>
   );
 };
