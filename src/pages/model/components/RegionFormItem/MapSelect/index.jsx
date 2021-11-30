@@ -55,9 +55,10 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
       setArea([...selectedArea, selectingMap]);
      }
      else{
-         selectedArea.slice(0,selectedArea.indexOf(selectingMap)).concat(
-           selectedArea.slice(selectedArea.indexOf(selectingMap) + 1)
-         );
+        setArea([
+          ...selectedMaps.slice(0, selectedMaps.indexOf(selectingMap)),
+          ...selectedMaps.slice(selectedMaps.indexOf(selectingMap) + 1),
+        ]);
      }
 
     if (onChange) {
