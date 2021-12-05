@@ -55,7 +55,7 @@ const Model = {
           applied_simulation_filter: payload.regionFilter,
         };
 
-        switch (payload.step1Type) {
+        switch (payload.step2Type) {
           case REGION_MACROS.CENTRAL_VALLEY:
             data.regions = [{ id: payload.CV }];
             break;
@@ -64,7 +64,7 @@ const Model = {
           case REGION_MACROS.CVHM_FARM:
           case REGION_MACROS.B118_BASIN:
           case REGION_MACROS.TOWNSHIPS:
-            data.regions = payload[`region-${payload.step1Type}-choice`].map((id) => ({ id }));
+            data.regions = payload[`region-${payload.step2Type}-choice`].map((id) => ({ id }));
         }
 
         // add region filter if applicable

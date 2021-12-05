@@ -94,7 +94,7 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
           </Option>
         ))}
       </Select>
-          <WellNumber countyList={countyList} onChange={selectedArea} regionType={regionType}></WellNumber>
+          <WellNumber countyList={countyList} onChange={selectedArea} regionType={regionType} ></WellNumber>
           <Map data={mapData} onChange={onMapSelect} values={value} />
     </>
   ) : (

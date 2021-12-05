@@ -2,21 +2,33 @@ import cvhm from "./ScenariosWellData/cvhm";
 import c2vsim from "./ScenariosWellData/c2vsim";
 import { Card } from "antd";
 import { identity } from "lodash";
+import { connect } from 'react-redux';
 
 //onChange contains dynamic region id based on selections
 //countyList contains both name and id based on region selected
-const WellNumber = ({onChange, scenario = 'c2vsim', countyList, regionType}) => {
+const WellNumber = ({onChange, countyList, regionType, scenario, data, filter}) => {
 
     
     console.log('selected:', onChange);
+    
     //load well data based on scenario
     var wellData = [];
-    if (scenario === 'c2vsim')
+    if (scenario === 8)
         wellData = c2vsim;
     else
         wellData = cvhm;
     
     console.log('County List', countyList);
+
+    //prepare advanced filter if exist
+    var depth_range = []; 
+    var screen_length_range = [];
+    if (filter){
+        depth_range = data.depth_range;
+        screen_length_range = data.screen_length_range;
+        console.log('depth',depth_range);
+        console.log('SL', screen_length_range);
+    }
 
     // anchor data point for each region:
     // basin: id, mantis_id
@@ -44,7 +56,8 @@ const WellNumber = ({onChange, scenario = 'c2vsim', countyList, regionType}) => 
     // county 4
     // Township 5
 
-    //Step1. store well data in dictionary for easy lookup
+    //Step1. store well data in dictionary for easy lookup 
+    // => [# (number of wells), well_depth(D), screen_length (SL)]
     //Step2. look up well dictionary based on regionType 
     var wellDic = {};
     var wellCount = 0;
@@ -53,42 +66,87 @@ const WellNumber = ({onChange, scenario = 'c2vsim', countyList, regionType}) => 
         //Step1
             wellData.map((well) => {
                 if (!wellDic.hasOwnProperty(well.Basin)) {
-                    wellDic[well.Basin] = 1;
+                    if (filter){
+                        if (well.D >= depth_range[0] && well.D <= depth_range[1]
+                            && well.SL >= screen_length_range[0] && well.SL <= screen_length_range[1]) 
+                            wellDic[well.Basin] = [1, well.D, well.SL];
+                        else
+                            wellDic[well.Basin] = [0, well.D, well.SL];
+                    }
+                    else{
+                        wellDic[well.Basin] = [1, well.D, well.SL];
+                    }
                 }
                 else {
-                    wellDic[well.Basin]++;
+                    if (filter){
+                        if (well.D >= depth_range[0] && well.D <= depth_range[1]
+                            && well.SL >= screen_length_range[0] && well.SL <= screen_length_range[1]) 
+                            wellDic[well.Basin][0]++;
+                    }
+                    else
+                        wellDic[well.Basin][0]++;
                 }
             });
         //Step2
-            mantis_id.map((id) => wellCount += wellDic[id]);
+            mantis_id.map((id) => wellCount += wellDic[id][0]);
             break;
         case 2:// subRegion
             //Step1
             wellData.map((well) => {
                 if (!wellDic.hasOwnProperty(well.Sub)) {
-                    wellDic[well.Sub] = 1;
+                    if (filter){
+                        if (well.D >= depth_range[0] && well.D <= depth_range[1]
+                            && well.SL >= screen_length_range[0] && well.SL <= screen_length_range[1]) 
+                            wellDic[well.Sub] = [1, well.D, well.SL];
+                        else
+                            wellDic[well.Sub] = [0, well.D, well.SL];
+                    }
+                    else{
+                        wellDic[well.Sub] = [1, well.D, well.SL];
+                    }
                 }
                 else {
-                    wellDic[well.Sub]++;
+                    if (filter){
+                        if (well.D >= depth_range[0] && well.D <= depth_range[1]
+                            && well.SL >= screen_length_range[0] && well.SL <= screen_length_range[1]) 
+                            wellDic[well.Sub][0]++;
+                    }
+                    else
+                        wellDic[well.Sub][0]++;
                 }
             });
         //Step2
-            mantis_id.map((id) => wellCount += wellDic[id]);
+            mantis_id.map((id) => wellCount += wellDic[id][0]);
             break;
         case 3://B118 Basin
             //Step1
             wellData.map((well) => {
                 if (!wellDic.hasOwnProperty(well.B118)) {
-                    wellDic[well.B118] = 1;
+                    if (filter){
+                        if (well.D >= depth_range[0] && well.D <= depth_range[1]
+                            && well.SL >= screen_length_range[0] && well.SL <= screen_length_range[1]) 
+                            wellDic[well.B118] = [1, well.D, well.SL];
+                        else
+                            wellDic[well.B118] = [0, well.D, well.SL];
+                    }
+                    else{
+                        wellDic[well.B118] = [1, well.D, well.SL];
+                    }
                 }
                 else {
-                    wellDic[well.B118]++;
+                    if (filter){
+                        if (well.D >= depth_range[0] && well.D <= depth_range[1]
+                            && well.SL >= screen_length_range[0] && well.SL <= screen_length_range[1]) 
+                            wellDic[well.B118][0]++;
+                    }
+                    else
+                        wellDic[well.B118][0]++;
                 }
             });
         //Step2
             mantis_id.map((id) => {
                 if (wellDic.hasOwnProperty(id)){
-                    wellCount += wellDic[id];
+                    wellCount += wellDic[id][0];
                 }
             });
             break;
@@ -96,16 +154,31 @@ const WellNumber = ({onChange, scenario = 'c2vsim', countyList, regionType}) => 
             //Step1
             wellData.map((well) => {
                 if (!wellDic.hasOwnProperty(well.County)) {
-                    wellDic[well.County] = 1;
+                    if (filter){
+                        if (well.D >= depth_range[0] && well.D <= depth_range[1]
+                            && well.SL >= screen_length_range[0] && well.SL <= screen_length_range[1]) 
+                            wellDic[well.County] = [1, well.D, well.SL];
+                        else
+                            wellDic[well.County] = [0, well.D, well.SL];
+                    }
+                    else{
+                        wellDic[well.County] = [1, well.D, well.SL];
+                    }
                 }
                 else {
-                    wellDic[well.County]++;
+                    if (filter){
+                        if (well.D >= depth_range[0] && well.D <= depth_range[1]
+                            && well.SL >= screen_length_range[0] && well.SL <= screen_length_range[1]) 
+                            wellDic[well.County][0]++;
+                    }
+                    else
+                        wellDic[well.County][0]++;
                 }
             });
         //Step2
         mantis_id.map((id) => {
             if (wellDic.hasOwnProperty(id)){
-                wellCount += wellDic[id];
+                wellCount += wellDic[id][0];
             }
         });
             break;
@@ -113,16 +186,31 @@ const WellNumber = ({onChange, scenario = 'c2vsim', countyList, regionType}) => 
             //Step1
             wellData.map((well) => {
                 if (!wellDic.hasOwnProperty(well.Tship)) {
-                    wellDic[well.Tship] = 1;
+                    if (filter){
+                        if (well.D >= depth_range[0] && well.D <= depth_range[1]
+                            && well.SL >= screen_length_range[0] && well.SL <= screen_length_range[1]) 
+                            wellDic[well.Tship] = [1, well.D, well.SL];
+                        else
+                            wellDic[well.Tship] = [0, well.D, well.SL];
+                    }
+                    else{
+                        wellDic[well.Tship] = [1, well.D, well.SL];
+                    }
                 }
                 else {
-                    wellDic[well.Tship]++;
+                    if (filter){
+                        if (well.D >= depth_range[0] && well.D <= depth_range[1]
+                            && well.SL >= screen_length_range[0] && well.SL <= screen_length_range[1]) 
+                            wellDic[well.Tship][0]++;
+                    }
+                    else
+                        wellDic[well.Tship][0]++;
                 }
             });
         //Step2
         mantis_id.map((id) => {
             if (wellDic.hasOwnProperty(id)){
-                wellCount += wellDic[id];
+                wellCount += wellDic[id][0];
             }
         });
             break;
@@ -141,4 +229,10 @@ const WellNumber = ({onChange, scenario = 'c2vsim', countyList, regionType}) => 
 
 };
 
-export default WellNumber;
+
+export default connect(({ createModelForm }) => ({
+    scenario: createModelForm.step.flow_scenario,
+    filter: createModelForm.step.advanced_filter,
+    data: createModelForm.step
+  }))(WellNumber);
+  

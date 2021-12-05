@@ -32,6 +32,8 @@ const Step2 = (props) => {
   }, [tabKey]);
 
   const onSubmit = (type, values) => {
+    console.log('step 2 values', values);
+    console.log('step 2 type', type);
     if (dispatch) {
       dispatch({
         type: 'createModelForm/saveStepFormData',
@@ -67,6 +69,36 @@ const Step2 = (props) => {
     }
   };
 
+  const onChange = (changedValues, allValues) => {
+    console.log("changed values", changedValues);
+    console.log('all values', allValues);
+    if (dispatch) {
+      
+        dispatch({
+          type: 'createModelForm/saveStepFormData',
+          payload: {
+            depth_range: [0,800],
+            screen_length_range: [0,800],
+            ...allValues,
+            regionFilter: filter,
+          },
+        });
+        //disable filter once it is switched off
+        if(changedValues.advanced_filter === false){
+          dispatch({
+            type: 'createModelForm/saveStepFormData',
+            payload: {
+              ...allValues,
+              regionFilter: filter,
+              depth_range: [0,800],
+              screen_length_range: [0,800],
+            },
+          });
+        }
+      
+    }
+  }
+
   return (
     <>
       <Tabs tabPosition="top" centered activeKey={tabKey} onChange={(key) => setTabKey(key)}>
@@ -82,6 +114,7 @@ const Step2 = (props) => {
         {...style}
         className={styles.stepForm}
         onFinish={(values) => onSubmit(parseInt(tabKey, 10), values)}
+        onValuesChange={(changedValues, allValues) => onChange(changedValues, allValues)}
       >
         {regionFormItem}
         <Form.Item label="Advanced filter" name="advanced_filter">
