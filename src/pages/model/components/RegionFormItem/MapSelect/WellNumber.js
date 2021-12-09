@@ -24,8 +24,8 @@ const WellNumber = ({onChange, countyList, regionType, scenario, data, filter}) 
     var depth_range = []; 
     var screen_length_range = [];
     if (filter){
-        depth_range = data.depth_range;
-        screen_length_range = data.screen_length_range;
+        depth_range = data.depth_range[1] > 800 ? [data.depth_range[0], 9999] : data.depth_range;
+        screen_length_range = data.screen_length_range[1] > 800 ? [data.screen_length_range[0], 9999] : data.screen_length_range;
         console.log('depth',depth_range);
         console.log('SL', screen_length_range);
     }
