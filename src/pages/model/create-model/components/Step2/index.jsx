@@ -77,8 +77,8 @@ const Step2 = (props) => {
         dispatch({
           type: 'createModelForm/saveStepFormData',
           payload: {
-            depth_range: [0,800],
-            screen_length_range: [0,800],
+            depth_range: [0,801],
+            screen_length_range: [0,801],
             ...allValues,
             regionFilter: filter,
           },
@@ -90,8 +90,8 @@ const Step2 = (props) => {
             payload: {
               ...allValues,
               regionFilter: filter,
-              depth_range: [0,800],
-              screen_length_range: [0,800],
+              depth_range: [0,801],
+              screen_length_range: [0,801],
             },
           });
         }
