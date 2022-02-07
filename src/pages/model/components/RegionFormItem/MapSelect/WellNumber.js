@@ -6,20 +6,55 @@ import { connect } from 'react-redux';
 
 //onChange contains dynamic region id based on selections
 //countyList contains both name and id based on region selected
-const WellNumber = ({onChange, countyList, regionType, scenario, data, filter}) => {
+const WellNumber = ({onChange, countyList, regionType, flow_scenario, welltype_scenario, cdata, mdata}) => {
 
     
     console.log('selected:', onChange);
+    console.log("flow_scenario: ", flow_scenario);
+    console.log("welltype: ", welltype_scenario);
     
     //load well data based on scenario
     var wellData = [];
-    if (scenario === 8)
+////////////////////////////////////////////////////need for updated data 
+
+    // if (flow_scenario == 8){//GUI_flowScen == C2VSIM
+    //     if (welltype_scenario == 10)//GUI_wellType == Public
+    //         wellData = C2VSim_irr;
+    //     else if (welltype_scenario == 11)//GUI_wellType == domestic
+    //         wellData = C2VSim_dom;
+    // }
+
+    // if (flow_scenario == 9){//GUI_flowScen == CVHM
+    //     if (welltype_scenario == 10)//GUI_wellType == Public
+    //         wellData = CVHM_irr;
+    //     else if (welltype_scenario == 11)//GUI_wellType == domestic
+    //         wellData = CVHM_dom;
+    // }
+
+
+////////////////////////////////////
+    if (flow_scenario === 8)
         wellData = c2vsim;
     else
         wellData = cvhm;
     
     console.log('County List', countyList);
+    
+    console.log("cdata: ", cdata);
+   
+    console.log("mdata: ", mdata);
 
+    var filter; 
+    var data;
+
+    if (mdata.hasOwnProperty('step2Type')){
+        filter = mdata.regionFilter;
+        data = mdata;
+    }
+    else if (cdata.hasOwnProperty('flow_scenario')){
+        filter = cdata.regionFilter;
+        data = cdata;
+    }
     //prepare advanced filter if exist
     var depth_range = []; 
     var screen_length_range = [];
@@ -230,9 +265,10 @@ const WellNumber = ({onChange, countyList, regionType, scenario, data, filter}) 
 };
 
 
-export default connect(({ createModelForm }) => ({
-    scenario: createModelForm.step.flow_scenario,
-    filter: createModelForm.step.advanced_filter,
-    data: createModelForm.step
+export default connect(({ createModelForm, copyAndModifyModelForm }) => ({
+    flow_scenario: createModelForm.step.flow_scenario,
+    welltype_scenario: createModelForm.step.welltype_scenario,
+    cdata: createModelForm.step,//data in createModelForm
+    mdata: copyAndModifyModelForm.step,//data in modifyModelForm
   }))(WellNumber);
   

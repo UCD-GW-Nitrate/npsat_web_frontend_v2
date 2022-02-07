@@ -5,7 +5,7 @@ import { createModel } from '@/services/model';
 const Model = {
   namespace: 'copyAndModifyModelForm',
   state: {
-    current: 'Select Model',
+    current: 'Select Settings',
     step: {},
     results: {
       id: null,
@@ -46,6 +46,8 @@ const Model = {
           flow_scenario: { id: payload.flow_scenario },
           load_scenario: { id: payload.load_scenario },
           unsat_scenario: { id: payload.unsat_scenario },
+          welltype_scenario: { id: payload.welltype_scenario },
+          modifiedRegions: payload.modifiedRegions,
           modifications,
           public: false,
           is_base: isBAU,
@@ -109,6 +111,7 @@ const Model = {
         regions,
         flow_scenario,
         load_scenario,
+        welltype_scenario,
         unsat_scenario,
         reduction_end_year,
         reduction_start_year,
@@ -170,6 +173,7 @@ const Model = {
               ...state.step,
               flow_scenario: flow_scenario.id,
               load_scenario: load_scenario.id,
+              welltype_scenario: welltype_scenario.id,
               unsat_scenario: unsat_scenario.id,
               water_content,
               sim_end_year: moment(sim_end_year.toString()),
@@ -208,6 +212,7 @@ const Model = {
         regions,
         flow_scenario,
         load_scenario,
+        welltype_scenario,
         unsat_scenario,
         reduction_end_year,
         reduction_start_year,
@@ -249,6 +254,7 @@ const Model = {
           // step2 pre fill
           flow_scenario: flow_scenario.id,
           load_scenario: load_scenario.id,
+          welltype_scenario: welltype_scenario.id,
           unsat_scenario: unsat_scenario.id,
           water_content,
           sim_end_year: moment(sim_end_year.toString()),
@@ -282,6 +288,7 @@ const Model = {
         regions,
         flow_scenario,
         load_scenario,
+        welltype_scenario,
         unsat_scenario,
         reduction_end_year,
         reduction_start_year,
@@ -323,6 +330,7 @@ const Model = {
           // step2 pre fill
           flow_scenario: flow_scenario.id,
           load_scenario: load_scenario.id,
+          welltype_scenario: welltype_scenario.id,
           unsat_scenario: unsat_scenario.id,
           water_content,
           sim_end_year: moment(sim_end_year.toString()),

@@ -41,7 +41,7 @@ const Step3 = (props) => {
       });
       dispatch({
         type: 'copyAndModifyModelForm/saveCurrentStep',
-        payload: 'Modify Settings',
+        payload: 'Modify Regions',
       });
     }
   };

@@ -49,6 +49,8 @@ const Model = {
           flow_scenario: { id: payload.flow_scenario },
           load_scenario: { id: payload.load_scenario },
           unsat_scenario: { id: payload.unsat_scenario },
+          welltype_scenario: { id: payload.welltype_scenario },
+          regions: payload.regions,
           modifications,
           public: false,
           is_base: isBAU,

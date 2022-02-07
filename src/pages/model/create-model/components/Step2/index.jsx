@@ -33,6 +33,7 @@ const Step2 = (props) => {
 
   const onSubmit = (type, values) => {
     console.log('step 2 values', values);
+    
     console.log('step 2 type', type);
     if (dispatch) {
       dispatch({
@@ -57,7 +58,7 @@ const Step2 = (props) => {
 
   const onPrev = () => {
     if (dispatch) {
-      const values = getFieldsValue();
+      // const values = getFieldsValue();
       // dispatch({
       //   type: 'createModelForm/saveStepFormData',
       //   payload: { ...values, is_base: isBAU },
@@ -72,6 +73,7 @@ const Step2 = (props) => {
   const onChange = (changedValues, allValues) => {
     console.log("changed values", changedValues);
     console.log('all values', allValues);
+    console.log("data: ", data);
     if (dispatch) {
       
         dispatch({
@@ -81,6 +83,7 @@ const Step2 = (props) => {
             screen_length_range: [0,801],
             ...allValues,
             regionFilter: filter,
+            regions: allValues,
           },
         });
         //disable filter once it is switched off
