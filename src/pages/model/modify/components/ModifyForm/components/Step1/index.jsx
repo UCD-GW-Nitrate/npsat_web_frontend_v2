@@ -61,7 +61,6 @@ const Step1 = (props) => {
   //     });
   //   }
   // };
-
   return (
     <>
       <Form
@@ -184,7 +183,7 @@ const Step1 = (props) => {
               message: 'Please enter the water content',
             },
           ]}
-          initialValue={data.hasOwnProperty('water_content') ? data.water_content : 0}
+          initialValue={data.hasOwnProperty('water_content') ? (parseFloat(data.water_content) * 100).toString() : 0}
         >
           <InputNumber min={0} max={200} formatter={(v) => `${v}%`} />
         </Form.Item>
