@@ -33,12 +33,12 @@ const Step2 = (props) => {
     },
   };
   const {
-    step2Type: region = getRegionType(targetModel),
+    step2Type: region = Type(targetModel),
     regionFilter = targetModel.regionFilter,
   } = data;
   const [filter, setFilter] = useState(regionFilter);
   const [regionFormItem, setFormItem] = useState(null);
-  const [tabKey, setTabKey] = useState(region.toString());
+  const [tabKey, setTabKey] = useState(data.welltype_scenario === 12 ? REGION_MACROS.TOWNSHIPS.toString():region.toString());
   useEffect(() => {
     setFormItem(renderRegionFormItem(tabKey));
   }, [tabKey]);
@@ -111,11 +111,11 @@ const Step2 = (props) => {
   return (
     <>
       <Tabs tabPosition="top" centered activeKey={tabKey} onChange={(key) => setTabKey(key)}>
-        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()} />
-        <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()} />
-        <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()} />
-        <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()} />
-        <TabPane tab="Subregions" key={REGION_MACROS.CVHM_FARM.toString()} />
+        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
+        <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
+        <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
+        <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
+        <TabPane tab="Subregions" key={REGION_MACROS.CVHM_FARM.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
         <TabPane tab="Township" key={REGION_MACROS.TOWNSHIPS.toString()} />
       </Tabs>
       <Form
