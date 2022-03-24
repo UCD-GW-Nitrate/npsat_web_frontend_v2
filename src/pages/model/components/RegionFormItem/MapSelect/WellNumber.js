@@ -1,5 +1,7 @@
 import cvhm from "./ScenariosWellData/cvhm";
-import c2vsim from "./ScenariosWellData/c2vsim";
+import C2VSim_VI from "./ScenariosWellData/C2VSim_II_VI_02";
+import C2VSim_VD from "./ScenariosWellData/C2VSim_II_VD_02";
+import TshipWell from "./ScenariosWellData/TshipWell";
 import { Card } from "antd";
 import { identity } from "lodash";
 import { connect } from 'react-redux';
@@ -17,12 +19,17 @@ const WellNumber = ({onChange, countyList, regionType, flow_scenario, welltype_s
     var wellData = [];
 ////////////////////////////////////////////////////need for updated data 
 
-    // if (flow_scenario == 8){//GUI_flowScen == C2VSIM
-    //     if (welltype_scenario == 10)//GUI_wellType == Public
-    //         wellData = C2VSim_irr;
-    //     else if (welltype_scenario == 11)//GUI_wellType == domestic
-    //         wellData = C2VSim_dom;
-    // }
+    if (flow_scenario == 8){//GUI_flowScen == C2VSIM
+        if (welltype_scenario == 10){//GUI_wellType == Public
+            wellData = C2VSim_VI;
+        }
+        else if (welltype_scenario == 11){//GUI_wellType == domestic
+            wellData = C2VSim_VD;
+        }
+        else {//GUI_wellType == virtual monitoring (welltype_scenario == 12)
+            wellData = TshipWell;
+        }
+    }
 
     // if (flow_scenario == 9){//GUI_flowScen == CVHM
     //     if (welltype_scenario == 10)//GUI_wellType == Public
@@ -33,9 +40,7 @@ const WellNumber = ({onChange, countyList, regionType, flow_scenario, welltype_s
 
 
 ////////////////////////////////////
-    if (flow_scenario === 8)
-        wellData = c2vsim;
-    else
+    if (flow_scenario === 9)
         wellData = cvhm;
     
     console.log('County List', countyList);
@@ -43,6 +48,8 @@ const WellNumber = ({onChange, countyList, regionType, flow_scenario, welltype_s
     console.log("cdata: ", cdata);
    
     console.log("mdata: ", mdata);
+
+    
 
     var filter; 
     var data;
@@ -64,6 +71,10 @@ const WellNumber = ({onChange, countyList, regionType, flow_scenario, welltype_s
         console.log('depth',depth_range);
         console.log('SL', screen_length_range);
     }
+
+
+    var wellCount = 0;
+    if (welltype_scenario != 12){
 
     // anchor data point for each region:
     // basin: id, mantis_id
@@ -95,7 +106,6 @@ const WellNumber = ({onChange, countyList, regionType, flow_scenario, welltype_s
     // => [# (number of wells), well_depth(D), screen_length (SL)]
     //Step2. look up well dictionary based on regionType 
     var wellDic = {};
-    var wellCount = 0;
     switch (regionType) {
         case 1://basin
         //Step1
@@ -253,6 +263,22 @@ const WellNumber = ({onChange, countyList, regionType, flow_scenario, welltype_s
             console.log('RegionType Error: Type cannot be found!')
             break;
     }
+} else {//viryual monitoring well with only Township available 
+    //store township well info in a dictionary for faster look up
+    var TshipWellDic = {};
+    TshipWell.map((tship) => {
+        TshipWellDic[tship.Township] = tship.WellCount;
+    });
+    //store countyList in dictionary for easy lookup
+    var countyDic = {}
+    countyList.map((county) => countyDic[county.id] = county.external_id);
+    //count well numbers for selected township(s)
+    onChange.map((tship) => {
+        if (countyDic[tship] in TshipWellDic){
+            wellCount += TshipWellDic[countyDic[tship]];
+        }
+    });
+}
 
 
    
