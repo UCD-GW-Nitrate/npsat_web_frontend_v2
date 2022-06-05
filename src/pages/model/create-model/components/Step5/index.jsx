@@ -26,7 +26,7 @@ const Step5 = (props) => {
     if (dispatch) {
       dispatch({
         type: 'createModelForm/saveCurrentStep',
-        payload: 'Select Regions',
+        payload: 'Select Settings',
       });
       dispatch({
         type: 'createModelForm/clearStoredStepInfo',
