@@ -182,7 +182,7 @@ const SearchTable = ({
               case 'base':
                 color = 'green';
                 title = `BAU of
-                ${record.flow_scenario_name}, ${record.load_scenario_name}, ${record.unsat_scenario_name}`;
+                ${record.flow_scenario_name}, ${record.load_scenario_name}, ${record.unsat_scenario_name}, ${record.welltype_scenario_name}`;
             }
             return (
               <Tooltip title={title} key={record.key + tag}>

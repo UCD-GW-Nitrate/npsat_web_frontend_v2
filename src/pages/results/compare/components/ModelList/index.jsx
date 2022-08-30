@@ -39,6 +39,7 @@ const ListResponseProcessing = (response, userId) => {
     model.flow_scenario_name = model.flow_scenario.name;
     model.load_scenario_name = model.load_scenario.name;
     model.unsat_scenario_name = model.unsat_scenario.name;
+    model.welltype_scenario_name = model.welltype_scenario.name;
     model.tags = [];
     if (model.public) {
       model.tags.push('public');
@@ -89,6 +90,11 @@ const SearchTable = ({ user }) => {
     {
       title: 'Unsat Scenario',
       dataIndex: 'unsat_scenario_name',
+      copyable: true,
+    },
+    {
+      title: 'Well Type Scenario',
+      dataIndex: 'welltype_scenario_name',
       copyable: true,
     },
     {
@@ -146,7 +152,7 @@ const SearchTable = ({ user }) => {
                 break;
               case 'base':
                 color = 'green';
-                title = `BAU of  ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}`;
+                title = `BAU of  ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}, ${record.welltype_scenario.name}`;
             }
             return (
               <Tooltip title={title} key={record.key + tag}>
@@ -167,7 +173,7 @@ const SearchTable = ({ user }) => {
       render: (_, record) =>
         !record.is_base ? (
           <Tooltip
-            title={`Compare with BAU of scenario  ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}, and related regions`}
+            title={`Compare with BAU of scenario  ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}, ${record.welltype_scenario.name}, and related regions`}
           >
             <a href={`/compare/BAU?id=${record.id}`}>Compare</a>
           </Tooltip>
@@ -260,7 +266,7 @@ const SearchTable = ({ user }) => {
 const SearchForm = ({ onSearch }) => {
   const [form] = Form.useForm();
   const [expand, setExpand] = useState(false);
-  const { flowScenarios, loadScenarios, unsatScenarios } = useScenarioGroups();
+  const { flowScenarios, loadScenarios, unsatScenarios, welltypeScenarios } = useScenarioGroups();
   const getFields = () => {
     return expand ? (
       <>
@@ -317,6 +323,13 @@ const SearchForm = ({ onSearch }) => {
                 </Select.OptGroup>
                 <Select.OptGroup label="Unsat Scenario">
                   {unsatScenarios.map((item) => (
+                    <Select.Option key={item.id} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select.OptGroup>
+                <Select.OptGroup label="Well Type Scenario">
+                  {welltypeScenarios.map((item) => (
                     <Select.Option key={item.id} value={item.id}>
                       {item.name}
                     </Select.Option>

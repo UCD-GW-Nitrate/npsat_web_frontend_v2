@@ -169,6 +169,11 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   render: (v) => v.name,
                 },
                 {
+                  title: 'Well Type Scenario',
+                  dataIndex: 'welltype_scenario',
+                  render: (v) => v.name,
+                },
+                {
                   title: 'Regions',
                   dataIndex: 'regions',
                   render: (value) => value.map((regions) => regions.name).join(', '),

@@ -208,7 +208,7 @@ const OverviewList = (props) => {
                 break;
               case 'base':
                 color = 'green';
-                title = `BAU of ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}`;
+                title = `BAU of ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}, ${record.welltype_scenario.name}`;
             }
             return (
               <Tooltip title={title} key={record.key + tag}>
