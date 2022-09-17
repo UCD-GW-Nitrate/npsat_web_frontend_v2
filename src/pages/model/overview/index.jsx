@@ -1,11 +1,12 @@
 import { PlusOutlined, CopyOutlined, DownOutlined, BarChartOutlined } from '@ant-design/icons';
-import { Button, Divider, message, Tooltip, Popconfirm, Tag, Select, Menu, Dropdown } from 'antd';
+import { Button, Divider, message, Tooltip, Popconfirm, Tag, Select, Menu, Dropdown, Popover} from 'antd';
 import React, { useState, useRef } from 'react';
 import { history } from 'umi';
 import { connect } from 'react-redux';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { deleteModel, queryModelList } from './service';
+import detailPopover from './DetailPopover';
 
 /**
  * handle crate new model button
@@ -227,9 +228,9 @@ const OverviewList = (props) => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Tooltip title="View details & results">
-            <a href={`/model/view?id=${record.id}`}>Details</a>
-          </Tooltip>
+          <Popover title="Model Info" content={detailPopover(record)}>
+            <a href={`/model/view?id=${record.id}`}>Details</a> 
+          </Popover>
           <Divider type="vertical" />
           <Popconfirm
             title="Are you sure deleting this model?"
