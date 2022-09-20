@@ -155,7 +155,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, additionalInfo }
                 label={
                   <span>
                     Threshold{' '}
-                    <Tooltip title="A path that indicates the threshold entered">
+                    <Tooltip title="Define a threshold (in [mg/L]) for which a line will be drawn indicating what percent wells have a nitrate-N reduction that is less than this threshold">
                       <InfoCircleOutlined />
                     </Tooltip>
                   </span>
@@ -197,7 +197,7 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, additionalInfo }
             ticks: processedInterval,
           },
           value: {
-            alias: 'Concentration of Nitrate as N [mg/L]',
+            alias: 'Aggregated reduction in nitrate-N [mg/L]',
           },
         }}
       >

@@ -337,7 +337,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={
-              <Tooltip title="Difference between BAU and custom model">
+              <Tooltip title="Reduction in nitrate concentration under the custom scenario, relative to the BAU scenario. Note that positive numbers indicate a reduction, while negative numbers indicate an increase in concentration under the custom scenario (the increase is a negative reduction)">
                 Difference histogram <InfoCircleOutlined />
               </Tooltip>
             }
@@ -356,7 +356,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={
-              <Tooltip title="Aggregated difference between base mode and custom model">
+              <Tooltip title="Aggregated (i.e., average) reduction in nitrate concentration over the selected period under the custom scenario, relative to the BAU scenario. Note that positive numbers indicate a reduction, while negative numbers indicate an increase in concentration under the custom scenario (the increase is a negative reduction)">
                 Threshold heatmap <InfoCircleOutlined />
               </Tooltip>
             }
@@ -375,7 +375,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
           </Tabs.TabPane>
           <Tabs.TabPane
             tab={
-              <Tooltip title="Aggregated difference between base mode and custom model">
+              <Tooltip title="Aggregated (i.e., average) reduction in nitrate concentration over the selected period under the custom scenario, relative to the BAU scenario. Note that positive numbers indicate a reduction, while negative numbers indicate an increase in concentration under the custom scenario (the increase is a negative reduction)">
                 Difference heatmap <InfoCircleOutlined />
               </Tooltip>
             }

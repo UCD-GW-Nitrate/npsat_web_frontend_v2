@@ -61,7 +61,7 @@ const DifferenceHistogram = ({ baseData, customData, percentiles, additionalInfo
         data={isObjectEmpty(plotData) ? [] : selected.map((index) => plotData[index]).flat(1)}
         autoFit
         scale={{
-          value: { alias: 'Concentration of Nitrate as N [mg/L]', nice: true },
+          value: { alias: 'Reduction in Concentration of Nitrate as N [mg/L]', nice: true },
           year: { tickCount: 10, type: 'cat' },
         }}
         placeholder={<div className={styles.noDateEntry}>Select from above percentile list</div>}
