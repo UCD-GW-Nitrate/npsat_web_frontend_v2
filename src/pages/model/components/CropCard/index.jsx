@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Card, Slider, InputNumber, Switch, Row, Col } from 'antd';
 
+
 export const formatter = (value) => `${value}%`;
 
-const CropCard = ({ name, id, onChange, values, required = false, initialValues }) => {
+const CropCard = ({ name, id, onChange, values, required = false, initialValues, cropAreas}) => {
   const [enable, setEnable] = useState(initialValues.enable || required);
-
   useEffect(() => {
     setEnable(initialValues.enable || required);
   }, [initialValues.enable, required]);
+
 
   const triggerChange = (changedValue) => {
     if (onChange) {
@@ -38,13 +39,25 @@ const CropCard = ({ name, id, onChange, values, required = false, initialValues 
       size="small"
       title={name}
       extra={
-        required ? null : (
-          <Switch
-            onChange={toggleEnable}
-            checked={enable}
-            checkedChildren="enabled"
-            unCheckedChildren="disabled"
-          />
+        required ? (
+        <span>
+          {parseInt(cropAreas[id]*0.25)} ha/
+          {parseInt(cropAreas[id]*0.25*2.47)} ac
+        </span>) : (
+          <Row>
+            <Col span={15}>
+            {cropAreas[id] ? parseInt(cropAreas[id]*0.25) : 0} ha/
+            {cropAreas[id] ? parseInt(cropAreas[id]*0.25*2.47) : 0} ac
+            </Col>
+            <Col span={10}>
+              <Switch
+                onChange={toggleEnable}
+                checked={enable}
+                checkedChildren="enabled"
+                unCheckedChildren="disabled"
+              />
+            </Col>
+          </Row>
         )
       }
     >
@@ -79,3 +92,4 @@ const CropCard = ({ name, id, onChange, values, required = false, initialValues 
 };
 
 export default CropCard;
+

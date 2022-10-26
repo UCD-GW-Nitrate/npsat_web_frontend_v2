@@ -3,11 +3,13 @@ import { getCropListLoadType, CROP_MACROS } from '@/services/crop';
 import { Select, List, notification, Spin } from 'antd';
 import CropCard from '@/pages/model/components/CropCard';
 import styles from './index.less';
+import { connect } from 'react-redux';
+import areaPerCrop from '../../CropAreas/areaPerCrop';
 
 const { Option } = Select;
 
 const CropCardForm = (props) => {
-  const { value = {}, onChange, selectedCrops, setSelected, flowScen } = props;
+  const { value = {}, onChange, selectedCrops, setSelected, flowScen, meta } = props;
   // used to store cropList at this level; used for selector component
   const [cropList, setList] = useState(selectedCrops);
   // used to store special crops(All other crops)
@@ -38,6 +40,16 @@ const CropCardForm = (props) => {
       setList(crops);
     })();
   }, []);
+
+  const formatCrops = (selectedCrops) => {
+    var cropsId = [];
+    selectedCrops.map((crop) => {
+      var id = parseInt(crop.split(",")[0]);
+      cropsId.push(id);
+    });
+    return cropsId;
+  };
+
   const onSelectChange = (v) => {
     if (!v.find((selectedCrop) => parseInt(selectedCrop.split(',')[0], 10) === specialId)) {
       notification.warning({
@@ -111,6 +123,7 @@ const CropCardForm = (props) => {
                   required={parseInt(id, 10) === specialId}
                   id={id}
                   initialValues={prevValues}
+                  cropAreas={areaPerCrop(formatCrops(selectedCrops), meta[`region-${meta.step2Type}-choice`], meta.step2Type, meta.load_scenario)}
                 />
               </List.Item>
             );
@@ -121,4 +134,7 @@ const CropCardForm = (props) => {
   );
 };
 
-export default CropCardForm;
+export default connect(({ createModelForm }) => ({
+  meta: createModelForm.step,
+}))(CropCardForm);
+
