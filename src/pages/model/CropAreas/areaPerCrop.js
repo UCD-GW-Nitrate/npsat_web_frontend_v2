@@ -19,15 +19,21 @@ const areaPerCrop = (crops = [], regions = [], mapType, load_scenario) => {
     
     //load data of selected regions
     if (load_scenario == 1) { 
-        GNLMcropAreas.map((maps) => {
-            if (maps.Code == regionMacros[mapType])
-                maps.Regions.map((region) => {
-                    if (regions.includes(region.Id)) {
-                        cropsData = cropsData.concat(region.CropList);
-                        totalAreas += region.TotArea;
-                    }
-                });
-        });
+        if (mapType == 0) {
+            cropsData = GNLMcropAreas[0].Regions[0].CropList;
+            totalAreas = GNLMcropAreas[0].Regions[0].TotArea;
+        }
+        else {
+            GNLMcropAreas.map((maps) => {
+                if (maps.Code == regionMacros[mapType])
+                    maps.Regions.map((region) => {
+                        if (regions.includes(region.Id)) {
+                            cropsData = cropsData.concat(region.CropList);
+                            totalAreas += region.TotArea;
+                        }
+                    });
+            });
+        }
     }
     // else {
     //     cropsData = rests
