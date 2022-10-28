@@ -17,6 +17,7 @@ import CountyMap from '../../../../../components/Maps/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import styles from './index.less';
 import AnchorTitle from '../../../../../components/AnchorTitle';
+import areaPerCrop from '@/pages/model/CropAreas/areaPerCrop';
 
 const { Step } = Steps;
 
@@ -29,11 +30,33 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
   const [publishLoading, setPublishLoading] = useState(false);
   const [progress, setProgress] = useState({});
   const { isMobile } = useContext(RouteContext);
+  const load_scenario = info.flow_scenario.scenario_type;//load_scenario type was assigned to flow_scenario, needs to be fixed 
+  const mapType = info.regions[0].region_type;
+
+  const getRegions = (regions) => {
+    var regionId = [];
+    regions.map((region) => {
+      regionId.push(region.id);
+    });
+    return regionId;
+  };
+
+  const getCrops = (modifications) => {
+    var cropId = [];
+    modifications.map((m) => {
+      if (m.crop.id != 1)
+        cropId.push(m.crop.id);
+    });
+    return cropId;
+  };
+
   useEffect(() => {
     if (info.modifications) {
+      const cropAreas = areaPerCrop(getCrops(info.modifications), getRegions(info.regions), mapType, load_scenario);
       const crops = info.modifications.map((item) => ({
         ...item,
         ...item.crop,
+        area: cropAreas[item.crop.id],
       }));
       setCrop(crops);
       setLoading(false);

@@ -20,6 +20,20 @@ const TableWrapper = (props) => {
           render: (num) => `${Math.round(parseFloat(num) * 100)}%`,
           sorter: (a, b) => parseFloat(a.proportion) - parseFloat(b.proportion),
         },
+        {
+          title: 'Crop area (Hectare)',
+          dataIndex: 'area',
+          key: 'area',
+          render: (num) => `${Math.round(parseInt(num ? num : 0)*0.25)}`,
+          sorter: (a, b) => parseInt(a.area) - parseInt(b.area),
+        },
+        {
+          title: 'Crop area (Acre)',
+          dataIndex: 'area',
+          key: 'area',
+          render: (num) => `${Math.round(parseInt(num ? num : 0)*0.25*2.47)}`,
+          sorter: (a, b) => parseInt(a.area) - parseInt(b.area),
+        },
         // {
         //   title: "Land area percentage",
         //   dataIndex: 'land_area_proportion',
