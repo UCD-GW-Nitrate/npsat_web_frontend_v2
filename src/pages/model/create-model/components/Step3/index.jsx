@@ -87,9 +87,6 @@ const Step3 = (props) => {
             },
           }}
         >
-          <Button type="primary" htmlType="submit">
-            Next
-          </Button>
           <Button
             onClick={onPrev}
             style={{
@@ -97,6 +94,9 @@ const Step3 = (props) => {
             }}
           >
             Prev
+          </Button>
+          <Button type="primary" htmlType="submit">
+            Next
           </Button>
         </Form.Item>
       </Form>

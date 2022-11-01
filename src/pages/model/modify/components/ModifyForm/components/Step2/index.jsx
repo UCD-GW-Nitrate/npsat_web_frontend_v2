@@ -187,9 +187,6 @@ const Step2 = (props) => {
             },
           }}
         >
-          <Button type="primary" htmlType="submit">
-            Next
-          </Button>
           <Button
             onClick={onPrev}
             style={{
@@ -197,6 +194,9 @@ const Step2 = (props) => {
             }}
           >
             Prev
+          </Button>
+          <Button type="primary" htmlType="submit">
+            Next
           </Button>
           <Divider type="vertical" />
           <Tooltip title="Reset selections in this step to target model selections.">

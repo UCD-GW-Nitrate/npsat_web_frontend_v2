@@ -274,18 +274,6 @@ const Step1 = (props) => {
             },
           }}
         >
-          <Button type="primary" htmlType="submit">
-            Next
-          </Button>
-          {/* <Button
-            onClick={onPrev}
-            style={{
-              marginLeft: 8,
-            }}
-          >
-            Prev
-          </Button> */}
-          <Divider type="vertical" />
           <Tooltip title="Reset selections in this step to target model selections.">
             <Button
               danger
@@ -310,6 +298,18 @@ const Step1 = (props) => {
               Reset
             </Button>
           </Tooltip>
+          <Divider type="vertical" />
+          <Button type="primary" htmlType="submit">
+            Next
+          </Button>
+          {/* <Button
+            onClick={onPrev}
+            style={{
+              marginLeft: 8,
+            }}
+          >
+            Prev
+          </Button> */}
         </Form.Item>
       </Form>
       <Divider
