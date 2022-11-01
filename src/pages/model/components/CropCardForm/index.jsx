@@ -5,6 +5,7 @@ import CropCard from '@/pages/model/components/CropCard';
 import styles from './index.less';
 import { connect } from 'react-redux';
 import areaPerCrop from '../../CropAreas/areaPerCrop';
+import { getRegions } from '@/services/region';
 
 const { Option } = Select;
 
@@ -15,6 +16,18 @@ const CropCardForm = (props) => {
   // used to store special crops(All other crops)
   const [specialId, setSpecial] = useState(1);
   const [specialName, setSpecialName] = useState('');
+  const [countyList, setCounty] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const { results: mapData } = await getRegions(meta.step2Type);
+      setCounty(mapData);
+    })();
+  }, []);
+
+  console.log("countyData", countyList);
+  console.log("meta", meta);
+  
   // query all crops
   useEffect(() => {
     (async () => {
@@ -49,6 +62,15 @@ const CropCardForm = (props) => {
     });
     return cropsId;
   };
+
+  const formatRegions = (regionData, regionId) => {
+    var regionNames = [];
+    regionData.map((region) => {
+      if (regionId.includes(region.id))
+        regionNames.push(region.mantis_id);
+    });
+    return regionNames;
+  }
 
   const onSelectChange = (v) => {
     if (!v.find((selectedCrop) => parseInt(selectedCrop.split(',')[0], 10) === specialId)) {
@@ -123,8 +145,8 @@ const CropCardForm = (props) => {
                   required={parseInt(id, 10) === specialId}
                   id={id}
                   initialValues={prevValues}
-                  cropAreas={areaPerCrop(formatCrops(selectedCrops), meta[`region-${meta.step2Type}-choice`], meta.step2Type, meta.load_scenario)}
-                />
+                  cropAreas={areaPerCrop(formatCrops(selectedCrops), formatRegions(countyList, meta[`region-${meta.step2Type}-choice`]), meta.step2Type, meta.load_scenario)}
+                /> 
               </List.Item>
             );
           }}
@@ -133,6 +155,7 @@ const CropCardForm = (props) => {
     </>
   );
 };
+
 
 export default connect(({ createModelForm }) => ({
   meta: createModelForm.step,

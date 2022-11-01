@@ -34,11 +34,11 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
   const mapType = info.regions[0].region_type;
 
   const getRegions = (regions) => {
-    var regionId = [];
+    var regionNames = [];
     regions.map((region) => {
-      regionId.push(region.id);
+      regionNames.push(region.mantis_id);
     });
-    return regionId;
+    return regionNames;
   };
 
   const getCrops = (modifications) => {
@@ -52,6 +52,7 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
 
   useEffect(() => {
     if (info.modifications) {
+      console.log("InfoRegions", info.regions);
       const cropAreas = areaPerCrop(getCrops(info.modifications), getRegions(info.regions), mapType, load_scenario);
       const crops = info.modifications.map((item) => ({
         ...item,

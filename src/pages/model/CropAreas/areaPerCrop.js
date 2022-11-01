@@ -27,7 +27,7 @@ const areaPerCrop = (crops = [], regions = [], mapType, load_scenario) => {
             GNLMcropAreas.map((maps) => {
                 if (maps.Code == regionMacros[mapType])
                     maps.Regions.map((region) => {
-                        if (regions.includes(region.Id)) {
+                        if (regions.includes(region.Name)) {
                             cropsData = cropsData.concat(region.CropList);
                             totalAreas += region.TotArea;
                         }
