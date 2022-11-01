@@ -65,10 +65,12 @@ const CropCardForm = (props) => {
 
   const formatRegions = (regionData, regionId) => {
     var regionNames = [];
-    regionData.map((region) => {
-      if (regionId.includes(region.id))
-        regionNames.push(region.mantis_id);
-    });
+    if (regionId.length != 0) {
+      regionData.map((region) => {
+        if (regionId.includes(region.id))
+          regionNames.push(region.mantis_id);
+      });
+    }
     return regionNames;
   }
 
@@ -145,7 +147,9 @@ const CropCardForm = (props) => {
                   required={parseInt(id, 10) === specialId}
                   id={id}
                   initialValues={prevValues}
-                  cropAreas={areaPerCrop(formatCrops(selectedCrops), formatRegions(countyList, meta[`region-${meta.step2Type}-choice`]), meta.step2Type, meta.load_scenario)}
+                  cropAreas={areaPerCrop(formatCrops(selectedCrops), 
+                    formatRegions(countyList, meta[`region-${meta.step2Type}-choice`] ? meta[`region-${meta.step2Type}-choice`] : []), 
+                    meta.step2Type, meta.load_scenario)}
                 /> 
               </List.Item>
             );
