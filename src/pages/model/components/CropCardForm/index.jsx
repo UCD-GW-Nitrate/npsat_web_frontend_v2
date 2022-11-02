@@ -27,6 +27,7 @@ const CropCardForm = (props) => {
 
   console.log("countyData", countyList);
   console.log("meta", meta);
+  console.log("cropList", cropList);
   
   // query all crops
   useEffect(() => {
@@ -54,13 +55,20 @@ const CropCardForm = (props) => {
     })();
   }, []);
 
-  const formatCrops = (selectedCrops) => {
-    var cropsId = [];
+  const formatCrops = (selectedCrops, cropList) => {
+    //hash cropList for quick look up
+    var cropDic = {};
+    cropList.map((crop) => {
+      if (!cropDic.hasOwnProperty(crop.id))
+        cropDic[crop.id] = crop.caml_code;
+    });
+    //get selected crops caml_code
+    var cropsCAML = [];
     selectedCrops.map((crop) => {
       var id = parseInt(crop.split(",")[0]);
-      cropsId.push(id);
+      cropsCAML.push(cropDic[id]);
     });
-    return cropsId;
+    return cropsCAML;
   };
 
   const formatRegions = (regionData, regionId) => {
@@ -85,6 +93,7 @@ const CropCardForm = (props) => {
       setSelected(v);
     }
   };
+
   const onSelect = (selectedValue) => {
     const [id, name] = selectedValue.split(',');
     if (!value.hasOwnProperty(id) && onChange) {
@@ -97,6 +106,14 @@ const CropCardForm = (props) => {
       });
     }
   };
+
+  //quick look up caml_code
+  var cropListDic = {};
+  cropList.map((crop) => {
+    if (!cropListDic.hasOwnProperty(crop.id))
+      cropListDic[crop.id] = crop.caml_code;
+  });
+  
   if (cropList.length === 0) {
     return <Spin />;
   }
@@ -146,8 +163,9 @@ const CropCardForm = (props) => {
                   name={name}
                   required={parseInt(id, 10) === specialId}
                   id={id}
+                  cropCaml={cropListDic[parseInt(id)]}
                   initialValues={prevValues}
-                  cropAreas={areaPerCrop(formatCrops(selectedCrops), 
+                  cropAreas={areaPerCrop(formatCrops(selectedCrops, cropList), 
                     formatRegions(countyList, meta[`region-${meta.step2Type}-choice`] ? meta[`region-${meta.step2Type}-choice`] : []), 
                     meta.step2Type, meta.load_scenario)}
                 /> 

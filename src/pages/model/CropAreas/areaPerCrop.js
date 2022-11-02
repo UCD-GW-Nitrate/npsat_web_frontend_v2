@@ -1,8 +1,10 @@
 import GNLMcropAreas from "./CropAreasData/GNLM_AreaPercrop";
 
-//crops: allOtherArea(1) is inteantionally left out for selected crops
+
 const areaPerCrop = (crops = [], regions = [], mapType, load_scenario) => {
     
+    //crops: allOtherArea(null) is inteantionally left out for selected crops
+    crops.shift();
 
     var cropsData = [];
     const regionMacros = {
@@ -53,7 +55,7 @@ const areaPerCrop = (crops = [], regions = [], mapType, load_scenario) => {
         }
     });
 
-    areaPerCrop[1] = totalAreas - selectedCropAreas;
+    areaPerCrop[0] = totalAreas - selectedCropAreas;
     
     return areaPerCrop;
 

@@ -5,7 +5,11 @@ import { Card, Slider, InputNumber, Switch, Row, Col } from 'antd';
 
 export const formatter = (value) => `${value}%`;
 
-const CropCard = ({ name, id, onChange, values, required = false, initialValues, cropAreas}) => {
+const CropCard = ({ name, id, onChange, values, required = false, initialValues, cropAreas, cropCaml }) => {
+
+  console.log("cropAreas", cropAreas);
+  console.log("cropCaml", cropCaml);
+
   const [enable, setEnable] = useState(initialValues.enable || required);
   useEffect(() => {
     setEnable(initialValues.enable || required);
@@ -41,13 +45,13 @@ const CropCard = ({ name, id, onChange, values, required = false, initialValues,
       extra={
         required ? (
         <span>
-          {parseInt(cropAreas[id]*0.25)} ha/
-          {parseInt(cropAreas[id]*0.25*2.47)} ac
+          {parseInt(cropAreas[0]*0.25)} ha/
+          {parseInt(cropAreas[0]*0.25*2.47)} ac
         </span>) : (
           <Row>
             <Col span={15}>
-            {cropAreas[id] ? parseInt(cropAreas[id]*0.25) : 0} ha/
-            {cropAreas[id] ? parseInt(cropAreas[id]*0.25*2.47) : 0} ac
+            {cropAreas[cropCaml] ? parseInt(cropAreas[cropCaml]*0.25) : 0} ha/
+            {cropAreas[cropCaml] ? parseInt(cropAreas[cropCaml]*0.25*2.47) : 0} ac
             </Col>
             <Col span={10}>
               <Switch
