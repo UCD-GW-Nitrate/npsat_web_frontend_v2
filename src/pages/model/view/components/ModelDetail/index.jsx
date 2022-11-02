@@ -42,22 +42,21 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
   };
 
   const getCrops = (modifications) => {
-    var cropId = [];
+    var cropCAML = [];
     modifications.map((m) => {
-      if (m.crop.id != 1)
-        cropId.push(m.crop.id);
+      cropCAML.push(m.crop.caml_code);
     });
-    return cropId;
+    return cropCAML;
   };
 
   useEffect(() => {
     if (info.modifications) {
-      console.log("InfoRegions", info.regions);
+      console.log("InfoModifications", info.modifications);
       const cropAreas = areaPerCrop(getCrops(info.modifications), getRegions(info.regions), mapType, load_scenario);
       const crops = info.modifications.map((item) => ({
         ...item,
         ...item.crop,
-        area: cropAreas[item.crop.id],
+        area: cropAreas[item.crop.caml_code ? item.crop.caml_code : 0],
       }));
       setCrop(crops);
       setLoading(false);
