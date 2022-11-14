@@ -137,7 +137,7 @@ const Step2 = (props) => {
         {filter ? (
           <>
             <Form.Item
-              label="Depth range"
+              label="Depth (ft)"
               name="depth_range"
               initialValue={data.hasOwnProperty('depth_range') ? data.depth_range : [0, 800]}
               rules={[
@@ -155,7 +155,7 @@ const Step2 = (props) => {
               <RangeFormItem rangeConfig={DEPTH_RANGE_CONFIG} />
             </Form.Item>
             <Form.Item
-              label="ScreenLen range"
+              label="ScreenLen (ft)"
               name="screen_length_range"
               initialValue={
                 data.hasOwnProperty('screen_length_range') ? data.screen_length_range : [0, 800]
