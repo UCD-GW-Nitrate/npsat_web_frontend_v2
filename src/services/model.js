@@ -13,14 +13,14 @@ export const MODEL_STATUS_MACROS = {
 
 export const DEPTH_RANGE_CONFIG = {
   min: 0,
-  max: 800,
+  max: 3000,
   step: 1,
   maxIdentifier: true,
 };
 
 export const SCREEN_LENGTH_RANGE_CONFIG = {
   min: 0,
-  max: 800,
+  max: 1500,
   step: 1,
   maxIdentifier: true,
 };
