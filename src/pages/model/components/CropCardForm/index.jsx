@@ -179,7 +179,5 @@ const CropCardForm = (props) => {
 };
 
 
-export default connect(({ createModelForm }) => ({
-  meta: createModelForm.step,
-}))(CropCardForm);
+export default CropCardForm;
 

@@ -70,6 +70,7 @@ const Step3 = (props) => {
             selectedCrops={selectedCrops}
             setSelected={setSelected}
             flowScen={data.load_scenario}
+            meta={data}
           />
         </Form.Item>
         <Form.Item
