@@ -8,9 +8,10 @@ import { connect } from 'react-redux';
 
 //onChange contains dynamic region id based on selections
 //countyList contains both name and id based on region selected
-const WellNumber = ({onChange, countyList, regionType, flow_scenario, welltype_scenario, cdata, mdata}) => {
+const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
 
-    
+    const flow_scenario = mdata.flow_scenario ? mdata.flow_scenario : cdata.flow_scenario;
+    const welltype_scenario = mdata.welltype_scenario ? mdata.welltype_scenario : cdata.welltype_scenario;
     console.log('selected:', onChange);
     console.log("flow_scenario: ", flow_scenario);
     console.log("welltype: ", welltype_scenario);
@@ -66,8 +67,8 @@ const WellNumber = ({onChange, countyList, regionType, flow_scenario, welltype_s
     var depth_range = []; 
     var screen_length_range = [];
     if (filter){
-        depth_range = data.depth_range[1] > 800 ? [data.depth_range[0], 9999] : data.depth_range;
-        screen_length_range = data.screen_length_range[1] > 800 ? [data.screen_length_range[0], 9999] : data.screen_length_range;
+        depth_range = data.depth_range[1] > 3000 ? [data.depth_range[0], 9999] : data.depth_range;
+        screen_length_range = data.screen_length_range[1] > 1500 ? [data.screen_length_range[0], 9999] : data.screen_length_range;
         console.log('depth',depth_range);
         console.log('SL', screen_length_range);
     }
@@ -292,8 +293,8 @@ const WellNumber = ({onChange, countyList, regionType, flow_scenario, welltype_s
 
 
 export default connect(({ createModelForm, copyAndModifyModelForm }) => ({
-    flow_scenario: createModelForm.step.flow_scenario,
-    welltype_scenario: createModelForm.step.welltype_scenario,
+    // flow_scenario: createModelForm.step.flow_scenario,
+    // welltype_scenario: createModelForm.step.welltype_scenario,
     cdata: createModelForm.step,//data in createModelForm
     mdata: copyAndModifyModelForm.step,//data in modifyModelForm
   }))(WellNumber);
