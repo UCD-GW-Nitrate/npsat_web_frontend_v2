@@ -12,6 +12,7 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
 
     const flow_scenario = mdata.flow_scenario ? mdata.flow_scenario : cdata.flow_scenario;
     const welltype_scenario = mdata.welltype_scenario ? mdata.welltype_scenario : cdata.welltype_scenario;
+    
     console.log('selected:', onChange);
     console.log("flow_scenario: ", flow_scenario);
     console.log("welltype: ", welltype_scenario);
@@ -293,8 +294,6 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
 
 
 export default connect(({ createModelForm, copyAndModifyModelForm }) => ({
-    // flow_scenario: createModelForm.step.flow_scenario,
-    // welltype_scenario: createModelForm.step.welltype_scenario,
     cdata: createModelForm.step,//data in createModelForm
     mdata: copyAndModifyModelForm.step,//data in modifyModelForm
   }))(WellNumber);
