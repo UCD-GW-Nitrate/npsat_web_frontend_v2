@@ -193,7 +193,7 @@ const Step1 = (props) => {
           required={[
             {
               required: true,
-              message: 'Please enter numbers of years to stimulate the model',
+              message: 'Please enter numbers of years to simulate the scenario',
             },
           ]}
           initialValue={data.hasOwnProperty('sim_end_year') ? data.sim_end_year : moment('2100')}
@@ -205,15 +205,15 @@ const Step1 = (props) => {
             }
           />
         </Form.Item>
-        <Form.Item label="Model type" required initialValue={isBAU}>
+        <Form.Item label="Scenario type" required initialValue={isBAU}>
           <Radio.Group
             buttonStyle="solid"
             onChange={(event) => setBAU(event.target.value)}
             defaultValue={isBAU}
             value={isBAU}
           >
-            <Radio.Button value={false}>Custom model</Radio.Button>
-            <Radio.Button value>BAU model</Radio.Button>
+            <Radio.Button value={false}>Custom scenario</Radio.Button>
+            <Radio.Button value>BAU scenario</Radio.Button>
           </Radio.Group>
         </Form.Item>
         {!isBAU && (
@@ -274,7 +274,7 @@ const Step1 = (props) => {
             },
           }}
         >
-          <Tooltip title="Reset selections in this step to target model selections.">
+          <Tooltip title="Reset selections in this step to target scenario selections.">
             <Button
               danger
               onClick={() => {
@@ -333,7 +333,7 @@ const Step1 = (props) => {
         <h4>BAU</h4>
         <p>
           BAU refers to Business As Usual, meaning no reduction or implementation. Reduction period
-          and Crop selection will be disabled by selecting to create a BAU model.
+          and Crop selection will be disabled by selecting to create a BAU scenario.
         </p>
         <h4>Other selections</h4>
         <p>Developing...</p>

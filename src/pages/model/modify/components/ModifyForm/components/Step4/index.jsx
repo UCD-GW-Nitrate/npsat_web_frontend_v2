@@ -61,7 +61,7 @@ const Step4 = (props) => {
           rules={[
             {
               required: true,
-              message: 'Please enter the model name',
+              message: 'Please enter the scenario name',
             },
           ]}
           initialValue={data.hasOwnProperty('model-name') ? data['model-name'] : undefined}
@@ -102,7 +102,7 @@ const Step4 = (props) => {
             Submit
           </Button>
           <Divider type="vertical" />
-          <Tooltip title="Reset selections in this step to target model selections.">
+          <Tooltip title="Reset selections in this step to target scenario selections.">
             <Button
               danger
               onClick={() => {
@@ -127,10 +127,10 @@ const Step4 = (props) => {
       />
       <div className={styles.desc}>
         <h3>Instructions</h3>
-        <h4>Model name</h4>
-        <p>Enter a model name, limited 255 characters.</p>
-        <h4>Model description</h4>
-        <p>Enter model optional description, no characters limit.</p>
+        <h4>Scenario name</h4>
+        <p>Enter a scenario name, limited 255 characters.</p>
+        <h4>Scenario description</h4>
+        <p>Enter scenario optional description, no characters limit.</p>
       </div>
     </>
   );

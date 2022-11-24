@@ -74,7 +74,7 @@ const ScatterPlot = ({ data }) => {
         padding={[30, 20, 50, 60]}
         height={480}
         autoFit
-        placeholder={<div className={styles.noDateEntry}>No completed models</div>}
+        placeholder={<div className={styles.noDateEntry}>No completed scenarios</div>}
         data={plotData}
         scale={{
           n_wells: {
@@ -86,7 +86,7 @@ const ScatterPlot = ({ data }) => {
             nice: true,
           },
           model_type: {
-            alias: 'Model type',
+            alias: 'Scenario type',
             type: 'cat',
           },
         }}

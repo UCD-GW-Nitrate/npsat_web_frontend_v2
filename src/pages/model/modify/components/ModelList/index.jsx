@@ -71,7 +71,7 @@ const ListResponseProcessing = (response, userId) => {
 const SearchTable = ({ user }) => {
   const { isMobile } = useContext(RouteContext);
   const actionRef = useRef();
-  const subTitle = 'Create another model with similar settings swiftly';
+  const subTitle = 'Create another scenario with similar settings swiftly';
   const columns = [
     {
       title: 'Name',
@@ -223,7 +223,7 @@ const SearchTable = ({ user }) => {
             <a href={`/model/view?id=${record.id}`}>Details</a>
           </Tooltip>
           <Divider type="vertical" />
-          <Tooltip title="Create another model with settings pre-filled">
+          <Tooltip title="Create another scenario with settings pre-filled">
             <a href={`/model/modify?id=${record.id}`}>Copy & Modify</a>
           </Tooltip>
         </>
@@ -304,25 +304,25 @@ const SearchForm = ({ onSearch }) => {
         <Row gutter={16}>
           <Col flex="auto">
             <Form.Item label="Name/Description" name="search_text">
-              <Input placeholder="Search by model name or description" />
+              <Input placeholder="Search by scenario name or description" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={8}>
             <Form.Item
-              label="Model types"
+              label="Scenario types"
               name="types"
               initialValue={['public', 'original', 'base']}
             >
               <Select
                 mode="multiple"
                 showArrow
-                placeholder="Select model types"
+                placeholder="Select Scenario types"
                 style={{ width: '100%' }}
                 tagRender={TagRender}
                 options={[
-                  { label: 'include public models', value: 'public' },
-                  { label: 'include self-created models', value: 'original' },
-                  { label: 'include base scenario models', value: 'base' },
+                  { label: 'include public scenarios', value: 'public' },
+                  { label: 'include self-created scenarios', value: 'original' },
+                  { label: 'include base scenario scenarios', value: 'base' },
                 ]}
               />
             </Form.Item>
@@ -446,7 +446,7 @@ const SearchForm = ({ onSearch }) => {
         <Row gutter={16}>
           <Col flex="auto">
             <Form.Item label="Name/Description" name="search_text" style={{ margin: 0 }}>
-              <Input placeholder="Search by model name or description" />
+              <Input placeholder="Search by scenario name or description" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={8}>

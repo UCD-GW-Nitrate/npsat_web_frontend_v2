@@ -24,7 +24,7 @@ export default () => (
         }}
       />
       <Alert
-        message="10 of your models has completed running"
+        message="10 of your scenarios has completed running"
         type="success"
         showIcon
         banner
@@ -34,7 +34,7 @@ export default () => (
         }}
       />
       <Alert
-        message="2 of your models is running"
+        message="2 of your scenarios is running"
         type="warning"
         showIcon
         banner
@@ -44,7 +44,7 @@ export default () => (
         }}
       />
       <Alert
-        message="0 of your models fail"
+        message="0 of your scenarios fail"
         type="error"
         showIcon
         banner

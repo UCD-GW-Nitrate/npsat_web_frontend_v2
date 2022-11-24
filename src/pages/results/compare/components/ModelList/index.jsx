@@ -61,7 +61,7 @@ const ListResponseProcessing = (response, userId) => {
 const SearchTable = ({ user }) => {
   const { isMobile } = useContext(RouteContext);
   const actionRef = useRef();
-  const subTitle = 'Compare a completed custom model with the BAU under same scenario';
+  const subTitle = 'Compare a completed custom scenario with the BAU under same scenario';
   const columns = [
     {
       title: 'Name',
@@ -209,7 +209,7 @@ const SearchTable = ({ user }) => {
           }}
           type="primary"
         >
-          Switch to custom models comparison
+          Switch to custom scenarios comparison
         </Button>
       }
     >
@@ -273,25 +273,25 @@ const SearchForm = ({ onSearch }) => {
         <Row gutter={16}>
           <Col flex="auto">
             <Form.Item label="Name/Description" name="search_text">
-              <Input placeholder="Search by model name or description" />
+              <Input placeholder="Search by scenario name or description" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={8}>
             <Form.Item
-              label="Model types"
+              label="Scenario types"
               name="types"
               initialValue={['public', 'original', 'base']}
             >
               <Select
                 mode="multiple"
                 showArrow
-                placeholder="Select model types"
+                placeholder="Select scenario types"
                 style={{ width: '100%' }}
                 tagRender={TagRender}
                 options={[
-                  { label: 'include public models', value: 'public' },
-                  { label: 'include self-created models', value: 'original' },
-                  { label: 'include base scenario models', value: 'base' },
+                  { label: 'include public scenarios', value: 'public' },
+                  { label: 'include self-created scenarios', value: 'original' },
+                  { label: 'include base scenario scenarios', value: 'base' },
                 ]}
               />
             </Form.Item>
@@ -369,7 +369,7 @@ const SearchForm = ({ onSearch }) => {
         <Row gutter={16}>
           <Col flex="auto">
             <Form.Item label="Name/Description" name="search_text" style={{ margin: 0 }}>
-              <Input placeholder="Search by model name or description" />
+              <Input placeholder="Search by scenario name or description" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={8}>

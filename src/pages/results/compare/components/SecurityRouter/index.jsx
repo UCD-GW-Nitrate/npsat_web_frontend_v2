@@ -22,9 +22,9 @@ const ResultCompare = (props) => {
     (async () => {
       const model = await getModelAndBaseModel({ id }, token);
       if (typeof model === 'string' && model.startsWith('ERROR')) {
-        setInfo({ error: 'The model you look for is private or cannot be found' });
+        setInfo({ error: 'The scenario you look for is private or cannot be found' });
       } else if (!model.length) {
-        setInfo({ error: 'Select another model to be compared with BAU model' });
+        setInfo({ error: 'Select another scenario to be compared with BAU scenario' });
       } else {
         setInfo(model);
       }
@@ -42,10 +42,10 @@ const ResultCompare = (props) => {
 
   return info.error ? (
     <NoFoundPage
-      subTitle="The model(s) is inaccessible"
+      subTitle="The scenario(s) is inaccessible"
       title={info.error}
       redirection="/compare/BAU"
-      buttonText="Reselect model"
+      buttonText="Reselect scenario"
     />
   ) : (
     <BaseComparison customModel={info[0]} baseModel={info[1]} hash={hash} />

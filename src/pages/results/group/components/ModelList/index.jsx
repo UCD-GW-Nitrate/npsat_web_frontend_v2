@@ -58,8 +58,8 @@ const ListResponseProcessing = (response, userId) => {
 };
 
 const SearchTable = ({
-  title = 'Custom models group comparison',
-  subTitle = 'Select up to 5 models to compare and view together.',
+  title = 'Custom scenarios group comparison',
+  subTitle = 'Select up to 5 scenarios to compare and view together.',
   user,
 }) => {
   const { isMobile } = useContext(RouteContext);
@@ -263,7 +263,7 @@ const SearchTable = ({
               >
                 {selectedRowKeys.length}
               </a>
-              &nbsp; Model(s). Maximum of{' '}
+              &nbsp; Scenario(s). Maximum of{' '}
               <a
                 style={{
                   fontWeight: 600,
@@ -279,13 +279,13 @@ const SearchTable = ({
             <Tooltip
               title={() => {
                 if (selectedRowKeys.length === 0) {
-                  return 'Start select models.';
+                  return 'Start select scenarios.';
                 } else if (selectedRowKeys.length === 1) {
-                  return 'Select more models for comparison.';
+                  return 'Select more scenarios for comparison.';
                 } else if (selectedRowKeys.length > 5) {
-                  return 'Too much models selected.';
+                  return 'Too much scenarios selected.';
                 } else {
-                  return 'Confirm and compare models.';
+                  return 'Confirm and compare scenarios.';
                 }
               }}
             >
@@ -335,25 +335,25 @@ const SearchForm = ({ onSearch }) => {
         <Row gutter={16}>
           <Col flex="auto">
             <Form.Item label="Name/Description" name="search_text">
-              <Input placeholder="Search by model name or description" />
+              <Input placeholder="Search by scenario name or description" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={8}>
             <Form.Item
-              label="Model types"
+              label="Scenario types"
               name="types"
               initialValue={['public', 'original', 'base']}
             >
               <Select
                 mode="multiple"
                 showArrow
-                placeholder="Select model types"
+                placeholder="Select scenario types"
                 style={{ width: '100%' }}
                 tagRender={TagRender}
                 options={[
-                  { label: 'include public models', value: 'public' },
-                  { label: 'include self-created models', value: 'original' },
-                  { label: 'include base scenario models', value: 'base' },
+                  { label: 'include public scenarios', value: 'public' },
+                  { label: 'include self-created scenarios', value: 'original' },
+                  { label: 'include base scenario scenarios', value: 'base' },
                 ]}
               />
             </Form.Item>
@@ -477,7 +477,7 @@ const SearchForm = ({ onSearch }) => {
         <Row gutter={16}>
           <Col flex="auto">
             <Form.Item label="Name/Description" name="search_text" style={{ margin: 0 }}>
-              <Input placeholder="Search by model name or description" />
+              <Input placeholder="Search by scenario name or description" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={8}>

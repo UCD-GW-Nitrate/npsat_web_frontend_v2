@@ -89,9 +89,9 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
           if (results[0].status !== info.status) {
             // prompt user to refresh the screen and clear the interval
             notification.info({
-              message: 'Model Status Update',
+              message: 'Scenario Status Update',
               description:
-                "Currently viewing model status has been updated. Click 'Refresh' to" +
+                "Currently viewing scenario status has been updated. Click 'Refresh' to" +
                 ' see the new status and results.',
               btn: (
                 <Button onClick={() => window.location.reload()} type="primary" size="small">
@@ -149,17 +149,17 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
     }
   }, [info]);
   return (
-    <PageHeaderWrapper subTitle="The complete information of model.">
+    <PageHeaderWrapper subTitle="The complete information of scenario.">
       <div className={styles.main}>
         <Card
-          title={<AnchorTitle title="Model info" anchor="info" />}
+          title={<AnchorTitle title="Scenario info" anchor="info" />}
           bordered={false}
           style={{
             marginBottom: 32,
           }}
           extra={
             <Space>
-              <Tooltip title="Copy and modify these model presets to create another model">
+              <Tooltip title="Copy and modify these scenario presets to create another scenario">
                 <Button
                   onClick={() => {
                     history.push({
@@ -170,10 +170,10 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
                     });
                   }}
                 >
-                  Copy & modify this model
+                  Copy & modify this scenario
                 </Button>
               </Tooltip>
-              <Tooltip title="Only model creator can publish/un-publish the model">
+              <Tooltip title="Only scenario creator can publish/un-publish the scenario">
                 <Button
                   type="primary"
                   disabled={userId !== info.user}
@@ -183,14 +183,14 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
                     publish(info).then(() => setPublishLoading(false));
                   }}
                 >
-                  {info.public ? 'Make model private' : 'Share model publicly'}
+                  {info.public ? 'Make scenario private' : 'Share scenario publicly'}
                 </Button>
               </Tooltip>
             </Space>
           }
         >
           <Descriptions bordered column={{ xxl: 4, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }}>
-            <Descriptions.Item label="Model name">{info.name}</Descriptions.Item>
+            <Descriptions.Item label="Scenario name">{info.name}</Descriptions.Item>
             <Descriptions.Item label="Date created">
               {info.date_submitted ? new Date(info.date_submitted).toLocaleString() : ''}
             </Descriptions.Item>
@@ -221,17 +221,17 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
             <Descriptions.Item label="Water content">
               {`${(info.water_content * 100).toFixed(0)}%`}
             </Descriptions.Item>
-            <Descriptions.Item label="is public model">
+            <Descriptions.Item label="is public scenario">
               {info.public ? 'yes' : 'no'}
             </Descriptions.Item>
             <Descriptions.Item label="is BAU">{info.is_base ? 'yes' : 'no'}</Descriptions.Item>
             <Descriptions.Item label="Number of wells detected in selected region(s)">
-              {info.n_wells || 'model run not yet complete'}
+              {info.n_wells || 'scenario run not yet complete'}
             </Descriptions.Item>
             <Descriptions.Item label="Status message" span={3}>
               {info.status_message || 'no message'}
             </Descriptions.Item>
-            <Descriptions.Item label="Model description" span={3}>
+            <Descriptions.Item label="Scenario description" span={3}>
               {info.description || 'no description'}
             </Descriptions.Item>
             <Descriptions.Item label="Region(s)" span={3}>
@@ -257,14 +257,14 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
         </Card>
 
         <Card
-          title={<AnchorTitle title="Model progress" anchor="progress" />}
+          title={<AnchorTitle title="Scenario progress" anchor="progress" />}
           style={{
             marginBottom: 32,
           }}
           bordered={false}
         >
           <Steps direction={isMobile ? 'vertical' : 'horizontal'} {...progress}>
-            <Step title="Model created" description={desc1} />
+            <Step title="Scenario created" description={desc1} />
             <Step title="In queue" />
             <Step title="Running" />
             <Step title="Completed" description={desc2} />
@@ -283,11 +283,11 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
               <Tooltip
                 title={() => {
                   if (info.status !== 3) {
-                    return "Model hasn't finished running";
+                    return "Scenario hasn't finished running";
                   } else if (info.is_base) {
-                    return 'Select another model to be compared with BAU';
+                    return 'Select another scenario to be compared with BAU';
                   } else {
-                    return 'Compare this model with BAU results';
+                    return 'Compare this scenario with BAU results';
                   }
                 }}
               >
@@ -357,7 +357,7 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
         </Card>
 
         <Card
-          title={<AnchorTitle title="Region included in this model run" anchor="region-map" />}
+          title={<AnchorTitle title="Region included in this scenario run" anchor="region-map" />}
           bordered={false}
         >
           {regions ? <CountyMap data={regions.map((region) => region.geometry)} /> : null}

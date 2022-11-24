@@ -20,7 +20,7 @@ const detailPopover = (info) => {
     return (
         <div className={styles.main}>
             <Descriptions bordered column={{ xxl: 4, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }}>
-                <Descriptions.Item label="Model name">{info.name}</Descriptions.Item>
+                <Descriptions.Item label="Scenario name">{info.name}</Descriptions.Item>
                 <Descriptions.Item label="Date created">
                 {info.date_submitted ? new Date(info.date_submitted).toLocaleString() : ''}
                 </Descriptions.Item>
@@ -56,12 +56,12 @@ const detailPopover = (info) => {
                 </Descriptions.Item>
                 <Descriptions.Item label="is BAU">{info.is_base ? 'yes' : 'no'}</Descriptions.Item>
                 <Descriptions.Item label="Number of wells detected in selected region(s)">
-                {info.n_wells || 'model run not yet complete'}
+                {info.n_wells || 'scenario run not yet complete'}
                 </Descriptions.Item>
                 <Descriptions.Item label="Status message" span={3}>
                 {info.status_message || 'no message'}
                 </Descriptions.Item>
-                <Descriptions.Item label="Model description" span={3}>
+                <Descriptions.Item label="Scenario description" span={3}>
                 {info.description || 'no description'}
                 </Descriptions.Item>
                 <Descriptions.Item label="Region(s)" span={3}>

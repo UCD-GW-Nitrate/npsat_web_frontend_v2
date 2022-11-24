@@ -25,11 +25,11 @@ const ResultCompare = (props) => {
       const models = await Promise.all(ids.split(',').map((id) => getModel({ id }, token)));
       if (models.length > 5) {
         setError(true);
-        setMsg('Too many models selected.');
+        setMsg('Too many scenarios selected.');
         return;
       } else if (models.length < 2) {
         setError(true);
-        setMsg('Too few models selected.');
+        setMsg('Too few scenarios selected.');
         return;
       }
       models.forEach((model) => {
@@ -53,17 +53,17 @@ const ResultCompare = (props) => {
   if (error) {
     return errorMsg ? (
       <NoFoundPage
-        subTitle="You should select not more than 5 models and no less than 2 models"
+        subTitle="You should select not more than 5 scenarios and no less than 2 scenarios"
         title={errorMsg}
         redirection="/compare/group"
-        buttonText="Select models"
+        buttonText="Select scenarios"
       />
     ) : (
       <NoFoundPage
-        subTitle="One are more models you selected are inaccessible"
-        title="The model you look for is private or cannot be found"
+        subTitle="One are more scenarios you selected are inaccessible"
+        title="The scenario you look for is private or cannot be found"
         redirection="/compare/group"
-        buttonText="Select models"
+        buttonText="Select scenarios"
       />
     );
   } else {

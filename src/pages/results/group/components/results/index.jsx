@@ -73,8 +73,8 @@ const GroupComparison = ({ models, user, hash }) => {
   }, []);
   return (
     <PageHeaderWrapper
-      title="Group models comparison"
-      subTitle="Compare selected models together"
+      title="Group scenarios comparison"
+      subTitle="Compare selected scenarios together"
       // content={
       //   <Anchor affix={false}>
       //     <Anchor.Link href="#settings" title="Model settings" />
@@ -86,7 +86,7 @@ const GroupComparison = ({ models, user, hash }) => {
     >
       <div className={styles.main}>
         <Card
-          title={<AnchorTitle anchor="settings" title="Model settings" />}
+          title={<AnchorTitle anchor="settings" title="Scenario settings" />}
           style={{
             marginBottom: 32,
           }}
@@ -102,7 +102,7 @@ const GroupComparison = ({ models, user, hash }) => {
                   title: 'Name',
                   dataIndex: 'name',
                   render: (value, record) => (
-                    <Tooltip title="Check model details">
+                    <Tooltip title="Check scenario details">
                       <a href={`/model/view?id=${record.id}`}>{value}</a>
                     </Tooltip>
                   ),
@@ -271,7 +271,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
           <Select
             value={base}
             onChange={setBase}
-            placeholder="Baseline model"
+            placeholder="Baseline scenario"
             style={{
               width: 150,
             }}
@@ -293,14 +293,14 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
               setCompare(base);
             }}
           >
-            <Tooltip title="Swap baseline model">
+            <Tooltip title="Swap baseline scenario">
               <SwapOutlined />
             </Tooltip>
           </Button>
           <Select
             value={compare}
             onChange={setCompare}
-            placeholder="Compared model"
+            placeholder="Compared scenario"
             style={{
               width: 150,
             }}
@@ -396,7 +396,7 @@ const ResultComparisonInPairs = ({ models, results, percentiles }) => {
       ) : (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="Select baseline and compared models on the top right"
+          description="Select baseline and compared scenarios on the top right"
         />
       )}
     </Card>
@@ -423,7 +423,7 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
             showArrow
             mode="multiple"
             onChange={setChosenModels}
-            placeholder="Select models to compare"
+            placeholder="Select scenarios to compare"
             style={{
               width: 300,
             }}
@@ -444,7 +444,7 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
               setChosenModels(models.map((m) => m.id));
             }}
           >
-            <Tooltip title="Select all completed models">
+            <Tooltip title="Select all completed scenarios">
               <SelectOutlined />
             </Tooltip>
           </Button>
@@ -462,7 +462,7 @@ const ResultComparisonInGroup = ({ models, results, percentiles }) => {
           </Tabs.TabPane>
         </Tabs>
       ) : (
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Select models on the top right" />
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Select scenarios on the top right" />
       )}
     </Card>
   );

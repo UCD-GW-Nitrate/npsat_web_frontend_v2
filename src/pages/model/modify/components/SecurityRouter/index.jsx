@@ -47,10 +47,10 @@ const ModifyRouter = (props) => {
 
   return info.error ? (
     <NoFoundPage
-      subTitle="The model is inaccessible or unavailable"
+      subTitle="The scenario is inaccessible or unavailable"
       title={info.error}
       redirection="/model/modify"
-      buttonText="Reselect model"
+      buttonText="Reselect scenario"
     />
   ) : (
     <StepForm />

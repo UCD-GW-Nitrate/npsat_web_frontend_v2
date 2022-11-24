@@ -37,7 +37,7 @@ const createModelMenu = (record) => (
       </Tooltip>
     </Menu.Item>
     <Menu.Item icon={<CopyOutlined />}>
-      <Tooltip title="Copy this model and modify its presets">
+      <Tooltip title="Copy this scenario and modify its presets">
         <a href={`/model/modify?id=${record.id}`}>Copy & Modify</a>
       </Tooltip>
     </Menu.Item>
@@ -137,7 +137,7 @@ const OverviewList = (props) => {
   const actionRef = useRef();
   const columns = [
     {
-      title: 'Model Name',
+      title: 'Scenario Name',
       dataIndex: 'name',
       valueType: 'textarea',
       width: 250,
@@ -228,19 +228,19 @@ const OverviewList = (props) => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Popover title="Model Info" content={detailPopover(record)}>
+          <Popover title="Scenario Info" content={detailPopover(record)}>
             <a href={`/model/view?id=${record.id}`}>Details</a> 
           </Popover>
           <Divider type="vertical" />
           <Popconfirm
-            title="Are you sure deleting this model?"
+            title="Are you sure deleting this scenario?"
             okText="Yes"
             cancelText="No"
             onConfirm={() => onClickDelete(record.id, userToken, actionRef)}
             disabled={record.user !== userId}
           >
             <Tooltip
-              title={record.user === userId ? 'Delete model' : 'The model belongs to another user'}
+              title={record.user === userId ? 'Delete scenario' : 'The scenario belongs to another user'}
             >
               <Button type="link" danger style={{ padding: 0 }} disabled={record.user !== userId}>
                 Delete
@@ -260,9 +260,9 @@ const OverviewList = (props) => {
 
   return (
     <PageHeaderWrapper
-      subTitle="The table of all models available to you."
-      content="This table includes the models you created, all public models and base scenario models.
-       You can check them in details, compare their results, or delete the models created by you.
+      subTitle="The table of all scenarios available to you."
+      content="This table includes the scenarios you created, all public scenarios and base scenario scenarios.
+       You can check them in details, compare their results, or delete the scenarios created by you.
        Some features will be disabled if you view this page with a mobile device"
     >
       <ConfigProvider
@@ -274,7 +274,7 @@ const OverviewList = (props) => {
           {({ isMobile }) => (
             <ProTable
               scroll={{ x: 'max-content' }}
-              headerTitle="Model Overview"
+              headerTitle="Scenario Overview"
               actionRef={actionRef}
               rowKey="key"
               onChange={(_, _filter, _sorter) => {
@@ -299,12 +299,12 @@ const OverviewList = (props) => {
                   ? false
                   : (action, { selectedRows }) => [
                       <Button type="primary" onClick={handleCreate}>
-                        <PlusOutlined /> New Model
+                        <PlusOutlined /> New Scenario
                       </Button>,
                       <Select
                         mode="multiple"
                         showArrow
-                        placeholder="Select model types"
+                        placeholder="Select scenario types"
                         style={{ minWidth: 240 }}
                         tagRender={TagRender}
                         value={types}
@@ -313,9 +313,9 @@ const OverviewList = (props) => {
                           action.reload();
                         }}
                         options={[
-                          { label: 'include public models', value: 'public' },
-                          { label: 'include self-created models', value: 'original' },
-                          { label: 'include base scenario models', value: 'base' },
+                          { label: 'include public scenarios', value: 'public' },
+                          { label: 'include self-created scenarios', value: 'original' },
+                          { label: 'include base scenario scenarios', value: 'base' },
                         ]}
                       />,
                     ]

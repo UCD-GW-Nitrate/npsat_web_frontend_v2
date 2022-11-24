@@ -100,7 +100,7 @@ const Step3 = (props) => {
             Next
           </Button>
           <Divider type="vertical" />
-          <Tooltip title="Reset selections in this step to target model selections.">
+          <Tooltip title="Reset selections in this step to target scenario selections.">
             <Button
               danger
               onClick={() => {

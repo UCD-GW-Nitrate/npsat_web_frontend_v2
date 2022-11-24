@@ -44,9 +44,9 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
           if (results[0].status !== customModel.status || results[1].status !== baseModel.status) {
             // prompt user to refresh the screen and clear the interval
             notification.info({
-              message: 'Model Status Update',
+              message: 'Scenario Status Update',
               description:
-                "One or more currently viewing model status has been updated. Click 'Refresh' to" +
+                "One or more currently viewing scenario status has been updated. Click 'Refresh' to" +
                 ' see the new status and results.',
               btn: (
                 <Button onClick={() => window.location.reload()} type="primary" size="small">
@@ -83,7 +83,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
   return (
     <PageHeaderWrapper
       title="BAU comparison"
-      subTitle="Compare a custom model with the BAU under same scenario and regions"
+      subTitle="Compare a custom scenario with the BAU under same scenario and regions"
       // content={
       //   <Anchor affix={false}>
       //     <Anchor.Link href="#settings" title="Model settings" />
@@ -94,7 +94,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
     >
       <div className={styles.main}>
         <Card
-          title={<AnchorTitle anchor="settings" title="Model settings" />}
+          title={<AnchorTitle anchor="settings" title="Scenario settings" />}
           style={{
             marginBottom: 32,
           }}
@@ -110,7 +110,7 @@ const BaseComparison = ({ customModel, baseModel, user, hash }) => {
                   title: 'Name',
                   dataIndex: 'name',
                   render: (value, record) => (
-                    <Tooltip title="Check model details">
+                    <Tooltip title="Check scenario details">
                       <a href={`/model/view?id=${record.id}`}>{value}</a>
                     </Tooltip>
                   ),

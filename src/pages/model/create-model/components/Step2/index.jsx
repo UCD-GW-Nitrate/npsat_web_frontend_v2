@@ -201,10 +201,10 @@ const Step2 = (props) => {
       <div className={styles.desc}>
         <h3>Instructions</h3>
         <h4>Select a region or regions</h4>
-        <p>You can only select one type of region to create a model.</p>
+        <p>You can only select one type of region to create a scenario.</p>
         <p>Choose the type of regions.</p>
         <p>Choose region(s) on the map or in the dropdown list.</p>
-        <p>Click Next to continue selecting other model parameters.</p>
+        <p>Click Next to continue selecting other scenario parameters.</p>
       </div>
     </>
   );

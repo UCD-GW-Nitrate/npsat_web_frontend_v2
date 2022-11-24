@@ -26,14 +26,14 @@ const View = (props) => {
     ).then((result) => {
       if (typeof result === 'string' && result.startsWith('ERROR')) {
         notification.error({
-          message: model.public ? 'un-publish model failed' : 'publish model failed',
+          message: model.public ? 'un-publish scenario failed' : 'publish scenario failed',
           description: result.substr(5),
         });
       } else {
         setInfo(result);
         notification.success({
           message: 'request succeeded',
-          description: model.public ? 'un-published model' : 'published model',
+          description: model.public ? 'un-published scenario' : 'published scenario',
         });
       }
     });
@@ -60,10 +60,10 @@ const View = (props) => {
   }
   return info.error ? (
     <NoFoundPage
-      subTitle={`The model id with ${id} inaccessible`}
-      title="The model you look for is private or cannot be found"
+      subTitle={`The scenario id with ${id} inaccessible`}
+      title="The scenario you look for is private or cannot be found"
       redirection="/model/overview"
-      buttonText="Select model"
+      buttonText="Select scenario"
     />
   ) : (
     <ModelDetail

@@ -64,7 +64,7 @@ const StepForm = ({ dispatch, current }) => {
   }, [current]);
   return (
     <PageHeaderWrapper
-      content="Follow the instructions to copy and modify a model. The new model will
+      content="Follow the instructions to copy and modify a scenario. The new scenario will
      be scheduled to run once it's created."
     >
       <Card bordered={false}>

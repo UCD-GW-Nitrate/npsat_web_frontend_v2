@@ -58,8 +58,8 @@ const ListResponseProcessing = (response, userId) => {
 };
 
 const SearchTable = ({
-  title = 'Model Details',
-  subTitle = 'Choose a model to view full details',
+  title = 'Scenario Details',
+  subTitle = 'Choose a scenario to view full details',
   user,
 }) => {
   const { isMobile } = useContext(RouteContext);
@@ -281,25 +281,25 @@ const SearchForm = ({ onSearch }) => {
         <Row gutter={16}>
           <Col flex="auto">
             <Form.Item label="Name/Description" name="search_text">
-              <Input placeholder="Search by model name or description" />
+              <Input placeholder="Search by scenario name or description" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={8}>
             <Form.Item
-              label="Model types"
+              label="scenario types"
               name="types"
               initialValue={['public', 'original', 'base']}
             >
               <Select
                 mode="multiple"
                 showArrow
-                placeholder="Select model types"
+                placeholder="Select scenario types"
                 style={{ width: '100%' }}
                 tagRender={TagRender}
                 options={[
-                  { label: 'include public models', value: 'public' },
-                  { label: 'include self-created models', value: 'original' },
-                  { label: 'include base scenario models', value: 'base' },
+                  { label: 'include public scenarios', value: 'public' },
+                  { label: 'include self-created scenarios', value: 'original' },
+                  { label: 'include base scenario scenarios', value: 'base' },
                 ]}
               />
             </Form.Item>
@@ -423,7 +423,7 @@ const SearchForm = ({ onSearch }) => {
         <Row gutter={16}>
           <Col flex="auto">
             <Form.Item label="Name/Description" name="search_text" style={{ margin: 0 }}>
-              <Input placeholder="Search by model name or description" />
+              <Input placeholder="Search by scenario name or description" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={8}>

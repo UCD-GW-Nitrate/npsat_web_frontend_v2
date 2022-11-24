@@ -24,7 +24,7 @@ const Dashboard = ({ user }) => {
       dataIndex: 'name',
       fixed: 'left',
       render: (value, record) => (
-        <Tooltip title="Check model details">
+        <Tooltip title="Check scenario details">
           <a href={`/model/view?id=${record.id}`}>{value}</a>
         </Tooltip>
       ),
@@ -58,7 +58,7 @@ const Dashboard = ({ user }) => {
     <GridContent>
       <Row gutter={[24, 24]}>
         <Col xl={18} lg={24} md={24} sm={24} xs={24}>
-          <Card title="Completed model quick view" extra={<Tag color="#a0d911">completed</Tag>}>
+          <Card title="Completed scenario quick view" extra={<Tag color="#a0d911">completed</Tag>}>
             {isMobile ? (
               'Not available on mobile devices'
             ) : (
@@ -67,17 +67,17 @@ const Dashboard = ({ user }) => {
           </Card>
         </Col>
         <Col xl={6} lg={24} md={24} sm={24} xs={24}>
-          <Card title="Model stats">
+          <Card title="Scenario stats">
             <Statistic
               title={
                 <>
-                  Models created by you <Tag color="volcano">original</Tag>
+                  Scenarios created by you <Tag color="volcano">original</Tag>
                 </>
               }
               value={data.total_created_number}
             />
             <Statistic
-              title="Completed models created by you"
+              title="Completed scenarios created by you"
               value={data.total_completed_number}
             />
             {data.total_created_number ? (
@@ -96,12 +96,12 @@ const Dashboard = ({ user }) => {
             <Statistic
               title={
                 <>
-                  Public models <Tag color="blue">public</Tag>
+                  Public scenarios <Tag color="blue">public</Tag>
                 </>
               }
               value={data.total_public_number}
             />
-            <Statistic title="Models published by you" value={data.total_published_number} />
+            <Statistic title="Scenarios published by you" value={data.total_published_number} />
           </Card>
         </Col>
       </Row>
@@ -109,7 +109,7 @@ const Dashboard = ({ user }) => {
         <Col xl={12} lg={24} md={24} sm={24} xs={24}>
           <RecentModelTable
             data={data.recent_completed_models}
-            title="Recently completed models"
+            title="Recently completed Scenarios"
             columns={columns}
             extra={<Tag color="#a0d911">completed</Tag>}
           />
@@ -117,7 +117,7 @@ const Dashboard = ({ user }) => {
         <Col xl={12} lg={24} md={24} sm={24} xs={24}>
           <RecentModelTable
             data={data.recent_published_models}
-            title="Recently published models"
+            title="Recently published scenarios"
             columns={columns}
             extra={<Tag color="processing">public</Tag>}
           />

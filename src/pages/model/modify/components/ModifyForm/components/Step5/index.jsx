@@ -43,7 +43,7 @@ const Step5 = (props) => {
               marginRight: 5,
             }}
           />{' '}
-          the original model
+          the original scenario
         </a>
       </Menu.Item>
       <Menu.Item>
@@ -53,7 +53,7 @@ const Step5 = (props) => {
               marginRight: 5,
             }}
           />{' '}
-          the new model
+          the new scenario
         </a>
       </Menu.Item>
     </Menu>
@@ -73,7 +73,7 @@ const Step5 = (props) => {
   const extra = (
     <>
       <Button type="primary" onClick={onView} style={{ marginBottom: 10 }} size="large">
-        View model run
+        View scenario run
       </Button>
       <Button onClick={onCheck} style={{ marginBottom: 10 }} size="large">
         Compare with BAU
@@ -99,12 +99,12 @@ const Step5 = (props) => {
   return id === -1 ? (
     <Result
       status="error"
-      title="Model creation failed"
+      title="Scenario creation failed"
       subTitle="Please contact the site manager"
       extra={
         <>
           <Button onClick={onCreate} type="primary">
-            Create another model
+            Create another scenario
           </Button>
           <Button onClick={onPrev}>Prev</Button>
         </>
@@ -113,8 +113,8 @@ const Step5 = (props) => {
   ) : (
     <Result
       status="success"
-      title="Model copied, modified, and created"
-      subTitle="Model will be running for a few seconds to generate results"
+      title="Scenario copied, modified, and created"
+      subTitle="Scenario will be running for a few seconds to generate results"
       className={styles.result}
       extra={extra}
     />

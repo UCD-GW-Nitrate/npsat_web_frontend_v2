@@ -65,7 +65,7 @@ const StepForm = ({ dispatch, current, isBAU }) => {
   }, [current]);
   return (
     <PageHeaderWrapper
-      content="Follow the instructions to create a model. The model will
+      content="Follow the instructions to create a scenario. The scenario will
      be scheduled to run once it's created"
     >
       <Card bordered={false}>
@@ -85,7 +85,7 @@ const StepForm = ({ dispatch, current, isBAU }) => {
             <Step title="Select Settings" disabled={currentStep >= 4} />
             <Step title="Select Regions" disabled={currentStep < 1 || currentStep >= 4} />
             <Step title="Select Crops" disabled={currentStep < 2 || currentStep >= 4 || isBAU} />
-            <Step title="Enter Model Meta" disabled={currentStep < 3 || currentStep >= 4} />
+            <Step title="Enter Scenario Meta" disabled={currentStep < 3 || currentStep >= 4} />
             <Step title="Results" disabled />
           </Steps>
           {stepComponent}
