@@ -57,7 +57,7 @@ const Step4 = (props) => {
       >
         <Form.Item
           name="model-name"
-          label="Model name"
+          label="Scenario name"
           rules={[
             {
               required: true,
