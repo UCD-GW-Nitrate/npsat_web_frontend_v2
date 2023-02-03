@@ -18,6 +18,10 @@ const Step1 = (props) => {
     unsatScenarios: unsatScen,
     welltypeScenarios: welltypeScen,
   } = useScenarioGroups();
+
+  loadScen.sort((a,b) => a.id - b.id);//sort scenarios by id
+  welltypeScen.sort((a,b) => a.id - b.id);//sort scenarios by id
+  
   const [isBAU, setBAU] = useState(data.hasOwnProperty('is_base') ? data.is_base : false);
   useEffect(() => {
     setBAU(data.hasOwnProperty('is_base') ? data.is_base : false);
