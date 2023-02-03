@@ -66,7 +66,7 @@ const StepForm = ({ dispatch, current, isBAU }) => {
   return (
     <PageHeaderWrapper
       content="Follow the instructions to create a scenario. The scenario will
-     be scheduled to run once it's created"
+     be scheduled to run once it's created. Scenario runs may take from a few seconds to a minute."
     >
       <Card bordered={false}>
         <>

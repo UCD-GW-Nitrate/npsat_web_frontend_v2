@@ -200,11 +200,40 @@ const Step2 = (props) => {
       />
       <div className={styles.desc}>
         <h3>Instructions</h3>
-        <h4>Select a region or regions</h4>
-        <p>You can only select one type of region to create a scenario.</p>
+        <h4>Select a region or regions:</h4>
         <p>Choose the type of regions.</p>
         <p>Choose region(s) on the map or in the dropdown list.</p>
         <p>Click Next to continue selecting other scenario parameters.</p>
+        <p>
+          Note: You can only select one type of region (e.g., “B118 Basin”), but within that type, any number
+          regions (1 to all) can be selected. The number of wells in the selected region(s) is displayed on top of the
+          map. The scenario simulations (including the BAU simulation) will evaluate nitrate concentrations at
+          these wells and aggregate those into statistical results.
+        </p>
+        <p>
+          The “Advanced filter” allows for selection of wells within a specific minimum and maximum well depth
+          interval, and/or consider streamlines to well screens within a specific minimum and maximum screen
+          depth interval. The number of wells to which the criteria apply within the selected region(s). This may
+          affect the number of wells selected for the simulation, as shown above the map.
+        </p>
+        <p>
+          “Basin”: select the Sacramento Valley, San Joaquin Valley, and Tulare Lake Basin (also known as the
+          Southern San Joaquin Valley) watersheds overlying the Central Valley aquifer system.
+        </p>
+        <p>
+          “County” – select specific counties
+        </p>
+        <p>
+          “B118” – select groundwater sub-basins as defined by California Department of Water Resources’ Bulletin
+          118 series.
+        </p>
+        <p>
+          “Subregions” – select groundwater regions as defined by C2VSIM and CVHM (21 water accounting
+          regions)
+        </p>
+        <p>
+          “Township” – select specific townships, typically a 36 square mile area.
+        </p>
       </div>
     </>
   );

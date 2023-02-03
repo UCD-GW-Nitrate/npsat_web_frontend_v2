@@ -150,7 +150,7 @@ const Step1 = (props) => {
         </Form.Item>
         <Form.Item
           name="unsat_scenario"
-          label="Unsat scenario"
+          label="Unsaturated zone depth scenario"
           rules={[
             {
               required: true,
@@ -176,7 +176,7 @@ const Step1 = (props) => {
         </Form.Item>
         <Form.Item
           name="water_content"
-          label="Water content"
+          label="Unsaturated zone effective water content"
           required={[
             {
               required: true,
@@ -189,7 +189,7 @@ const Step1 = (props) => {
         </Form.Item>
         <Form.Item
           name="sim_end_year"
-          label="Sim end year"
+          label="Simulation ending year"
           required={[
             {
               required: true,
@@ -220,7 +220,7 @@ const Step1 = (props) => {
           <>
             <Form.Item
               name="reduction_year"
-              label="Reduction period"
+              label="Transition period"
               dependencies={['sim_end_year']}
               rules={[
                 {
@@ -318,25 +318,39 @@ const Step1 = (props) => {
         }}
       />
       <div className={styles.desc}>
-        <h3>Instructions</h3>
-        <h4>Select Scenarios</h4>
+      <h3>Instructions</h3>
+        <h4>Select Scenarios:</h4>
         <p>
           Hover on the info circle to see detailed explanation about the scenario. Scenario chosen
-          will determine type and number of crops in next step.
+          will determine the number of wells and the type and number of crops in subsequent menus.
         </p>
-        <h4>Sim end year</h4>
-        <p>Enter simulation end year default to 2100. Selectable range from 2020 to 2500.</p>
-        <h4>Reduction period</h4>
-        <p>The year to start the reduction and the year to reach the full reduction.</p>
-        <h4>Water content</h4>
-        <p>This is the unsaturated zone mobile water content, default to 0.</p>
-        <h4>BAU</h4>
+        <h4>Simulation ending year:</h4>
         <p>
-          BAU refers to Business As Usual, meaning no reduction or implementation. Reduction period
-          and Crop selection will be disabled by selecting to create a BAU scenario.
+          Enter the last year of the scenario simulation run. 
+          By default, this will be the year 2100. It can be no later than the year 2500.
         </p>
-        <h4>Other selections</h4>
-        <p>Developing...</p>
+        <h4>Transition period:</h4>
+        <p>
+          This is the beginning year and final year of the transition from the current 
+          Bussiness-As-Usual(BAU) to the new nitrate loadig scenario. 
+          Typically would from a year within the next five years and end in a year 
+          about 15 to 25 years from now.
+        </p>
+        <h4>Unsaturated zone effective water content:</h4>
+        <p>
+          This refers to the effective water content for the unsaturated zone. 
+          The smaller the effective water content, the faster the travel time through the 
+          unsaturated zone. When choosing "0%", the travel time through the unsaturated zone is 
+          ignored and all nitrate loading is instantaneously applied to the water table. 
+          A recommended range for the effective water content is 5% - 10%.
+        </p>
+        <h4>BAU:</h4>
+        <p>
+          "Business-As-Usual" refers to the continuation of past and current practices well into the 
+          future, without notable changes in nitrate leaching.
+        </p>
+        <h4>Other selections:</h4>
+        <p>Under development</p>
       </div>
     </>
   );

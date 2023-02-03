@@ -114,6 +114,11 @@ const Step4 = (props) => {
         <p>Enter a scenario name, limited 255 characters.</p>
         <h4>Scenario description</h4>
         <p>Enter scenario optional description, no characters limit.</p>
+        <p>
+          Once submitted, your customized scenario will be created and run. 
+          Scenario will be running for a few seconds to up to a minute (based on number of wells selected)
+          to generate results.
+        </p>
       </div>
     </>
   );
