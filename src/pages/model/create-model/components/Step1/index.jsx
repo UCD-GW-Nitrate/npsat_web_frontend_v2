@@ -76,7 +76,8 @@ const Step1 = (props) => {
         {...formItemLayout}
         form={form}
         layout="horizontal"
-        className={styles.stepForm}
+        //className={styles.stepForm}
+        className={'two-rows-label'}
         onFinish={onSubmit}
       >
         <Form.Item
