@@ -79,8 +79,8 @@ const Step2 = (props) => {
         dispatch({
           type: 'createModelForm/saveStepFormData',
           payload: {
-            depth_range: [0,3001],
-            screen_length_range: [0,1501],
+            depth_range: [0,801],
+            screen_length_range: [0,801],
             ...allValues,
             regionFilter: filter,
             regions: allValues,
@@ -93,8 +93,8 @@ const Step2 = (props) => {
             payload: {
               ...allValues,
               regionFilter: filter,
-              depth_range: [0,3001],
-              screen_length_range: [0,1501],
+              depth_range: [0,801],
+              screen_length_range: [0,801],
             },
           });
         }
@@ -131,9 +131,9 @@ const Step2 = (props) => {
         {filter ? (
           <>
             <Form.Item
-              label="Depth (ft)"
+              label="Depth (m)"
               name="depth_range"
-              initialValue={data.hasOwnProperty('depth_range') ? data.depth_range : [0, 800]}
+              initialValue={data.hasOwnProperty('depth_range') ? data.depth_range : [0, 801]}
               rules={[
                 {
                   validator: (_, value) => {
@@ -148,10 +148,10 @@ const Step2 = (props) => {
               <RangeFormItem rangeConfig={DEPTH_RANGE_CONFIG} />
             </Form.Item>
             <Form.Item
-              label="ScreenLen (ft)"
+              label="ScreenLen (m)"
               name="screen_length_range"
               initialValue={
-                data.hasOwnProperty('screen_length_range') ? data.screen_length_range : [0, 800]
+                data.hasOwnProperty('screen_length_range') ? data.screen_length_range : [0, 801]
               }
               rules={[
                 {
