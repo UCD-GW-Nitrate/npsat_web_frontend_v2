@@ -73,7 +73,7 @@ const RangeFormItem = ({ value = [], onChange, rangeConfig }) => {
           min={min}
           formatter={maxIdentifierFormatter}
         />
-        <span>  {parseInt(low * 3.28)}(ft)</span>
+        <span> /{parseInt(low * 3.28)}(ft)</span>
       </Col>
       <Col>
         max:{' '}
@@ -86,7 +86,7 @@ const RangeFormItem = ({ value = [], onChange, rangeConfig }) => {
           min={min}
           formatter={maxIdentifierFormatter}
         />
-        <span>  {parseInt(high * 3.28)}(ft)</span>
+        <span> /{parseInt(high * 3.28)}(ft)</span>
       </Col>
     </Row>
   );
