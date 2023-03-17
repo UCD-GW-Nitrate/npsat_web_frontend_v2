@@ -213,8 +213,7 @@ const Step2 = (props) => {
         <p>
           The “Advanced filter” allows for selection of wells within a specific minimum and maximum well depth
           interval, and/or consider streamlines to well screens within a specific minimum and maximum screen
-          depth interval. The number of wells to which the criteria apply within the selected region(s). This may
-          affect the number of wells selected for the simulation, as shown above the map.
+          depth interval. This may affect the number of wells selected for the simulation, as shown above the map.
         </p>
         <p>
           “Basin”: select the Sacramento Valley, San Joaquin Valley, and Tulare Lake Basin (also known as the

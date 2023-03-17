@@ -326,8 +326,8 @@ const Step1 = (props) => {
         <h4>Transition period:</h4>
         <p>
           This is the beginning year and final year of the transition from the current 
-          Bussiness-As-Usual(BAU) to the new nitrate loadig scenario. 
-          Typically would from a year within the next five years and end in a year 
+          Business-As-Usual (BAU) to the new nitrate loadig scenario. 
+          Typically would start within the next five years and end in a year 
           about 15 to 25 years from now.
         </p>
         <h4>Unsaturated zone effective water content:</h4>
