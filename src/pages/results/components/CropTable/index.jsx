@@ -9,16 +9,16 @@ const CropTable = ({ models }) => {
   const [columns, setColumns] = useState([]);
 
   const getRegions = (regions) => {
-    var regionNames = [];
-    regions.map((region) => {
+    const regionNames = [];
+    regions.forEach((region) => {
       regionNames.push(region.mantis_id);
     });
     return regionNames;
   };
 
   const getCrops = (modifications) => {
-    var cropCAML = [];
-    modifications.map((m) => {
+    const cropCAML = [];
+    modifications.forEach((m) => {
       cropCAML.push(m.crop.caml_code);
     });
     return cropCAML;
@@ -34,7 +34,7 @@ const CropTable = ({ models }) => {
       models.forEach((model) => {
         const { modifications, name, regions } = model;
         const mapType = model.regions[0].region_type;
-        const load_scenario = model.flow_scenario.scenario_type;//load_scenario type was assigned to flow_scenario, needs to be fixed 
+        const load_scenario = model.flow_scenario.scenario_type;// load_scenario type was assigned to flow_scenario, needs to be fixed 
         const cropAreas = areaPerCrop(getCrops(modifications), getRegions(regions), mapType, load_scenario);
         modifications.forEach((modification) => {
           if (!cropMap.has(modification.crop.id)) {
@@ -78,14 +78,14 @@ const CropTable = ({ models }) => {
           title: 'Crop area (Hectare)',
           dataIndex: 'area',
           key: 'area',
-          render: (num) => `${Math.round(parseInt(num ? num : 0)*0.25)}`,
+          render: (num) => `${Math.round(parseInt(num || 0)*0.25)}`,
           sorter: (a, b) => parseInt(a.area) - parseInt(b.area),
         },
         {
           title: 'Crop area (Acre)',
           dataIndex: 'area',
           key: 'area',
-          render: (num) => `${Math.round(parseInt(num ? num : 0)*0.25*2.47)}`,
+          render: (num) => `${Math.round(parseInt(num || 0)*0.25*2.47)}`,
           sorter: (a, b) => parseInt(a.area) - parseInt(b.area),
         },
       ]);

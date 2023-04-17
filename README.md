@@ -4,6 +4,8 @@ This project is initialized with [Ant Design Pro](https://pro.ant.design). Follo
 
 ## Environment Prepare
 
+**Note:** This project uses Node.js v10. Running the following scripts with a more recent version of Node will cause errors. It is recommended to use [Node Version Manager](https://github.com/nvm-sh/nvm/blob/master/README.md) to install and use Node.js v10 before installing `node_modules` and running the project.
+
 Install `node_modules`:
 
 ```bash

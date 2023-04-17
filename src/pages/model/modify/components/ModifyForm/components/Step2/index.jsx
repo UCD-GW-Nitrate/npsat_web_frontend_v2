@@ -66,7 +66,7 @@ const Step2 = (props) => {
 
   const onPrev = () => {
     if (dispatch) {
-      //const values = getFieldsValue();
+      // const values = getFieldsValue();
       // dispatch({
       //   type: 'createModelForm/saveStepFormData',
       //   payload: { ...values, is_base: isBAU },
@@ -83,46 +83,46 @@ const Step2 = (props) => {
     console.log('all values', allValues);
     if (dispatch) {
       
+      dispatch({
+        type: 'copyAndModifyModelForm/saveStepFormData',
+        payload: {
+          depth_range: [0,801],
+          screen_length_range: [0,801],
+          ...allValues,
+          regionFilter: filter,
+          modifiedRegions: allValues,
+        },
+      });
+      // disable filter once it is switched off
+      if(changedValues.advanced_filter === false){
         dispatch({
           type: 'copyAndModifyModelForm/saveStepFormData',
           payload: {
-            depth_range: [0,801],
-            screen_length_range: [0,801],
             ...allValues,
             regionFilter: filter,
-            modifiedRegions: allValues,
+            depth_range: [0,801],
+            screen_length_range: [0,801],
           },
         });
-        //disable filter once it is switched off
-        if(changedValues.advanced_filter === false){
-          dispatch({
-            type: 'copyAndModifyModelForm/saveStepFormData',
-            payload: {
-              ...allValues,
-              regionFilter: filter,
-              depth_range: [0,801],
-              screen_length_range: [0,801],
-            },
-          });
-        }
+      }
     }
-  }
+  };
 
   return (
     <>
       <Tabs tabPosition="top" centered activeKey={tabKey} onChange={(key) => setTabKey(key)}>
-        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
-        <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
-        <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
-        <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
-        <TabPane tab="Subregions" key={REGION_MACROS.CVHM_FARM.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
+        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()} disabled={data.welltype_scenario === 12}/>
+        <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()} disabled={data.welltype_scenario === 12}/>
+        <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()} disabled={data.welltype_scenario === 12}/>
+        <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()} disabled={data.welltype_scenario === 12}/>
+        <TabPane tab="Subregions" key={REGION_MACROS.CVHM_FARM.toString()} disabled={data.welltype_scenario === 12}/>
         <TabPane tab="Township" key={REGION_MACROS.TOWNSHIPS.toString()} />
       </Tabs>
       <Form
         form={form}
         {...style}
         className={styles.stepForm}
-        onFinish={(values) => onSubmit(parseInt(tabKey, 10), values)}
+        onFinish={(values) => onSubmit(parseInt(tabKey), values)}
         onValuesChange={(changedValues, allValues) => onChange(changedValues, allValues)}
       >
         {regionFormItem}
@@ -145,7 +145,7 @@ const Step2 = (props) => {
                   validator: (_, value) => {
                     if (value[0] >= value[1]) {
                       console.log(value);
-                      return Promise.reject('Range min should be less than max');
+                      return Promise.reject(new Error('Range min should be less than max'));
                     }
                     return Promise.resolve();
                   },
@@ -164,7 +164,7 @@ const Step2 = (props) => {
                 {
                   validator: (_, value) => {
                     if (value[0] >= value[1]) {
-                      return Promise.reject('Range min should be less than max');
+                      return Promise.reject(new Error('Range min should be less than max'));
                     }
                     return Promise.resolve();
                   },
@@ -234,39 +234,39 @@ const Step2 = (props) => {
       />
       <div className={styles.desc}>
         <h3>Instructions</h3>
-          <h4>Select a region or regions:</h4>
-          <p>Choose the type of regions.</p>
-          <p>Choose region(s) on the map or in the dropdown list.</p>
-          <p>Click Next to continue selecting other scenario parameters.</p>
-          <p>
+        <h4>Select a region or regions:</h4>
+        <p>Choose the type of regions.</p>
+        <p>Choose region(s) on the map or in the dropdown list.</p>
+        <p>Click Next to continue selecting other scenario parameters.</p>
+        <p>
             Note: You can only select one type of region (e.g., “B118 Basin”), but within that type, any number
             regions (1 to all) can be selected. The number of wells in the selected region(s) is displayed on top of the
             map. The scenario simulations (including the BAU simulation) will evaluate nitrate concentrations at
             these wells and aggregate those into statistical results.
-          </p>
-          <p>
+        </p>
+        <p>
             The “Advanced filter” allows for selection of wells within a specific minimum and maximum well depth
             interval, and/or consider streamlines to well screens within a specific minimum and maximum screen
             depth interval. This may affect the number of wells selected for the simulation, as shown above the map.
-          </p>
-          <p>
+        </p>
+        <p>
             “Basin”: select the Sacramento Valley, San Joaquin Valley, and Tulare Lake Basin (also known as the
             Southern San Joaquin Valley) watersheds overlying the Central Valley aquifer system.
-          </p>
-          <p>
+        </p>
+        <p>
             “County” – select specific counties
-          </p>
-          <p>
+        </p>
+        <p>
             “B118” – select groundwater sub-basins as defined by California Department of Water Resources’ Bulletin
             118 series.
-          </p>
-          <p>
+        </p>
+        <p>
             “Subregions” – select groundwater regions as defined by C2VSIM and CVHM (21 water accounting
             regions)
-          </p>
-          <p>
+        </p>
+        <p>
             “Township” – select specific townships, typically a 36 square mile area.
-          </p>
+        </p>
       </div>
     </>
   );

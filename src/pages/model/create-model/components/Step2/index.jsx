@@ -76,47 +76,47 @@ const Step2 = (props) => {
     console.log("data: ", data);
     if (dispatch) {
       
+      dispatch({
+        type: 'createModelForm/saveStepFormData',
+        payload: {
+          depth_range: [0,801],
+          screen_length_range: [0,801],
+          ...allValues,
+          regionFilter: filter,
+          regions: allValues,
+        },
+      });
+      // disable filter once it is switched off
+      if(changedValues.advanced_filter === false){
         dispatch({
           type: 'createModelForm/saveStepFormData',
           payload: {
-            depth_range: [0,801],
-            screen_length_range: [0,801],
             ...allValues,
             regionFilter: filter,
-            regions: allValues,
+            depth_range: [0,801],
+            screen_length_range: [0,801],
           },
         });
-        //disable filter once it is switched off
-        if(changedValues.advanced_filter === false){
-          dispatch({
-            type: 'createModelForm/saveStepFormData',
-            payload: {
-              ...allValues,
-              regionFilter: filter,
-              depth_range: [0,801],
-              screen_length_range: [0,801],
-            },
-          });
-        }
+      }
       
     }
-  }
+  };
 
   return (
     <>
       <Tabs tabPosition="top" centered activeKey={tabKey} onChange={(key) => setTabKey(key)}>
-        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()} disabled={data.welltype_scenario === 12 ? true:false} />
-        <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
-        <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
-        <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
-        <TabPane tab="Subregions" key={REGION_MACROS.CVHM_FARM.toString()} disabled={data.welltype_scenario === 12 ? true:false}/>
+        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()} disabled={data.welltype_scenario === 12} />
+        <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()} disabled={data.welltype_scenario === 12}/>
+        <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()} disabled={data.welltype_scenario === 12}/>
+        <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()} disabled={data.welltype_scenario === 12}/>
+        <TabPane tab="Subregions" key={REGION_MACROS.CVHM_FARM.toString()} disabled={data.welltype_scenario === 12}/>
         <TabPane tab="Township" key={REGION_MACROS.TOWNSHIPS.toString()} />
       </Tabs>
       <Form
         form={form}
         {...style}
         className={styles.stepForm}
-        onFinish={(values) => onSubmit(parseInt(tabKey, 10), values)}
+        onFinish={(values) => onSubmit(parseInt(tabKey), values)}
         onValuesChange={(changedValues, allValues) => onChange(changedValues, allValues)}
       >
         {regionFormItem}
@@ -138,7 +138,7 @@ const Step2 = (props) => {
                 {
                   validator: (_, value) => {
                     if (value[0] >= value[1]) {
-                      return Promise.reject('Range min should be less than max');
+                      return Promise.reject(new Error('Range min should be less than max'));
                     }
                     return Promise.resolve();
                   },
@@ -157,7 +157,7 @@ const Step2 = (props) => {
                 {
                   validator: (_, value) => {
                     if (value[0] >= value[1]) {
-                      return Promise.reject('Range min should be less than max');
+                      return Promise.reject(new Error('Range min should be less than max'));
                     }
                     return Promise.resolve();
                   },

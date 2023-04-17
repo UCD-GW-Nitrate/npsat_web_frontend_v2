@@ -5,11 +5,13 @@ import { history } from 'umi';
 import { connect } from 'react-redux';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
+import TagRender from '@/components/ScenarioTag/TagRender';
+import ListResponseProcessing from '@/components/ScenarioTag/ListResponseProcessing';
 import { deleteModel, queryModelList } from './service';
 import detailPopover from './DetailPopover';
 
 /**
- * handle crate new model button
+ * new scenario button logic
  * redirect page
  */
 const handleCreate = () => {
@@ -18,8 +20,9 @@ const handleCreate = () => {
 
 /**
  * used to create dropdown menu for action cols
- * @param record
- * @returns {JSX.Element} Action for "Compare", "Delete", "Copy & Modify"
+ * @param {Object} record return value of {@link queryModelList}
+ * @returns {JSX.Element} "more" button dropdown menu
+ * @see {@link https://ant.design/components/dropdown ant design dropdown}
  */
 const createModelMenu = (record) => (
   <Menu>
@@ -45,68 +48,10 @@ const createModelMenu = (record) => (
 );
 
 /**
- * render tags
- * @param props
- * @returns {JSX.Element}
- * @constructor
- */
-const TagRender = (props) => {
-  const { value, closable, onClose } = props;
-  let color;
-  switch (value) {
-    default:
-    case 'original':
-      color = 'volcano';
-      break;
-    case 'public':
-      color = 'geekblue';
-      break;
-    case 'base':
-      color = 'green';
-  }
-  return (
-    <Tag color={color} closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
-      {value}
-    </Tag>
-  );
-};
-
-/**
- * additional processor for antd pro table
- * @param response
- * @param userId
- * @returns {{total, data: []}}
- * @constructor
- */
-const ListResponseProcessing = (response, userId) => {
-  const { results } = response;
-  const data = [];
-  results.forEach((temp) => {
-    const model = temp;
-    model.key = model.id;
-    model.tags = [];
-    if (model.public) {
-      model.tags.push('public');
-    }
-    if (model.is_base) {
-      model.tags.push('base');
-    }
-    if (model.user === userId) {
-      model.tags.push('original');
-    }
-    data.push(model);
-  });
-  return {
-    data,
-    total: response.count,
-  };
-};
-
-/**
  * handle click: delete model
- * @param id
- * @param token
- * @param action
+ * @param {number} id a number containing the id of the model
+ * @param {string} token a string containing the user token
+ * @param {Object} action a react ref
  */
 const onClickDelete = async (id, token, action) => {
   const hide = message.loading('Deleting...');
@@ -122,7 +67,7 @@ const onClickDelete = async (id, token, action) => {
 };
 
 /**
- * major UI components for overview page
+ * The main UI component for the Overview Page
  * @param props
  * @returns {JSX.Element}
  * @constructor
@@ -135,6 +80,9 @@ const OverviewList = (props) => {
   const [filter, setFilter] = useState([0, 1, 2, 3, 4]);
   const [types, setTypes] = useState(['public', 'base', 'original']);
   const actionRef = useRef();
+
+  console.log("user overview list: ", user);
+
   const columns = [
     {
       title: 'Scenario Name',
@@ -286,7 +234,7 @@ const OverviewList = (props) => {
                   setSorter('');
                 }
                 if (filterResult.status) {
-                  setFilter(filterResult.status.map((num) => parseInt(num, 10)));
+                  setFilter(filterResult.status.map((num) => parseInt(num)));
                 } else {
                   setFilter([0, 1, 2, 3, 4]);
                 }
@@ -298,27 +246,27 @@ const OverviewList = (props) => {
                 isMobile
                   ? false
                   : (action, { selectedRows }) => [
-                      <Button type="primary" onClick={handleCreate}>
-                        <PlusOutlined /> New Scenario
-                      </Button>,
-                      <Select
-                        mode="multiple"
-                        showArrow
-                        placeholder="Select scenario types"
-                        style={{ minWidth: 240 }}
-                        tagRender={TagRender}
-                        value={types}
-                        onChange={(value) => {
-                          setTypes([...value]);
-                          action.reload();
-                        }}
-                        options={[
-                          { label: 'include public scenarios', value: 'public' },
-                          { label: 'include self-created scenarios', value: 'original' },
-                          { label: 'include base scenario scenarios', value: 'base' },
-                        ]}
-                      />,
-                    ]
+                    <Button type="primary" onClick={handleCreate}>
+                      <PlusOutlined /> New Scenario
+                    </Button>,
+                    <Select
+                      mode="multiple"
+                      showArrow
+                      placeholder="Select scenario types"
+                      style={{ minWidth: 240 }}
+                      tagRender={TagRender}
+                      value={types}
+                      onChange={(value) => {
+                        setTypes([...value]);
+                        action.reload();
+                      }}
+                      options={[
+                        { label: 'include public scenarios', value: 'public' },
+                        { label: 'include self-created scenarios', value: 'original' },
+                        { label: 'include base scenario scenarios', value: 'base' },
+                      ]}
+                    />,
+                  ]
               }
               tableAlertRender={false}
               request={(params) =>

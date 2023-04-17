@@ -112,7 +112,7 @@ const AreaPlot = ({ percentiles, data, additionalInfo }) => {
                       if (!value || getFieldValue('lowerBound') < value) {
                         return Promise.resolve();
                       }
-                      return Promise.reject('Upper bound must be greater than lower bound');
+                      return Promise.reject(new Error('Upper bound must be greater than lower bound'));
                     },
                   }),
                 ]}

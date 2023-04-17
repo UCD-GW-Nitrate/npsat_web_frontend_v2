@@ -27,7 +27,7 @@ const ResultCompare = (props) => {
         setError(true);
         setMsg('Too many scenarios selected.');
         return;
-      } else if (models.length < 2) {
+      } if (models.length < 2) {
         setError(true);
         setMsg('Too few scenarios selected.');
         return;
@@ -66,9 +66,9 @@ const ResultCompare = (props) => {
         buttonText="Select scenarios"
       />
     );
-  } else {
-    return <GroupComparison user={user} hash={hash} models={info} />;
-  }
+  } 
+  return <GroupComparison user={user} hash={hash} models={info} />;
+  
 };
 
 export default connect(({ user }) => ({

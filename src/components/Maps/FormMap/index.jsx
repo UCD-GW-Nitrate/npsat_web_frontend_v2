@@ -30,11 +30,11 @@ export default class FormMap extends React.Component {
           style={(feature) =>
             values && values.indexOf(feature.properties.id) !== -1
               ? {
-                  color: 'red',
-                }
+                color: 'red',
+              }
               : {
-                  color: 'blue',
-                }
+                color: 'blue',
+              }
           }
         />
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

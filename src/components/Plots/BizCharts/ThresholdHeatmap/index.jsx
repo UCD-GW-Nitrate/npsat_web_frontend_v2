@@ -116,20 +116,20 @@ const DifferenceHeatmap = ({ baseData, customData, percentiles, additionalInfo }
                       if (isMobile) {
                         if (value <= range && value >= Math.ceil(range / 4)) {
                           return Promise.resolve();
-                        } else {
-                          return Promise.reject(
-                            `Out of range. Select from ${Math.ceil(range / 4)} to ${range}`,
-                          );
-                        }
-                      } else {
-                        if (value <= range && value >= Math.ceil(range / 40)) {
-                          return Promise.resolve();
-                        } else {
-                          return Promise.reject(
-                            `Out of range. Select from ${Math.ceil(range / 40)} to ${range}`,
-                          );
-                        }
-                      }
+                        } 
+                        return Promise.reject(
+                          new Error(`Out of range. Select from ${Math.ceil(range / 4)} to ${range}`),
+                        );
+                        
+                      } 
+                      if (value <= range && value >= Math.ceil(range / 40)) {
+                        return Promise.resolve();
+                      } 
+                      return Promise.reject(
+                        new Error(`Out of range. Select from ${Math.ceil(range / 40)} to ${range}`),
+                      );
+                        
+                      
                     },
                   },
                 ]}

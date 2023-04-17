@@ -1,7 +1,6 @@
 import { Form } from 'antd';
 import React from 'react';
 import SelectAndMap from '@/pages/model/components/RegionFormItem/MapSelect';
-import styles from '../index.less';
 
 /**
  * Base form item extensible for all regions

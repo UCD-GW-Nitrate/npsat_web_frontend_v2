@@ -19,54 +19,8 @@ import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { PageHeaderWrapper, RouteContext } from '@ant-design/pro-layout';
 import { searchModel } from '@/services/model';
 import { useScenarioGroups } from '@/hooks/scenario';
-
-const TagRender = (props) => {
-  const { value, closable, onClose } = props;
-  let color;
-  switch (value) {
-    default:
-    case 'original':
-      color = 'volcano';
-      break;
-    case 'public':
-      color = 'geekblue';
-      break;
-    case 'base':
-      color = 'green';
-  }
-  return (
-    <Tag color={color} closable={closable} onClose={onClose} style={{ marginRight: 3 }}>
-      {value}
-    </Tag>
-  );
-};
-
-const ListResponseProcessing = (response, userId) => {
-  const { results } = response;
-  const data = results.map((temp) => {
-    const model = { ...temp };
-    model.key = model.id;
-    model.flow_scenario_name = model.flow_scenario.name;
-    model.load_scenario_name = model.load_scenario.name;
-    model.unsat_scenario_name = model.unsat_scenario.name;
-    model.welltype_scenario_name = model.welltype_scenario.name;
-    model.tags = [];
-    if (model.public) {
-      model.tags.push('public');
-    }
-    if (model.is_base) {
-      model.tags.push('base');
-    }
-    if (model.user === userId) {
-      model.tags.push('original');
-    }
-    return model;
-  });
-  return {
-    data,
-    total: response.count,
-  };
-};
+import TagRender from '@/components/ScenarioTag/TagRender';
+import ListResponseProcessing from '@/components/ScenarioTag/ListResponseProcessing';
 
 const SearchTable = ({ user }) => {
   const { isMobile } = useContext(RouteContext);

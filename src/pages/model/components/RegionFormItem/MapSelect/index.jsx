@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Select, Spin } from 'antd';
 import Map from '@/components/Maps/FormMap';
-import { Row,Col, } from 'antd';
 import { connect } from 'react-redux';
 import WellNumber from './WellNumber';
 
@@ -33,7 +32,6 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
   console.log("regionType:", regionType);
   
   const onListChange = (v) => {
-
     if (onChange) { 
       onChange(v);
       setArea(v);
@@ -42,12 +40,12 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
 
   const onListSelect = (v,o) => {
     if (selectedArea.indexOf(v) === -1) {
-     setArea([...selectedArea, v]);
+      setArea([...selectedArea, v]);
     }
     else{
-        selectedArea.slice(0,selectedArea.indexOf(v)).concat(
-          selectedArea.slice(selectedArea.indexOf(v) + 1)
-        );
+      selectedArea.slice(0,selectedArea.indexOf(v)).concat(
+        selectedArea.slice(selectedArea.indexOf(v) + 1)
+      );
     }
   };
   
@@ -55,13 +53,13 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
   const onMapSelect = (selectingMap, selectedMaps) => {
     if (selectedArea.indexOf(selectingMap) === -1) {
       setArea([...selectedArea, selectingMap]);
-     }
-     else{
-        setArea([
-          ...selectedMaps.slice(0, selectedMaps.indexOf(selectingMap)),
-          ...selectedMaps.slice(selectedMaps.indexOf(selectingMap) + 1),
-        ]);
-     }
+    }
+    else{
+      setArea([
+        ...selectedMaps.slice(0, selectedMaps.indexOf(selectingMap)),
+        ...selectedMaps.slice(selectedMaps.indexOf(selectingMap) + 1),
+      ]);
+    }
 
     if (onChange) {
       if (selectedMaps.indexOf(selectingMap) === -1) {
@@ -75,7 +73,7 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
     }
   };
 
-  console.log("regions: ", regions);//regions selected in "create model"
+  console.log("regions: ", regions);// regions selected in "create model"
   console.log("modifiedRegions: ", modifiedRegions);// regions newly selected in "modify" 
   console.log("target regions: ", targetModelRegions);// regions pre-selected in "modify"
 
@@ -83,15 +81,15 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
     if (modifiedRegions != null){
       console.log("Using modifiedRegions!");
       switch (regionType) {
-        case 1: //basin
+        case 1: // basin
           return modifiedRegions['region-1-choice'] != null ? modifiedRegions['region-1-choice'] : selectedArea;
-        case 2://subRegion
+        case 2:// subRegion
           return modifiedRegions['region-2-choice'] != null ? modifiedRegions['region-2-choice'] : selectedArea;
-        case 3://B118
+        case 3:// B118
           return modifiedRegions['region-3-choice'] != null ? modifiedRegions['region-3-choice'] : selectedArea;
-        case 4://county
+        case 4:// county
           return modifiedRegions['region-4-choice'] != null ? modifiedRegions['region-4-choice'] : selectedArea;
-        case 5://Tship
+        case 5:// Tship
           return modifiedRegions['region-5-choice'] != null ? modifiedRegions['region-5-choice'] : selectedArea;
         default:
           return selectedArea;
@@ -99,29 +97,29 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
     }
     if (targetModelRegions != null){
       console.log("Using targetRegions!");
-      var targetRegions = [];
-      targetModelRegions.map((v) => {targetRegions.push(v.id)});
+      const targetRegions = [];
+      targetModelRegions.forEach((v) => {targetRegions.push(v.id);});
       return targetRegions;
     }
     if (regions != null){
       console.log("Using regions!");
       switch (regionType) {
-        case 1://basin
+        case 1:// basin
           return regions['region-1-choice'] != null ? regions['region-1-choice'] : selectedArea;
-        case 2://subRegion
+        case 2:// subRegion
           return regions['region-2-choice'] != null ? regions['region-2-choice'] : selectedArea;
-        case 3://B118
+        case 3:// B118
           return regions['region-3-choice'] != null ? regions['region-3-choice'] : selectedArea;
-        case 4://county
+        case 4:// county
           return regions['region-4-choice'] != null ? regions['region-4-choice'] : selectedArea;
-        case 5://Tship
+        case 5:// Tship
           return regions['region-5-choice'] != null ? regions['region-5-choice'] : selectedArea;
         default:
           return selectedArea;
       }
     }
     return selectedArea;
-  }
+  };
 
   const selected_regions = selectedRegions(regions, modifiedRegions, targetModelRegions);
 
@@ -139,7 +137,7 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
         //   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         // }
         mode="multiple"
-        allowClear={true}
+        allowClear
       >
         {countyList.map((county) => (
           <Option value={county.id} key={county.id}>
@@ -147,8 +145,8 @@ const SelectAndMap = ({ value = [], onChange, configureData, getData, placeholde
           </Option>
         ))}
       </Select>
-          <WellNumber countyList={countyList} onChange={selected_regions} regionType={regionType} ></WellNumber>
-          <Map data={mapData} onChange={onMapSelect} values={value} />
+      <WellNumber countyList={countyList} onChange={selected_regions} regionType={regionType} />
+      <Map data={mapData} onChange={onMapSelect} values={value} />
     </>
   ) : (
     <Spin size="large" tip="loading data and map..." />

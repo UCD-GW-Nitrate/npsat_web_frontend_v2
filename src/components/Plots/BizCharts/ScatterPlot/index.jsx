@@ -94,8 +94,8 @@ const ScatterPlot = ({ data }) => {
         onPointClick={
           mode === 1
             ? ({ data: model }) => {
-                history.push(`/model/view?id=${model.data.id}`);
-              }
+              history.push(`/model/view?id=${model.data.id}`);
+            }
             : () => {}
         }
       >

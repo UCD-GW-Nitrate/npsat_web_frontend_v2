@@ -12,7 +12,7 @@ const { RangePicker } = DatePicker;
 
 const Step1 = (props) => {
   const [form] = Form.useForm();
-  //const { getFieldsValue } = form;
+  // const { getFieldsValue } = form;
   const { dispatch, user, data = {} } = props;
   const {
     flowScenarios: flowScen,
@@ -21,8 +21,8 @@ const Step1 = (props) => {
     welltypeScenarios: welltypeScen,
   } = useScenarioGroups();
 
-  loadScen.sort((a,b) => a.id - b.id);//sort scenarios by id
-  welltypeScen.sort((a,b) => a.id - b.id);//sort scenarios by id
+  loadScen.sort((a,b) => a.id - b.id);// sort scenarios by id
+  welltypeScen.sort((a,b) => a.id - b.id);// sort scenarios by id
   
   const [isBAU, setBAU] = useState(data.hasOwnProperty('is_base') ? data.is_base : false);
   useEffect(() => {
@@ -76,8 +76,8 @@ const Step1 = (props) => {
         {...formItemLayout}
         form={form}
         layout="horizontal"
-        //className={styles.stepForm}
-        className={'two-rows-label'}
+        // className={styles.stepForm}
+        className="two-rows-label"
         onFinish={onSubmit}
       >
         <Form.Item
@@ -254,10 +254,10 @@ const Step1 = (props) => {
                     }
                     const [start_year, end_year] = _value;
                     if (end_year.isAfter(sim_end_year, 'year')) {
-                      return Promise.reject('Reduction end year must not be after sim end year.');
-                    } else {
-                      return Promise.resolve();
-                    }
+                      return Promise.reject(new Error('Reduction end year must not be after sim end year.'));
+                    } 
+                    return Promise.resolve();
+                    
                   },
                 }),
               ]}

@@ -13,11 +13,11 @@ import {
   SCREEN_LENGTH_RANGE_CONFIG,
 } from '@/services/model';
 import { useModelRegions, useModelResults } from '@/hooks/model';
+import areaPerCrop from '@/pages/model/CropAreas/areaPerCrop';
 import CountyMap from '../../../../../components/Maps/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import styles from './index.less';
 import AnchorTitle from '../../../../../components/AnchorTitle';
-import areaPerCrop from '@/pages/model/CropAreas/areaPerCrop';
 
 const { Step } = Steps;
 
@@ -30,20 +30,20 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
   const [publishLoading, setPublishLoading] = useState(false);
   const [progress, setProgress] = useState({});
   const { isMobile } = useContext(RouteContext);
-  const load_scenario = info.flow_scenario.scenario_type;//load_scenario type was assigned to flow_scenario, needs to be fixed 
+  const load_scenario = info.flow_scenario.scenario_type;// load_scenario type was assigned to flow_scenario, needs to be fixed 
   const mapType = info.regions[0].region_type;
 
   const getRegions = (regions) => {
-    var regionNames = [];
-    regions.map((region) => {
+    const regionNames = [];
+    regions.forEach((region) => {
       regionNames.push(region.mantis_id);
     });
     return regionNames;
   };
 
   const getCrops = (modifications) => {
-    var cropCAML = [];
-    modifications.map((m) => {
+    const cropCAML = [];
+    modifications.forEach((m) => {
       cropCAML.push(m.crop.caml_code);
     });
     return cropCAML;
@@ -51,7 +51,7 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
 
   useEffect(() => {
     if (info.modifications) {
-      console.log("InfoModifications", info.modifications);
+      console.forEach("InfoModifications", info.modifications);
       const cropAreas = areaPerCrop(getCrops(info.modifications), getRegions(info.regions), mapType, load_scenario);
       const crops = info.modifications.map((item) => ({
         ...item,
@@ -129,23 +129,21 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
         status: 'wait',
         current: MODEL_STATUS_MACROS.NOT_READY,
       });
+    } else if (info.status === MODEL_STATUS_MACROS.ERROR) {
+      setProgress({
+        status: 'error',
+        current: MODEL_STATUS_MACROS.RUNNING,
+      });
+    } else if (info.status === MODEL_STATUS_MACROS.RUNNING) {
+      setProgress({
+        status: 'process',
+        current: info.status,
+      });
     } else {
-      if (info.status === MODEL_STATUS_MACROS.ERROR) {
-        setProgress({
-          status: 'error',
-          current: MODEL_STATUS_MACROS.RUNNING,
-        });
-      } else if (info.status === MODEL_STATUS_MACROS.RUNNING) {
-        setProgress({
-          status: 'process',
-          current: info.status,
-        });
-      } else {
-        setProgress({
-          status: 'finish',
-          current: info.status,
-        });
-      }
+      setProgress({
+        status: 'finish',
+        current: info.status,
+      });
     }
   }, [info]);
   return (
@@ -284,11 +282,11 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
                 title={() => {
                   if (info.status !== 3) {
                     return "Scenario hasn't finished running";
-                  } else if (info.is_base) {
+                  } if (info.is_base) {
                     return 'Select another scenario to be compared with BAU';
-                  } else {
-                    return 'Compare this scenario with BAU results';
-                  }
+                  } 
+                  return 'Compare this scenario with BAU results';
+                  
                 }}
               >
                 <Button

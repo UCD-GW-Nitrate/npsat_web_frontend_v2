@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { getCropListLoadType, CROP_MACROS } from '@/services/crop';
 import { Select, List, notification, Spin } from 'antd';
 import CropCard from '@/pages/model/components/CropCard';
-import styles from './index.less';
 import { connect } from 'react-redux';
-import areaPerCrop from '../../CropAreas/areaPerCrop';
 import { getRegions } from '@/services/region';
+import styles from './index.less';
+import areaPerCrop from '../../CropAreas/areaPerCrop';
 
 const { Option } = Select;
 
@@ -24,6 +24,8 @@ const CropCardForm = (props) => {
       setCounty(mapData);
     })();
   }, []);
+
+  console.log("new stuff 2");
 
   console.log("countyData", countyList);
   console.log("meta", meta);
@@ -56,34 +58,34 @@ const CropCardForm = (props) => {
   }, []);
 
   const formatCrops = (selectedCrops, cropList) => {
-    //hash cropList for quick look up
-    var cropDic = {};
-    cropList.map((crop) => {
+    // hash cropList for quick look up
+    const cropDic = {};
+    cropList.forEach((crop) => {
       if (!cropDic.hasOwnProperty(crop.id))
         cropDic[crop.id] = crop.caml_code;
     });
-    //get selected crops caml_code
-    var cropsCAML = [];
-    selectedCrops.map((crop) => {
-      var id = parseInt(crop.split(",")[0]);
+    // get selected crops caml_code
+    const cropsCAML = [];
+    selectedCrops.forEach((crop) => {
+      const id = parseInt(crop.split(",")[0]);
       cropsCAML.push(cropDic[id]);
     });
     return cropsCAML;
   };
 
   const formatRegions = (regionData, regionId) => {
-    var regionNames = [];
-    if (regionId.length != 0) {
-      regionData.map((region) => {
+    const regionNames = [];
+    if (regionId.length !== 0) {
+      regionData.forEach((region) => {
         if (regionId.includes(region.id))
           regionNames.push(region.mantis_id);
       });
     }
     return regionNames;
-  }
+  };
 
   const onSelectChange = (v) => {
-    if (!v.find((selectedCrop) => parseInt(selectedCrop.split(',')[0], 10) === specialId)) {
+    if (!v.find((selectedCrop) => parseInt(selectedCrop.split(',')[0]) === specialId)) {
       notification.warning({
         message: `Cannot deselect "${specialName}"`,
         description: `You can set "${specialName}" to default(100%)`,
@@ -107,9 +109,9 @@ const CropCardForm = (props) => {
     }
   };
 
-  //quick look up caml_code
-  var cropListDic = {};
-  cropList.map((crop) => {
+  // quick look up caml_code
+  const cropListDic = {};
+  cropList.forEach((crop) => {
     if (!cropListDic.hasOwnProperty(crop.id))
       cropListDic[crop.id] = crop.caml_code;
   });
@@ -152,16 +154,16 @@ const CropCardForm = (props) => {
             const prevValues = value.hasOwnProperty(id)
               ? value[id]
               : {
-                  load: 100,
-                  enable: true,
-                };
+                load: 100,
+                enable: true,
+              };
             return (
               <List.Item key={id}>
                 <CropCard
                   values={value}
                   onChange={onChange}
                   name={name}
-                  required={parseInt(id, 10) === specialId}
+                  required={parseInt(id) === specialId}
                   id={id}
                   cropCaml={cropListDic[parseInt(id)]}
                   initialValues={prevValues}

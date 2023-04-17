@@ -44,14 +44,14 @@ const CropCard = ({ name, id, onChange, values, required = false, initialValues,
       title={name}
       extra={
         required ? (
-        <span>
-          {parseInt(cropAreas[0]*0.25)} ha/
-          {parseInt(cropAreas[0]*0.25*2.47)} ac
-        </span>) : (
+          <span>
+            {parseInt(cropAreas[0]*0.25)} ha/
+            {parseInt(cropAreas[0]*0.25*2.47)} ac
+          </span>) : (
           <Row>
             <Col span={15}>
-            {cropAreas[cropCaml] ? parseInt(cropAreas[cropCaml]*0.25) : 0} ha/
-            {cropAreas[cropCaml] ? parseInt(cropAreas[cropCaml]*0.25*2.47) : 0} ac
+              {cropAreas[cropCaml] ? parseInt(cropAreas[cropCaml]*0.25) : 0} ha/
+              {cropAreas[cropCaml] ? parseInt(cropAreas[cropCaml]*0.25*2.47) : 0} ac
             </Col>
             <Col span={10}>
               <Switch

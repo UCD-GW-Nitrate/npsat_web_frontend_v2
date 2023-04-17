@@ -14,7 +14,7 @@ const { Step } = Steps;
 const getCurrentStepAndComponent = (current) => {
   switch (current) {
     case 'Select Regions':
-    //case 1:
+    // case 1:
       return {
         step: 1,
         component: <Step2 />,

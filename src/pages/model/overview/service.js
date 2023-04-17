@@ -4,6 +4,7 @@ import apiConfig from '../../../../config/apiConfig';
 const { apiRoot } = apiConfig;
 
 export async function queryModelList(params, filter, token, ...options) {
+  console.log("token: ", token);
   const { pageSize, current } = params;
   const [sorter, status] = options;
   const query = {};
