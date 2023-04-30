@@ -8,13 +8,18 @@ import SearchTable from '@/pages/model/view/components/ModelList';
 import ModelDetail from '../ModelDetail';
 
 const View = (props) => {
-  const location = useLocation();
+  const location = useLocation(); // get the current URL  
   const { user } = props;
   const { token } = user;
   const { query = {}, hash } = location;
-  const { id = null } = query;
-  const [info, setInfo] = useState({});
+  const { id = null } = query; // get the model id from the query
+  const [info, setInfo] = useState({}); // information about the model
   const [waiting, setWaiting] = useState(true);
+
+  /**
+   * @param {*} model the model that has been created or edited
+   * @returns 
+   */
   const onClickPublish = (model) =>
     putModel(
       id,

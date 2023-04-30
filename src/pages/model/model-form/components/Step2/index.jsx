@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { Tabs, Divider, Form, Button, Switch, Tooltip } from 'antd';
 import { connect } from 'react-redux';
 import { REGION_MACROS } from '@/services/region';
-import { Button, Divider, Form, Switch, Tabs, Tooltip } from 'antd';
-import { renderRegionFormItem } from '@/pages/model/components/RegionFormItem/copyAndModifyForms';
+import { renderRegionFormItem } from '@/pages/model/components/RegionFormItem/createModelForms';
 import RangeFormItem from '@/pages/model/components/RangeFormItem';
 import { DEPTH_RANGE_CONFIG, SCREEN_LENGTH_RANGE_CONFIG } from '@/services/model';
 import styles from './index.less';
@@ -16,8 +16,8 @@ const { TabPane } = Tabs;
  * @returns {JSX.Element}
  * @constructor
  */
-const Step2 = (props) => {
-  const { targetModel, dispatch, data } = props;
+const Step2 = ({ targetModel, dispatch, data, isEditing }) => {
+  console.log("target model2:", targetModel);
   const [form] = Form.useForm();
   const style = {
     labelCol: {
@@ -27,14 +27,16 @@ const Step2 = (props) => {
       span: 19,
     },
   };
-  console.log("modify form:", data);
   const {
-    step2Type: region = targetModel,
-    regionFilter = targetModel.regionFilter,
+    step2Type: region = targetModel 
+      ?? data.welltype_scenario === 12 
+      ? REGION_MACROS.TOWNSHIPS
+      : REGION_MACROS.CENTRAL_VALLEY,
+    regionFilter = targetModel?.regionFilter ?? false,
   } = data;
   const [filter, setFilter] = useState(regionFilter);
   const [regionFormItem, setFormItem] = useState(null);
-  const [tabKey, setTabKey] = useState(data.welltype_scenario === 12 ? REGION_MACROS.TOWNSHIPS.toString():region.toString());
+  const [tabKey, setTabKey] = useState(region.toString());
 
   useEffect(() => {
     setFormItem(renderRegionFormItem(tabKey));
@@ -43,7 +45,7 @@ const Step2 = (props) => {
   const onSubmit = (type, values) => {
     if (dispatch) {
       dispatch({
-        type: 'copyAndModifyModelForm/saveStepFormData',
+        type: isEditing ? 'copyAndModifyModelForm/saveStepFormData' : 'createModelForm/saveStepFormData',
         payload: {
           step2Type: type,
           ...values,
@@ -51,55 +53,85 @@ const Step2 = (props) => {
         },
       });
     }
-    // dispatch({
-    //   type: 'copyAndModifyModelForm/saveCurrentStep',
-    //   payload: 'Modify Settings',
-    // });
     const isBAU = data.hasOwnProperty('is_base') ? data.is_base : false;
-    dispatch({
-      type: 'copyAndModifyModelForm/saveCurrentStep',
-      payload: isBAU ? 'Modify Info' : 'Modify Crops',
-    });
+
+    if (isEditing) {
+      dispatch({
+        type: 'copyAndModifyModelForm/saveCurrentStep',
+        payload: isBAU ? 'Modify Info' : 'Modify Crops',
+      });
+    } else {
+      dispatch({
+        type: 'createModelForm/saveCurrentStep',
+        payload: isBAU ? 'Model Info' : 'Select Crops',
+      });
+    }
   };
 
   const onPrev = () => {
     if (dispatch) {
-      // const values = getFieldsValue();
-      // dispatch({
-      //   type: 'createModelForm/saveStepFormData',
-      //   payload: { ...values, is_base: isBAU },
-      // });
-      dispatch({
-        type: 'copyAndModifyModelForm/saveCurrentStep',
-        payload: 'Modify Settings',
-      });
+      if (isEditing) {
+        dispatch({
+          type: 'copyAndModifyModelForm/saveCurrentStep',
+          payload: 'Modify Settings',
+        });
+      } else {
+        dispatch({
+          type: 'createModelForm/saveCurrentStep',
+          payload: 'Select Settings',
+        });
+      }
     }
   };
 
   const onChange = (changedValues, allValues) => {
     if (dispatch) {
-      
-      dispatch({
-        type: 'copyAndModifyModelForm/saveStepFormData',
-        payload: {
-          depth_range: [0,801],
-          screen_length_range: [0,801],
-          ...allValues,
-          regionFilter: filter,
-          modifiedRegions: allValues,
-        },
-      });
-      // disable filter once it is switched off
-      if(changedValues.advanced_filter === false){
+      if (isEditing) {
         dispatch({
           type: 'copyAndModifyModelForm/saveStepFormData',
           payload: {
-            ...allValues,
-            regionFilter: filter,
             depth_range: [0,801],
             screen_length_range: [0,801],
+            ...allValues,
+            regionFilter: filter,
+            modifiedRegions: allValues,
           },
         });
+        // disable filter once it is switched off
+        if(changedValues.advanced_filter === false){
+          dispatch({
+            type: 'copyAndModifyModelForm/saveStepFormData',
+            payload: {
+              ...allValues,
+              regionFilter: filter,
+              depth_range: [0,801],
+              screen_length_range: [0,801],
+            },
+          });
+        }
+      } else {
+        dispatch({
+          type: 'createModelForm/saveStepFormData',
+          payload: {
+            depth_range: [0,801],
+            screen_length_range: [0,801],
+            ...allValues,
+            regionFilter: filter,
+            regions: allValues,
+          },
+        });
+        // disable filter once it is switched off
+        if(changedValues.advanced_filter === false){
+          dispatch({
+            type: 'createModelForm/saveStepFormData',
+            payload: {
+              ...allValues,
+              regionFilter: filter,
+              depth_range: [0,801],
+              screen_length_range: [0,801],
+            },
+          });
+        }
       }
     }
   };
@@ -107,7 +139,7 @@ const Step2 = (props) => {
   return (
     <>
       <Tabs tabPosition="top" centered activeKey={tabKey} onChange={(key) => setTabKey(key)}>
-        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()} disabled={data.welltype_scenario === 12}/>
+        <TabPane tab="Central Valley" key={REGION_MACROS.CENTRAL_VALLEY.toString()} disabled={data.welltype_scenario === 12} />
         <TabPane tab="Basin" key={REGION_MACROS.SUB_BASIN.toString()} disabled={data.welltype_scenario === 12}/>
         <TabPane tab="County" key={REGION_MACROS.COUNTY.toString()} disabled={data.welltype_scenario === 12}/>
         <TabPane tab="B118 Basin" key={REGION_MACROS.B118_BASIN.toString()} disabled={data.welltype_scenario === 12}/>
@@ -122,7 +154,7 @@ const Step2 = (props) => {
         onValuesChange={(changedValues, allValues) => onChange(changedValues, allValues)}
       >
         {regionFormItem}
-        <Form.Item label="Advanced filter">
+        <Form.Item label="Advanced filter" name="advanced_filter" /* Changed */>
           <Switch
             checkedChildren="on"
             unCheckedChildren="off"
@@ -193,34 +225,35 @@ const Step2 = (props) => {
           <Button type="primary" htmlType="submit">
             Next
           </Button>
-          {/* Tooltip changed below */}
-          <Divider type="vertical" />
-          <Tooltip title="Reset selections in this step to target scenario selections.">
-            <Button
-              danger
-              onClick={() => {
+          {isEditing && <div>
+            <Divider type="vertical" />
+            <Tooltip title="Reset selections in this step to target scenario selections.">
+              <Button
+                danger
+                onClick={() => {
                 // dispatch is a synced method by redux
-                if (dispatch) {
-                  dispatch({
-                    type: 'copyAndModifyModelForm/loadTemplateAtStep',
-                  });
-                  form.resetFields([
-                    `region-${REGION_MACROS.SUB_BASIN}-choice`,
-                    `region-${REGION_MACROS.TOWNSHIPS}-choice`,
-                    `region-${REGION_MACROS.CVHM_FARM}-choice`,
-                    `region-${REGION_MACROS.COUNTY}-choice`,
-                    `region-${REGION_MACROS.B118_BASIN}-choice`,
-                    'depth_range',
-                    'screen_length_range',
-                  ]);
-                  setTabKey(region.toString());
-                  setFilter(regionFilter);
-                }
-              }}
-            >
+                  if (dispatch) {
+                    dispatch({
+                      type: 'copyAndModifyModelForm/loadTemplateAtStep',
+                    });
+                    form.resetFields([
+                      `region-${REGION_MACROS.SUB_BASIN}-choice`,
+                      `region-${REGION_MACROS.TOWNSHIPS}-choice`,
+                      `region-${REGION_MACROS.CVHM_FARM}-choice`,
+                      `region-${REGION_MACROS.COUNTY}-choice`,
+                      `region-${REGION_MACROS.B118_BASIN}-choice`,
+                      'depth_range',
+                      'screen_length_range',
+                    ]);
+                    setTabKey(region.toString());
+                    setFilter(regionFilter);
+                  }
+                }}
+              >
               Reset
-            </Button>
-          </Tooltip>
+              </Button>
+            </Tooltip>
+          </div>}
         </Form.Item>
       </Form>
       <Divider
@@ -235,40 +268,37 @@ const Step2 = (props) => {
         <p>Choose region(s) on the map or in the dropdown list.</p>
         <p>Click Next to continue selecting other scenario parameters.</p>
         <p>
-            Note: You can only select one type of region (e.g., “B118 Basin”), but within that type, any number
-            regions (1 to all) can be selected. The number of wells in the selected region(s) is displayed on top of the
-            map. The scenario simulations (including the BAU simulation) will evaluate nitrate concentrations at
-            these wells and aggregate those into statistical results.
+          Note: You can only select one type of region (e.g., “B118 Basin”), but within that type, any number
+          regions (1 to all) can be selected. The number of wells in the selected region(s) is displayed on top of the
+          map. The scenario simulations (including the BAU simulation) will evaluate nitrate concentrations at
+          these wells and aggregate those into statistical results.
         </p>
         <p>
-            The “Advanced filter” allows for selection of wells within a specific minimum and maximum well depth
-            interval, and/or consider streamlines to well screens within a specific minimum and maximum screen
-            depth interval. This may affect the number of wells selected for the simulation, as shown above the map.
+          The “Advanced filter” allows for selection of wells within a specific minimum and maximum well depth
+          interval, and/or consider streamlines to well screens within a specific minimum and maximum screen
+          depth interval. This may affect the number of wells selected for the simulation, as shown above the map.
         </p>
         <p>
-            “Basin”: select the Sacramento Valley, San Joaquin Valley, and Tulare Lake Basin (also known as the
-            Southern San Joaquin Valley) watersheds overlying the Central Valley aquifer system.
+          “Basin”: select the Sacramento Valley, San Joaquin Valley, and Tulare Lake Basin (also known as the
+          Southern San Joaquin Valley) watersheds overlying the Central Valley aquifer system.
         </p>
         <p>
-            “County” – select specific counties
+          “County” – select specific counties
         </p>
         <p>
-            “B118” – select groundwater sub-basins as defined by California Department of Water Resources’ Bulletin
-            118 series.
+          “B118” – select groundwater sub-basins as defined by California Department of Water Resources’ Bulletin
+          118 series.
         </p>
         <p>
-            “Subregions” – select groundwater regions as defined by C2VSIM and CVHM (21 water accounting
-            regions)
+          “Subregions” – select groundwater regions as defined by C2VSIM and CVHM (21 water accounting
+          regions)
         </p>
         <p>
-            “Township” – select specific townships, typically a 36 square mile area.
+          “Township” – select specific townships, typically a 36 square mile area.
         </p>
       </div>
     </>
   );
 };
 
-export default connect(({ copyAndModifyModelForm }) => ({
-  targetModel: copyAndModifyModelForm.targetModel,
-  data: copyAndModifyModelForm.step,
-}))(Step2);
+export default Step2;

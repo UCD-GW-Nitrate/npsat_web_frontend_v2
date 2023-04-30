@@ -1,17 +1,14 @@
 import { Button, Form, Divider, Select, Tooltip, InputNumber, DatePicker, Radio } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { connect } from 'react-redux';
 import { useScenarioGroups } from '@/hooks/scenario';
 import moment from 'moment';
 import styles from './index.less';
 
 const { RangePicker } = DatePicker;
 
-const Step1 = (props) => {
+const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
   const [form] = Form.useForm();
-  // const { getFieldsValue } = form;
-  const { dispatch, user, data = {} } = props;
   const {
     flowScenarios: flowScen,
     loadScenarios: loadScen,
@@ -38,36 +35,19 @@ const Step1 = (props) => {
 
   const onSubmit = (values) => {
     dispatch({
-      type: 'copyAndModifyModelForm/saveStepFormData',
+      type: isEditing ? 'copyAndModifyModelForm/saveStepFormData' :'createModelForm/saveStepFormData',
       payload: {
         ...values,
         is_base: isBAU,
       },
     });
-    // dispatch({
-    //   type: 'copyAndModifyModelForm/saveCurrentStep',
-    //   payload: isBAU ? 'Modify Info' : 'Modify Crops',
-    // });
+
     dispatch({
-      type: 'copyAndModifyModelForm/saveCurrentStep',
-      payload: 'Modify Regions',
+      type: isEditing ? 'copyAndModifyModelForm/saveCurrentStep' : 'createModelForm/saveCurrentStep',
+      payload: 'Select Regions',
     });
   };
 
-  // const onPrev = () => {
-  //   if (dispatch) {
-  //     const values = getFieldsValue();
-  //     dispatch({
-  //       type: 'copyAndModifyModelForm/saveStepFormData',
-  //       payload: { ...values, is_base: isBAU },
-  //     });
-  //     dispatch({
-  //       type: 'copyAndModifyModelForm/saveCurrentStep',
-  //       payload: 'Select Regions',
-  //     });
-  //   }
-  // };
-  
   return (
     <>
       <Form
@@ -228,7 +208,7 @@ const Step1 = (props) => {
             buttonStyle="solid"
             onChange={(event) => setBAU(event.target.value)}
             defaultValue={isBAU}
-            value={isBAU}
+            // value={isBAU}
           >
             <Radio.Button value={false}>Custom scenario</Radio.Button>
             <Radio.Button value>BAU scenario</Radio.Button>
@@ -292,43 +272,40 @@ const Step1 = (props) => {
             },
           }}
         >
-          {/* Button is different */}
-          <Tooltip title="Reset selections in this step to target scenario selections.">
-            <Button
-              danger
-              onClick={() => {
+          {isEditing ? <div>
+            <Tooltip title="Reset selections in this step to target scenario selections.">
+              <Button
+                danger
+                onClick={() => {
                 // dispatch is a synced method by redux
-                if (dispatch) {
-                  dispatch({
-                    type: 'copyAndModifyModelForm/loadTemplateAtStep',
-                  });
-                  form.resetFields([
-                    'flow_scenario',
-                    'load_scenario',
-                    'welltype_scenario',
-                    'unsat_scenario',
-                    'water_content',
-                    'sim_end_year',
-                    'reduction_year',
-                  ]);
-                }
-              }}
-            >
+                  if (dispatch) {
+                    dispatch({
+                      type: 'copyAndModifyModelForm/loadTemplateAtStep',
+                    });
+                    form.resetFields([
+                      'flow_scenario',
+                      'load_scenario',
+                      'welltype_scenario',
+                      'unsat_scenario',
+                      'water_content',
+                      'sim_end_year',
+                      'reduction_year',
+                    ]);
+                  }
+                }}
+              >
               Reset
-            </Button>
-          </Tooltip>
-          <Divider type="vertical" />
-          <Button type="primary" htmlType="submit">
+              </Button>
+            </Tooltip>
+            <Divider type="vertical" />
+            <Button type="primary" htmlType="submit">
             Next
-          </Button>
-          {/* <Button
-            onClick={onPrev}
-            style={{
-              marginLeft: 8,
-            }}
-          >
-            Prev
-          </Button> */}
+            </Button>
+          </div> : <div>
+            <Button type="primary" htmlType="submit">
+              Next
+            </Button>
+          </div>}
         </Form.Item>
       </Form>
       <Divider
@@ -336,7 +313,6 @@ const Step1 = (props) => {
           margin: '40px 0 24px',
         }}
       />
-      {/* Instuctions are the same */}
       <div className={styles.desc}>
         <h3>Instructions</h3>
         <h4>Select Scenarios:</h4>
@@ -360,13 +336,13 @@ const Step1 = (props) => {
         <p>
           This refers to the effective water content for the unsaturated zone. 
           The smaller the effective water content, the faster the travel time through the 
-          unsaturated zone. When choosing "0%", the travel time through the unsaturated zone is 
+          unsaturated zone. When choosing &quot;0%&quot;, the travel time through the unsaturated zone is 
           ignored and all nitrate loading is instantaneously applied to the water table. 
           A recommended range for the effective water content is 5% - 10%.
         </p>
         <h4>BAU:</h4>
         <p>
-          "Business-As-Usual" refers to the continuation of past and current practices well into the 
+          &quot;Business-As-Usual&quot; refers to the continuation of past and current practices well into the 
           future, without notable changes in nitrate leaching.
         </p>
         <h4>Other selections:</h4>
@@ -376,7 +352,6 @@ const Step1 = (props) => {
   );
 };
 
-export default connect(({ user, copyAndModifyModelForm }) => ({
-  user: user.currentUser,
-  data: copyAndModifyModelForm.step,
-}))(Step1);
+export default Step1;
+
+

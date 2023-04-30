@@ -21,6 +21,14 @@ import AnchorTitle from '../../../../../components/AnchorTitle';
 
 const { Step } = Steps;
 
+/**
+ * @param token the token provided by the user
+ * @param user info on the user that is logged in
+ * @param hash the hash property of the current url
+ * @param info the parameters of a model retrieved from /pages/model/view/service#getModelDetail
+ * @param publish callback function for publishing the model
+ * @returns 
+ */
 const ModelDetail = ({ token, user, hash, info, publish }) => {
   const { user_id: userId } = user;
   const regions = useModelRegions(info.regions);
@@ -51,7 +59,6 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
 
   useEffect(() => {
     if (info.modifications) {
-      console.forEach("InfoModifications", info.modifications);
       const cropAreas = areaPerCrop(getCrops(info.modifications), getRegions(info.regions), mapType, load_scenario);
       const crops = info.modifications.map((item) => ({
         ...item,
