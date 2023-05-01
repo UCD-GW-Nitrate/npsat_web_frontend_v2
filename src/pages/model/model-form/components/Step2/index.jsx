@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Tabs, Divider, Form, Button, Switch, Tooltip } from 'antd';
-import { connect } from 'react-redux';
 import { REGION_MACROS } from '@/services/region';
 import { renderRegionFormItem } from '@/pages/model/components/RegionFormItem/createModelForms';
 import RangeFormItem from '@/pages/model/components/RangeFormItem';

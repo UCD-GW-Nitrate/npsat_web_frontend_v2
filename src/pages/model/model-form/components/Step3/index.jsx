@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Button, Divider, Tooltip } from 'antd';
-import { connect } from 'umi';
 import CropCardForm from '@/pages/model/components/CropCardForm';
 import styles from './index.less';
 

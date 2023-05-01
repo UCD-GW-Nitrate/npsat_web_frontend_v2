@@ -1,6 +1,5 @@
 import { Button, Form, Divider, Input, Tooltip } from 'antd';
 import React from 'react';
-import { connect } from 'react-redux';
 import styles from './index.less';
 
 const Step4 = ({ dispatch, user, data = {}, isEditing }) => {

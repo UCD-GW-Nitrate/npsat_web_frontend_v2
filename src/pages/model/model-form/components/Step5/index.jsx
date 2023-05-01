@@ -1,7 +1,6 @@
 import React from 'react';
 import { Result, Button, Spin, Menu, Dropdown } from 'antd';
 import { history } from 'umi';
-import { connect } from 'react-redux';
 import { DownOutlined, CopyOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
