@@ -12,6 +12,7 @@ module.exports = {
     'radix': ["error", "as-needed"],
     "indent": ["error", 2, { SwitchCase: 1 }],
     "semi": ["error", "always"],
+    "no-inner-declarations": "off"
   },
   ignorePatterns: ["C2VSim_II_VD_02.js", "C2VSim_II_VI_02.js", "cvhm.js", "TshipWell.js"],
 };

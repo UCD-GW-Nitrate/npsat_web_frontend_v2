@@ -34,6 +34,7 @@ const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
   };
 
   const onSubmit = (values) => {
+    console.log("step 1 submit");
     dispatch({
       type: isEditing ? 'copyAndModifyModelForm/saveStepFormData' :'createModelForm/saveStepFormData',
       payload: {
@@ -44,7 +45,7 @@ const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
 
     dispatch({
       type: isEditing ? 'copyAndModifyModelForm/saveCurrentStep' : 'createModelForm/saveCurrentStep',
-      payload: 'Select Regions',
+      payload: isEditing ? 'Modify Regions' : 'Select Regions',
     });
   };
 
@@ -207,7 +208,7 @@ const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
           <Radio.Group
             buttonStyle="solid"
             onChange={(event) => setBAU(event.target.value)}
-            defaultValue={isBAU}
+            initialValue={isBAU}
             // value={isBAU}
           >
             <Radio.Button value={false}>Custom scenario</Radio.Button>
@@ -272,7 +273,7 @@ const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
             },
           }}
         >
-          {isEditing ? <div>
+          {isEditing ? <>
             <Tooltip title="Reset selections in this step to target scenario selections.">
               <Button
                 danger
@@ -294,18 +295,18 @@ const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
                   }
                 }}
               >
-              Reset
+                Reset
               </Button>
             </Tooltip>
             <Divider type="vertical" />
             <Button type="primary" htmlType="submit">
-            Next
+              Next
             </Button>
-          </div> : <div>
+          </> : <>
             <Button type="primary" htmlType="submit">
               Next
             </Button>
-          </div>}
+          </>}
         </Form.Item>
       </Form>
       <Divider

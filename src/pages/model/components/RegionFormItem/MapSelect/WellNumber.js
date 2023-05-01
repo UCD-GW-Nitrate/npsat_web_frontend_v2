@@ -43,7 +43,6 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
   //         wellData = CVHM_dom;
   // }
 
-
   // //////////////////////////////////
   if (flow_scenario === 9)
     wellData = cvhm;
@@ -53,8 +52,6 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
   console.log("cdata: ", cdata);
    
   console.log("mdata: ", mdata);
-
-    
 
   let filter; 
   let data;
@@ -93,14 +90,19 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
     const countyDic = {};
     countyList.forEach((county) => {countyDic[county.id] = county.mantis_id;});
 
-    
-
     // populate mantis_id for data lookup
     const mantis_id = [];
     onChange.forEach((id) => mantis_id.push(countyDic[id]));
     console.log('mantis_id: ', mantis_id);
-  
 
+    function updateWellCount(mantis_id, wellDic) {
+      mantis_id.forEach((id) => {
+        if (wellDic.hasOwnProperty(id)){
+          wellCount += wellDic[id][0];
+        }
+      });
+    }
+  
     // regionType: 
     // Basin 1
     // subRegion 2
@@ -137,7 +139,7 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
             wellDic[well.Basin][0]++;
         });
         // Step2
-        mantis_id.forEach((id) => {wellCount += wellDic[id][0];});
+        updateWellCount(mantis_id, wellDic);
         break;
       case 2:// subRegion
         // Step1
@@ -163,7 +165,7 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
             wellDic[well.Sub][0]++;
         });
         // Step2
-        mantis_id.forEach((id) => {wellCount += wellDic[id][0];});
+        updateWellCount(mantis_id, wellDic);
         break;
       case 3:// B118 Basin
         // Step1
@@ -189,11 +191,7 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
             wellDic[well.B118][0]++;
         });
         // Step2
-        mantis_id.forEach((id) => {
-          if (wellDic.hasOwnProperty(id)){
-            wellCount += wellDic[id][0];
-          }
-        });
+        updateWellCount(mantis_id, wellDic);
         break;
       case 4:// county
         // Step1
@@ -219,11 +217,7 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
             wellDic[well.County][0]++;
         });
         // Step2
-        mantis_id.forEach((id) => {
-          if (wellDic.hasOwnProperty(id)){
-            wellCount += wellDic[id][0];
-          }
-        });
+        updateWellCount(mantis_id, wellDic);
         break;
       case 5: // Township
         // Step1
@@ -249,11 +243,7 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
             wellDic[well.Tship][0]++;
         });
         // Step2
-        mantis_id.forEach((id) => {
-          if (wellDic.hasOwnProperty(id)){
-            wellCount += wellDic[id][0];
-          }
-        });
+        updateWellCount(mantis_id, wellDic);
         break;
       default:
         console.log('RegionType Error: Type cannot be found!');
@@ -276,8 +266,6 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
       }
     });
   }
-
-
    
   return (
     <div>
@@ -286,7 +274,6 @@ const WellNumber = ({onChange, countyList, regionType, cdata, mdata}) => {
   );
 
 };
-
 
 export default connect(({ createModelForm, copyAndModifyModelForm }) => ({
   cdata: createModelForm.step,// data in createModelForm

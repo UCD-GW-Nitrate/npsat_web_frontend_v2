@@ -56,11 +56,13 @@ const Step2 = ({ targetModel, dispatch, data, isEditing }) => {
     const isBAU = data.hasOwnProperty('is_base') ? data.is_base : false;
 
     if (isEditing) {
+      console.log("step 2 modify");
       dispatch({
         type: 'copyAndModifyModelForm/saveCurrentStep',
         payload: isBAU ? 'Modify Info' : 'Modify Crops',
       });
     } else {
+      console.log("step 2 create");
       dispatch({
         type: 'createModelForm/saveCurrentStep',
         payload: isBAU ? 'Model Info' : 'Select Crops',
@@ -225,7 +227,7 @@ const Step2 = ({ targetModel, dispatch, data, isEditing }) => {
           <Button type="primary" htmlType="submit">
             Next
           </Button>
-          {isEditing && <div>
+          {isEditing && <>
             <Divider type="vertical" />
             <Tooltip title="Reset selections in this step to target scenario selections.">
               <Button
@@ -253,7 +255,7 @@ const Step2 = ({ targetModel, dispatch, data, isEditing }) => {
               Reset
               </Button>
             </Tooltip>
-          </div>}
+          </>}
         </Form.Item>
       </Form>
       <Divider

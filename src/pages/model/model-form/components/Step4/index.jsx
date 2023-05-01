@@ -126,7 +126,7 @@ const Step4 = ({ dispatch, user, data = {}, isEditing }) => {
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
-          {isEditing && <div>
+          {isEditing && <>
             <Divider type="vertical" />
             <Tooltip title="Reset selections in this step to target scenario selections.">
               <Button
@@ -144,7 +144,7 @@ const Step4 = ({ dispatch, user, data = {}, isEditing }) => {
               Reset
               </Button>
             </Tooltip>
-          </div>}
+          </>}
         </Form.Item>
       </Form>
       <Divider
