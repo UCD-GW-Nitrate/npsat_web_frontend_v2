@@ -68,7 +68,7 @@ export default defineConfig({
                   name: 'createModel',
                   icon: 'appstoreAdd',
                   path: '/model/create',
-                  component: './model/create-model',
+                  component: './model/create/CreateForm',
                 },
                 {
                   name: 'viewModel',
