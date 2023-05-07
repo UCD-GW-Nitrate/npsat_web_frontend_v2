@@ -5,7 +5,7 @@ import CropCard from '@/pages/model/components/CropCard';
 import { connect } from 'react-redux';
 import { getRegions } from '@/services/region';
 import styles from './index.less';
-import areaPerCrop from '../../CropAreas/areaPerCrop';
+import areaPerCrop from '../../logic/CropAreas/areaPerCrop';
 
 const { Option } = Select;
 
@@ -24,8 +24,6 @@ const CropCardForm = (props) => {
       setCounty(mapData);
     })();
   }, []);
-
-  console.log("new stuff 2");
 
   console.log("countyData", countyList);
   console.log("meta", meta);

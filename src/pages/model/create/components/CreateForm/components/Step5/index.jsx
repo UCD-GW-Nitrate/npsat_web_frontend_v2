@@ -1,5 +1,5 @@
 import React from 'react';
-import Step5 from '@/pages/model/model-form/components/Step5';
+import Step5 from '@/components/Forms/model-form/components/Step5';
 import { connect } from 'react-redux';
 
 /**

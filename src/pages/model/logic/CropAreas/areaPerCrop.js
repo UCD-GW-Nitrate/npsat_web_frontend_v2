@@ -37,9 +37,6 @@ const areaPerCrop = (crops = [], regions = [], mapType, load_scenario) => {
       });
     }
   }
-  // else {
-  //     cropsData = rests
-  // }
 
   // calculate total area for each selected crops 
   cropsData.forEach((crop) => {

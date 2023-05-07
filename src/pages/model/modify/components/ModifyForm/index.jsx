@@ -5,7 +5,7 @@ import Step2 from '@/pages/model/modify/components/ModifyForm/components/Step2';
 import Step3 from '@/pages/model/modify/components/ModifyForm/components/Step3';
 import Step4 from '@/pages/model/modify/components/ModifyForm/components/Step4';
 import Step5 from '@/pages/model/modify/components/ModifyForm/components/Step5';
-import StepForm from "@/pages/model/model-form";
+import StepForm from "@/components/Forms/model-form";
 
 const getCurrentStepAndComponent = (current) => {
   switch (current) {

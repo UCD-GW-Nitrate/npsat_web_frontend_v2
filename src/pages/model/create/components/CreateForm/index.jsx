@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import StepForm from "@/pages/model/model-form";
+import StepForm from "@/components/Forms/model-form";
 import Step1 from './components/Step1';
 import Step2 from './components/Step2';
 import Step3 from './components/Step3';

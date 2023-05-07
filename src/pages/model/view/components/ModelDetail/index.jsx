@@ -13,7 +13,7 @@ import {
   SCREEN_LENGTH_RANGE_CONFIG,
 } from '@/services/model';
 import { useModelRegions, useModelResults } from '@/hooks/model';
-import areaPerCrop from '@/pages/model/CropAreas/areaPerCrop';
+import areaPerCrop from '@/pages/model/logic/CropAreas/areaPerCrop';
 import CountyMap from '../../../../../components/Maps/CountyMap';
 import TableWrapper from './components/TableWrapper';
 import styles from './index.less';

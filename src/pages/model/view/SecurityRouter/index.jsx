@@ -5,7 +5,7 @@ import NoFoundPage from '@/pages/404';
 import { getModelDetail, putModel } from '@/pages/model/view/service';
 import WaitingSpin from '@/pages/waiting';
 import SearchTable from '@/pages/model/view/components/ModelList';
-import ModelDetail from '../ModelDetail';
+import ModelDetail from '../components/ModelDetail';
 
 const View = (props) => {
   const location = useLocation(); // get the current URL  

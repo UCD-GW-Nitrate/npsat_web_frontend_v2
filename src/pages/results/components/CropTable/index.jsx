@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ProTable, { ConfigProvider, enUSIntl } from '@ant-design/pro-table';
 import { Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import areaPerCrop from '@/pages/model/CropAreas/areaPerCrop';
+import areaPerCrop from '@/pages/model/logic/CropAreas/areaPerCrop';
 
 const CropTable = ({ models }) => {
   const [data, setData] = useState([]);
