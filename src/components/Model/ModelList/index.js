@@ -20,11 +20,23 @@ import { searchModel } from '@/services/model';
 import { useScenarioGroups } from '@/hooks/scenario';
 import TagRender from '@/components/ScenarioTag/TagRender';
 import ListResponseProcessing from '@/components/ScenarioTag/ListResponseProcessing';
+import { history } from 'umi';
+import ModelAction from './ModelAction';
 
-const SearchTable = ({ user, isEditing, isMobile }) => {
+const SearchTable = ({ user, modelAction, isMobile }) => {
   const actionRef = useRef();
-  const title = isEditing ? 'Modify Scenario' : 'Scenario Details';
-  const subTitle = isEditing ? 'Create another scenario with similar settings swiftly' : "Choose a scenario to view full details";
+  let title = "";
+  let subTitle = "";
+  if (modelAction === ModelAction.View) {
+    title = 'Scenario Details';
+    subTitle = 'Choose a scenario to view full details';
+  } else if (modelAction === ModelAction.Modify) {
+    title = 'Modify Scenario';
+    subTitle = 'Create another scenario with similar settings swiftly';
+  } else if (modelAction === ModelAction.Compare) {
+    title = "BAU comparison";
+    subTitle = 'Compare a completed custom scenario with the BAU under same scenario';
+  }
   const columns = [
     {
       title: 'Name',
@@ -59,33 +71,6 @@ const SearchTable = ({ user, isEditing, isMobile }) => {
       title: 'Well Type Scenario',
       dataIndex: 'welltype_scenario_name',
       copyable: true,
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      valueEnum: {
-        0: {
-          text: 'Not ready',
-          status: 'Warning',
-        },
-        1: {
-          text: 'In queue',
-          status: 'Default',
-        },
-        2: {
-          text: 'Running',
-          status: 'Processing',
-        },
-        3: {
-          text: 'Complete',
-          status: 'Success',
-        },
-        4: {
-          text: 'Error',
-          status: 'Error',
-        },
-      },
-      width: 100,
     },
     {
       title: 'Year range',
@@ -161,23 +146,13 @@ const SearchTable = ({ user, isEditing, isMobile }) => {
       valueType: 'option',
       fixed: 'right',
       render: (_, record) => (
-        <>
-          <Tooltip title="View details & results">
-            <a href={`/model/view?id=${record.id}`}>Details</a>
-          </Tooltip>
-          {isEditing && <>
-            <Divider type="vertical" />
-            <Tooltip title="Create another scenario with settings pre-filled">
-              <a href={`/model/modify?id=${record.id}`}>Copy & Modify</a>
-            </Tooltip>
-          </>}
-        </>
+        <ActionColumn record={record} modelAction={modelAction}/>
       ),
-      width: isEditing ? 180 : 70,
+      width: modelAction === ModelAction.Modify ? 180 : 100,
     },
   ];
 
-  if (isEditing) {
+  if (modelAction === ModelAction.Modify) {
     columns.splice(11, 0, {
       title: 'Regions',
       dataIndex: 'regions',
@@ -187,7 +162,37 @@ const SearchTable = ({ user, isEditing, isMobile }) => {
       render: (value) => value.props.title.map((region) => region.name).join(', '),
       ellipsis: true,
       width: 300,
-    },);
+    });
+  }
+
+  if (modelAction === ModelAction.Modify || modelAction === ModelAction.View) {
+    columns.splice(5, 0, {
+      title: 'Status',
+      dataIndex: 'status',
+      valueEnum: {
+        0: {
+          text: 'Not ready',
+          status: 'Warning',
+        },
+        1: {
+          text: 'In queue',
+          status: 'Default',
+        },
+        2: {
+          text: 'Running',
+          status: 'Processing',
+        },
+        3: {
+          text: 'Complete',
+          status: 'Success',
+        },
+        4: {
+          text: 'Error',
+          status: 'Error',
+        },
+      },
+      width: 100,
+    });
   }
 
   const [options, setOptions] = useState({
@@ -198,21 +203,38 @@ const SearchTable = ({ user, isEditing, isMobile }) => {
   });
   const [sorter, setSorter] = useState('');
   const onSearch = (values) => {
-    if (isEditing) {
-      setOptions({ ...values });
-    } else {
+    if (modelAction === ModelAction.View) {
       setOptions({ ...options, ...values });
+    } else {
+      setOptions({ ...values });
     }
     actionRef.current.reload();
   };
   return (
-    <PageHeaderWrapper title={title} subTitle={subTitle}>
+    <PageHeaderWrapper 
+      title={title} 
+      subTitle={subTitle} 
+      extra={
+        <>
+          {modelAction === ModelAction.Compare && <Button
+            href="/compare/group"
+            onClick={() => {
+              history.push({
+                path: '/compare/group',
+              });
+            }}
+            type="primary"
+          >
+            Switch to custom scenarios comparison
+          </Button>}
+        </>
+      }>
       <Card
         style={{
           marginBottom: 16,
         }}
       >
-        <SearchForm onSearch={onSearch} />
+        <SearchForm onSearch={onSearch} modelAction={modelAction} />
       </Card>
       <ConfigProvider
         value={{
@@ -257,7 +279,51 @@ const SearchTable = ({ user, isEditing, isMobile }) => {
   );
 };
 
-const SearchForm = ({ onSearch }) => {
+const ActionColumn = ({modelAction, record}) => {
+  if (modelAction === ModelAction.View) {
+    return (
+      <>
+        <Tooltip title="View details & results">
+          <a href={`/model/view?id=${record.id}`}>Details</a>
+        </Tooltip>
+      </>
+    );
+  } if (modelAction === ModelAction.Modify) {
+    return (
+      <>
+        <Tooltip title="View details & results">
+          <a href={`/model/view?id=${record.id}`}>Details</a>
+        </Tooltip>
+        <Divider type="vertical" />
+        <Tooltip title="Create another scenario with settings pre-filled">
+          <a href={`/model/modify?id=${record.id}`}>Copy & Modify</a>
+        </Tooltip>
+      </>
+    );
+  } if (modelAction === ModelAction.Compare) {
+    return (
+      <>
+        {!record.is_base ? (
+          <Tooltip
+            title={`Compare with BAU of scenario  ${record.flow_scenario.name}, ${record.load_scenario.name}, ${record.unsat_scenario.name}, ${record.welltype_scenario.name}, and related regions`}
+          >
+            <a href={`/compare/BAU?id=${record.id}`}>Compare</a>
+          </Tooltip>
+        ) : (
+          <Tooltip title="BAU cannot compare with itself, check its detail instead">
+            <a href={`/model/view?id=${record.id}`}>Details</a>
+          </Tooltip>
+        )}
+      </>
+    );
+  } 
+  return (
+    <></>
+  );
+  
+};
+
+const SearchForm = ({ onSearch, modelAction }) => {
   const [form] = Form.useForm();
   const [expand, setExpand] = useState(false);
   const { flowScenarios, loadScenarios, unsatScenarios, welltypeScenarios } = useScenarioGroups();
@@ -333,48 +399,49 @@ const SearchForm = ({ onSearch }) => {
             </Form.Item>
           </Col>
           <Col xs={24} sm={10}>
-            <Form.Item
-              label="Status"
-              name="status"
-              valuePropName="checked"
-              initialValue={['0', '1', '2', '3', '4']}
-              rules={[
-                {
-                  required: true,
-                  message: 'You must select at least one status',
-                },
-              ]}
-            >
-              <Checkbox.Group style={{ width: '100%' }} defaultValue={['0', '1', '2', '3', '4']}>
-                <Row>
-                  <Col span={8}>
-                    <Checkbox value="0">
-                      <Badge text="Not ready" status="warning" />
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="1">
-                      <Badge text="In queue" status="default" />
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="2">
-                      <Badge text="Running" status="processing" />
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="3">
-                      <Badge text="Complete" status="success" />
-                    </Checkbox>
-                  </Col>
-                  <Col span={8}>
-                    <Checkbox value="4">
-                      <Badge text="Error" status="error" />
-                    </Checkbox>
-                  </Col>
-                </Row>
-              </Checkbox.Group>
-            </Form.Item>
+            {(modelAction === ModelAction.Modify || modelAction === ModelAction.View) &&
+             <Form.Item
+               label="Status"
+               name="status"
+               valuePropName="checked"
+               initialValue={['0', '1', '2', '3', '4']}
+               rules={[
+                 {
+                   required: true,
+                   message: 'You must select at least one status',
+                 },
+               ]}
+             >
+               <Checkbox.Group style={{ width: '100%' }} defaultValue={['0', '1', '2', '3', '4']}>
+                 <Row>
+                   <Col span={8}>
+                     <Checkbox value="0">
+                       <Badge text="Not ready" status="warning" />
+                     </Checkbox>
+                   </Col>
+                   <Col span={8}>
+                     <Checkbox value="1">
+                       <Badge text="In queue" status="default" />
+                     </Checkbox>
+                   </Col>
+                   <Col span={8}>
+                     <Checkbox value="2">
+                       <Badge text="Running" status="processing" />
+                     </Checkbox>
+                   </Col>
+                   <Col span={8}>
+                     <Checkbox value="3">
+                       <Badge text="Complete" status="success" />
+                     </Checkbox>
+                   </Col>
+                   <Col span={8}>
+                     <Checkbox value="4">
+                       <Badge text="Error" status="error" />
+                     </Checkbox>
+                   </Col>
+                 </Row>
+               </Checkbox.Group>
+             </Form.Item>}
           </Col>
         </Row>
         <Row>
@@ -441,7 +508,7 @@ const SearchForm = ({ onSearch }) => {
     );
   };
   return (
-    <Form onFinish={onSearch} hideRequiredMark form={form}>
+    <Form onFinish={onSearch} hideRequiredMark={modelAction === ModelAction.Modify || modelAction === ModelAction.View} form={form}>
       {getFields()}
     </Form>
   );
