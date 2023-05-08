@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { getCropListLoadType, CROP_MACROS } from '@/services/crop';
 import { Select, List, notification, Spin } from 'antd';
 import CropCard from '@/pages/model/components/CropCard';
-import { connect } from 'react-redux';
 import { getRegions } from '@/services/region';
 import styles from './index.less';
 import areaPerCrop from '../../logic/CropAreas/areaPerCrop';

@@ -1,5 +1,5 @@
 import React from 'react';
-import Step1 from "@/components/Forms/model-form/components/Step1";
+import Step1 from "@/components/Model/ModelForm/components/Step1";
 import { connect } from 'react-redux';
 
 const Step1Create = ({ dispatch, user, data = {} }) => {
