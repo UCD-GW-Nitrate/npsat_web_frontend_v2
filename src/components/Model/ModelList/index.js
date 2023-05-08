@@ -36,6 +36,9 @@ const SearchTable = ({ user, modelAction, isMobile }) => {
   } else if (modelAction === ModelAction.Compare) {
     title = "BAU comparison";
     subTitle = 'Compare a completed custom scenario with the BAU under same scenario';
+  } else if (modelAction === ModelAction.Group) {
+    title = 'Custom scenarios group comparison';
+    subTitle = 'Select up to 5 scenarios to compare and view together.';
   }
   const columns = [
     {
@@ -140,16 +143,6 @@ const SearchTable = ({ user, modelAction, isMobile }) => {
         </span>
       ),
     },
-    {
-      title: 'Action',
-      dataIndex: 'option',
-      valueType: 'option',
-      fixed: 'right',
-      render: (_, record) => (
-        <ActionColumn record={record} modelAction={modelAction}/>
-      ),
-      width: modelAction === ModelAction.Modify ? 180 : 100,
-    },
   ];
 
   if (modelAction === ModelAction.Modify) {
@@ -165,7 +158,7 @@ const SearchTable = ({ user, modelAction, isMobile }) => {
     });
   }
 
-  if (modelAction === ModelAction.Modify || modelAction === ModelAction.View) {
+  if (modelAction === ModelAction.Modify || modelAction === ModelAction.View || modelAction === ModelAction.Group) {
     columns.splice(5, 0, {
       title: 'Status',
       dataIndex: 'status',
@@ -193,6 +186,19 @@ const SearchTable = ({ user, modelAction, isMobile }) => {
       },
       width: 100,
     });
+  }
+
+  if (modelAction !== ModelAction.Group) {
+    columns.push({
+      title: 'Action',
+      dataIndex: 'option',
+      valueType: 'option',
+      fixed: 'right',
+      render: (_, record) => (
+        <ActionColumn record={record} modelAction={modelAction}/>
+      ),
+      width: modelAction === ModelAction.Modify ? 180 : 100,
+    },);
   }
 
   const [options, setOptions] = useState({
@@ -227,6 +233,17 @@ const SearchTable = ({ user, modelAction, isMobile }) => {
           >
             Switch to custom scenarios comparison
           </Button>}
+          {modelAction === ModelAction.Group && <Button
+            href="/compare/BAU"
+            type="primary"
+            onClick={() => {
+              history.push({
+                path: '/compare/BAU',
+              });
+            }}
+          >
+            Switch to BAU comparison
+          </Button>}
         </>
       }>
       <Card
@@ -257,11 +274,64 @@ const SearchTable = ({ user, modelAction, isMobile }) => {
             }
             setSorter(sorter_query);
           }}
-          rowSelection={false}
+          rowSelection={modelAction === ModelAction.Group ? { preserveSelectedRowKeys: true } : false}
           search={false}
           pagination={{
             defaultPageSize: 10,
           }}
+          tableAlertRender={({ selectedRowKeys }) => (
+            <div>
+                Selected &nbsp;
+              <a
+                style={{
+                  fontWeight: 600,
+                  color: selectedRowKeys.length > 5 ? 'red' : '#1890ff',
+                }}
+              >
+                {selectedRowKeys.length}
+              </a>
+              &nbsp; Scenario(s). Maximum of{' '}
+              <a
+                style={{
+                  fontWeight: 600,
+                  color: selectedRowKeys.length > 5 ? 'red' : '#1890ff',
+                }}
+              >
+                5
+              </a>{' '}
+              .
+            </div>
+          )}
+          toolBarRender={(action, { selectedRowKeys }) => [
+            <>
+              {modelAction == ModelAction.Group && <Tooltip
+                title={() => {
+                  if (selectedRowKeys.length === 0) {
+                    return 'Start select scenarios.';
+                  } if (selectedRowKeys.length === 1) {
+                    return 'Select more scenarios for comparison.';
+                  } if (selectedRowKeys.length > 5) {
+                    return 'Too much scenarios selected.';
+                  } 
+                  return 'Confirm and compare scenarios.';
+                
+                }}
+              >
+                <Button
+                  type="primary"
+                  disabled={selectedRowKeys.length <= 1 || selectedRowKeys.length > 5}
+                  onClick={() => {
+                    history.push({
+                      path: '/compare/group',
+                      query: { ids: selectedRowKeys.join(',') },
+                    });
+                  }}
+                >
+                Compare in groups
+                </Button>
+              </Tooltip>}
+            </>,
+          ]}
           request={(_page) =>
             searchModel(
               _page,
@@ -399,7 +469,7 @@ const SearchForm = ({ onSearch, modelAction }) => {
             </Form.Item>
           </Col>
           <Col xs={24} sm={10}>
-            {(modelAction === ModelAction.Modify || modelAction === ModelAction.View) &&
+            {(modelAction === ModelAction.Modify || modelAction === ModelAction.View || modelAction === ModelAction.Group) &&
              <Form.Item
                label="Status"
                name="status"
