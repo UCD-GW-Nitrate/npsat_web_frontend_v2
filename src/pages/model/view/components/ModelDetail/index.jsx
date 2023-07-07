@@ -68,6 +68,7 @@ const ModelDetail = ({ token, user, hash, info, publish }) => {
       setCrop(crops);
       setLoading(false);
     }
+    console.log("model detail log");
   }, [info]);
   // scroll into view if the requested url contains an anchor only when first loading
   useEffect(() => {

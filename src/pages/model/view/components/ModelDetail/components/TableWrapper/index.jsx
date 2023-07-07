@@ -2,6 +2,11 @@ import { Table } from 'antd';
 import React from 'react';
 
 const TableWrapper = (props) => {
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   return (
     <Table
       dataSource={[...props.data]}
@@ -24,14 +29,14 @@ const TableWrapper = (props) => {
           title: 'Crop area (Hectare)',
           dataIndex: 'area',
           key: 'area',
-          render: (num) => `${Math.round(parseInt(num || 0)*0.25)}`,
+          render: (num) => {numberWithCommas(Math.round(parseInt(num || 0)*0.25));},
           sorter: (a, b) => parseInt(a.area) - parseInt(b.area),
         },
         {
           title: 'Crop area (Acre)',
           dataIndex: 'area',
           key: 'area',
-          render: (num) => `${Math.round(parseInt(num || 0)*0.25*2.47)}`,
+          render: (num) => {return numberWithCommas(Math.round(parseInt(num || 0)*0.25*2.47));},
           sorter: (a, b) => parseInt(a.area) - parseInt(b.area),
         },
         // {
