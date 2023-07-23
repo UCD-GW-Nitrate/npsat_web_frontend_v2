@@ -19,10 +19,10 @@ import styles from './index.less';
 const AreaPlot = ({ percentiles, data, additionalInfo }) => {
   const [form] = useForm();
   const [values, setValues] = useState({
-    upperBound: 0,
-    lowerBound: 0,
-    existMedian: false,
-    median: 0,
+    upperBound: 95,
+    lowerBound: 5,
+    existMedian: true,
+    median: 50,
   });
   const [areas, setPlot] = useState([]);
   useEffect(() => {

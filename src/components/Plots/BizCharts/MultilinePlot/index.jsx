@@ -6,7 +6,7 @@ import styles from './index.less';
 
 // usage: pass plot data, percentile list, and additional info
 const MultilinePlot = ({ percentiles, data, additionalInfo }) => {
-  const [shownLines, setLines] = useState([]);
+  const [shownLines, setLines] = useState([5, 50, 95]);
   return (
     <div className={styles.linePlot}>
       <div className={styles.linePlotSelect}>

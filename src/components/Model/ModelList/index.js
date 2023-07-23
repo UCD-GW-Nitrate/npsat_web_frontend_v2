@@ -47,7 +47,6 @@ const SearchTable = ({ user, modelAction, isMobile }) => {
       fixed: 'left',
       ellipsis: isMobile,
       width: isMobile ? 100 : 200,
-      copyable: true,
     },
     {
       title: 'Description',
@@ -58,22 +57,18 @@ const SearchTable = ({ user, modelAction, isMobile }) => {
     {
       title: 'Flow Scenario',
       dataIndex: 'flow_scenario_name',
-      copyable: true,
     },
     {
       title: 'Load Scenario',
       dataIndex: 'load_scenario_name',
-      copyable: true,
     },
     {
       title: 'Unsat Scenario',
       dataIndex: 'unsat_scenario_name',
-      copyable: true,
     },
     {
       title: 'Well Type Scenario',
       dataIndex: 'welltype_scenario_name',
-      copyable: true,
     },
     {
       title: 'Year range',
