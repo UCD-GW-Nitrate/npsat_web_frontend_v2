@@ -16,6 +16,7 @@ const Step4 = ({ dispatch, user, data = {}, isEditing }) => {
     },
   };
   const onNext = (values) => {
+    console.log("values:", values);
     if (isEditing) {
       dispatch({
         type: 'copyAndModifyModelForm/saveStepFormData',

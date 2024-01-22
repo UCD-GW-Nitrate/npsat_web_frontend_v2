@@ -9,6 +9,16 @@ const { RangePicker } = DatePicker;
 
 const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
   const [form] = Form.useForm();
+  const [flowScenarioOptions, setFlowScenarioOptions] = useState(
+    [],
+  );
+  const [loadScenarioOptions, setLoadScenarioOptions] = useState(
+    [],
+  );
+  const [unsatScenarioOptions, setUnsatScenarioOptions] = useState(
+    [],
+  );
+  const [welltypeScenarioOptions, setWelltypeScenarioOptions] = useState([]);
   const {
     flowScenarios: flowScen,
     loadScenarios: loadScen,
@@ -16,8 +26,21 @@ const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
     welltypeScenarios: welltypeScen,
   } = useScenarioGroups();
 
-  loadScen.sort((a,b) => a.id - b.id);// sort scenarios by id
-  welltypeScen.sort((a,b) => a.id - b.id);// sort scenarios by id
+  useEffect(() => {
+    setFlowScenarioOptions(flowScen ?? []);
+  }, [flowScen]);
+  useEffect(() => {
+    setLoadScenarioOptions(loadScen ?? []);
+  }, [loadScen]);
+  useEffect(() => {
+    setUnsatScenarioOptions(unsatScen ?? []);
+  }, [unsatScen]);
+  useEffect(() => {
+    setWelltypeScenarioOptions(welltypeScen ?? []);
+  }, [welltypeScen]);
+
+  loadScenarioOptions.sort((a,b) => a.id - b.id);// sort scenarios by id
+  welltypeScenarioOptions.sort((a,b) => a.id - b.id);// sort scenarios by id
   
   const [isBAU, setBAU] = useState(data.hasOwnProperty('is_base') ? data.is_base : false);
   useEffect(() => {
@@ -71,7 +94,7 @@ const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
           initialValue={data.hasOwnProperty('flow_scenario') ? data.flow_scenario : undefined}
         >
           <Select>
-            {flowScen.map((scen) => (
+            {flowScenarioOptions.map((scen) => (
               <Select.Option value={scen.id} key={scen.id}>
                 <>
                   {scen.name}{' '}
@@ -97,7 +120,7 @@ const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
           initialValue={data.hasOwnProperty('load_scenario') ? data.load_scenario : undefined}
         >
           <Select>
-            {loadScen.map((scen) => (
+            {loadScenarioOptions.map((scen) => (
               <Select.Option value={scen.id} key={scen.id}>
                 <>
                   {scen.name}{' '}
@@ -123,7 +146,7 @@ const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
           initialValue={data.hasOwnProperty('welltype_scenario') ? data.welltype_scenario : undefined}
         >
           <Select>
-            {welltypeScen.map((scen) => (
+            {welltypeScenarioOptions.map((scen) => (
               <Select.Option value={scen.id} key={scen.id}>
                 <>
                   {scen.name}{' '}
@@ -149,7 +172,7 @@ const Step1 = ({ dispatch, user, data = {}, isEditing }) => {
           initialValue={data.hasOwnProperty('unsat_scenario') ? data.unsat_scenario : undefined}
         >
           <Select>
-            {unsatScen.map((scen) => (
+            {unsatScenarioOptions.map((scen) => (
               <Select.Option value={scen.id} key={scen.id}>
                 <>
                   {scen.name}{' '}

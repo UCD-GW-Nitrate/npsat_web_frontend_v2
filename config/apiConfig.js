@@ -1,4 +1,4 @@
 // define api root in this config
 export default {
-  apiRoot: ""
+  apiRoot: "http://localhost:8010"
 }

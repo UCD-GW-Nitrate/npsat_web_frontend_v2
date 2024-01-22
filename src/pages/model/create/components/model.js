@@ -84,6 +84,8 @@ const Model = {
           }
         }
 
+        console.log("send data", data);
+
         response = yield call(createModel, data, {
           token: payload.token,
           id: payload.user_id,
@@ -114,6 +116,7 @@ const Model = {
     },
 
     saveStepFormData(state, { payload }) {
+      console.log("all values:", { ...state, step: { ...state.step, ...payload } });
       return { ...state, step: { ...state.step, ...payload } };
     },
 
